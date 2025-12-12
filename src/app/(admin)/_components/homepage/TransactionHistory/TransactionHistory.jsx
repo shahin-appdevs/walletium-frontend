@@ -183,11 +183,11 @@ export default function TransactionHistory() {
     },
   ];
 
-  const smallScreenColumn = smallScreen && [...columns.slice(0, 2)];
-  const mediumScreenColumn = mediumScreen ? [...columns.slice(0, 4)] : columns;
+  const smallScreenColumn = smallScreen ? [...columns.slice(0, 2)] : columns;
+  // const mediumScreenColumn = mediumScreen ? [...columns.slice(0, 4)] : columns;
 
   return (
-    <Card className="  overflow-x-auto dark:border-neutral-900! shadow-sm border-0!">
+    <Card className=" overflow-x-auto! dark:border-neutral-900! shadow-sm border-0!">
       <Modal open={isModalOpen} onCancel={handleCancelModal}>
         <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-white dark:bg-[#111] shadow-sm border border-gray-200 dark:border-gray-800">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
@@ -236,11 +236,11 @@ export default function TransactionHistory() {
 
       {/* Styled Table */}
       <Table
-        columns={smallScreenColumn || mediumScreenColumn}
+        columns={smallScreenColumn}
         dataSource={data}
         pagination={false}
         onRowClick={handleOnRowClick}
-        className="rounded-xl  border! border-gray-200! dark:border-neutral-950! "
+        className="rounded-xl  border! border-gray-200! dark:border-neutral-950! md:min-w-[820px]! "
         rowClassName={() =>
           "even:bg-gray-50 dark:even:bg-slate-950 rounded-xl! cursor-pointer!"
         }

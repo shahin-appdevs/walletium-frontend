@@ -6,6 +6,7 @@ import Image from "next/image";
 // import { useTheme } from "@/contexts/ThemeContextProvider";
 // import LucideIcon from "@/components/LucideIcon";
 import useSidebar from "@/hooks/useSidebar";
+import Link from "next/link";
 
 const { Sider } = Layout;
 
@@ -27,14 +28,16 @@ const LayoutSidebar = ({ collapsed }) => {
         className="sticky! top-0! h-screen! overflow-y-auto overflow-x-hidden! sidebar-main"
       >
         <div className="p-2 lg:px-4  lg:py-8">
-          <Image
-            src={
-              "https://abubakkar.appdevs.team/walletium/public/backend/images/web-settings/image-assets/seeder/white-logo.webp"
-            }
-            height={100}
-            width={200}
-            alt="Logo"
-          />
+          <Link href={"/dashboard"} className="cursor-pointer">
+            <Image
+              src={
+                "https://abubakkar.appdevs.team/walletium/public/backend/images/web-settings/image-assets/seeder/white-logo.webp"
+              }
+              height={100}
+              width={200}
+              alt="Logo"
+            />
+          </Link>
         </div>
         {/* <div
           style={{
