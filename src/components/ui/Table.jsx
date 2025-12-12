@@ -20,6 +20,7 @@ const Table = (props) => {
     onRowClick,
     isSelected = false,
     handleAllDelete,
+    rowClassName,
   } = props;
 
   // check server mode
@@ -171,6 +172,7 @@ const Table = (props) => {
       )}
 
       <AntTable
+        rowClassName={rowClassName}
         rowKey={rowKey}
         dataSource={data}
         columns={finalColumns}

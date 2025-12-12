@@ -9,6 +9,7 @@ import {
 import Table from "@/components/ui/Table";
 import useModal from "@/hooks/useModal";
 import { useState } from "react";
+import useViewport from "@/hooks/useViewport";
 
 const data = [
   {
@@ -64,6 +65,7 @@ const data = [
 export default function TransactionHistory() {
   const { isModalOpen, handleShowModal, handleCancelModal } = useModal();
   const [singleTable, setSingleTable] = useState([]);
+  const { smallScreen, mediumScreen } = useViewport();
 
   const handleOnRowClick = (record) => {
     const labels = [
@@ -123,7 +125,6 @@ export default function TransactionHistory() {
         </div>
       ),
     },
-
     {
       title: "Trx ID",
       dataIndex: "transaction_id",
@@ -138,7 +139,6 @@ export default function TransactionHistory() {
         <span className="text-gray-600 dark:text-neutral-300">{date}</span>
       ),
     },
-
     {
       title: "Amount",
       dataIndex: "amount",
@@ -154,7 +154,6 @@ export default function TransactionHistory() {
         </span>
       ),
     },
-
     {
       title: "Status",
       dataIndex: "status",
@@ -183,6 +182,9 @@ export default function TransactionHistory() {
       ),
     },
   ];
+
+  const smallScreenColumn = smallScreen && [...columns.slice(0, 2)];
+  const mediumScreenColumn = mediumScreen ? [...columns.slice(0, 4)] : columns;
 
   return (
     <Card className="  overflow-x-auto dark:border-neutral-900! shadow-sm border-0!">
@@ -234,13 +236,13 @@ export default function TransactionHistory() {
 
       {/* Styled Table */}
       <Table
-        columns={columns}
+        columns={smallScreenColumn || mediumScreenColumn}
         dataSource={data}
         pagination={false}
         onRowClick={handleOnRowClick}
-        className="rounded-xl  min-w-[700px] border! border-gray-200!  dark:border-neutral-950!"
+        className="rounded-xl  border! border-gray-200! dark:border-neutral-950! "
         rowClassName={() =>
-          " even:bg-gray-50  dark:even:bg-slate-950 rounded-xl!  "
+          "even:bg-gray-50 dark:even:bg-slate-950 rounded-xl! cursor-pointer!"
         }
       />
     </Card>
