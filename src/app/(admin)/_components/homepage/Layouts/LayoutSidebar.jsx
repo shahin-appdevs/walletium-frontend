@@ -6,32 +6,22 @@ import { useRouter } from "next/navigation";
 import { useTheme } from "@/contexts/ThemeContextProvider";
 import LucideIcon from "@/components/LucideIcon";
 
-const logo = "/images/logo/logo.png";
-
 const { Sider } = Layout;
 
 const LayoutSidebar = ({ collapsed }) => {
   const router = useRouter();
   const { mode } = useTheme();
-  // const [background, setBackground] = useState(() => {
-  //   if (typeof window !== "undefined") {
-  //     if (mode === "dark") {
-  //       return "#000";
-  //     }
-  //   }
-  //   return "#fff";
-  // });
 
   const handleNavigateRoutes = (e) => {
     const ROUTES = {
-      dashboard: "/",
-      money_transfer: "/users",
-      setting: "/settings",
+      dashboard: "/dashboard ",
+      addMoney: "/dashboard/add-money",
+      setting: "/dashboard/settings",
     };
 
     const routes = {
       1: ROUTES.dashboard,
-      2: ROUTES.money_transfer,
+      2.1: ROUTES.addMoney,
       3: ROUTES.setting,
     };
 
@@ -62,56 +52,32 @@ const LayoutSidebar = ({ collapsed }) => {
       children: [
         {
           key: "2.1",
-          label: (
-            <span className="text-neutral-700 dark:text-neutral-200 text-sm font-semibold">
-              Add Money
-            </span>
-          ),
+          label: <span className="text-sm font-semibold">Add Money</span>,
           icon: <LucideIcon name={"CirclePlus"} size={14} />,
         },
         {
           key: "2.3",
-          label: (
-            <span className="text-neutral-700 dark:text-neutral-200 text-sm font-semibold">
-              Send Money
-            </span>
-          ),
+          label: <span className="text-sm font-semibold">Send Money</span>,
           icon: <LucideIcon name={"Send"} size={14} />,
         },
         {
           key: "2.2",
-          label: (
-            <span className="text-neutral-700 dark:text-neutral-200 text-sm font-semibold">
-              Request Money
-            </span>
-          ),
+          label: <span className="text-sm font-semibold">Request Money</span>,
           icon: <LucideIcon name={"HandCoins"} size={14} />,
         },
         {
           key: "2.4",
-          label: (
-            <span className="text-neutral-700 dark:text-neutral-200 text-sm font-semibold">
-              Money Exchange
-            </span>
-          ),
+          label: <span className="text-sm font-semibold">Money Exchange</span>,
           icon: <LucideIcon name={"ArrowRightLeft"} size={14} />,
         },
         {
           key: "2.5",
-          label: (
-            <span className="text-neutral-700 dark:text-neutral-200 text-sm font-semibold">
-              Withdraw
-            </span>
-          ),
+          label: <span className="text-sm font-semibold">Withdraw</span>,
           icon: <LucideIcon name={"ArrowRightLeft"} size={14} />,
         },
         {
           key: "2.6",
-          label: (
-            <span className="text-neutral-700 dark:text-neutral-200 text-sm font-semibold">
-              Money Exchange
-            </span>
-          ),
+          label: <span className="text-sm font-semibold">Money Exchange</span>,
           icon: <LucideIcon name={"ArrowRightLeft"} size={14} />,
         },
       ],
@@ -127,47 +93,27 @@ const LayoutSidebar = ({ collapsed }) => {
       children: [
         {
           key: "3.1",
-          label: (
-            <span className="text-neutral-700 dark:text-neutral-200 text-sm font-semibold">
-              My Card
-            </span>
-          ),
+          label: <span className="text-sm font-semibold">My Card</span>,
           icon: <LucideIcon name={"CirclePlus"} size={14} />,
         },
         {
           key: "3.3",
-          label: (
-            <span className="text-neutral-700 dark:text-neutral-200 text-sm font-semibold">
-              My Recipients
-            </span>
-          ),
+          label: <span className="text-sm font-semibold">My Recipients</span>,
           icon: <LucideIcon name={"Send"} size={14} />,
         },
         {
           key: "3.2",
-          label: (
-            <span className="text-neutral-700 dark:text-neutral-200 text-sm font-semibold">
-              My Voucher
-            </span>
-          ),
+          label: <span className="text-sm font-semibold">My Voucher</span>,
           icon: <LucideIcon name={"HandCoins"} size={14} />,
         },
         {
           key: "3.4",
-          label: (
-            <span className="text-neutral-700 dark:text-neutral-200 text-sm font-semibold">
-              Money Exchange
-            </span>
-          ),
+          label: <span className="text-sm font-semibold">Money Exchange</span>,
           icon: <LucideIcon name={"ArrowRightLeft"} size={14} />,
         },
         {
           key: "3.5",
-          label: (
-            <span className="text-neutral-700 dark:text-neutral-200 text-sm font-semibold">
-              Withdraw
-            </span>
-          ),
+          label: <span className="text-sm font-semibold">Withdraw</span>,
           icon: <LucideIcon name={"ArrowRightLeft"} size={14} />,
         },
       ],
@@ -183,56 +129,36 @@ const LayoutSidebar = ({ collapsed }) => {
       children: [
         {
           key: "4.1",
-          label: (
-            <span className="text-neutral-700 dark:text-neutral-200 text-sm font-semibold">
-              Add Money Log
-            </span>
-          ),
+          label: <span className="text-sm font-semibold">Add Money Log</span>,
           icon: <LucideIcon name={"CirclePlus"} size={14} />,
         },
         {
           key: "4.3",
-          label: (
-            <span className="text-neutral-700 dark:text-neutral-200 text-sm font-semibold">
-              Send Money Log
-            </span>
-          ),
+          label: <span className="text-sm font-semibold">Send Money Log</span>,
           icon: <LucideIcon name={"Send"} size={14} />,
         },
         {
           key: "4.2",
-          label: (
-            <span className="text-neutral-700 dark:text-neutral-200 text-sm font-semibold">
-              Withdraw Log
-            </span>
-          ),
+          label: <span className="text-sm font-semibold">Withdraw Log</span>,
           icon: <LucideIcon name={"HandCoins"} size={14} />,
         },
         {
           key: "4.4",
           label: (
-            <span className="text-neutral-700 dark:text-neutral-200 text-sm font-semibold">
-              Money Exchange Log
-            </span>
+            <span className="text-sm font-semibold">Money Exchange Log</span>
           ),
           icon: <LucideIcon name={"ArrowRightLeft"} size={14} />,
         },
         {
           key: "4.5",
           label: (
-            <span className="text-neutral-700 dark:text-neutral-200 text-sm font-semibold">
-              Money Request Log
-            </span>
+            <span className="text-sm font-semibold">Money Request Log</span>
           ),
           icon: <LucideIcon name={"ArrowRightLeft"} size={14} />,
         },
         {
           key: "4.6",
-          label: (
-            <span className="text-neutral-700 dark:text-neutral-200 text-sm font-semibold">
-              Voucher Log
-            </span>
-          ),
+          label: <span className="text-sm font-semibold">Voucher Log</span>,
           icon: <LucideIcon name={"ArrowRightLeft"} size={14} />,
         },
       ],
@@ -250,19 +176,13 @@ const LayoutSidebar = ({ collapsed }) => {
         {
           key: "5.1",
           label: (
-            <span className="text-neutral-700 dark:text-neutral-200 text-sm font-semibold">
-              KYC Verification
-            </span>
+            <span className="text-sm font-semibold">KYC Verification</span>
           ),
           icon: <LucideIcon name={"ArrowRightLeft"} size={14} />,
         },
         {
           key: "5.2",
-          label: (
-            <span className="text-neutral-700 dark:text-neutral-200 text-sm font-semibold">
-              2FA Security
-            </span>
-          ),
+          label: <span className="text-sm font-semibold">2FA Security</span>,
           icon: <LucideIcon name={"ArrowRightLeft"} size={14} />,
         },
       ],
