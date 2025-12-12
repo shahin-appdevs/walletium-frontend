@@ -35,7 +35,7 @@ export default function DashboardLayout({ children }) {
         <Content
           style={{
             margin: "24px 16px",
-            padding: 24,
+            // padding: 24,
             // background: "#fff",
             overflow: "hidden",
           }}

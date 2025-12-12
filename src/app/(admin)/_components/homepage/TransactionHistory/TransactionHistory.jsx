@@ -1,5 +1,5 @@
 "use client";
-import { Input, Button, Card } from "antd";
+import { Input, Button, Card, Modal } from "antd";
 import {
   ArrowDownOutlined,
   ArrowUpOutlined,
@@ -7,11 +7,16 @@ import {
   FilterOutlined,
 } from "@ant-design/icons";
 import Table from "@/components/ui/Table";
+import useModal from "@/hooks/useModal";
+import { useState } from "react";
 
 const data = [
   {
     key: "1",
-    type: "Receive Money",
+    transaction_type: "Receive Money",
+    transaction_id: "TXID123",
+    fee_charge: 20,
+    exchange_rate: "2%",
     date: "07 Jun 2025",
     id: "#MY548G214",
     amount: 2500,
@@ -20,7 +25,10 @@ const data = [
   },
   {
     key: "2",
-    type: "Money Out",
+    transaction_type: "Money Out",
+    transaction_id: "TXID123",
+    fee_charge: 20,
+    exchange_rate: "2%",
     date: "07 Jun 2025",
     id: "#MY548G214",
     amount: -8600,
@@ -29,7 +37,10 @@ const data = [
   },
   {
     key: "3",
-    type: "Receive Money",
+    transaction_type: "Receive Money",
+    transaction_id: "TXID123",
+    fee_charge: 20,
+    exchange_rate: "2%",
     date: "07 Jun 2025",
     id: "#MY548G214",
     amount: -6140,
@@ -38,7 +49,10 @@ const data = [
   },
   {
     key: "4",
-    type: "Receive Money",
+    transaction_type: "Receive Money",
+    transaction_id: "TXID123",
+    fee_charge: 20,
+    exchange_rate: "2%",
     date: "07 Jun 2025",
     id: "#MY548G214",
     amount: 2500,
@@ -47,75 +61,159 @@ const data = [
   },
 ];
 
-const columns = [
-  {
-    title: "Type",
-    dataIndex: "type",
-    width: 250,
-    render: (_, record) => (
-      <div className="flex items-center gap-3">
-        <div
-          className={`w-10 h-10 flex items-center justify-center rounded-full ${
-            record.direction === "in"
-              ? "bg-gray-100 dark:bg-gray-300 dark:text-neutral-800"
-              : "bg-gray-100 dark:bg-gray-300 dark:text-neutral-800"
+export default function TransactionHistory() {
+  const { isModalOpen, handleShowModal, handleCancelModal } = useModal();
+  const [singleTable, setSingleTable] = useState([]);
+
+  const handleOnRowClick = (record) => {
+    const labels = [
+      "Transaction Type",
+      "TXID",
+      "Fee & Charge",
+      "Exchange Rate",
+      "Date",
+      "Amount",
+      "Status",
+    ];
+    const values = [
+      "transaction_type",
+      "transaction_id",
+      "fee_charge",
+      "exchange_rate",
+      "date",
+      "amount",
+      "status",
+    ];
+
+    const arr = labels.map((item, idx) => {
+      return { label: item, value: record[values[idx]] };
+    });
+
+    setSingleTable(arr);
+    handleShowModal();
+  };
+
+  const columns = [
+    {
+      title: "Type",
+      dataIndex: "transaction_type",
+      width: 250,
+      render: (_, record) => (
+        <div className="flex items-center gap-3">
+          <div
+            className={`w-10 h-10 flex items-center justify-center rounded-full ${
+              record.direction === "in"
+                ? "bg-gray-100 dark:bg-gray-300 dark:text-neutral-800"
+                : "bg-gray-100 dark:bg-gray-300 dark:text-neutral-800"
+            }`}
+          >
+            {record.direction === "in" ? (
+              <ArrowDownOutlined className="text-gray-500 rotate-45 text-lg" />
+            ) : (
+              <ArrowUpOutlined className="text-gray-500 text-lg rotate-45" />
+            )}
+          </div>
+
+          <div>
+            <p className="font-medium text-gray-800 dark:text-neutral-300">
+              {record.type}
+            </p>
+            <p className="text-gray-400  text-sm">{record.transaction_type}</p>
+          </div>
+        </div>
+      ),
+    },
+
+    {
+      title: "Trx ID",
+      dataIndex: "transaction_id",
+      render: (id) => (
+        <span className="text-gray-600 dark:text-neutral-300">{id}</span>
+      ),
+    },
+    {
+      title: "Date",
+      dataIndex: "date",
+      render: (date) => (
+        <span className="text-gray-600 dark:text-neutral-300">{date}</span>
+      ),
+    },
+
+    {
+      title: "Amount",
+      dataIndex: "amount",
+      render: (amount) => (
+        <span
+          className={`font-semibold ${
+            amount >= 0 ? "text-green-600" : "text-red-500"
           }`}
         >
-          {record.direction === "in" ? (
-            <ArrowDownOutlined className="text-gray-500 rotate-45 text-lg" />
-          ) : (
-            <ArrowUpOutlined className="text-gray-500 text-lg rotate-45" />
-          )}
-        </div>
+          {amount >= 0
+            ? `+$${amount.toLocaleString()}`
+            : `-$${Math.abs(amount).toLocaleString()}`}
+        </span>
+      ),
+    },
 
-        <div>
-          <p className="font-medium text-gray-800 dark:text-neutral-300">
-            {record.type}
-          </p>
-          <p className="text-gray-400  text-sm">{record.date}</p>
-        </div>
-      </div>
-    ),
-  },
+    {
+      title: "Status",
+      dataIndex: "status",
+      render: (status) => (
+        <span className="px-3 py-1 rounded-full text-sm bg-green-100 dark:bg-green-700 dark:text-green-100 text-green-700">
+          {status}
+        </span>
+      ),
+    },
+    {
+      title: "Exchange Rate",
+      dataIndex: "exchange_rate",
+      render: (exchange_rate) => (
+        <span className="text-gray-600 dark:text-neutral-300">
+          {exchange_rate}
+        </span>
+      ),
+    },
+    {
+      title: "Fee/Charge",
+      dataIndex: "fee_charge",
+      render: (fee_charge) => (
+        <span className="text-gray-600 dark:text-neutral-300">
+          {fee_charge}
+        </span>
+      ),
+    },
+  ];
 
-  {
-    title: "Trx ID",
-    dataIndex: "id",
-    render: (id) => (
-      <span className="text-gray-600 dark:text-neutral-300">{id}</span>
-    ),
-  },
-
-  {
-    title: "Amount",
-    dataIndex: "amount",
-    render: (amount) => (
-      <span
-        className={`font-semibold ${
-          amount >= 0 ? "text-green-600" : "text-red-500"
-        }`}
-      >
-        {amount >= 0
-          ? `+$${amount.toLocaleString()}`
-          : `-$${Math.abs(amount).toLocaleString()}`}
-      </span>
-    ),
-  },
-
-  {
-    title: "Status",
-    dataIndex: "status",
-    render: (status) => (
-      <span className="px-3 py-1 rounded-full text-sm bg-green-100 dark:bg-green-700 dark:text-green-100 text-green-700">
-        {status}
-      </span>
-    ),
-  },
-];
-
-export default function TransactionHistory() {
   return (
     <Card className="  overflow-x-auto dark:border-neutral-900! shadow-sm border-0!">
+      <Modal open={isModalOpen} onCancel={handleCancelModal}>
+        <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-white dark:bg-[#111] shadow-sm border border-gray-200 dark:border-gray-800">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+            Transaction History
+          </h2>
+
+          <div className="divide-y divide-gray-200 dark:divide-gray-800">
+            {singleTable?.map((row, idx) => (
+              <div
+                key={idx}
+                className="flex justify-between items-center py-3 text-sm"
+              >
+                <span className="text-gray-600 dark:text-gray-400">
+                  {row.label}
+                </span>
+
+                <span
+                  className={`text-gray-900 dark:text-gray-100 ${
+                    row.bold ? "font-semibold" : "font-medium"
+                  }`}
+                >
+                  {row.value}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Modal>
       {/* Header */}
       <div className="flex flex-col lg:flex-row gap-4 justify-between items-center mb-4">
         <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-300">
@@ -139,6 +237,7 @@ export default function TransactionHistory() {
         columns={columns}
         dataSource={data}
         pagination={false}
+        onRowClick={handleOnRowClick}
         className="rounded-xl  min-w-[700px] border! border-gray-200!  dark:border-neutral-950!"
         rowClassName={() =>
           " even:bg-gray-50  dark:even:bg-slate-950 rounded-xl!  "
