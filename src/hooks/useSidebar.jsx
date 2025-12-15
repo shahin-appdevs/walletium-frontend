@@ -12,12 +12,18 @@ const useSidebar = () => {
     const ROUTES = {
       dashboard: "/dashboard ",
       addMoney: "/dashboard/add-money",
+      sendMoney: "/dashboard/send-money",
+      requestMoney: "/dashboard/request-money",
+      MyRecipient: "/dashboard/my-recipient",
       setting: "/dashboard/settings",
     };
 
     const routes = {
       1: ROUTES.dashboard,
       2.1: ROUTES.addMoney,
+      2.2: ROUTES.sendMoney,
+      2.3: ROUTES.requestMoney,
+      3.3: ROUTES.MyRecipient,
       3: ROUTES.setting,
     };
 
@@ -52,12 +58,12 @@ const useSidebar = () => {
           icon: <LucideIcon name={"CirclePlus"} size={14} />,
         },
         {
-          key: "2.3",
+          key: "2.2",
           label: <span className="text-sm font-semibold">Send Money</span>,
           icon: <LucideIcon name={"Send"} size={14} />,
         },
         {
-          key: "2.2",
+          key: "2.3",
           label: <span className="text-sm font-semibold">Request Money</span>,
           icon: <LucideIcon name={"HandCoins"} size={14} />,
         },

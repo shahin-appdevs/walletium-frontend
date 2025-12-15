@@ -1,15 +1,17 @@
 "use client";
-import React from "react";
+import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import { Card, Form, Input, Select, Space } from "antd";
 import { ArrowUpRight, DollarSign } from "lucide-react";
+import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
-import AddMoneyTransaction from "./_components/Transaction/AddMoneyTransaction";
+import LatestTransactions from "../../_components/homepage/LatestTransactions/LatestTransactions";
+import SendMoneyTransaction from "./_components/Transaction/SendMoneyTransaction";
 
-const AddMoney = () => {
+const SendMoney = () => {
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      currency: "USD",
+      senderCurrency: "USD",
+      recipientsCurrency: "USD",
       amount: "",
       paymentGateway: "Paypal USD",
     },
@@ -20,9 +22,12 @@ const AddMoney = () => {
   };
 
   const singleTable = [
-    { label: "Entered Amount", value: "$50" },
-    { label: "Conversion Amount", value: "$50" },
+    { label: "Sender Wallet", value: "$50" },
+    { label: "Receiver Wallet", value: "$50" },
+    { label: "Sending Amount", value: "$50" },
     { label: "Total Fees & Charges", value: "$100" },
+    { label: "Exchange Rate", value: "$100" },
+    { label: "Receiver Will Get", value: "$100" },
     {
       label: <span className="font-bold text-lg">Total Payable Amount</span>,
       value: <span className="font-bold text-lg">$ 200</span>,
@@ -36,14 +41,9 @@ const AddMoney = () => {
           <div className="col-span-1 md:col-span-3 ">
             <Card className=" space-y-4!">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                Add Money
+                Send Money
               </h2>
-              {/* <div className="border  inline-block border-primary/50 rounded-2xl p-4">
-              <h6 className="font-medium">Exchange Rate:</h6>
-              <h2 className="text-lg lg:text-xl font-medium">
-                1 USD = 1.000 USDT
-              </h2>
-            </div> */}
+
               <div className="bg-white mb-4 dark:bg-slate-900 dark:border dark:border-neutral-700 rounded-2xl shadow-sm p-4 flex flex-col gap-3 overflow-hidden">
                 {/* Icon Section */}
                 <div className="flex items-center justify-between">
@@ -87,32 +87,18 @@ const AddMoney = () => {
                     <Form.Item
                       label={
                         <span>
-                          Amount <span className="text-red-500">*</span>
+                          Sender Amount <span className="text-red-500">*</span>
                         </span>
                       }
                     >
                       <Space.Compact size="large" className="w-full">
                         {/* Currency Select */}
-                        <Controller
-                          name="currency"
-                          control={control}
-                          render={({ field }) => (
-                            <Select
-                              {...field}
-                              options={[
-                                { label: "USD", value: "USD" },
-                                { label: "BDT", value: "BDT" },
-                              ]}
-                              className="w-28!"
-                            />
-                          )}
-                        />
 
                         {/* Amount Input */}
                         <Controller
-                          name="amount"
+                          name="senderAmount"
                           control={control}
-                          rules={{ required: "Amount is required" }}
+                          rules={{ required: "Sender amount is required" }}
                           render={({ field, fieldState }) => (
                             <div className="w-full relative">
                               <Input
@@ -129,46 +115,69 @@ const AddMoney = () => {
                             </div>
                           )}
                         />
+                        <Controller
+                          name="senderCurrency"
+                          control={control}
+                          render={({ field }) => (
+                            <Select
+                              {...field}
+                              options={[
+                                { label: "USD", value: "USD" },
+                                { label: "BDT", value: "BDT" },
+                              ]}
+                              className="w-28!"
+                            />
+                          )}
+                        />
                       </Space.Compact>
                     </Form.Item>
-                    {/* <FormInput
-                    size="large"
-                    label={
-                      <span>
-                        Payment Gateway <span class="text-red-500">*</span>
-                      </span>
-                    }
-                  /> */}
                     <Form.Item
                       label={
                         <span>
-                          Payment Gateway{" "}
+                          Recipients Amount{" "}
                           <span className="text-red-500">*</span>
                         </span>
                       }
                     >
-                      <Controller
-                        name="paymentGateway"
-                        control={control}
-                        rules={{ required: "Payment Gateway is required" }}
-                        render={({ field, fieldState }) => (
-                          <>
+                      <Space.Compact size="large" className="w-full">
+                        {/* Currency Select */}
+
+                        {/* Amount Input */}
+                        <Controller
+                          name="recipientsAmount"
+                          control={control}
+                          rules={{ required: "Recipients amount is required" }}
+                          render={({ field, fieldState }) => (
+                            <div className="w-full relative">
+                              <Input
+                                {...field}
+                                placeholder="Amount"
+                                type="number"
+                              />
+
+                              {fieldState.error && (
+                                <p className="mt-1 text-sm text-red-500 absolute -bottom-5 left-0">
+                                  {fieldState.error.message}
+                                </p>
+                              )}
+                            </div>
+                          )}
+                        />
+                        <Controller
+                          name="recipientsCurrency"
+                          control={control}
+                          render={({ field }) => (
                             <Select
                               {...field}
-                              size="large"
                               options={[
-                                { label: "Paypal USD", value: "paypal_usd" },
-                                { label: "Paypal GBP", value: "paypal_gbp" },
+                                { label: "USD", value: "USD" },
+                                { label: "BDT", value: "BDT" },
                               ]}
+                              className="w-28!"
                             />
-                            {fieldState.error && (
-                              <p className="mt-1 text-sm text-red-500">
-                                {fieldState.error.message}
-                              </p>
-                            )}
-                          </>
-                        )}
-                      />
+                          )}
+                        />
+                      </Space.Compact>
                     </Form.Item>
                   </div>
                   <div className="flex flex-col lg:flex-row gap-2 justify-between items-center">
@@ -180,14 +189,14 @@ const AddMoney = () => {
                     </p>
                   </div>
                   <PrimaryButton type="submit" className={"text-base w-full"}>
-                    Confirm{" "}
+                    Send Money{" "}
                   </PrimaryButton>
                 </Form>
               </div>
             </Card>
           </div>
           <div className="col-span-1 lg:col-span-2">
-            <Card className="">
+            <Card>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                 Summery
               </h2>
@@ -216,12 +225,12 @@ const AddMoney = () => {
             </Card>
           </div>
         </div>
-        <div className="">
-          <AddMoneyTransaction />
+        <div>
+          <SendMoneyTransaction />
         </div>
       </div>
     </section>
   );
 };
 
-export default AddMoney;
+export default SendMoney;

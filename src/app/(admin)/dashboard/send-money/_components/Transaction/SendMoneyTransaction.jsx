@@ -15,6 +15,7 @@ const data = [
   {
     key: "1",
     transaction_type: "Receive Money",
+    recipient_name: "Shahin",
     transaction_id: "TXID123",
     fee_charge: 20,
     exchange_rate: "2%",
@@ -27,6 +28,7 @@ const data = [
   {
     key: "2",
     transaction_type: "Money Out",
+    recipient_name: "Shahin Hossain",
     transaction_id: "TXID123",
     fee_charge: 20,
     exchange_rate: "2%",
@@ -39,6 +41,7 @@ const data = [
   {
     key: "3",
     transaction_type: "Receive Money",
+    recipient_name: "Shahin",
     transaction_id: "TXID123",
     fee_charge: 20,
     exchange_rate: "2%",
@@ -51,6 +54,7 @@ const data = [
   {
     key: "4",
     transaction_type: "Receive Money",
+    recipient_name: "Shahin",
     transaction_id: "TXID123",
     fee_charge: 20,
     exchange_rate: "2%",
@@ -62,7 +66,7 @@ const data = [
   },
 ];
 
-export default function LatestTransactions() {
+export default function SendMoneyTransaction() {
   const { isModalOpen, handleShowModal, handleCancelModal } = useModal();
   const [singleTable, setSingleTable] = useState([]);
   const { smallScreen, mediumScreen } = useViewport();
@@ -71,6 +75,7 @@ export default function LatestTransactions() {
     const labels = [
       "Transaction Type",
       "TXID",
+      "Recipient Name",
       "Amount",
       "Fee & Charge",
       "Total Amount",
@@ -81,6 +86,7 @@ export default function LatestTransactions() {
     const values = [
       "transaction_type",
       "transaction_id",
+      "recipient_name",
       "amount",
       "fee_charge",
       "total_amount",
@@ -99,8 +105,8 @@ export default function LatestTransactions() {
 
   const columns = [
     {
-      title: "Type",
-      dataIndex: "transaction_type",
+      title: "Recipient Name",
+      dataIndex: "recipient_name",
       width: 250,
       render: (_, record) => (
         <div className="flex items-center gap-3">
@@ -122,23 +128,9 @@ export default function LatestTransactions() {
             <p className="font-medium text-gray-800 dark:text-neutral-300">
               {record.type}
             </p>
-            <p className="text-gray-400  text-sm">{record.transaction_type}</p>
+            <p className="text-gray-400  text-sm">{record.recipient_name}</p>
           </div>
         </div>
-      ),
-    },
-    {
-      title: "Trx ID",
-      dataIndex: "transaction_id",
-      render: (id) => (
-        <span className="text-gray-600 dark:text-neutral-300">{id}</span>
-      ),
-    },
-    {
-      title: "Date",
-      dataIndex: "date",
-      render: (date) => (
-        <span className="text-gray-600 dark:text-neutral-300">{date}</span>
       ),
     },
     {
@@ -157,14 +149,36 @@ export default function LatestTransactions() {
       ),
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      render: (status) => (
-        <span className="px-3 py-1 rounded-full text-sm bg-green-100 dark:bg-green-700 dark:text-green-100 text-green-700">
-          {status}
+      title: "Trx ID",
+      dataIndex: "transaction_id",
+      render: (id) => (
+        <span className="text-gray-600 dark:text-neutral-300">{id}</span>
+      ),
+    },
+    {
+      title: "Total Amount",
+      dataIndex: "amount",
+      render: (amount) => (
+        <span
+          className={`font-semibold ${
+            amount >= 0 ? "text-green-600" : "text-red-500"
+          }`}
+        >
+          {amount >= 0
+            ? `+$${amount.toLocaleString()}`
+            : `-$${Math.abs(amount).toLocaleString()}`}
         </span>
       ),
     },
+
+    {
+      title: "Date",
+      dataIndex: "date",
+      render: (date) => (
+        <span className="text-gray-600 dark:text-neutral-300">{date}</span>
+      ),
+    },
+
     {
       title: "Exchange Rate",
       dataIndex: "exchange_rate",
@@ -180,6 +194,15 @@ export default function LatestTransactions() {
       render: (fee_charge) => (
         <span className="text-gray-600 dark:text-neutral-300">
           {fee_charge}
+        </span>
+      ),
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      render: (status) => (
+        <span className="px-3 py-1 rounded-full text-sm bg-green-100 dark:bg-green-700 dark:text-green-100 text-green-700">
+          {status}
         </span>
       ),
     },
