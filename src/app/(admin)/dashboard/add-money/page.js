@@ -34,10 +34,10 @@ const AddMoney = () => {
       <div className="space-y-4 lg:space-y-6">
         <div className="grid md:grid-cols-5 gap-4 lg:gap-6">
           <div className="col-span-1 md:col-span-3 ">
-            <Card className=" space-y-4!">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+            <Card title="Add Money" className=" space-y-4!">
+              {/* <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                 Add Money
-              </h2>
+              </h2> */}
               {/* <div className="border  inline-block border-primary/50 rounded-2xl p-4">
               <h6 className="font-medium">Exchange Rate:</h6>
               <h2 className="text-lg lg:text-xl font-medium">
@@ -187,10 +187,10 @@ const AddMoney = () => {
             </Card>
           </div>
           <div className="col-span-1 lg:col-span-2">
-            <Card className="">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+            <Card title="Summery">
+              {/* <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                 Summery
-              </h2>
+              </h2> */}
               <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-white dark:bg-slate-900 shadow-sm  border-gray-200 dark:border-gray-800">
                 <div className="divide-y divide-gray-200 dark:divide-gray-800">
                   {singleTable?.map((row, idx) => (
@@ -216,7 +216,7 @@ const AddMoney = () => {
             </Card>
           </div>
         </div>
-        <div className="">
+        <div>
           <AddMoneyTransaction />
         </div>
       </div>

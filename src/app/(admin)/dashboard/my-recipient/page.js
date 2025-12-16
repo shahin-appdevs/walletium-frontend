@@ -4,7 +4,6 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import PageTopBar from "../../_components/header/PageTopBar";
 import RecipientList from "./_components/RecipientList";
-import LucideIcon from "@/components/LucideIcon";
 
 const MyRecipients = () => {
   const { control, handleSubmit } = useForm({

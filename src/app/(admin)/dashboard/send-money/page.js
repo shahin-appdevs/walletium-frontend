@@ -39,10 +39,10 @@ const SendMoney = () => {
       <div className="space-y-4 lg:space-y-6">
         <div className="grid md:grid-cols-5 gap-4 lg:gap-6">
           <div className="col-span-1 md:col-span-3 ">
-            <Card className=" space-y-4!">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+            <Card title="Send Money" className=" space-y-4!">
+              {/* <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                 Send Money
-              </h2>
+              </h2> */}
 
               <div className="bg-white mb-4 dark:bg-slate-900 dark:border dark:border-neutral-700 rounded-2xl shadow-sm p-4 flex flex-col gap-3 overflow-hidden">
                 {/* Icon Section */}
@@ -196,10 +196,10 @@ const SendMoney = () => {
             </Card>
           </div>
           <div className="col-span-1 lg:col-span-2">
-            <Card>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+            <Card title="Summery">
+              {/* <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                 Summery
-              </h2>
+              </h2> */}
               <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-white dark:bg-slate-900 shadow-sm  border-gray-200 dark:border-gray-800">
                 <div className="divide-y divide-gray-200 dark:divide-gray-800">
                   {singleTable?.map((row, idx) => (

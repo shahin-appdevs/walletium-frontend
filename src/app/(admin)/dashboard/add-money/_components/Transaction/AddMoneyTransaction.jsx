@@ -205,8 +205,25 @@ export default function AddMoneyTransaction() {
   const smallScreenColumn = smallScreen ? [...columns.slice(0, 2)] : columns;
   // const mediumScreenColumn = mediumScreen ? [...columns.slice(0, 4)] : columns;
 
+  const TableExtra = (
+    <div className="flex items-center gap-3">
+      <Input
+        placeholder="Search"
+        prefix={<SearchOutlined className="text-gray-400" />}
+        className="w-48 rounded-lg"
+      />
+      <Button icon={<FilterOutlined />} className="rounded-lg">
+        Filter
+      </Button>
+    </div>
+  );
+
   return (
-    <Card className="overflow-x-auto!">
+    <Card
+      title="Latest Transaction"
+      extra={TableExtra}
+      className="overflow-x-auto!"
+    >
       <Modal open={isModalOpen} onCancel={handleCancelModal} closable={false}>
         <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-white dark:bg-[#111] shadow-sm border border-gray-200 dark:border-gray-800">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
@@ -236,7 +253,7 @@ export default function AddMoneyTransaction() {
         </div>
       </Modal>
       {/* Header */}
-      <div className="flex flex-col lg:flex-row gap-4 justify-between items-center mb-4">
+      {/* <div className="flex flex-col lg:flex-row gap-4 justify-between items-center mb-4">
         <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-300">
           Latest Transaction
         </h2>
@@ -251,7 +268,7 @@ export default function AddMoneyTransaction() {
             Filter
           </Button>
         </div>
-      </div>
+      </div> */}
 
       {/* Styled Table */}
       <Table
