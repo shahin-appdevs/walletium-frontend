@@ -1,6 +1,6 @@
 "use client";
 
-import { Form, Input, Select, Button, Card } from "antd";
+import { Form, Input, Select, Card } from "antd";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import FormItem from "@/components/ui/form/FormItem";
@@ -63,7 +63,7 @@ export default function AddNewRecipient() {
             className="text-primary cursor-pointer flex items-center gap-1 bg-primary-50 rounded-2xl border duration-200 hover:text-primary-600 hover:bg-primary-100 border-primary px-3 py-1"
           >
             <LucideIcon name={"ArrowLeft"} size={18} />
-            <span>Back to recipient page</span>
+            <span className="hidden md:block">Back to recipient page</span>
           </button>
         }
       >
@@ -72,26 +72,7 @@ export default function AddNewRecipient() {
           onFinish={handleSubmit(onSubmit)}
           className="bg-white dark:bg-neutral-900 p-6 rounded-xl"
         >
-          <FormItem
-            label="UserName / Email"
-            name="username"
-            required
-            errors={errors}
-          >
-            <Controller
-              name="username"
-              control={control}
-              render={({ field }) => (
-                <Input
-                  {...field}
-                  size="large"
-                  placeholder="Enter Username Or Email..."
-                />
-              )}
-            />
-          </FormItem>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 md:gap-6">
             <FormItem
               label="First Name"
               name="first_name"
@@ -123,7 +104,41 @@ export default function AddNewRecipient() {
             </FormItem>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 md:gap-6">
+            <FormItem
+              label="UserName / Email"
+              name="username"
+              required
+              errors={errors}
+            >
+              <Controller
+                name="username"
+                control={control}
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    size="large"
+                    placeholder="Enter Username Or Email..."
+                  />
+                )}
+              />
+            </FormItem>
+            <FormItem label="Address" name="address" required errors={errors}>
+              <Controller
+                name="address"
+                control={control}
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    size="large"
+                    placeholder="Enter Address..."
+                  />
+                )}
+              />
+            </FormItem>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 md:gap-6">
             <FormItem label="City" name="city" required errors={errors}>
               <Controller
                 name="city"
@@ -145,7 +160,7 @@ export default function AddNewRecipient() {
             </FormItem>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 md:gap-6">
             <FormItem label="Country" name="country" required errors={errors}>
               <Controller
                 name="country"
@@ -171,17 +186,12 @@ export default function AddNewRecipient() {
             </FormItem>
           </div>
 
-          <FormItem label="Address" name="address" required errors={errors}>
-            <Controller
-              name="address"
-              control={control}
-              render={({ field }) => (
-                <TextArea {...field} rows={4} placeholder="Write Here..." />
-              )}
-            />
-          </FormItem>
-
-          <PrimaryButton icon="Plus" type="submit" className={"w-full"}>
+          <PrimaryButton
+            icon="Plus"
+            type="submit"
+            className={"w-full"}
+            iconClassName={"group-hover/primary-btn:rotate-90 duration-200"}
+          >
             Add Now
           </PrimaryButton>
         </Form>

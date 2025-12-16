@@ -35,11 +35,11 @@ const MyRecipients = () => {
   return (
     <section>
       <div className="space-y-4 lg:space-y-6">
-        <PageTopBar
+        {/* <PageTopBar
           buttonTitle={"Add New Recipient"}
           icon={"Plus"}
           href="/dashboard/my-recipient/add-new-recipient"
-        />
+        /> */}
 
         <div>
           <RecipientList />

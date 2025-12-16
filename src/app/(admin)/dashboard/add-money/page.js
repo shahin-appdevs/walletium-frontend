@@ -5,13 +5,26 @@ import { ArrowUpRight, DollarSign } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import AddMoneyTransaction from "./_components/Transaction/AddMoneyTransaction";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import FormItem from "@/components/ui/form/FormItem";
+
+const addMoneySchema = yup.object({
+  amount: yup.string().required("Amount is required"),
+  payment_gateway: yup.string().required("Payment gateway is required"),
+});
 
 const AddMoney = () => {
-  const { control, handleSubmit } = useForm({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: yupResolver(addMoneySchema),
     defaultValues: {
       currency: "USD",
       amount: "",
-      paymentGateway: "Paypal USD",
+      payment_gateway: "Paypal USD",
     },
   });
 
@@ -24,8 +37,8 @@ const AddMoney = () => {
     { label: "Conversion Amount", value: "$50" },
     { label: "Total Fees & Charges", value: "$100" },
     {
-      label: <span className="font-bold text-lg">Total Payable Amount</span>,
-      value: <span className="font-bold text-lg">$ 200</span>,
+      label: <span className="font-bold lg:text-lg">Total Payable Amount</span>,
+      value: <span className="font-bold lg:text-lg">$ 200</span>,
     },
   ];
 
@@ -34,7 +47,7 @@ const AddMoney = () => {
       <div className="space-y-4 lg:space-y-6">
         <div className="grid md:grid-cols-5 gap-4 lg:gap-6">
           <div className="col-span-1 md:col-span-3 ">
-            <Card title="Add Money" className=" space-y-4!">
+            <Card title="Add Money">
               {/* <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                 Add Money
               </h2> */}
@@ -63,13 +76,13 @@ const AddMoney = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                   <div className="border-primary/50 border rounded-2xl p-4">
                     <p className="text-gray-500 text-sm">Exchange Rate</p>
-                    <p className="text-xl text-neutral-800 dark:text-neutral-300 font-semibold">
+                    <p className="text-base lg:text-xl text-neutral-800 dark:text-neutral-300 font-semibold">
                       1 USD = 1.000 USDT
                     </p>
                   </div>
                   <div className="border-primary/50 border rounded-2xl p-4">
                     <p className="text-gray-500 text-sm">Available balance:</p>
-                    <p className="text-xl text-neutral-800 dark:text-neutral-300 font-semibold">
+                    <p className="text-base lg:text-xl text-neutral-800 dark:text-neutral-300 font-semibold">
                       $909.74
                     </p>
                   </div>
@@ -84,14 +97,28 @@ const AddMoney = () => {
                 >
                   {/* <FormInput label="Hello" /> */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    <Form.Item
-                      label={
-                        <span>
-                          Amount <span className="text-red-500">*</span>
-                        </span>
-                      }
+                    <FormItem
+                      label={"Amount"}
+                      required={true}
+                      name="amount"
+                      errors={errors}
                     >
                       <Space.Compact size="large" className="w-full">
+                        {/* Amount Input */}
+                        <Controller
+                          name="amount"
+                          control={control}
+                          rules={{ required: "Amount is required" }}
+                          render={({ field, fieldState }) => (
+                            <div className="w-full relative">
+                              <Input
+                                {...field}
+                                placeholder="Amount"
+                                type="number"
+                              />
+                            </div>
+                          )}
+                        />
                         {/* Currency Select */}
                         <Controller
                           name="currency"
@@ -107,30 +134,8 @@ const AddMoney = () => {
                             />
                           )}
                         />
-
-                        {/* Amount Input */}
-                        <Controller
-                          name="amount"
-                          control={control}
-                          rules={{ required: "Amount is required" }}
-                          render={({ field, fieldState }) => (
-                            <div className="w-full relative">
-                              <Input
-                                {...field}
-                                placeholder="Amount"
-                                type="number"
-                              />
-
-                              {fieldState.error && (
-                                <p className="mt-1 text-sm text-red-500 absolute -bottom-5 left-0">
-                                  {fieldState.error.message}
-                                </p>
-                              )}
-                            </div>
-                          )}
-                        />
                       </Space.Compact>
-                    </Form.Item>
+                    </FormItem>
                     {/* <FormInput
                     size="large"
                     label={
@@ -139,18 +144,15 @@ const AddMoney = () => {
                       </span>
                     }
                   /> */}
-                    <Form.Item
-                      label={
-                        <span>
-                          Payment Gateway{" "}
-                          <span className="text-red-500">*</span>
-                        </span>
-                      }
+                    <FormItem
+                      required={true}
+                      name={"payment_gateway"}
+                      label={"Payment Gateway"}
+                      errors={errors}
                     >
                       <Controller
-                        name="paymentGateway"
+                        name="payment_gateway"
                         control={control}
-                        rules={{ required: "Payment Gateway is required" }}
                         render={({ field, fieldState }) => (
                           <>
                             <Select
@@ -161,21 +163,16 @@ const AddMoney = () => {
                                 { label: "Paypal GBP", value: "paypal_gbp" },
                               ]}
                             />
-                            {fieldState.error && (
-                              <p className="mt-1 text-sm text-red-500">
-                                {fieldState.error.message}
-                              </p>
-                            )}
                           </>
                         )}
                       />
-                    </Form.Item>
+                    </FormItem>
                   </div>
-                  <div className="flex flex-col lg:flex-row gap-2 justify-between items-center">
-                    <p className="p-2 px-4 rounded-2xl bg-primary-50 dark:bg-primary-500! dark:text-primary-50! font-medium text-primary-600">
+                  <div className="flex flex-col md:flex-row gap-2 justify-between items-center">
+                    <p className="p-2 px-4 text-xs lg:text-base  rounded-2xl bg-primary-50 dark:bg-primary-500! dark:text-primary-50! font-medium text-primary-600">
                       Limit: 1.00 USD - 5000.00 USD
                     </p>
-                    <p className="p-2 px-4 rounded-2xl bg-primary-50 font-medium text-primary-600 dark:bg-primary-500! dark:text-primary-50!">
+                    <p className="p-2 px-4 text-xs lg:text-base rounded-2xl bg-primary-50 font-medium text-primary-600 dark:bg-primary-500! dark:text-primary-50!">
                       Charge: 0.00 USD + 2.00%
                     </p>
                   </div>
@@ -186,7 +183,7 @@ const AddMoney = () => {
               </div>
             </Card>
           </div>
-          <div className="col-span-1 lg:col-span-2">
+          <div className="col-span-1 md:col-span-2">
             <Card title="Summery">
               {/* <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                 Summery

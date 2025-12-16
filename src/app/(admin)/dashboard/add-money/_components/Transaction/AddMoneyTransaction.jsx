@@ -10,6 +10,9 @@ import Table from "@/components/ui/Table";
 import useModal from "@/hooks/useModal";
 import { useState } from "react";
 import useViewport from "@/hooks/useViewport";
+import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
+import Link from "next/link";
+import LucideIcon from "@/components/LucideIcon";
 
 const data = [
   {
@@ -206,24 +209,38 @@ export default function AddMoneyTransaction() {
   // const mediumScreenColumn = mediumScreen ? [...columns.slice(0, 4)] : columns;
 
   const TableExtra = (
-    <div className="flex items-center gap-3">
-      <Input
-        placeholder="Search"
-        prefix={<SearchOutlined className="text-gray-400" />}
-        className="w-48 rounded-lg"
-      />
-      <Button icon={<FilterOutlined />} className="rounded-lg">
-        Filter
-      </Button>
+    <div className="flex items-center gap-2! md:gap-0 ">
+      <div className="hidden md:block">
+        <Input
+          placeholder="Search"
+          size="large"
+          prefix={<SearchOutlined className="text-gray-400" />}
+          className=" rounded-lg"
+        />
+      </div>
+      <div className="md:hidden">
+        <PrimaryButton
+          icon={"Search"}
+          iconClassName={"group-hover/primary-btn:rotate-90 duration-200"}
+        ></PrimaryButton>
+      </div>
+      <div className=" md:flex justify-end ">
+        <Link href={"#"}>
+          <PrimaryButton
+            iconClassName={"group-hover/primary-btn:rotate-90 duration-200"}
+          >
+            <span className="hidden md:block">View More</span>
+            <span>
+              <LucideIcon name={"Eye"} size={20} />
+            </span>
+          </PrimaryButton>
+        </Link>
+      </div>
     </div>
   );
 
   return (
-    <Card
-      title="Latest Transaction"
-      extra={TableExtra}
-      className="overflow-x-auto!"
-    >
+    <Card title="Latest Transaction" extra={TableExtra}>
       <Modal open={isModalOpen} onCancel={handleCancelModal} closable={false}>
         <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-white dark:bg-[#111] shadow-sm border border-gray-200 dark:border-gray-800">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
@@ -271,16 +288,18 @@ export default function AddMoneyTransaction() {
       </div> */}
 
       {/* Styled Table */}
-      <Table
-        columns={smallScreenColumn}
-        dataSource={data}
-        pagination={false}
-        onRowClick={handleOnRowClick}
-        className="rounded-xl  border! border-gray-200/50! dark:border-neutral-950! md:min-w-[820px]! "
-        rowClassName={() =>
-          "even:bg-gray-50 dark:even:bg-slate-950 rounded-xl! cursor-pointer!"
-        }
-      />
+      <div className="overflow-x-auto!">
+        <Table
+          columns={smallScreenColumn}
+          dataSource={data}
+          pagination={false}
+          onRowClick={handleOnRowClick}
+          className="rounded-xl  border! border-gray-200/50! dark:border-neutral-950! md:min-w-[820px]! "
+          rowClassName={() =>
+            "even:bg-gray-50 dark:even:bg-slate-950 rounded-xl! cursor-pointer!"
+          }
+        />
+      </div>
     </Card>
   );
 }

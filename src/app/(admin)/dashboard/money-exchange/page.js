@@ -1,31 +1,32 @@
 "use client";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
+import FormItem from "@/components/ui/form/FormItem";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Card, Form, Input, Select, Space } from "antd";
 import { ArrowUpRight, DollarSign } from "lucide-react";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import SendMoneyTransaction from "./_components/Transaction/SendMoneyTransaction";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import FormItem from "@/components/ui/form/FormItem";
+// import SendMoneyTransaction from "./_components/Transaction/SendMoneyTransaction";
 
-const sendMoneySchema = yup.object({
-  sender_amount: yup.string().required("Sender amount is required"),
-  recipient_amount: yup.string().required("Recipient amount is required"),
+import * as yup from "yup";
+import MoneyExchangeLog from "./_components/MoneyExchangeLog/MoneyExchangeLog";
+
+const exchangeMoneySchema = yup.object({
+  exchange_from: yup.string().required("Exchange form is required"),
+  exchange_to: yup.string().required("Exchange to is required"),
 });
 
-const SendMoney = () => {
+const ExchangeMoney = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
-    resolver: yupResolver(sendMoneySchema),
+    resolver: yupResolver(exchangeMoneySchema),
     defaultValues: {
-      senderCurrency: "USD",
-      recipientsCurrency: "USD",
+      currency_from: "USD",
+      currency_to: "USD",
       amount: "",
-      paymentGateway: "Paypal USD",
     },
   });
 
@@ -40,9 +41,10 @@ const SendMoney = () => {
     { label: "Total Fees & Charges", value: "$100" },
     { label: "Exchange Rate", value: "$100" },
     { label: "Receiver Will Get", value: "$100" },
+
     {
-      label: <span className="font-bold lg:text-lg">Total Payable Amount</span>,
-      value: <span className="font-bold lg:text-lg">$ 200</span>,
+      label: <span className="font-bold text-lg">Total Payable Amount</span>,
+      value: <span className="font-bold text-lg">$ 200</span>,
     },
   ];
 
@@ -51,7 +53,7 @@ const SendMoney = () => {
       <div className="space-y-4 lg:space-y-6">
         <div className="grid md:grid-cols-5 gap-4 lg:gap-6">
           <div className="col-span-1 md:col-span-3 ">
-            <Card title="Send Money">
+            <Card title="Send Money" className=" space-y-4!">
               {/* <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                 Send Money
               </h2> */}
@@ -75,13 +77,13 @@ const SendMoney = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                   <div className="border-primary/50 border rounded-2xl p-4">
                     <p className="text-gray-500 text-sm">Exchange Rate</p>
-                    <p className="text-base lg:text-xl text-neutral-800 dark:text-neutral-300 font-semibold">
+                    <p className="text-xl text-neutral-800 dark:text-neutral-300 font-semibold">
                       1 USD = 1.000 USDT
                     </p>
                   </div>
                   <div className="border-primary/50 border rounded-2xl p-4">
                     <p className="text-gray-500 text-sm">Available balance:</p>
-                    <p className="text-base lg:text-xl text-neutral-800 dark:text-neutral-300 font-semibold">
+                    <p className="text-xl text-neutral-800 dark:text-neutral-300 font-semibold">
                       $909.74
                     </p>
                   </div>
@@ -97,9 +99,9 @@ const SendMoney = () => {
                   {/* <FormInput label="Hello" /> */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                     <FormItem
-                      label={"Sender Amount"}
+                      label={"Exchange From"}
                       required={true}
-                      name="sender_amount"
+                      name={"exchange_from"}
                       errors={errors}
                     >
                       <Space.Compact size="large" className="w-full">
@@ -107,7 +109,7 @@ const SendMoney = () => {
 
                         {/* Amount Input */}
                         <Controller
-                          name="sender_amount"
+                          name="exchange_from"
                           control={control}
                           render={({ field, fieldState }) => (
                             <div className="w-full relative">
@@ -120,7 +122,7 @@ const SendMoney = () => {
                           )}
                         />
                         <Controller
-                          name="sender_currency"
+                          name="currency_from"
                           control={control}
                           render={({ field }) => (
                             <Select
@@ -136,19 +138,16 @@ const SendMoney = () => {
                       </Space.Compact>
                     </FormItem>
                     <FormItem
-                      label={"Recipients Amount"}
-                      name={"recipient_amount"}
+                      name={"exchange_to"}
+                      label="Exchange To"
                       required={true}
                       errors={errors}
                     >
                       <Space.Compact size="large" className="w-full">
-                        {/* Currency Select */}
-
                         {/* Amount Input */}
                         <Controller
-                          name="recipient_amount"
+                          name="exchange_to"
                           control={control}
-                          rules={{ required: "Recipients amount is required" }}
                           render={({ field, fieldState }) => (
                             <div className="w-full relative">
                               <Input
@@ -160,7 +159,7 @@ const SendMoney = () => {
                           )}
                         />
                         <Controller
-                          name="recipientsCurrency"
+                          name="currency_to"
                           control={control}
                           render={({ field }) => (
                             <Select
@@ -176,11 +175,11 @@ const SendMoney = () => {
                       </Space.Compact>
                     </FormItem>
                   </div>
-                  <div className="flex flex-col md:flex-row gap-2 justify-between items-center">
-                    <p className="p-2 px-4 text-xs lg:text-base rounded-2xl bg-primary-50 dark:bg-primary-500! dark:text-primary-50! font-medium text-primary-600">
+                  <div className="flex flex-col lg:flex-row gap-2 justify-between items-center">
+                    <p className="p-2 px-4 rounded-2xl bg-primary-50 dark:bg-primary-500! dark:text-primary-50! font-medium text-primary-600">
                       Limit: 1.00 USD - 5000.00 USD
                     </p>
-                    <p className="p-2 px-4 text-xs lg:text-base rounded-2xl bg-primary-50 font-medium text-primary-600 dark:bg-primary-500! dark:text-primary-50!">
+                    <p className="p-2 px-4 rounded-2xl bg-primary-50 font-medium text-primary-600 dark:bg-primary-500! dark:text-primary-50!">
                       Charge: 0.00 USD + 2.00%
                     </p>
                   </div>
@@ -192,7 +191,7 @@ const SendMoney = () => {
                       "group-hover/primary-btn:translate-1/6 group-hover/primary-btn:-translate-y-1 duration-300"
                     }
                   >
-                    Send Money{" "}
+                    Exchange Money{" "}
                   </PrimaryButton>
                 </Form>
               </div>
@@ -229,11 +228,11 @@ const SendMoney = () => {
           </div>
         </div>
         <div>
-          <SendMoneyTransaction />
+          <MoneyExchangeLog />
         </div>
       </div>
     </section>
   );
 };
 
-export default SendMoney;
+export default ExchangeMoney;

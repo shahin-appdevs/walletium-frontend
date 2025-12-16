@@ -1,16 +1,13 @@
 "use client";
-import { Input, Button, Card, Modal, Space } from "antd";
-import {
-  ArrowDownOutlined,
-  ArrowUpOutlined,
-  SearchOutlined,
-  FilterOutlined,
-} from "@ant-design/icons";
+import { Input, Card, Modal, Space } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
 import Table from "@/components/ui/Table";
 import useModal from "@/hooks/useModal";
 import { useState } from "react";
 import useViewport from "@/hooks/useViewport";
 import LucideIcon from "@/components/LucideIcon";
+import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
+import Link from "next/link";
 
 export const data = [
   {
@@ -141,21 +138,39 @@ export default function RecipientList() {
   // const mediumScreenColumn = mediumScreen ? [...columns.slice(0, 4)] : columns;
 
   const TableExtra = (
-    <div className="flex items-center gap-3">
-      <Input
-        placeholder="Search"
-        prefix={<SearchOutlined className="text-gray-400" />}
-        className="w-48 rounded-lg"
-      />
-      <Button icon={<FilterOutlined />} className="rounded-lg">
-        Filter
-      </Button>
+    <div className="flex items-center gap-2 md:gap-0 ">
+      <div className="md:w-full hidden md:block">
+        <Input
+          placeholder="Search"
+          size="large"
+          prefix={<SearchOutlined className="text-gray-400" />}
+          className="w-48 rounded-lg"
+        />
+      </div>
+      <div className="md:hidden">
+        <PrimaryButton
+          icon={"Search"}
+          iconClassName={"group-hover/primary-btn:rotate-90 duration-200"}
+        >
+          <span className="hidden md:block"> Add New Recipient</span>
+        </PrimaryButton>
+      </div>
+      <div className="md:w-full md:flex justify-end">
+        <Link href={"/dashboard/my-recipient/add-new-recipient "}>
+          <PrimaryButton
+            icon={"Plus"}
+            iconClassName={"group-hover/primary-btn:rotate-90 duration-200"}
+          >
+            <span className="hidden md:block"> Add New Recipient</span>
+          </PrimaryButton>
+        </Link>
+      </div>
     </div>
   );
 
   return (
     <Card
-      title="Latest Transaction"
+      title="Recipient List"
       extra={TableExtra}
       className="overflow-x-auto!"
     >

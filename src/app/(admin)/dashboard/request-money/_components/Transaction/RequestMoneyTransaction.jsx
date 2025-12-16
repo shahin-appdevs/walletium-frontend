@@ -1,75 +1,76 @@
 "use client";
-import { Input, Button, Card, Modal } from "antd";
-import {
-  ArrowDownOutlined,
-  ArrowUpOutlined,
-  SearchOutlined,
-  FilterOutlined,
-} from "@ant-design/icons";
+import { Card, Modal } from "antd";
+import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
 import Table from "@/components/ui/Table";
 import useModal from "@/hooks/useModal";
 import { useState } from "react";
 import useViewport from "@/hooks/useViewport";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
-import Link from "next/link";
-import LucideIcon from "@/components/LucideIcon";
 
 const data = [
   {
     key: "1",
     transaction_type: "Receive Money",
-    recipient_name: "Shahin",
+    link: "https://abubakkar.appdevs.team/walletium/user/request-money/payment/GodFGgDU4fDGJy3n",
     transaction_id: "TXID123",
     fee_charge: 20,
     exchange_rate: "2%",
-    date: "07 Jun 2025",
+    created_by: "Shahin Hossain",
     id: "#MY548G214",
     amount: 2500,
+    total_payable: 200,
     status: "Success",
+    remarks: "Request Add Money",
     direction: "in",
   },
   {
     key: "2",
     transaction_type: "Money Out",
-    recipient_name: "Shahin Hossain",
+    link: "https://abubakkar.appdevs.team/walletium/user/request-money/payment/GodFGgDU4fDGJy3n",
     transaction_id: "TXID123",
     fee_charge: 20,
     exchange_rate: "2%",
-    date: "07 Jun 2025",
+    created_by: "Shahin Hossain",
     id: "#MY548G214",
     amount: -8600,
+    total_payable: 200,
     status: "Success",
+    remarks: "Request Add Money",
     direction: "out",
   },
   {
     key: "3",
     transaction_type: "Receive Money",
-    recipient_name: "Shahin",
+    link: "https://abubakkar.appdevs.team/walletium/user/request-money/payment/GodFGgDU4fDGJy3n",
     transaction_id: "TXID123",
     fee_charge: 20,
     exchange_rate: "2%",
-    date: "07 Jun 2025",
+    created_by: "Shahin Hossain",
     id: "#MY548G214",
     amount: -6140,
+    total_payable: 200,
     status: "Success",
+    remarks: "Request Add Money",
     direction: "out",
   },
   {
     key: "4",
     transaction_type: "Receive Money",
-    recipient_name: "Shahin",
+    link: "https://abubakkar.appdevs.team/walletium/user/request-money/payment/GodFGgDU4fDGJy3n",
     transaction_id: "TXID123",
     fee_charge: 20,
     exchange_rate: "2%",
-    date: "07 Jun 2025",
+    created_by: "Shahin Hossain",
     id: "#MY548G214",
     amount: 2500,
+    total_payable: 200,
     status: "Success",
+    remarks: "Request Add Money",
     direction: "in",
   },
 ];
 
-export default function SendMoneyTransaction() {
+export default function RequestMoneyTransaction() {
   const { isModalOpen, handleShowModal, handleCancelModal } = useModal();
   const [singleTable, setSingleTable] = useState([]);
   const { smallScreen, mediumScreen } = useViewport();
@@ -77,24 +78,26 @@ export default function SendMoneyTransaction() {
   const handleOnRowClick = (record) => {
     const labels = [
       "Transaction Type",
+      "Link",
+      "Created By",
       "TXID",
-      "Recipient Name",
       "Amount",
       "Fee & Charge",
-      "Total Amount",
+      "Total Payable",
       "Exchange Rate",
-      "Date",
+      "Remarks",
       "Status",
     ];
     const values = [
       "transaction_type",
+      "link",
+      "created_by",
       "transaction_id",
-      "recipient_name",
       "amount",
       "fee_charge",
-      "total_amount",
+      "total_payable",
       "exchange_rate",
-      "date",
+      "remarks",
       "status",
     ];
 
@@ -108,8 +111,8 @@ export default function SendMoneyTransaction() {
 
   const columns = [
     {
-      title: "Recipient Name",
-      dataIndex: "recipient_name",
+      title: "Type",
+      dataIndex: "transaction_type",
       width: 250,
       render: (_, record) => (
         <div className="flex items-center gap-3">
@@ -131,9 +134,18 @@ export default function SendMoneyTransaction() {
             <p className="font-medium text-gray-800 dark:text-neutral-300">
               {record.type}
             </p>
-            <p className="text-gray-400  text-sm">{record.recipient_name}</p>
+            <p className="text-gray-400  text-sm">{record.transaction_type}</p>
           </div>
         </div>
+      ),
+    },
+    {
+      title: "Link",
+      dataIndex: "link",
+      render: (link) => (
+        <span className="text-gray-600 dark:text-neutral-300">
+          {link.slice(0, 20)}...
+        </span>
       ),
     },
     {
@@ -152,15 +164,15 @@ export default function SendMoneyTransaction() {
       ),
     },
     {
-      title: "Trx ID",
-      dataIndex: "transaction_id",
-      render: (id) => (
-        <span className="text-gray-600 dark:text-neutral-300">{id}</span>
+      title: "Remarks",
+      dataIndex: "remarks",
+      render: (remarks) => (
+        <span className="text-gray-600 dark:text-neutral-300">{remarks}</span>
       ),
     },
     {
-      title: "Total Amount",
-      dataIndex: "amount",
+      title: "Total Payable",
+      dataIndex: "total_payable",
       render: (amount) => (
         <span
           className={`font-semibold ${
@@ -168,17 +180,17 @@ export default function SendMoneyTransaction() {
           }`}
         >
           {amount >= 0
-            ? `+$${amount.toLocaleString()}`
+            ? `$${amount.toLocaleString()}`
             : `-$${Math.abs(amount).toLocaleString()}`}
         </span>
       ),
     },
 
     {
-      title: "Date",
-      dataIndex: "date",
-      render: (date) => (
-        <span className="text-gray-600 dark:text-neutral-300">{date}</span>
+      title: "Created By",
+      dataIndex: "created_by",
+      render: (createdBy) => (
+        <span className="text-gray-600 dark:text-neutral-300">{createdBy}</span>
       ),
     },
 
@@ -214,48 +226,29 @@ export default function SendMoneyTransaction() {
   const smallScreenColumn = smallScreen ? [...columns.slice(0, 2)] : columns;
   // const mediumScreenColumn = mediumScreen ? [...columns.slice(0, 4)] : columns;
 
-  // const Extra = (
-  //   <div className="flex items-center gap-3">
-  //     <Input
-  //       placeholder="Search"
-  //       prefix={<SearchOutlined className="text-gray-400" />}
-  //       className="w-48 rounded-lg"
-  //     />
-  //     <Button icon={<FilterOutlined />} className="rounded-lg">
-  //       Filter
-  //     </Button>
-  //   </div>
-  // );
+  //   const TableExtra = (
+  //     <div className="flex items-center gap-3">
+  //       <Input
+  //         placeholder="Search"
+  //         prefix={<SearchOutlined className="text-gray-400" />}
+  //         className="w-48 rounded-lg"
+  //       />
+  //       <Button icon={<FilterOutlined />} className="rounded-lg">
+  //         Filter
+  //       </Button>
+  //     </div>
+  //   );
 
   const TableExtra = (
-    <div className="flex items-center gap-2! md:gap-0 ">
-      <div className="hidden md:block">
-        <Input
-          placeholder="Search"
-          size="large"
-          prefix={<SearchOutlined className="text-gray-400" />}
-          className=" rounded-lg"
-        />
-      </div>
-      <div className="md:hidden">
-        <PrimaryButton
-          icon={"Search"}
-          iconClassName={"group-hover/primary-btn:rotate-90 duration-200"}
-        ></PrimaryButton>
-      </div>
-      <div className=" md:flex justify-end ">
-        <Link href={"#"}>
-          <PrimaryButton
-            iconClassName={"group-hover/primary-btn:rotate-90 duration-200"}
-          >
-            <span className="hidden md:block">View More</span>
-            <span>
-              <LucideIcon name={"Eye"} size={20} />
-            </span>
-          </PrimaryButton>
-        </Link>
-      </div>
-    </div>
+    <PrimaryButton
+      icon="ArrowUpRight"
+      className={"text-sm w-full"}
+      iconClassName={
+        "group-hover/primary-btn:translate-1/6 group-hover/primary-btn:-translate-y-1 duration-300"
+      }
+    >
+      View More
+    </PrimaryButton>
   );
 
   return (
@@ -270,14 +263,14 @@ export default function SendMoneyTransaction() {
             {singleTable?.map((row, idx) => (
               <div
                 key={idx}
-                className="flex justify-between items-center py-3 text-sm"
+                className="flex justify-between gap-4 items-center py-3 text-sm"
               >
                 <span className="text-gray-600 dark:text-gray-400">
                   {row.label}
                 </span>
 
                 <span
-                  className={`text-gray-900 dark:text-gray-100 ${
+                  className={`text-gray-900 dark:text-gray-100 overflow-x-auto! ${
                     row.bold ? "font-semibold" : "font-medium"
                   }`}
                 >
@@ -290,7 +283,7 @@ export default function SendMoneyTransaction() {
       </Modal>
       {/* Header */}
       {/* <div className="flex flex-col lg:flex-row gap-4 justify-between items-center mb-4">
-        <h2 className="text-lg font-medium text-neutral-800 dark:text-neutral-300">
+        <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-300">
           Latest Transaction
         </h2>
 

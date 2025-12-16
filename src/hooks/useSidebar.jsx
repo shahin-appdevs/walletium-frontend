@@ -14,7 +14,8 @@ const useSidebar = () => {
       addMoney: "/dashboard/add-money",
       sendMoney: "/dashboard/send-money",
       requestMoney: "/dashboard/request-money",
-      MyRecipient: "/dashboard/my-recipient",
+      myRecipient: "/dashboard/my-recipient",
+      moneyExchange: "/dashboard/money-exchange",
       setting: "/dashboard/settings",
     };
 
@@ -23,7 +24,8 @@ const useSidebar = () => {
       2.1: ROUTES.addMoney,
       2.2: ROUTES.sendMoney,
       2.3: ROUTES.requestMoney,
-      3.3: ROUTES.MyRecipient,
+      3.3: ROUTES.myRecipient,
+      3.4: ROUTES.moneyExchange,
       3: ROUTES.setting,
     };
 
@@ -67,19 +69,10 @@ const useSidebar = () => {
           label: <span className="text-sm font-semibold">Request Money</span>,
           icon: <LucideIcon name={"HandCoins"} size={14} />,
         },
+
         {
           key: "2.4",
-          label: <span className="text-sm font-semibold">Money Exchange</span>,
-          icon: <LucideIcon name={"ArrowRightLeft"} size={14} />,
-        },
-        {
-          key: "2.5",
           label: <span className="text-sm font-semibold">Withdraw</span>,
-          icon: <LucideIcon name={"ArrowRightLeft"} size={14} />,
-        },
-        {
-          key: "2.6",
-          label: <span className="text-sm font-semibold">Money Exchange</span>,
           icon: <LucideIcon name={"ArrowRightLeft"} size={14} />,
         },
       ],

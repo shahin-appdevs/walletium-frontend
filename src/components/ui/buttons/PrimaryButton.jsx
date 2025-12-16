@@ -2,20 +2,21 @@ import LucideIcon from "@/components/LucideIcon";
 import React from "react";
 
 const PrimaryButton = ({
-  children = "Button",
+  children = "",
   parentClass = "",
   icon = "",
   className,
   onClick,
   type = "button",
   iconSize = 20,
+  iconClassName,
   ...props
 }) => {
   return (
     <button
       type={type}
       onClick={onClick}
-      className={`${className} group/primary-btn relative overflow-hidden rounded-xl px-5 py-2 text-white font-medium flex items-center justify-center`}
+      className={`${className} group/primary-btn relative overflow-hidden cursor-pointer rounded-xl px-5 py-2 text-white font-medium flex items-center justify-center`}
       {...props}
     >
       <span
@@ -28,9 +29,11 @@ const PrimaryButton = ({
             `}
       ></span>
 
-      <span className="relative z-10 flex items-center gap-2">
+      <span className="relative z-10 flex items-center gap-1">
         {children}
-        {icon && <LucideIcon name={icon} size={iconSize} />}
+        {icon && (
+          <LucideIcon name={icon} size={iconSize} className={iconClassName} />
+        )}
       </span>
     </button>
   );

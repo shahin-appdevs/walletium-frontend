@@ -3,16 +3,16 @@ import { Layout } from "antd";
 import { useState } from "react";
 
 // import LayoutHeader from "./_components/homepage/Layouts/LayoutHeader";
-// import LayoutSidebar from "./_components/homepage/Layouts/LayoutSidebar";
+import LayoutSidebar from "./_components/homepage/Layouts/LayoutSidebar";
 
 import dynamic from "next/dynamic";
 
-const LayoutSidebar = dynamic(
-  () => import("./_components/homepage/Layouts/LayoutSidebar"),
-  {
-    ssr: false,
-  }
-);
+// const LayoutSidebar = dynamic(
+//   () => import("./_components/homepage/Layouts/LayoutSidebar"),
+//   {
+//     ssr: false,
+//   }
+// );
 const LayoutHeader = dynamic(
   () => import("./_components/homepage/Layouts/LayoutHeader"),
   {
