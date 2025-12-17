@@ -3,16 +3,17 @@ import { Layout } from "antd";
 import { useState } from "react";
 
 // import LayoutHeader from "./_components/homepage/Layouts/LayoutHeader";
-import LayoutSidebar from "./_components/homepage/Layouts/LayoutSidebar";
+// import LayoutSidebar from "./_components/homepage/Layouts/LayoutSidebar";
 
 import dynamic from "next/dynamic";
+import { ToastContainer } from "react-toastify";
 
-// const LayoutSidebar = dynamic(
-//   () => import("./_components/homepage/Layouts/LayoutSidebar"),
-//   {
-//     ssr: false,
-//   }
-// );
+const LayoutSidebar = dynamic(
+  () => import("./_components/homepage/Layouts/LayoutSidebar"),
+  {
+    ssr: false,
+  }
+);
 const LayoutHeader = dynamic(
   () => import("./_components/homepage/Layouts/LayoutHeader"),
   {
@@ -43,6 +44,8 @@ export default function DashboardLayout({ children }) {
           {children}
         </Content>
       </Layout>
+      {/* React Toast Container */}
+      <ToastContainer />
     </Layout>
   );
 }

@@ -1,20 +1,26 @@
 "use client";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import FormItem from "@/components/ui/form/FormItem";
+import useModal from "@/hooks/useModal";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Card, Form, Input, Select, Space } from "antd";
-import { ArrowUpRight, DollarSign } from "lucide-react";
+import { Card, Form, Input, Modal, Select, Space } from "antd";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
+import { cssTransition, Flip, Slide, toast } from "react-toastify";
 import * as yup from "yup";
-import RequestMoneyTransaction from "./_components/Transaction/RequestMoneyTransaction";
+import CreateRedeemCode from "./_components/CreateRedeemCode";
+import MyVoucherTransaction from "./_components/Transaction/MyVoucherTransaction";
+// import RequestMoneyTransaction from "./_components/Transaction/RequestMoneyTransaction";
 
 const requestMoneySchema = yup.object({
-  request_amount: yup.string().required("Request amount is required"),
-  remarks: yup.string().optional(),
+  amount: yup.string().required("Request amount is required"),
+  redeem_code: yup.string().required("Redeem Code is required"),
 });
 
 const RequestMoney = () => {
+  const { isModalOpen, handleCancelModal, handleOkModal, handleShowModal } =
+    useModal();
+
   const {
     control,
     handleSubmit,
@@ -23,8 +29,8 @@ const RequestMoney = () => {
     resolver: yupResolver(requestMoneySchema),
     defaultValues: {
       request_currency: "USD",
-      request_amount: "",
-      remarks: "",
+      amount: "",
+      redeem_code: "",
     },
   });
 
@@ -33,50 +39,30 @@ const RequestMoney = () => {
   };
 
   const singleTable = [
-    { label: "Sender Wallet", value: "$50" },
-    { label: "Receiver Wallet", value: "$50" },
-    { label: "Sending Amount", value: "$50" },
+    { label: "Entered Amount", value: "$50" },
+
     { label: "Total Fees & Charges", value: "$100" },
-    { label: "Exchange Rate", value: "$100" },
+    { label: "Will Gate", value: "$100" },
     { label: "Receiver Will Get", value: "$100" },
     {
       label: <span className="font-bold text-lg">Total Payable Amount</span>,
-      value: <span className="font-bold text-lg">$ 200</span>,
+      value: <span className="font-bold text-lg">$200</span>,
     },
   ];
+
+  const CreateRedeemCodeProps = {
+    isModalOpen,
+    handleCancelModal,
+    handleOkModal,
+  };
 
   return (
     <section>
       <div className="space-y-4 lg:space-y-6">
         <div className="grid md:grid-cols-5 gap-4 lg:gap-6">
           <div className="col-span-1 md:col-span-3 ">
-            <Card title="Request Money">
-              {/* <div className="bg-white mb-4 dark:bg-slate-900 dark:border dark:border-neutral-700 rounded-2xl shadow-sm p-4 flex flex-col gap-3 overflow-hidden">
-              
-                <div className="flex items-center justify-between">
-                  <div
-                    className={`w-7 h-7 rounded-full flex items-center justify-center bg-primary-50! dark:bg-primary-500! border border-primary/50`}
-                  >
-                    <DollarSign className="w-4 h-4 text-primary dark:text-primary-50! " />
-                  </div>
-                  <div
-                    className={`w-7 h-7 rounded-full flex items-center justify-center  bg-primary-50! dark:bg-primary-500! border border-primary/50`}
-                  >
-                    <ArrowUpRight className="w-4 h-4 text-primary  dark:text-primary-50! " />
-                  </div>
-                </div>
-
-                
-                <div className="grid grid-cols-1 ">
-                  <div className="border-primary/50 border rounded-2xl p-4">
-                    <p className="text-gray-500 text-sm">Available balance:</p>
-                    <p className="text-xl text-neutral-800 dark:text-neutral-300 font-semibold">
-                      $909.74
-                    </p>
-                  </div>
-                </div>
-              </div> */}
-
+            <Card title="My Voucher">
+              <CreateRedeemCode {...CreateRedeemCodeProps} />
               {/* form start */}
               <div className="rounded-2xl shadow-sm p-4 ">
                 <Form
@@ -92,71 +78,79 @@ const RequestMoney = () => {
                       
                     </Form.Item> */}
                     <FormItem
-                      required
-                      label={"Request Amount"}
-                      name={"request_amount"}
+                      required={true}
+                      label={"Amount"}
+                      name={"amount"}
                       errors={errors}
                     >
-                      <Space.Compact size="large" className="w-full">
-                        {/* Currency Select */}
+                      <div className="flex gap-2 items-center">
+                        <Space.Compact size="large" className="w-full ">
+                          {/* Currency Select */}
 
-                        {/* Amount Input */}
-                        <Controller
-                          name="request_amount"
-                          control={control}
-                          render={({ field, fieldState }) => (
-                            <div className="w-full relative">
-                              <Input
+                          {/* Amount Input */}
+                          <Controller
+                            name="amount"
+                            control={control}
+                            render={({ field, fieldState }) => (
+                              <div className="w-full relative">
+                                <Input
+                                  {...field}
+                                  placeholder="Enter Amount"
+                                  type="number"
+                                />
+                              </div>
+                            )}
+                          />
+                          <Controller
+                            name="request_currency"
+                            control={control}
+                            render={({ field }) => (
+                              <Select
                                 {...field}
-                                placeholder="Enter Amount"
-                                type="number"
+                                options={[
+                                  { label: "USD", value: "USD" },
+                                  { label: "BDT", value: "BDT" },
+                                ]}
+                                className="w-28!"
                               />
-                            </div>
-                          )}
-                        />
-                        <Controller
-                          name="request_currency"
-                          control={control}
-                          render={({ field }) => (
-                            <Select
-                              {...field}
-                              options={[
-                                { label: "USD", value: "USD" },
-                                { label: "BDT", value: "BDT" },
-                              ]}
-                              className="w-28!"
-                            />
-                          )}
-                        />
-                      </Space.Compact>
+                            )}
+                          />
+                        </Space.Compact>
+                        <PrimaryButton
+                          onClick={handleShowModal}
+                          className={"text-base shrink-0"}
+                          iconClassName={
+                            "group-hover/primary-btn:translate-1/6 group-hover/primary-btn:-translate-y-1 duration-300"
+                          }
+                        >
+                          Create{" "}
+                        </PrimaryButton>
+                      </div>
                     </FormItem>
-                    <Form.Item
-                      label={
-                        <span>
-                          Remarks{" "}
-                          <span className="text-primary-500">(Optional)</span>
-                        </span>
-                      }
+                    <FormItem
+                      label="Redeem Code"
+                      required={true}
+                      name="redeem_code"
+                      errors={errors}
                     >
                       {/* Currency Select */}
 
                       {/* Request Process Input */}
                       <Controller
-                        name="remarks"
+                        name="redeem_code"
                         control={control}
                         render={({ field, fieldState }) => (
                           <div className="w-full relative">
-                            <Input.TextArea
-                              rows={4}
+                            <Input
                               {...field}
                               placeholder="Explain Request Process Here"
-                              type="number"
+                              type="text"
                               size="large"
                             />
                           </div>
                         )}
                       />
-                    </Form.Item>
+                    </FormItem>
                   </div>
                   <div className="flex flex-col md:flex-row gap-2 justify-between items-center">
                     <p className="p-2 text-xs lg:text-base px-4 rounded-2xl bg-primary-50 dark:bg-primary-500! dark:text-primary-50! font-medium text-primary-600">
@@ -174,7 +168,7 @@ const RequestMoney = () => {
                       "group-hover/primary-btn:translate-1/6 group-hover/primary-btn:-translate-y-1 duration-300"
                     }
                   >
-                    Request Money{" "}
+                    Confirm Redeem
                   </PrimaryButton>
                 </Form>
               </div>
@@ -211,7 +205,7 @@ const RequestMoney = () => {
           </div>
         </div>
         <div>
-          <RequestMoneyTransaction />
+          <MyVoucherTransaction />
         </div>
       </div>
     </section>

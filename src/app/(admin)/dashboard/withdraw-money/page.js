@@ -1,31 +1,31 @@
 "use client";
-import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
+import React from "react";
 import { Card, Form, Input, Select, Space } from "antd";
 import { ArrowUpRight, DollarSign } from "lucide-react";
-import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import SendMoneyTransaction from "./_components/Transaction/SendMoneyTransaction";
+import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
+// import AddMoneyTransaction from "./_components/Transaction/AddMoneyTransaction";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import FormItem from "@/components/ui/form/FormItem";
+import WithdrawTransaction from "./_components/Transaction/WithdrawTransaction";
 
-const sendMoneySchema = yup.object({
-  sender_amount: yup.string().required("Sender amount is required"),
-  recipient_amount: yup.string().required("Recipient amount is required"),
+const addMoneySchema = yup.object({
+  amount: yup.string().required("Amount is required"),
+  payment_gateway: yup.string().required("Payment gateway is required"),
 });
 
-const SendMoney = () => {
+const AddMoney = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
-    resolver: yupResolver(sendMoneySchema),
+    resolver: yupResolver(addMoneySchema),
     defaultValues: {
-      senderCurrency: "USD",
-      recipientsCurrency: "USD",
+      currency: "USD",
       amount: "",
-      paymentGateway: "Paypal USD",
+      payment_gateway: "Paypal USD",
     },
   });
 
@@ -34,19 +34,15 @@ const SendMoney = () => {
   };
 
   const singleTable = [
-    { label: "Sender Wallet", value: "$50" },
-    { label: "Receiver Wallet", value: "$50" },
-    { label: "Sending Amount", value: "$50" },
+    { label: "Entered Amount", value: "$50" },
+    { label: "Conversion Amount", value: "$50" },
     { label: "Total Fees & Charges", value: "$100" },
-    { label: "Exchange Rate", value: "$100" },
-    { label: "Receiver Will Get", value: "$100" },
+    { label: "Will Gate", value: "$200" },
     {
       label: (
-        <span className="font-bold text-base lg:text-lg">
-          Total Payable Amount
-        </span>
+        <span className="font-bold  lg:text-lg">Total Payable Amount</span>
       ),
-      value: <span className="font-bold text-base lg:text-lg">$200</span>,
+      value: <span className="font-bold lg:text-lg">$200</span>,
     },
   ];
 
@@ -55,11 +51,16 @@ const SendMoney = () => {
       <div className="space-y-4 lg:space-y-6">
         <div className="grid md:grid-cols-5 gap-4 lg:gap-6">
           <div className="col-span-1 md:col-span-3 ">
-            <Card title="Send Money">
+            <Card title="Withdraw Money">
               {/* <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                Send Money
+                Add Money
               </h2> */}
-
+              {/* <div className="border  inline-block border-primary/50 rounded-2xl p-4">
+              <h6 className="font-medium">Exchange Rate:</h6>
+              <h2 className="text-lg lg:text-xl font-medium">
+                1 USD = 1.000 USDT
+              </h2>
+            </div> */}
               <div className="bg-white mb-4 dark:bg-slate-900 dark:border dark:border-neutral-700 rounded-2xl shadow-sm p-4 flex flex-col gap-3 overflow-hidden">
                 {/* Icon Section */}
                 <div className="flex items-center justify-between">
@@ -101,18 +102,17 @@ const SendMoney = () => {
                   {/* <FormInput label="Hello" /> */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                     <FormItem
-                      label={"Sender Amount"}
+                      label={"Amount"}
                       required={true}
-                      name="sender_amount"
+                      name="amount"
                       errors={errors}
                     >
                       <Space.Compact size="large" className="w-full">
-                        {/* Currency Select */}
-
                         {/* Amount Input */}
                         <Controller
-                          name="sender_amount"
+                          name="amount"
                           control={control}
+                          rules={{ required: "Amount is required" }}
                           render={({ field, fieldState }) => (
                             <div className="w-full relative">
                               <Input
@@ -123,8 +123,9 @@ const SendMoney = () => {
                             </div>
                           )}
                         />
+                        {/* Currency Select */}
                         <Controller
-                          name="sender_currency"
+                          name="currency"
                           control={control}
                           render={({ field }) => (
                             <Select
@@ -139,64 +140,48 @@ const SendMoney = () => {
                         />
                       </Space.Compact>
                     </FormItem>
+                    {/* <FormInput
+                    size="large"
+                    label={
+                      <span>
+                        Payment Gateway <span class="text-red-500">*</span>
+                      </span>
+                    }
+                  /> */}
                     <FormItem
-                      label={"Recipients Amount"}
-                      name={"recipient_amount"}
                       required={true}
+                      name={"payment_gateway"}
+                      label={"Payment Gateway"}
                       errors={errors}
                     >
-                      <Space.Compact size="large" className="w-full">
-                        {/* Currency Select */}
-
-                        {/* Amount Input */}
-                        <Controller
-                          name="recipient_amount"
-                          control={control}
-                          rules={{ required: "Recipients amount is required" }}
-                          render={({ field, fieldState }) => (
-                            <div className="w-full relative">
-                              <Input
-                                {...field}
-                                placeholder="Amount"
-                                type="number"
-                              />
-                            </div>
-                          )}
-                        />
-                        <Controller
-                          name="recipientsCurrency"
-                          control={control}
-                          render={({ field }) => (
+                      <Controller
+                        name="payment_gateway"
+                        control={control}
+                        render={({ field, fieldState }) => (
+                          <>
                             <Select
                               {...field}
+                              size="large"
                               options={[
-                                { label: "USD", value: "USD" },
-                                { label: "BDT", value: "BDT" },
+                                { label: "Paypal USD", value: "paypal_usd" },
+                                { label: "Paypal GBP", value: "paypal_gbp" },
                               ]}
-                              className="w-28!"
                             />
-                          )}
-                        />
-                      </Space.Compact>
+                          </>
+                        )}
+                      />
                     </FormItem>
                   </div>
                   <div className="flex flex-col md:flex-row gap-2 justify-between items-center">
-                    <p className="p-2 px-4 text-xs lg:text-base rounded-2xl bg-primary-50 dark:bg-primary-500! dark:text-primary-50! font-medium text-primary-600">
+                    <p className="p-2 px-4 text-xs lg:text-base  rounded-2xl bg-primary-50 dark:bg-primary-500! dark:text-primary-50! font-medium text-primary-600">
                       Limit: 1.00 USD - 5000.00 USD
                     </p>
                     <p className="p-2 px-4 text-xs lg:text-base rounded-2xl bg-primary-50 font-medium text-primary-600 dark:bg-primary-500! dark:text-primary-50!">
                       Charge: 0.00 USD + 2.00%
                     </p>
                   </div>
-                  <PrimaryButton
-                    icon="ArrowUpRight"
-                    type="submit"
-                    className={"text-base w-full"}
-                    iconClassName={
-                      "group-hover/primary-btn:translate-1/6 group-hover/primary-btn:-translate-y-1 duration-300"
-                    }
-                  >
-                    Send Money{" "}
+                  <PrimaryButton type="submit" className={"text-base w-full"}>
+                    Confirm{" "}
                   </PrimaryButton>
                 </Form>
               </div>
@@ -233,11 +218,11 @@ const SendMoney = () => {
           </div>
         </div>
         <div>
-          <SendMoneyTransaction />
+          <WithdrawTransaction />
         </div>
       </div>
     </section>
   );
 };
 
-export default SendMoney;
+export default AddMoney;

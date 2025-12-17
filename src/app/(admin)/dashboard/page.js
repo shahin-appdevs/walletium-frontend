@@ -2,10 +2,8 @@
 import React from "react";
 import Stats from "../_components/homepage/Stats";
 import TransactionOverview from "../_components/homepage/TransactionOverview/TransactionOverview";
-
 import TransactionHistory from "../_components/homepage/TransactionHistory/TransactionHistory";
 import VirtualCardSlider from "../_components/homepage/VirtualCardSlider/VirtualCardSlider";
-// import AdSliders from "../_components/homepage/AdSliders/AdSliders";
 
 const DashboardHome = () => {
   return (

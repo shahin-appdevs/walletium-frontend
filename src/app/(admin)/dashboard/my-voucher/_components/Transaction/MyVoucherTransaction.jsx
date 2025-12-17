@@ -17,14 +17,13 @@ import LucideIcon from "@/components/LucideIcon";
 const data = [
   {
     key: "1",
-    transaction_type: "BDT to USD",
+    transaction_type: "Receive Money",
     transaction_id: "TXID123",
     fee_charge: 20,
     exchange_rate: "2%",
     date: "07 Jun 2025",
     id: "#MY548G214",
     amount: 2500,
-    total_amount: 3000,
     status: "Success",
     direction: "in",
   },
@@ -37,7 +36,6 @@ const data = [
     date: "07 Jun 2025",
     id: "#MY548G214",
     amount: -8600,
-    total_amount: 3000,
     status: "Success",
     direction: "out",
   },
@@ -50,7 +48,6 @@ const data = [
     date: "07 Jun 2025",
     id: "#MY548G214",
     amount: -6140,
-    total_amount: 3000,
     status: "Success",
     direction: "out",
   },
@@ -63,13 +60,12 @@ const data = [
     date: "07 Jun 2025",
     id: "#MY548G214",
     amount: 2500,
-    total_amount: 3000,
     status: "Success",
     direction: "in",
   },
 ];
 
-export default function MoneyExchangeLog() {
+export default function MyVoucherTransaction() {
   const { isModalOpen, handleShowModal, handleCancelModal } = useModal();
   const [singleTable, setSingleTable] = useState([]);
   const { smallScreen, mediumScreen } = useViewport();
@@ -158,10 +154,16 @@ export default function MoneyExchangeLog() {
     },
     {
       title: "Total Amount",
-      dataIndex: "total_amount",
-      render: (total_amount) => (
-        <span className="text-gray-600 dark:text-neutral-300">
-          {total_amount}
+      dataIndex: "amount",
+      render: (amount) => (
+        <span
+          className={`font-semibold ${
+            amount >= 0 ? "text-green-600" : "text-red-500"
+          }`}
+        >
+          {amount >= 0
+            ? `+$${amount.toLocaleString()}`
+            : `-$${Math.abs(amount).toLocaleString()}`}
         </span>
       ),
     },
@@ -240,15 +242,11 @@ export default function MoneyExchangeLog() {
   );
 
   return (
-    <Card
-      title="Money Exchange Log"
-      extra={TableExtra}
-      //   className="overflow-x-auto!"
-    >
+    <Card title="Latest Transaction" extra={TableExtra}>
       <Modal open={isModalOpen} onCancel={handleCancelModal} closable={false}>
         <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-white dark:bg-[#111] shadow-sm border border-gray-200 dark:border-gray-800">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-            Money Exchange Log
+            Latest Transaction
           </h2>
 
           <div className="divide-y divide-gray-200 dark:divide-gray-800">
@@ -292,7 +290,7 @@ export default function MoneyExchangeLog() {
       </div> */}
 
       {/* Styled Table */}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto!">
         <Table
           columns={smallScreenColumn}
           dataSource={data}

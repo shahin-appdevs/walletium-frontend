@@ -41,10 +41,13 @@ const ExchangeMoney = () => {
     { label: "Total Fees & Charges", value: "$100" },
     { label: "Exchange Rate", value: "$100" },
     { label: "Receiver Will Get", value: "$100" },
-
     {
-      label: <span className="font-bold text-lg">Total Payable Amount</span>,
-      value: <span className="font-bold text-lg">$ 200</span>,
+      label: (
+        <span className="font-bold text-base lg:text-lg">
+          Total Payable Amount
+        </span>
+      ),
+      value: <span className="font-bold text-base lg:text-lg">$ 200</span>,
     },
   ];
 
@@ -53,7 +56,7 @@ const ExchangeMoney = () => {
       <div className="space-y-4 lg:space-y-6">
         <div className="grid md:grid-cols-5 gap-4 lg:gap-6">
           <div className="col-span-1 md:col-span-3 ">
-            <Card title="Send Money" className=" space-y-4!">
+            <Card title="Money Exchange">
               {/* <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                 Send Money
               </h2> */}
@@ -77,13 +80,13 @@ const ExchangeMoney = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                   <div className="border-primary/50 border rounded-2xl p-4">
                     <p className="text-gray-500 text-sm">Exchange Rate</p>
-                    <p className="text-xl text-neutral-800 dark:text-neutral-300 font-semibold">
+                    <p className="text-base lg:text-xl text-neutral-800 dark:text-neutral-300 font-semibold">
                       1 USD = 1.000 USDT
                     </p>
                   </div>
                   <div className="border-primary/50 border rounded-2xl p-4">
                     <p className="text-gray-500 text-sm">Available balance:</p>
-                    <p className="text-xl text-neutral-800 dark:text-neutral-300 font-semibold">
+                    <p className="text-base lg:text-xl text-neutral-800 dark:text-neutral-300 font-semibold">
                       $909.74
                     </p>
                   </div>
@@ -175,11 +178,11 @@ const ExchangeMoney = () => {
                       </Space.Compact>
                     </FormItem>
                   </div>
-                  <div className="flex flex-col lg:flex-row gap-2 justify-between items-center">
-                    <p className="p-2 px-4 rounded-2xl bg-primary-50 dark:bg-primary-500! dark:text-primary-50! font-medium text-primary-600">
+                  <div className="flex flex-col md:flex-row gap-2 justify-between items-center">
+                    <p className="p-2 px-4 text-xs lg:text-base rounded-2xl bg-primary-50 dark:bg-primary-500! dark:text-primary-50! font-medium text-primary-600">
                       Limit: 1.00 USD - 5000.00 USD
                     </p>
-                    <p className="p-2 px-4 rounded-2xl bg-primary-50 font-medium text-primary-600 dark:bg-primary-500! dark:text-primary-50!">
+                    <p className="p-2 px-4 text-xs lg:text-base  rounded-2xl bg-primary-50 font-medium text-primary-600 dark:bg-primary-500! dark:text-primary-50!">
                       Charge: 0.00 USD + 2.00%
                     </p>
                   </div>
