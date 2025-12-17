@@ -12,12 +12,7 @@ const CreateRedeemCode = ({
   const copyToClipboard = async (text) => {
     try {
       navigator.clipboard.writeText(text);
-      // toast.success("Copied Successfully", {
-      //   position: "top-center",
-      //   hideProgressBar: true,
-      //   autoClose: 2000,
-      //   transition: Slide,
-      // });
+
       showToast.success("Copied Successfully");
     } catch (err) {
       console.error("Field to copy", err);

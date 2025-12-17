@@ -226,9 +226,7 @@ export default function AddMoneyTransaction() {
       </div>
       <div className=" md:flex justify-end ">
         <Link href={"#"}>
-          <PrimaryButton
-            iconClassName={"group-hover/primary-btn:rotate-90 duration-200"}
-          >
+          <PrimaryButton>
             <span className="hidden md:block">View More</span>
             <span>
               <LucideIcon name={"Eye"} size={20} />

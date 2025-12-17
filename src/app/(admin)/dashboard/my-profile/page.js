@@ -1,0 +1,84 @@
+"use client";
+import LucideIcon from "@/components/LucideIcon";
+import { Button, Flex, Form, Input, Select, Space } from "antd";
+import Image from "next/image";
+import ProfileBody from "./_components/ProfileBody";
+
+const options = [
+  {
+    label: "Bangla",
+    value: "bangla",
+    emoji: "🇧🇩",
+    desc: "Bangla (বাংলা)",
+  },
+  {
+    label: "USA",
+    value: "usa",
+    emoji: "🇺🇸",
+    desc: "USA (美国)",
+  },
+  {
+    label: "Japan",
+    value: "japan",
+    emoji: "🇯🇵",
+    desc: "Japan (日本)",
+  },
+  {
+    label: "Korea",
+    value: "korea",
+    emoji: "🇰🇷",
+    desc: "Korea (韩国)",
+  },
+];
+
+const ProfilePage = () => {
+  const handleSubmit = (values) => {
+    console.log("Success:", values);
+  };
+  const onDistrictChange = (value) => {
+    console.log("District", value);
+  };
+  const onChangeLanguage = (value) => {
+    console.log("Language", value);
+  };
+
+  return (
+    <div>
+      <div
+        // style={bannerStyles}
+        className="min-h-[17rem] lg:h-[20rem] bg-linear-30 from-[#0EBE98] via-[#50C631] to-[#0EBE98] w-full rounded-lg shadow-lg! flex items-end "
+      >
+        <div className="relative min-h-[10rem] lg:min-h-[120px] bg-white w-full rounded-b-lg">
+          <div className=" flex flex-col justify-center  items-center lg:items-end lg:flex-row gap-2 -translate-x-1/2 absolute -top-12 left-1/2 lg:left-0 lg:-translate-x-0 p-4">
+            <div className="w-[110px] ">
+              <Image
+                src={"https://i.pravatar.cc/70"}
+                alt="User"
+                height={110}
+                width={110}
+                className="rounded-xl bg-white p-1"
+              />
+            </div>
+            <div className="flex flex-col items-center lg:items-start">
+              <h3 className="text-lg lg:text-xl font-semibold">Abdullah </h3>
+              <div className="flex items-center gap-3">
+                {[1, 2, 3].map((item, idx) => (
+                  <span key={idx} className="flex items-center gap-2">
+                    <LucideIcon name={"Profile"} />
+                    <span className="font-medium">Profile</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className="absolute right-3 top-2 lg:top-1/2 lg:-translate-y-1/2">
+            <Button type="primary">Edit Profile</Button>
+          </div>
+        </div>
+      </div>
+      <ProfileBody />
+    </div>
+  );
+};
+
+export default ProfilePage;

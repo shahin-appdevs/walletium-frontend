@@ -21,12 +21,12 @@ const useSidebar = () => {
       myVoucher: "/dashboard/my-voucher",
       moneyExchange: "/dashboard/money-exchange",
 
-      addMoneyLog: "/dashboard/add-money-log",
-      sendMoneyLog: "/dashboard/send-money-log",
-      withdrawLog: "/dashboard/withdraw-log",
-      moneyExchangeLog: "/dashboard/money-exchange-log",
-      moneyRequestLog: "/dashboard/money-request-log",
-      voucherLog: "/dashboard/voucher-log",
+      addMoneyLog: "/dashboard/transactions/add-money-log",
+      sendMoneyLog: "/dashboard/transactions/send-money-log",
+      withdrawLog: "/dashboard/transactions/withdraw-log",
+      moneyExchangeLog: "/dashboard/transactions/money-exchange-log",
+      moneyRequestLog: "/dashboard/transactions/money-request-log",
+      voucherLog: "/dashboard/transactions/voucher-log",
 
       setting: "/dashboard/settings",
     };
@@ -148,12 +148,12 @@ const useSidebar = () => {
           icon: <LucideIcon name={"CirclePlus"} size={14} />,
         },
         {
-          key: "4.3",
+          key: "4.2",
           label: <span className="text-sm font-semibold">Send Money Log</span>,
           icon: <LucideIcon name={"Send"} size={14} />,
         },
         {
-          key: "4.2",
+          key: "4.3",
           label: <span className="text-sm font-semibold">Withdraw Log</span>,
           icon: <LucideIcon name={"BanknoteArrowDown"} size={14} />,
         },
