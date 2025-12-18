@@ -12,7 +12,7 @@ import Link from "next/link";
 
 export default function ProfileDropdown() {
   return (
-    <Card className="w-72 rounded-2xl shadow-xl border-0">
+    <Card className="w-72 rounded-2xl shadow-xl border-0 ">
       {/* Header */}
       <Link
         href={"/dashboard/my-profile"}

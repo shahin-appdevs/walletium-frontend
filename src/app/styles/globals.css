@@ -93,3 +93,18 @@ body {
 .ant-select {
   transition: none !important;
 }
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(40);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 100;
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.35s ease-out;
+}
