@@ -61,7 +61,7 @@ const RequestMoney = () => {
       <div className="space-y-4 lg:space-y-6">
         <div className="grid md:grid-cols-5 gap-4 lg:gap-6">
           <div className="col-span-1 md:col-span-3 ">
-            <Card title="My Voucher">
+            <Card title="My Voucher" className="h-full!">
               <CreateRedeemCode {...CreateRedeemCodeProps} />
               {/* form start */}
               <div className="rounded-2xl shadow-sm p-4 ">
@@ -175,7 +175,7 @@ const RequestMoney = () => {
             </Card>
           </div>
           <div className="col-span-1 md:col-span-2">
-            <Card title="Summery">
+            <Card title="Summery" className="h-full!">
               {/* <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                 Summery
               </h2> */}

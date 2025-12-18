@@ -15,7 +15,7 @@ export default function ProfileDropdown() {
     <Card className="w-72 rounded-2xl shadow-xl border-0">
       {/* Header */}
       <Link
-        href={"/dashboard/profile"}
+        href={"/dashboard/my-profile"}
         className="flex items-center gap-3 pb-3 border-b"
       >
         <img

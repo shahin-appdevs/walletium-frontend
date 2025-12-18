@@ -2,7 +2,6 @@
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import { Card, Form, Input, Select, Space } from "antd";
 import { ArrowUpRight, DollarSign } from "lucide-react";
-import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import SendMoneyTransaction from "./_components/Transaction/SendMoneyTransaction";
 import * as yup from "yup";
@@ -55,7 +54,7 @@ const SendMoney = () => {
       <div className="space-y-4 lg:space-y-6">
         <div className="grid md:grid-cols-5 gap-4 lg:gap-6">
           <div className="col-span-1 md:col-span-3 ">
-            <Card title="Send Money">
+            <Card title="Send Money" className="h-full!">
               {/* <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                 Send Money
               </h2> */}
@@ -203,12 +202,12 @@ const SendMoney = () => {
             </Card>
           </div>
           <div className="col-span-1 md:col-span-2">
-            <Card title="Summery">
+            <Card title="Summery" className="h-full!">
               {/* <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                 Summery
               </h2> */}
-              <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-white dark:bg-slate-900 shadow-sm  border-gray-200 dark:border-gray-800">
-                <div className="divide-y divide-gray-200 dark:divide-gray-800">
+              <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-white  dark:bg-slate-900 shadow-sm  border-gray-200 dark:border-gray-800 ">
+                <div className="divide-y divide-gray-200 dark:divide-gray-800 ">
                   {singleTable?.map((row, idx) => (
                     <div
                       key={idx}

@@ -51,7 +51,7 @@ const AddMoney = () => {
       <div className="space-y-4 lg:space-y-6">
         <div className="grid md:grid-cols-5 gap-4 lg:gap-6">
           <div className="col-span-1 md:col-span-3 ">
-            <Card title="Withdraw Money">
+            <Card title="Withdraw Money" className="h-full!">
               {/* <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                 Add Money
               </h2> */}
@@ -188,7 +188,7 @@ const AddMoney = () => {
             </Card>
           </div>
           <div className="col-span-1 md:col-span-2">
-            <Card title="Summery">
+            <Card title="Summery" className="h-full!">
               {/* <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                 Summery
               </h2> */}
