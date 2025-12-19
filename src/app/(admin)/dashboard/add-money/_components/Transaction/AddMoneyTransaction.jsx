@@ -1,10 +1,9 @@
 "use client";
-import { Input, Button, Card, Modal } from "antd";
+import { Input, Card, Modal } from "antd";
 import {
   ArrowDownOutlined,
   ArrowUpOutlined,
   SearchOutlined,
-  FilterOutlined,
 } from "@ant-design/icons";
 import Table from "@/components/ui/Table";
 import useModal from "@/hooks/useModal";

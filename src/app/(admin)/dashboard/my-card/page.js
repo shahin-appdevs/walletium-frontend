@@ -1,14 +1,13 @@
 import React from "react";
-import PageTopBar from "../../_components/header/PageTopBar";
+import { Card } from "antd";
+import MyCardStats from "./_components/MyCardStats/MyCardStats";
+import AvailableCards from "./_components/AvailableCards/AvailableCards";
 
 const MyCard = () => {
   return (
-    <div>
-      {/* <PageTopBar
-        title={"Create Card"}
-        buttonTitle={"Create New Card"}
-        icon={"Plus"}
-      /> */}
+    <div className="space-y-4!">
+      <MyCardStats />
+      <AvailableCards />
     </div>
   );
 };

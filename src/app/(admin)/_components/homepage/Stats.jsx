@@ -1,7 +1,6 @@
 import React from "react";
 import LucideIcon from "@/components/LucideIcon";
 import CurrencyCard from "./StatsCard";
-import { DollarSign, IndianRupee, PoundSterling } from "lucide-react";
 
 const Stats = () => {
   return (

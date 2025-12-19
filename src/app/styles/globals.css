@@ -79,6 +79,11 @@ h6 {
   @apply dark:border-[#303030] dark:border;
 }
 
+::selection {
+  background-color: #0ebe98; /* selection bg */
+  color: #ffffff; /* selection text */
+}
+
 /* swiper style override */
 
 .swiper-pagination-bullet {
