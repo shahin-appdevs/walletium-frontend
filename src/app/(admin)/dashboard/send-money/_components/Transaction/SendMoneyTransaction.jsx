@@ -261,7 +261,7 @@ export default function SendMoneyTransaction() {
   return (
     <Card title="Latest Transaction" extra={TableExtra}>
       <Modal open={isModalOpen} onCancel={handleCancelModal} closable={false}>
-        <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-white dark:bg-[#111] shadow-sm border border-gray-200 dark:border-gray-800">
+        <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-white dark:bg-[#111] shadow-xs border border-gray-200 dark:border-gray-800">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
             Latest Transaction
           </h2>

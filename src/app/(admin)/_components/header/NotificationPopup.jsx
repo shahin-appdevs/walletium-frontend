@@ -1,4 +1,3 @@
-import { Avatar, Tabs } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import LucideIcon from "@/components/LucideIcon";
 

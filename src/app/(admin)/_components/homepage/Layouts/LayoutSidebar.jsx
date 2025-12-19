@@ -11,7 +11,9 @@ import Link from "next/link";
 const { Sider } = Layout;
 
 const LayoutSidebar = ({ collapsed }) => {
-  const { mode, handleNavigateRoutes, items } = useSidebar();
+  const { mode, handleNavigateRoutes, items, activeKey } = useSidebar();
+
+  console.log(activeKey);
 
   return (
     <div className="hidden sidebar lg:block">
@@ -54,6 +56,7 @@ const LayoutSidebar = ({ collapsed }) => {
           mode="inline"
           className="font-medium text-lg overflow-hidden! pb-4! transition-none!"
           defaultSelectedKeys={["1"]}
+          selectedKeys={[activeKey]}
           items={items}
           expandIcon={null}
         />

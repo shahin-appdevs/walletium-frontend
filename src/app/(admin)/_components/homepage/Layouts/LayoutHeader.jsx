@@ -66,7 +66,7 @@ const LayoutHeader = ({ collapsed, setCollapsed }) => {
                 {/* Theme Switch */}
                 <button
                   onClick={() => toggleTheme()}
-                  className="flex items-center bg-white rounded-full px-1 py-1 shadow-sm border border-gray-200 transition"
+                  className="flex items-center bg-white rounded-full px-1 py-1 shadow-xs border border-gray-200 transition"
                 >
                   {/* Moon */}
                   <div

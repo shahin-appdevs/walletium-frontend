@@ -187,9 +187,9 @@ export default function TransactionHistory() {
   // const mediumScreenColumn = mediumScreen ? [...columns.slice(0, 4)] : columns;
 
   return (
-    <Card className=" overflow-x-auto! dark:border-neutral-900! shadow-sm border-0!">
+    <Card className=" overflow-x-auto! dark:border-neutral-900! shadow-xs border-0!">
       <Modal open={isModalOpen} onCancel={handleCancelModal}>
-        <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-white dark:bg-[#111] shadow-sm border border-gray-200 dark:border-gray-800">
+        <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-white dark:bg-[#111] shadow-xs border border-gray-200 dark:border-gray-800">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
             Transaction History
           </h2>

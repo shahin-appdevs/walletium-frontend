@@ -10,7 +10,7 @@ const TransactionOverview = () => {
             Transaction Overview
           </span>
         }
-        className="shadow-sm border-0!"
+        className="shadow-xs border-0!"
       >
         <BrushBarChart />
       </Card>

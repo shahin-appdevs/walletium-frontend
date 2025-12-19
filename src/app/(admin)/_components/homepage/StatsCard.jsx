@@ -4,7 +4,7 @@ import Image from "next/image";
 // Reusable Currency Card Component
 function CurrencyCard({ icon, name, amount, bg, iconBg }) {
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm p-4 flex flex-col gap-3 overflow-hidden">
+    <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xs p-4 flex flex-col gap-3 overflow-hidden">
       {/* Icon Section */}
       <div className="flex items-center justify-between">
         <div

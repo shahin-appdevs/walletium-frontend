@@ -57,7 +57,7 @@ const AddMoney = () => {
                 1 USD = 1.000 USDT
               </h2>
             </div> */}
-              <div className="bg-white mb-4 dark:bg-slate-900 dark:border dark:border-neutral-700 rounded-2xl shadow-sm p-4 flex flex-col gap-3 overflow-hidden">
+              <div className="bg-neutral-50 dark:bg-slate-900  mb-4 dark-border rounded-2xl shadow-xs p-4 flex flex-col gap-3 overflow-hidden">
                 {/* Icon Section */}
                 <div className="flex items-center justify-between">
                   <div
@@ -73,15 +73,15 @@ const AddMoney = () => {
                 </div>
 
                 {/* Text Section */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                  <div className="border-primary/50 border rounded-2xl p-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 ">
+                  <div className="dark-border bg-white  dark:bg-slate-900  rounded-2xl p-4">
                     <p className="text-gray-500 text-sm">Exchange Rate</p>
                     <p className="text-base lg:text-xl text-neutral-800 dark:text-neutral-300 font-semibold">
                       1 USD = 1.000 USDT
                     </p>
                   </div>
-                  <div className="border-primary/50 border rounded-2xl p-4">
-                    <p className="text-gray-500 text-sm">Available balance:</p>
+                  <div className="dark-border bg-white  dark:bg-slate-900  rounded-2xl p-4">
+                    <p className="text-gray-500  text-sm">Available balance:</p>
                     <p className="text-base lg:text-xl text-neutral-800 dark:text-neutral-300 font-semibold">
                       $909.74
                     </p>
@@ -90,7 +90,7 @@ const AddMoney = () => {
               </div>
 
               {/* form start */}
-              <div className="rounded-2xl shadow-sm p-4 ">
+              <div className="rounded-2xl shadow-xs p-4 bg-neutral-50 dark:bg-slate-900 dark-border ">
                 <Form
                   onFinish={handleSubmit(onSubmit)}
                   layout="vertical space-y-4!  "
@@ -183,12 +183,12 @@ const AddMoney = () => {
               </div>
             </Card>
           </div>
-          <div className="col-span-1 md:col-span-2">
-            <Card title="Summery" className="h-full!">
+          <div className="col-span-1 md:col-span-2 ">
+            <Card title="Summery" className="h-full! ">
               {/* <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                 Summery
               </h2> */}
-              <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-white dark:bg-slate-900 shadow-sm  border-gray-200 dark:border-gray-800">
+              <div className="w-full max-w-2xl mx-auto p-4 rounded-xl dark-border bg-neutral-50 dark:bg-slate-900 shadow-xs  ">
                 <div className="divide-y divide-gray-200 dark:divide-gray-800">
                   {singleTable?.map((row, idx) => (
                     <div

@@ -64,7 +64,7 @@ const RequestMoney = () => {
             <Card title="My Voucher" className="h-full!">
               <CreateRedeemCode {...CreateRedeemCodeProps} />
               {/* form start */}
-              <div className="rounded-2xl shadow-sm p-4 ">
+              <div className="rounded-2xl shadow-xs p-4 bg-neutral-50 dark:bg-slate-900 dark-border ">
                 <Form
                   onFinish={handleSubmit(onSubmit)}
                   layout="vertical space-y-4!  "
@@ -179,7 +179,7 @@ const RequestMoney = () => {
               {/* <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                 Summery
               </h2> */}
-              <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-white dark:bg-slate-900 shadow-sm  border-gray-200 dark:border-gray-800">
+              <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-neutral-50 dark:bg-slate-900 dark-border shadow-xs ">
                 <div className="divide-y divide-gray-200 dark:divide-gray-800">
                   {singleTable?.map((row, idx) => (
                     <div

@@ -18,7 +18,7 @@ export default LatestTransactionCard;
 //   return (
 //     <div
 //       onClick={() => setShowChild(!showChild)}
-//       className="w-full  cursor-pointer  mx-auto bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-6 md:p-8 transition-colors"
+//       className="w-full  cursor-pointer  mx-auto bg-white dark:bg-gray-900 rounded-2xl shadow-xs p-6 md:p-8 transition-colors"
 //     >
 //       {/* Header */}
 //       <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
