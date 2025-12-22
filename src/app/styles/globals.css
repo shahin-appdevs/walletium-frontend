@@ -1,6 +1,6 @@
 @import "tailwindcss";
+@import "./utilities.css";
 @custom-variant dark (&:where(.dark, .dark *));
-
 /* :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -27,13 +27,10 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 } */
-
 /* *******************************************
               Common Styles
 **********************************************/
-
 /* heading style  */
-
 h1 {
   font-size: clamp(28px, 4vw, 36px);
 }
@@ -73,12 +70,6 @@ h6 {
   --color-primary: var(--color-primary-500);
 }
 
-/* utilities */
-
-@utility dark-border {
-  @apply dark:border-[#303030] dark:border;
-}
-
 ::selection {
   background-color: #0ebe98; /* selection bg */
   color: #ffffff; /* selection text */
@@ -93,43 +84,6 @@ h6 {
 
 .swiper-pagination-bullet-active {
   background: #26d07c !important; /* green active dot */
-}
-
-/* ant design override */
-
-/* sidebar style  */
-
-.sidebar .ant-menu-item {
-  padding-left: 25px !important;
-}
-.ant-menu-submenu-popup {
-  display: none !important;
-}
-
-.ant-layout-sider,
-.ant-menu {
-  transition: none !important;
-}
-
-.ant-menu-item,
-.ant-menu-submenu-title {
-  transition: none !important;
-}
-
-.ant-table,
-.ant-table-container,
-.ant-table-thead > tr > th,
-.ant-table-tbody > tr > td,
-.ant-table-row {
-  transition: none !important;
-}
-
-.ant-input,
-.ant-input-affix-wrapper,
-.ant-select-selector,
-.ant-picker,
-.ant-select {
-  transition: none !important;
 }
 
 @keyframes slideUp {

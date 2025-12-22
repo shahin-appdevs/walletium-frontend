@@ -1,6 +1,9 @@
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { Geist, Geist_Mono } from "next/font/google";
+
 import "./styles/globals.css";
+import "./styles/antd.css";
+
 import { ThemeProvider } from "@/contexts/ThemeContextProvider";
 
 const geistSans = Geist({

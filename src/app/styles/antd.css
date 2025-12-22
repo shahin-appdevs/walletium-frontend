@@ -1,0 +1,36 @@
+/* ant design override */
+
+/* sidebar style  */
+
+.sidebar .ant-menu-item {
+  padding-left: 25px !important;
+}
+.ant-menu-submenu-popup {
+  display: none !important;
+}
+
+.ant-layout-sider,
+.ant-menu {
+  transition: none !important;
+}
+
+.ant-menu-item,
+.ant-menu-submenu-title {
+  transition: none !important;
+}
+
+.ant-table,
+.ant-table-container,
+.ant-table-thead > tr > th,
+.ant-table-tbody > tr > td,
+.ant-table-row {
+  transition: none !important;
+}
+
+.ant-input,
+.ant-input-affix-wrapper,
+.ant-select-selector,
+.ant-picker,
+.ant-select {
+  transition: none !important;
+}

@@ -1,3 +1,4 @@
+"use client";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import { EyeInvisibleOutlined } from "@ant-design/icons";
@@ -5,10 +6,15 @@ import Image from "next/image";
 
 import "swiper/css";
 import "swiper/css/pagination";
+import useToggleShow from "@/hooks/useToggleShow";
+import LucideIcon from "@/components/LucideIcon";
+import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 
 const cardImage = "/images/partials/card.png";
 
 export default function VirtualCardSlider() {
+  const { toggleShow, setToggleShow } = useToggleShow();
+
   const cards = [
     {
       name: "TOMSON MARTON",
@@ -32,9 +38,9 @@ export default function VirtualCardSlider() {
 
   return (
     <div className="  p-5 rounded-xl bg-white dark:bg-slate-900 shadow-xs ">
-      <h2 className="text-xl font-bold text-gray-800 dark:text-slate-100 mb-4">
+      <h3 className="text-xl font-bold text-gray-800 dark:text-slate-100 mb-4">
         My Virtual Card
-      </h2>
+      </h3>
 
       {/* Swiper Carousel */}
       <Swiper
@@ -56,16 +62,31 @@ export default function VirtualCardSlider() {
       <div className="flex justify-between items-center mt-5">
         <div>
           <p className="text-gray-500 text-sm">Total Balance</p>
-          <p className="text-2xl font-bold">$259.75</p>
+          <p className="text-2xl font-bold">
+            {" "}
+            {toggleShow ? "$98,000" : "********"}
+          </p>
         </div>
 
-        <button className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600">
-          <EyeInvisibleOutlined />
+        <button
+          onClick={() => setToggleShow(!toggleShow)}
+          className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600"
+        >
+          <LucideIcon
+            name={toggleShow ? "EyeOff" : "Eye"}
+            className="w-5 h-5 text-gray-500 dark:text-neutral-300"
+          />
         </button>
 
-        <button className="flex items-center gap-2 font-bold text-base lg:text-lg bg-linear-to-r from-[#0EBE98] to-[#50C631] text-white px-5 py-2 rounded-xl hover:bg-green-600 transition">
+        <PrimaryButton
+          icon="ArrowUpRight"
+          className={"text-sm font-normal!"}
+          iconClassName={
+            "group-hover/primary-btn:translate-1/6 group-hover/primary-btn:-translate-y-1 duration-300"
+          }
+        >
           Card Top Up
-        </button>
+        </PrimaryButton>
       </div>
     </div>
   );

@@ -1,24 +1,32 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import LucideIcon from "@/components/LucideIcon";
 import CurrencyCard from "./StatsCard";
+import useToggleShow from "@/hooks/useToggleShow";
+import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 
 const Stats = () => {
+  const { toggleShow, setToggleShow } = useToggleShow();
+
   return (
     <div>
       <div className="w-full flex flex-col md:flex-row items-center justify-between pb-4 lg:pb-6">
         {/* Left Section */}
         <div className="flex items-center gap-4 mb-4">
           <div>
-            <p className="text-gray-500 dark:text-neutral-300 text-base font-medium">
+            <p className="text-muted text-base font-medium ">
               Total Wallet Balance
             </p>
-            <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-300">
-              $98,000.00
+            <h2 className="text-2xl font-bold text-title">
+              {toggleShow ? "$98,000.00" : "********"}
             </h2>
           </div>
-          <button className="p-2 rounded-full border border-gray-300 hover:bg-gray-100 transition">
+          <button
+            onClick={() => setToggleShow(!toggleShow)}
+            className="p-2 rounded-full border border-gray-300 hover:bg-gray-100 transition"
+          >
             <LucideIcon
-              name={"Eye"}
+              name={toggleShow ? "EyeOff" : "Eye"}
               className="w-5 h-5 text-gray-500 dark:text-neutral-300"
             />
           </button>
@@ -30,9 +38,15 @@ const Stats = () => {
             Add Money <LucideIcon name={"Plus"} className="w-4 h-4" />
           </button>
 
-          <button className="flex items-center gap-2 bg-linear-to-r from-[#0EBE98] to-[#50C631] text-white px-5 py-2 rounded-xl hover:bg-green-600 transition">
-            Send Money <LucideIcon name={"ArrowUpRight"} className="w-4 h-4" />
-          </button>
+          <PrimaryButton
+            icon="ArrowUpRight"
+            className={"text-sm font-normal!"}
+            iconClassName={
+              "group-hover/primary-btn:translate-1/6 group-hover/primary-btn:-translate-y-1 duration-300"
+            }
+          >
+            Send Money
+          </PrimaryButton>
         </div>
       </div>
       {/* Stats */}

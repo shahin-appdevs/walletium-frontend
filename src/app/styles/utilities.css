@@ -1,0 +1,42 @@
+/* @import "tailwindcss"; */
+
+/* utilities */
+
+/* layout and position */
+
+@utility position-center {
+  @apply absolute;
+}
+
+@utility dark-border {
+  @apply dark:border-[#303030] dark:border;
+}
+
+@utility flex-center {
+  @apply flex items-center justify-center;
+}
+
+@utility col-center {
+  @apply flex flex-col items-center justify-center;
+}
+
+@utility flex-between {
+  @apply flex items-center justify-between;
+}
+
+@utility absolute-center {
+  @apply absolute top-1/2 left-1/2 -translate-1/2;
+}
+
+/* text and typography */
+
+@utility text-muted {
+  @apply text-neutral-500 dark:text-neutral-400;
+}
+@utility text-title {
+  @apply text-neutral-900 dark:text-neutral-50;
+}
+
+@utility text-small {
+  @apply text-sm text-neutral-500 dark:text-neutral-600;
+}
