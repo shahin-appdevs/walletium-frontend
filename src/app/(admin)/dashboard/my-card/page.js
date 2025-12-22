@@ -1,5 +1,3 @@
-import React from "react";
-import { Card } from "antd";
 import MyCardStats from "./_components/MyCardStats/MyCardStats";
 import AvailableCards from "./_components/AvailableCards/AvailableCards";
 

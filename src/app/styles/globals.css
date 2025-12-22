@@ -50,6 +50,12 @@ h6 {
   font-size: clamp(14px, 1.5vw, 16px);
 }
 
+p {
+  font-size: clamp(14px, 1.2vw, 16px);
+  line-height: 1.65;
+  font-weight: 400;
+}
+
 @theme {
   /* breakpoints */
   --breakpoint-2xl: 100rem;
