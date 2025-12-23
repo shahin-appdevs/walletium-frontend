@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 
 import dynamic from "next/dynamic";
 import { ToastContainer } from "react-toastify";
-import { Protected } from "@/components/auth/Protected";
 import { token } from "@/lib/token";
 import { useRouter } from "next/navigation";
 import { getUser } from "@/lib/user";
@@ -61,8 +60,6 @@ export default function DashboardLayout({ children }) {
           {children}
         </Content>
       </Layout>
-      {/* React Toast Container */}
-      <ToastContainer />
     </Layout>
     // </Protected>
   );

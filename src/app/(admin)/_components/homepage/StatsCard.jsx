@@ -29,9 +29,9 @@ function CurrencyCard({ icon, name, amount, bg, iconBg }) {
       {/* Text Section */}
       <div>
         <p className="text-gray-500 text-sm">{name}</p>
-        <p className="text-xl text-neutral-800 dark:text-neutral-300 font-semibold">
+        <h4 className="text-xl text-neutral-800 dark:text-neutral-300 font-semibold">
           {amount}
-        </p>
+        </h4>
       </div>
     </div>
   );

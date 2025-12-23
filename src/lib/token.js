@@ -13,6 +13,7 @@ export const token = {
     }
   },
   remove() {
-    localStorage.removeItem(TOKEN_KEY) || sessionStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(TOKEN_KEY);
+    sessionStorage.removeItem(TOKEN_KEY);
   },
 };

@@ -1,15 +1,16 @@
 import axios from "axios";
 import { token } from "./token";
 
-const axiosBaseApi = axios.create({
+const axiosPublic = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_API_URL}/v1`,
-  headers: {
-    "Content-Type": "application/json",
-  },
+});
+
+const axiosPrivate = axios.create({
+  baseURL: `${process.env.NEXT_PUBLIC_API_URL}/v1`,
 });
 
 //  Attach token to every request
-axiosBaseApi.interceptors.request.use((config) => {
+axiosPrivate.interceptors.request.use((config) => {
   const authToken = token.get();
 
   if (authToken) {
@@ -19,7 +20,7 @@ axiosBaseApi.interceptors.request.use((config) => {
 });
 
 //  Handle expired / invalid token
-axiosBaseApi.interceptors.response.use(
+axiosPrivate.interceptors.response.use(
   (res) => res,
   (error) => {
     if (error.response?.status === 401) {
@@ -30,4 +31,4 @@ axiosBaseApi.interceptors.response.use(
   }
 );
 
-export default axiosBaseApi;
+export { axiosPublic, axiosPrivate };

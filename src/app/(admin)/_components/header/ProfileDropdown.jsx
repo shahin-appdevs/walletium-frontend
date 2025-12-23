@@ -9,8 +9,18 @@ import {
 } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { token } from "@/lib/token";
+import showToast from "@/lib/toast";
 
 export default function ProfileDropdown() {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    token.remove();
+    router.replace("/login");
+    showToast.success("Logged out");
+  };
+
   return (
     <Card className="w-72 rounded-2xl shadow-xl border-0 ">
       {/* Header */}
@@ -68,7 +78,17 @@ export default function ProfileDropdown() {
 
         <Divider />
 
-        <MenuItem icon={<LogoutOutlined />} label="Logout" danger />
+        <button
+          onClick={handleLogout}
+          className={`w-full flex items-center gap-3 px-1 py-2 rounded-lg text-left 
+         text-red-600 font-semibold
+        hover:bg-gray-100 dark:hover:bg-primary-500 dark:hover:text-neutral-50 dark:font-medium transition`}
+        >
+          <span className="text-xl">
+            <LogoutOutlined />
+          </span>
+          <span className="text-sm">Logout</span>
+        </button>
       </div>
     </Card>
   );

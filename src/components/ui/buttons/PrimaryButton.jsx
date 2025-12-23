@@ -10,6 +10,7 @@ const PrimaryButton = ({
   type = "button",
   iconSize = 20,
   iconClassName,
+  loading = false,
   ...props
 }) => {
   return (
@@ -30,7 +31,12 @@ const PrimaryButton = ({
       ></span>
 
       <span className="relative z-10 flex items-center gap-1">
-        {children}
+        {loading ? (
+          <LucideIcon name={"LoaderCircle"} className="animate-spin" />
+        ) : (
+          children
+        )}
+
         {icon && (
           <LucideIcon name={icon} size={iconSize} className={iconClassName} />
         )}

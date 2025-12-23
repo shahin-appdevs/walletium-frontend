@@ -6,6 +6,8 @@ import "./styles/antd.css";
 
 import { ThemeProvider } from "@/contexts/ThemeContextProvider";
 import { AuthProvider } from "@/contexts/AuthContextProvider";
+import { ToastContainer } from "react-toastify";
+import ReduxStoreProvider from "@/redux/provider/ReduxStoreProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,11 +30,15 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased max-w-[1920px] mx-auto w-full shadow`}
       >
-        {/* <AuthProvider> */}
-        <AntdRegistry>
-          <ThemeProvider>{children}</ThemeProvider>
-        </AntdRegistry>
-        {/* </AuthProvider> */}
+        <ReduxStoreProvider>
+          {/* <AuthProvider> */}
+          <AntdRegistry>
+            <ThemeProvider>{children}</ThemeProvider>
+            {/* React Toast Container */}
+            <ToastContainer />
+          </AntdRegistry>
+          {/* </AuthProvider> */}
+        </ReduxStoreProvider>
       </body>
     </html>
   );
