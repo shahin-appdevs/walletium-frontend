@@ -11,7 +11,7 @@ const axiosBaseQuery =
       let err = axiosError;
       return {
         error: {
-          status: err.response?.status,
+          status: false,
           data: err.response?.data || err.message,
         },
       };

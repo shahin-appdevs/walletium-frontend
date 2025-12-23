@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Typography, Input, Button } from "antd";
 import { Controller, useForm } from "react-hook-form";
 import Image from "next/image";
@@ -16,7 +16,10 @@ const schema = yup.object().shape({
 });
 
 export default function OtpVerification() {
+  const [resendOtpTimer, setResendOtpTimer] = useState(0);
   const [pass, setPass] = useState([]);
+
+  // form handler
   const {
     control,
     handleSubmit,
@@ -26,6 +29,18 @@ export default function OtpVerification() {
     defaultValues: { otp: ["", "", "", "", "", ""] },
     resolver: yupResolver(schema),
   });
+
+  // timer
+  useEffect(() => {
+    if (resendOtpTimer > 14) {
+      return;
+    }
+    const intervalId = setInterval(() => {
+      setResendOtpTimer((prev) => prev + 1);
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [resendOtpTimer]);
 
   const inputsRef = useRef([]);
 
@@ -126,20 +141,36 @@ export default function OtpVerification() {
             </p>
           )}
 
+          {resendOtpTimer < 15 ? (
+            <p className="text-center text-gray-500 text-sm mt-4">
+              You can resend the code after{" "}
+              <span className="text-red-500 font-medium text-base">
+                {resendOtpTimer}s
+              </span>
+            </p>
+          ) : (
+            <p className="text-center text-gray-500 text-sm mt-4">
+              Didn’t receive the OTP?{" "}
+              <Link
+                href="/forgot-password"
+                className="text-red-500 hover:underline font-medium"
+              >
+                Resend
+              </Link>
+            </p>
+          )}
+
           <Button type="primary" htmlType="submit" className="w-full">
             Verify OTP
           </Button>
-        </form>
 
-        <p className="text-center text-gray-500 text-sm mt-4">
-          Didn’t receive the OTP?{" "}
-          <Link
-            href="/forgot-password"
-            className="text-primary-500 hover:underline"
-          >
-            Resend
-          </Link>
-        </p>
+          <p className="text-center text-gray-500 text-sm mt-4">
+            Already Have An Account?{" "}
+            <Link href="/login" className="text-primary-500 hover:underline">
+              Login Now
+            </Link>
+          </p>
+        </form>
       </div>
     </div>
   );

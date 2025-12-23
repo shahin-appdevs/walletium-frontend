@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { token } from "@/lib/token";
 import showToast from "@/lib/toast";
 import { useLoginMutation } from "@/redux/api/authApi";
+import GuestOnly from "../_components/GuestOnly";
 
 const loginSchema = yup.object({
   credentials: yup.string().required("Email or username is required"),
@@ -40,8 +41,7 @@ export default function LoginPage() {
   const router = useRouter();
 
   const onSubmit = async (data) => {
-    console.log("Form Data:", data);
-    // message.success("Login successful!");
+    // console.log("Form Data:", data);
 
     const formData = new FormData();
 
@@ -54,13 +54,11 @@ export default function LoginPage() {
       if (data.remember) {
         token.set(result.token, "local");
       }
-
       token.set(result.token, "session");
 
       showToast.success("Login Successful");
       router.push("/dashboard");
     } catch (error) {
-      console.log(error);
       showToast.error("Incorrect email or password");
     }
   };
@@ -163,7 +161,7 @@ export default function LoginPage() {
           <p className="text-center text-gray-500 text-sm mt-4">
             Don’t have an account?{" "}
             <Link href="/register" className="text-primary-500 hover:underline">
-              Sign up
+              Register
             </Link>
           </p>
         </div>
@@ -171,20 +169,3 @@ export default function LoginPage() {
     </GuestOnly>
   );
 }
-
-const GuestOnly = ({ children }) => {
-  const router = useRouter();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (token.get()) {
-      router.replace("/");
-      return;
-    }
-    (() => setLoading(false))(); //self call
-  }, [router]);
-
-  if (loading) return null;
-
-  return <>{children}</>;
-};
