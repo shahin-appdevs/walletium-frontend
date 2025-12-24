@@ -9,11 +9,12 @@ import Link from "next/link";
 import * as yup from "yup";
 // import { login } from "@/lib/auth";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { token, userInfo } from "@/lib/token";
 import showToast from "@/lib/toast";
 import { useLoginMutation } from "@/redux/api/authApi";
 import GuestOnly from "../_components/GuestOnly";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const loginSchema = yup.object({
   credentials: yup.string().required("Email or username is required"),
@@ -39,6 +40,11 @@ export default function LoginPage() {
   });
 
   const router = useRouter();
+  const recaptchaRef = useRef();
+
+  const recaptchaChange = (e) => {
+    console.log(e);
+  };
 
   const onSubmit = async (data) => {
     // console.log("Form Data:", data);
@@ -50,17 +56,16 @@ export default function LoginPage() {
 
     try {
       const result = await login(data).unwrap();
-
-      console.log(result);
+      const loginInfo = result?.data;
 
       if (data.remember) {
-        token.set(result.token, "local");
-        userInfo.set(result.user_info, "local");
+        token.set(loginInfo?.token, "local");
+        userInfo.set(result?.data?.user_info, "local");
       }
-      token.set(result.token, "session");
-      userInfo.set(result.user_info, "session");
+      token.set(loginInfo?.token, "session");
+      userInfo.set(loginInfo?.user_info, "session");
 
-      showToast.success("Login Successful");
+      showToast.success(result?.message?.success[0] || "Login Successful");
       router.push("/dashboard");
     } catch (error) {
       showToast.error("Incorrect email or password");
@@ -155,6 +160,12 @@ export default function LoginPage() {
                 Forget Password?
               </Link>
             </div>
+
+            <ReCAPTCHA
+              ref={recaptchaRef}
+              sitekey={`6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI`}
+              onChange={recaptchaChange}
+            />
 
             {/* Submit */}
             <PrimaryButton type="submit" className="w-full" loading={isLoading}>

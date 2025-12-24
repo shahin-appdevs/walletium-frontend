@@ -11,7 +11,7 @@ const authApi = baseApi.injectEndpoints({
         data: credentials,
         axiosInstance: axiosPublic,
       }),
-      transformResponse: (response) => response.data,
+      // transformResponse: (response) => response.data,
     }),
 
     register: builder.mutation({
@@ -22,6 +22,12 @@ const authApi = baseApi.injectEndpoints({
         axiosInstance: axiosPublic,
       }),
       transformResponse: (response) => response.data,
+    }),
+    logout: builder.mutation({
+      query: () => ({
+        url: "/user/logout",
+        method: "POST",
+      }),
     }),
 
     sendForgetPasswordOtp: builder.mutation({
@@ -39,4 +45,5 @@ export const {
   useLoginMutation,
   useRegisterMutation,
   useSendForgetPasswordOtpMutation,
+  useLogoutMutation,
 } = authApi;

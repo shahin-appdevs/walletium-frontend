@@ -11,15 +11,28 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { token, userInfo } from "@/lib/token";
 import showToast from "@/lib/toast";
+import { useLogoutMutation } from "@/redux/api/authApi";
+import useModal from "@/hooks/useModal";
+import ConfirmationModal from "@/components/ui/modal/ConfirmationModal";
 
 export default function ProfileDropdown() {
   const router = useRouter();
+  const [logout, { isLoading }] = useLogoutMutation();
+  const { isModalOpen, handleCancelModal, handleShowModal } = useModal();
 
-  const handleLogout = () => {
-    token.remove();
-    userInfo.remove();
-    router.replace("/login");
-    showToast.success("Logged out");
+  const handleLogout = async () => {
+    try {
+      const result = await logout().unwrap();
+
+      const success = result.message.success[0];
+
+      showToast.success(success || "Logged out");
+      token.remove();
+      userInfo.remove();
+      router.replace("/login");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -80,7 +93,7 @@ export default function ProfileDropdown() {
         <Divider />
 
         <button
-          onClick={handleLogout}
+          onClick={handleShowModal}
           className={`w-full flex items-center gap-3 px-1 py-2 rounded-lg text-left 
          text-red-600 font-semibold
         hover:bg-gray-100 dark:hover:bg-primary-500 dark:hover:text-neutral-50 dark:font-medium transition`}
@@ -91,6 +104,11 @@ export default function ProfileDropdown() {
           <span className="text-sm">Logout</span>
         </button>
       </div>
+      <ConfirmationModal
+        open={isModalOpen}
+        onCancel={handleCancelModal}
+        onConfirm={handleLogout}
+      />
     </Card>
   );
 }
