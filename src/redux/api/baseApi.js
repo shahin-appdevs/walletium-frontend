@@ -1,5 +1,6 @@
 import { axiosPrivate } from "@/lib/axios";
 import { createApi } from "@reduxjs/toolkit/query/react";
+import axios from "axios";
 
 const axiosBaseQuery =
   ({ axiosInstance }) =>
@@ -7,11 +8,19 @@ const axiosBaseQuery =
     try {
       const result = await axiosInstance({ url, method, data, params });
       return { data: result.data };
-    } catch (axiosError) {
-      let err = axiosError;
+    } catch (err) {
+      if (!axios.isAxiosError(err)) {
+        return {
+          error: {
+            status: "UNKNOWN_ERROR",
+            data: err?.message || "Unknown error",
+          },
+        };
+      }
+
       return {
         error: {
-          status: false,
+          status: err.response?.status ?? 500,
           data: err.response?.data || err.message,
         },
       };

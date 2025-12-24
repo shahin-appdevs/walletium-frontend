@@ -1,12 +1,12 @@
 import axios from "axios";
-import { token } from "./token";
+import { token, userInfo } from "./token";
 
 const axiosPublic = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_API_URL}/v1`,
 });
 
 const axiosPrivate = axios.create({
-  baseURL: `${process.env.NEXT_PUBLIC_API_URL}/v1`,
+  baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api/v1`,
 });
 
 //  Attach token to every request
@@ -25,6 +25,7 @@ axiosPrivate.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       token.remove();
+      userInfo.remove();
       window.location.href = "/login";
     }
     return Promise.reject(error);

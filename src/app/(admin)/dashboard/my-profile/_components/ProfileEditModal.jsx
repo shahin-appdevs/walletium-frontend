@@ -4,47 +4,128 @@ import { Modal, Form, Input, Upload, Avatar, Select, Space } from "antd";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import LucideIcon from "@/components/LucideIcon";
 import FormItem from "@/components/ui/form/FormItem";
+import { useUpdateProfileMutation } from "@/redux/api/profileApi";
+import showToast from "@/lib/toast";
 
 const schema = yup.object({
-  full_name: yup.string().required("Full name is required"),
+  firstname: yup.string().required("First name is required"),
+  lastname: yup.string().required("Last name is required"),
   country: yup.string().required("Country is required"),
-  phone: yup.string().required("Phone is required"),
+  mobile: yup.string().required("Phone is required"),
   address: yup.string().required("Address is required"),
   city: yup.string().required("City is required"),
   state: yup.string().required("State is required"),
   zip_code: yup.string().required("Zip code is required"),
 });
 
-const ProfileEditModal = ({ open, onClose, defaultValues }) => {
-  const [avatar, setAvatar] = useState(defaultValues?.avatar || null);
+const ProfileEditModal = ({
+  userInfo,
+  open,
+  onClose,
+  countries,
+  profileRefetch,
+}) => {
+  const [avatar, setAvatar] = useState(null);
+  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+
+  const countriesName = countries.map((country) => ({
+    label: country.country_name,
+    value: country.country_name,
+  }));
+
+  const {
+    email = "",
+    firstname = "",
+    lastname = "",
+    country = "",
+    address = "",
+    mobile = "",
+    city = "",
+    state = "",
+    zip_code = "",
+    mobile_code = "",
+    profileImage,
+  } = userInfo || {};
 
   const {
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
+    setValue,
+    reset,
   } = useForm({
     resolver: yupResolver(schema),
     mode: "onTouched",
-    defaultValues,
+    defaultValues: {},
   });
 
-  const onSubmit = (data) => {
-    console.log("PROFILE DATA:", {
-      ...data,
-      avatar,
+  useEffect(() => {
+    reset({
+      email,
+      firstname,
+      lastname,
+      country,
+      address,
+      mobile,
+      city,
+      state,
+      zip_code,
+      mobile_code: mobile_code,
+      // mobile_code: mobile_code.startsWith("+")
+      //   ? `${mobile_code}`
+      //   : `+${mobile_code}`,
     });
-    onClose();
+  }, []);
+
+  const onSubmit = async (data) => {
+    console.log(data);
+
+    try {
+      const formData = new FormData();
+
+      formData.append("address", data?.address);
+      formData.append("city", data?.city);
+      formData.append("country", data?.country);
+      formData.append("email", data?.email);
+      formData.append("firstname", data?.firstname);
+      formData.append("lastname", data?.lastname);
+      formData.append("mobile", data?.mobile);
+      formData.append("mobile_code", data?.mobile_code);
+      formData.append("state", data?.state);
+      formData.append("zip_code", data?.zip_code);
+      if (data?.image) {
+        formData.append("image", data?.image);
+      }
+
+      const result = await updateProfile(formData).unwrap();
+
+      showToast.success("Profile updated");
+      profileRefetch();
+
+      onClose();
+    } catch (err) {
+      showToast.error(err?.data?.message?.error[0] || "Something went wrong");
+    }
   };
 
   const handleAvatarChange = (file) => {
     const reader = new FileReader();
     reader.onload = () => setAvatar(reader.result);
     reader.readAsDataURL(file);
+
+    setValue("image", file);
+
     return false;
+  };
+
+  const handleCountryChange = (value) => {
+    const code = countries.find((country) => country.country_name === value);
+    setValue("mobile_code", code.mobile_code);
+    setValue("country", value);
   };
 
   return (
@@ -64,7 +145,7 @@ const ProfileEditModal = ({ open, onClose, defaultValues }) => {
           <div className="relative cursor-pointer">
             <Avatar
               size={96}
-              src={avatar}
+              src={avatar || profileImage}
               className="border-2 border-primary"
             />
             <span className="absolute bottom-0 right-0 bg-primary text-white rounded-full p-1">
@@ -79,7 +160,7 @@ const ProfileEditModal = ({ open, onClose, defaultValues }) => {
           {/* Full Name */}
           <FormItem required={true} errors={errors} label="First Name" name="">
             <Controller
-              name="first_name"
+              name="firstname"
               control={control}
               render={({ field }) => <Input {...field} size="large" />}
             />
@@ -87,47 +168,13 @@ const ProfileEditModal = ({ open, onClose, defaultValues }) => {
           {/* Last Name */}
           <FormItem required={true} errors={errors} label="Last Name" name="">
             <Controller
-              name="last_name"
+              name="lastname"
               control={control}
               render={({ field }) => <Input {...field} size="large" />}
             />
           </FormItem>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-          <FormItem required={true} errors={errors} label="Phone" name="phone">
-            <Space.Compact size="large" className="w-full">
-              {/* Currency Select */}
-
-              {/* Amount Input */}
-              <Controller
-                name="phoneNumber"
-                control={control}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    options={[
-                      { label: "+880", value: "+880" },
-                      { label: "+990", value: "+990" },
-                    ]}
-                    className="w-28!"
-                  />
-                )}
-              />
-              <Controller
-                name="phoneCode"
-                control={control}
-                render={({ field, fieldState }) => (
-                  <div className="w-full relative">
-                    <Input
-                      {...field}
-                      placeholder="Phone Number"
-                      type="number"
-                    />
-                  </div>
-                )}
-              />
-            </Space.Compact>
-          </FormItem>
           {/* Country */}
           <FormItem
             required={true}
@@ -141,15 +188,45 @@ const ProfileEditModal = ({ open, onClose, defaultValues }) => {
               render={({ field }) => (
                 <Select
                   {...field}
-                  options={[
-                    { label: "Bangladesh", value: "Bangladesh" },
-                    { label: "Saudi Arab", value: "+SoudiArab" },
-                  ]}
+                  onChange={handleCountryChange}
+                  options={[...countriesName]}
                   className="w-full"
                   size="large"
                 />
               )}
             />
+          </FormItem>
+          <FormItem required={true} errors={errors} label="Phone" name="mobile">
+            <Space.Compact size="large" className="w-full">
+              {/* Currency Select */}
+
+              {/* Amount Input */}
+              <Controller
+                name="mobile_code"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    options={[]}
+                    className="w-28! "
+                    open={false}
+                  />
+                )}
+              />
+              <Controller
+                name="mobile"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <div className="w-full relative">
+                    <Input
+                      {...field}
+                      placeholder="Phone Number"
+                      type="number"
+                    />
+                  </div>
+                )}
+              />
+            </Space.Compact>
           </FormItem>
         </div>
         {/* Phone */}
@@ -195,7 +272,7 @@ const ProfileEditModal = ({ open, onClose, defaultValues }) => {
 
         <PrimaryButton
           type="submit"
-          //   loading={isSubmitting}
+          loading={isLoading}
           className="w-full mt-4"
         >
           Save Changes
@@ -206,3 +283,23 @@ const ProfileEditModal = ({ open, onClose, defaultValues }) => {
 };
 
 export default ProfileEditModal;
+
+// const countryCodes = countries?.map((country) => {
+//   return {
+//     label: country.mobile_code,
+//     value: country.mobile_code,
+//   };
+
+//   // return {
+//   //   label: country.mobile_code?.startsWith("+")
+//   //     ? country.mobile_code
+//   //     : `+${country.mobile_code}`,
+//   //   value: country.mobile_code?.startsWith("+")
+//   //     ? country.mobile_code
+//   //     : `+${country.mobile_code}`,
+//   // };
+// });
+
+// const uniqueCountryCodes = [
+//   ...new Map(countryCodes.map((u) => [u.label, u])).values(),
+// ];

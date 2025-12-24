@@ -10,7 +10,7 @@ import * as yup from "yup";
 // import { login } from "@/lib/auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { token } from "@/lib/token";
+import { token, userInfo } from "@/lib/token";
 import showToast from "@/lib/toast";
 import { useLoginMutation } from "@/redux/api/authApi";
 import GuestOnly from "../_components/GuestOnly";
@@ -51,10 +51,14 @@ export default function LoginPage() {
     try {
       const result = await login(data).unwrap();
 
+      console.log(result);
+
       if (data.remember) {
         token.set(result.token, "local");
+        userInfo.set(result.user_info, "local");
       }
       token.set(result.token, "session");
+      userInfo.set(result.user_info, "session");
 
       showToast.success("Login Successful");
       router.push("/dashboard");

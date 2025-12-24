@@ -18,39 +18,57 @@ const ProfileItem = ({ property, value, icon }) => {
   );
 };
 
-const ProfileBody = () => {
+const ProfileBody = ({ userInfo }) => {
   const { isModalOpen, handleCancelModal, handleShowModal } = useModal();
   const [isRemoveBtnActive, setIsRemoveBtnActive] = useState(false);
   const [isChangeBtnActive, setIsChangeBtnActive] = useState(false);
 
+  const {
+    email = "",
+    firstname = "",
+    lastname = "",
+    country = "",
+    address = "",
+    mobile = "",
+    city = "",
+    state = "",
+    zip_code = "",
+    mobile_code = "",
+  } = userInfo;
+  const fullName = `${firstname} ${lastname}`;
+
   const profileData = [
     {
       property: "Full Name",
-      value: "Abdullah Al Jawad",
+      value: fullName,
     },
     {
       property: "Country",
-      value: "Bangladesh",
+      value: country,
     },
     {
       property: "Phone",
-      value: "+880 1676 446077",
+      value: `${mobile_code}${mobile}`,
+    },
+    {
+      property: "Email",
+      value: email,
     },
     {
       property: "Address",
-      value: "House 45, Road 12",
+      value: address,
     },
     {
       property: "City",
-      value: "Dhaka",
+      value: city,
     },
     {
       property: "State",
-      value: "Dhaka Division",
+      value: state,
     },
     {
       property: "Zip Code",
-      value: "1207",
+      value: zip_code,
     },
   ];
 
@@ -135,7 +153,11 @@ const ProfileBody = () => {
           </div>
         </Card>
       </div>
-      <ChangePasswordModal open={isModalOpen} onClose={handleCancelModal} />
+      <ChangePasswordModal
+        userInfo={userInfo}
+        open={isModalOpen}
+        onClose={handleCancelModal}
+      />
     </div>
   );
 };

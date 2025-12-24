@@ -1,22 +1,21 @@
 "use client";
-
-import { useAuth } from "@/contexts/AuthContextProvider";
 import { token } from "@/lib/token";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export function Protected({ children }) {
-  const { user, loading } = useAuth();
   const router = useRouter();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     if (!token.get()) {
-      router.push("/login");
+      router.replace("/login");
       return;
     }
-  }, [loading, user, router]);
+    (() => setMounted(true))();
+  }, [router]);
 
-  if (loading) return null;
+  if (!mounted) return null;
 
   return children;
 }

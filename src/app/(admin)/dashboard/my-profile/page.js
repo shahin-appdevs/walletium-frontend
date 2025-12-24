@@ -1,11 +1,14 @@
 "use client";
 import LucideIcon from "@/components/LucideIcon";
-import { Button, Flex, Form, Input, Select, Space } from "antd";
 import Image from "next/image";
 import ProfileBody from "./_components/ProfileBody";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
-import ProfileEditModal from "./_components/ProfileEditModal";
+// import ProfileEditModal from "./_components/ProfileEditModal";
 import useModal from "@/hooks/useModal";
+import { useGetProfileQuery } from "@/redux/api/profileApi";
+import { getImageUrl } from "@/utils/getImageUrl";
+import dynamic from "next/dynamic";
+import ProfileSkeleton from "./_components/ProfileSkeleton";
 
 const options = [
   {
@@ -34,8 +37,34 @@ const options = [
   },
 ];
 
+const ProfileEditModal = dynamic(
+  () => import("./_components/ProfileEditModal"),
+  { ssr: false }
+);
+
 const ProfilePage = () => {
   const { isModalOpen, handleCancelModal, handleShowModal } = useModal();
+
+  const {
+    data: profileData,
+    isLoading,
+    refetch,
+    isError,
+  } = useGetProfileQuery();
+
+  if (isLoading) return <ProfileSkeleton />;
+
+  // all countries
+  const countries = profileData?.countries?.map((country) => ({
+    country_name: country.name,
+    mobile_code: country.mobile_code,
+  }));
+
+  const userInfo = profileData?.user_info;
+  const profileImage = getImageUrl(profileData?.image_paths?.default_image);
+  const { email = "", firstname = "", lastname = "" } = userInfo || {};
+  const fullName = `${firstname} ${lastname}`;
+
   return (
     <div>
       <div
@@ -46,7 +75,7 @@ const ProfilePage = () => {
           <div className=" flex flex-col justify-center  items-center lg:items-end lg:flex-row gap-2 -translate-x-1/2 absolute -top-12 left-1/2 lg:left-0 lg:-translate-x-0 p-4">
             <div className="w-[110px] ">
               <Image
-                src={"https://i.pravatar.cc/70"}
+                src={profileImage}
                 alt="User"
                 height={110}
                 width={110}
@@ -54,7 +83,7 @@ const ProfilePage = () => {
               />
             </div>
             <div className="flex flex-col items-center lg:items-start">
-              <h3 className="text-lg lg:text-xl font-semibold">Abdullah </h3>
+              <h3 className="text-lg lg:text-xl font-semibold">{fullName} </h3>
               <div className="flex items-center gap-3">
                 <span className="flex items-center gap-1">
                   <LucideIcon
@@ -62,7 +91,7 @@ const ProfilePage = () => {
                     className="text-primary-500!"
                     size={14}
                   />
-                  <span className="font-medium">user@appdevs.net</span>
+                  <span className="font-medium">{email}</span>
                 </span>
               </div>
             </div>
@@ -74,8 +103,14 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
-      <ProfileBody />
-      <ProfileEditModal open={isModalOpen} onClose={handleCancelModal} />
+      <ProfileBody userInfo={userInfo} />
+      <ProfileEditModal
+        userInfo={{ ...userInfo, profileImage }}
+        countries={countries}
+        open={isModalOpen}
+        onClose={handleCancelModal}
+        profileRefetch={refetch}
+      />
     </div>
   );
 };

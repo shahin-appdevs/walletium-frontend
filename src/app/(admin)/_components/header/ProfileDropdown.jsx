@@ -9,7 +9,7 @@ import {
 } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { token } from "@/lib/token";
+import { token, userInfo } from "@/lib/token";
 import showToast from "@/lib/toast";
 
 export default function ProfileDropdown() {
@@ -17,6 +17,7 @@ export default function ProfileDropdown() {
 
   const handleLogout = () => {
     token.remove();
+    userInfo.remove();
     router.replace("/login");
     showToast.success("Logged out");
   };

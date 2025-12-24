@@ -24,15 +24,16 @@ const ChangePasswordModal = ({ open, onClose }) => {
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
+    setValue,
     reset,
   } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: {},
     mode: "onTouched",
   });
 
   const onSubmit = (data) => {
     console.log("PASSWORD DATA:", data);
-    reset();
     onClose();
   };
 

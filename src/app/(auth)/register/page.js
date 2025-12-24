@@ -11,9 +11,9 @@ import { useRouter } from "next/navigation";
 import showToast from "@/lib/toast";
 import GuestOnly from "../_components/GuestOnly";
 // import { useRegisterMutation } from "@/redux/api/authApi";
-import { continents, countries, languages } from "countries-list";
+import { countries } from "countries-list";
 import { useRegisterMutation } from "@/redux/api/authApi";
-import { token } from "@/lib/token";
+import { token, userInfo } from "@/lib/token";
 
 const { Option } = Select;
 
@@ -58,8 +58,6 @@ export default function RegisterPage() {
   });
 
   const onSubmit = async (data) => {
-    console.log("Register Data:", data);
-
     const formData = new FormData();
 
     formData.append("firstname", data.firstname);
@@ -73,14 +71,12 @@ export default function RegisterPage() {
       const result = await register(formData).unwrap();
 
       token.set(result?.token);
+      userInfo.set(result?.user_info);
 
       showToast.success("Registration successful");
-      router.push("/login");
+      router.replace("/dashboard");
     } catch (err) {
-      // console.log(err);
-
       const message = err?.data?.message?.error[0];
-
       showToast.error(message || "Registration failed");
     }
   };
@@ -258,7 +254,7 @@ export default function RegisterPage() {
             </div>
 
             {/* Submit */}
-            <PrimaryButton type="submit" className="w-full">
+            <PrimaryButton type="submit" className="w-full" loading={isLoading}>
               Register
             </PrimaryButton>
           </form>
