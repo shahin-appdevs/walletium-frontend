@@ -14,6 +14,8 @@ import GuestOnly from "../_components/GuestOnly";
 import { countries } from "countries-list";
 import { useRegisterMutation } from "@/redux/api/authApi";
 import { token, userInfo } from "@/lib/token";
+import { getErrorMessage } from "@/utils/getErrorMessage";
+import { getSuccessMessage } from "@/utils/getSuccessMessage";
 
 const { Option } = Select;
 
@@ -70,14 +72,20 @@ export default function RegisterPage() {
     try {
       const result = await register(formData).unwrap();
 
+      // store data
       token.set(result?.token);
       userInfo.set(result?.user_info);
-
-      showToast.success("Registration successful");
+      //success message
+      const successMessages = getSuccessMessage(result);
+      successMessages.forEach((message) => showToast.success(message));
+      //redirect
       router.replace("/dashboard");
-    } catch (err) {
-      const message = err?.data?.message?.error[0];
-      showToast.error(message || "Registration failed");
+    } catch (error) {
+      // error messages
+      const errMessages = getErrorMessage(error);
+      errMessages.forEach((err) => {
+        showToast.error(err);
+      });
     }
   };
 

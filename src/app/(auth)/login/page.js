@@ -15,6 +15,8 @@ import showToast from "@/lib/toast";
 import { useLoginMutation } from "@/redux/api/authApi";
 import GuestOnly from "../_components/GuestOnly";
 import ReCAPTCHA from "react-google-recaptcha";
+import { getErrorMessage } from "@/utils/getErrorMessage";
+import { getSuccessMessage } from "@/utils/getSuccessMessage";
 
 const loginSchema = yup.object({
   credentials: yup.string().required("Email or username is required"),
@@ -26,6 +28,7 @@ const loginSchema = yup.object({
 
 export default function LoginPage() {
   const [login, { isLoading }] = useLoginMutation();
+  const [recaptcha, setRecaptcha] = useState(null);
   const {
     control,
     handleSubmit,
@@ -43,14 +46,18 @@ export default function LoginPage() {
   const recaptchaRef = useRef();
 
   const recaptchaChange = (e) => {
-    console.log(e);
+    setRecaptcha(e);
   };
 
   const onSubmit = async (data) => {
     // console.log("Form Data:", data);
 
-    const formData = new FormData();
+    if (!recaptcha) {
+      showToast.warning("Please verify reCAPTCHA");
+      return;
+    }
 
+    const formData = new FormData();
     formData.append("credentials", data?.credentials);
     formData.append("password", data?.password);
 
@@ -58,6 +65,7 @@ export default function LoginPage() {
       const result = await login(data).unwrap();
       const loginInfo = result?.data;
 
+      // store data
       if (data.remember) {
         token.set(loginInfo?.token, "local");
         userInfo.set(result?.data?.user_info, "local");
@@ -65,10 +73,16 @@ export default function LoginPage() {
       token.set(loginInfo?.token, "session");
       userInfo.set(loginInfo?.user_info, "session");
 
-      showToast.success(result?.message?.success[0] || "Login Successful");
-      router.push("/dashboard");
+      // success message
+      const successMessages = getSuccessMessage(result);
+      successMessages.forEach((message) => showToast.success(message));
+      // redirect
+      router.replace("/dashboard");
     } catch (error) {
-      showToast.error("Incorrect email or password");
+      const errMessages = getErrorMessage(error);
+      errMessages.forEach((err) => {
+        showToast.error(err);
+      });
     }
   };
 

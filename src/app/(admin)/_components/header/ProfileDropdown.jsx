@@ -14,6 +14,8 @@ import showToast from "@/lib/toast";
 import { useLogoutMutation } from "@/redux/api/authApi";
 import useModal from "@/hooks/useModal";
 import ConfirmationModal from "@/components/ui/modal/ConfirmationModal";
+import { getErrorMessage } from "@/utils/getErrorMessage";
+import { getSuccessMessage } from "@/utils/getSuccessMessage";
 
 export default function ProfileDropdown() {
   const router = useRouter();
@@ -24,14 +26,21 @@ export default function ProfileDropdown() {
     try {
       const result = await logout().unwrap();
 
-      const success = result.message.success[0];
+      // success message
+      const successMessages = getSuccessMessage(result);
+      successMessages.forEach((message) => showToast.success(message));
 
-      showToast.success(success || "Logged out");
+      //remove store data
       token.remove();
       userInfo.remove();
+
+      //redirect
       router.replace("/login");
     } catch (error) {
-      console.log(error);
+      const errMessages = getErrorMessage(error);
+      errMessages.forEach((err) => {
+        showToast.error(err);
+      });
     }
   };
 
