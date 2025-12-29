@@ -4,6 +4,7 @@ const { baseApi } = require("./baseApi");
 
 const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    // login api
     login: builder.mutation({
       query: (credentials) => ({
         url: "/login",
@@ -13,7 +14,7 @@ const authApi = baseApi.injectEndpoints({
       }),
       // transformResponse: (response) => response.data,
     }),
-
+    // register api
     register: builder.mutation({
       query: (credentials) => ({
         url: "/register",
@@ -23,6 +24,8 @@ const authApi = baseApi.injectEndpoints({
       }),
       transformResponse: (response) => response.data,
     }),
+
+    // logout api
     logout: builder.mutation({
       query: () => ({
         url: "/user/logout",
@@ -30,6 +33,7 @@ const authApi = baseApi.injectEndpoints({
       }),
     }),
 
+    // send otp api
     sendForgetPasswordOtp: builder.mutation({
       query: (credentials) => ({
         url: "/password/forgot/find/user",
@@ -37,6 +41,21 @@ const authApi = baseApi.injectEndpoints({
         data: credentials,
       }),
       transformResponse: (response) => response.data,
+    }),
+
+    // kyc verification api
+    getKycInputFields: builder.query({
+      query: () => ({
+        url: "/authorize/kyc/input-fields",
+        method: "GET",
+      }),
+    }),
+    submitKycVerification: builder.mutation({
+      query: (verificationData) => ({
+        url: "/authorize/kyc/submit",
+        method: "POST",
+        data: verificationData,
+      }),
     }),
   }),
 });
@@ -46,4 +65,6 @@ export const {
   useRegisterMutation,
   useSendForgetPasswordOtpMutation,
   useLogoutMutation,
+  useGetKycInputFieldsQuery,
+  useSubmitKycVerificationMutation,
 } = authApi;

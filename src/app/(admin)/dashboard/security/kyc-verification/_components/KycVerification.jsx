@@ -9,6 +9,7 @@ import FormItem from "@/components/ui/form/FormItem";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import LucideIcon from "@/components/LucideIcon";
 import { useRouter } from "next/navigation";
+import DynamicVerificationForm from "./VerificationForm";
 
 const schema = yup.object({
   drivingLicense: yup.string().nullable(),
@@ -16,7 +17,8 @@ const schema = yup.object({
   nid: yup.string().nullable(),
 });
 
-const KYCVerificationForm = () => {
+const KYCVerification = ({ inputFields, verifyRefetch }) => {
+  const router = useRouter();
   const {
     control,
     handleSubmit,
@@ -31,8 +33,6 @@ const KYCVerificationForm = () => {
       nid: "",
     },
   });
-
-  const router = useRouter();
 
   const onSubmit = (data) => {
     const hasAny =
@@ -62,51 +62,11 @@ const KYCVerificationForm = () => {
         </p>
       </div>
 
-      <Form layout="vertical" onFinish={handleSubmit(onSubmit)}>
-        {/* Driving License */}
-        <FormItem name="drivingLicense" label="Driving License">
-          <Controller
-            name="drivingLicense"
-            control={control}
-            render={({ field }) => (
-              <Input
-                {...field}
-                size="large"
-                placeholder="Enter Driving License"
-              />
-            )}
-          />
-        </FormItem>
-
-        {/* Passport */}
-        <FormItem name="passport" label="Passport">
-          <Controller
-            name="passport"
-            control={control}
-            render={({ field }) => (
-              <Input {...field} size="large" placeholder="Type Here..." />
-            )}
-          />
-        </FormItem>
-
-        {/* NID */}
-        <FormItem name="nid" label="NID">
-          <Controller
-            name="nid"
-            control={control}
-            render={({ field }) => (
-              <Input {...field} size="large" placeholder="Type Here..." />
-            )}
-          />
-        </FormItem>
-        {errors?.root?.message && (
-          <p className="text-red-500 text-sm mb-3">{errors.root.message}</p>
-        )}
-        {/* Submit Button */}
-        <PrimaryButton type="submit" className="w-full ">
-          Submit
-        </PrimaryButton>
-      </Form>
+      {/* verification form */}
+      <DynamicVerificationForm
+        inputFields={inputFields}
+        verifyRefetch={verifyRefetch}
+      />
       {/* Back Link */}
       <div className="mt-4">
         <Link href="/dashboard">
@@ -124,4 +84,50 @@ const KYCVerificationForm = () => {
   );
 };
 
-export default KYCVerificationForm;
+export default KYCVerification;
+
+// <Form layout="vertical" onFinish={handleSubmit(onSubmit)}>
+//         {/* Driving License */}
+//         <FormItem name="drivingLicense" label="Driving License">
+//           <Controller
+//             name="drivingLicense"
+//             control={control}
+//             render={({ field }) => (
+//               <Input
+//                 {...field}
+//                 size="large"
+//                 placeholder="Enter Driving License"
+//               />
+//             )}
+//           />
+//         </FormItem>
+
+//         {/* Passport */}
+//         <FormItem name="passport" label="Passport">
+//           <Controller
+//             name="passport"
+//             control={control}
+//             render={({ field }) => (
+//               <Input {...field} size="large" placeholder="Type Here..." />
+//             )}
+//           />
+//         </FormItem>
+
+//         {/* NID */}
+//         <FormItem name="nid" label="NID">
+//           <Controller
+//             name="nid"
+//             control={control}
+//             render={({ field }) => (
+//               <Input {...field} size="large" placeholder="Type Here..." />
+//             )}
+//           />
+//         </FormItem>
+//         {errors?.root?.message && (
+//           <p className="text-red-500 text-sm mb-3">{errors.root.message}</p>
+//         )}
+//         {/* Submit Button */}
+//         <PrimaryButton type="submit" className="w-full ">
+//           Submit
+//         </PrimaryButton>
+//       </Form>

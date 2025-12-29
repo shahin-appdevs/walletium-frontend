@@ -6,7 +6,7 @@ import Link from "next/link";
 const VerificationComplete = () => {
   return (
     <div>
-      <Card className="w-full max-w-md rounded-2xl shadow-md dark:bg-neutral-900">
+      <Card className="w-full max-w-md rounded-2xl shadow-md dark:bg-neutral-900 ">
         <div className="flex flex-col items-center text-center gap-4">
           {/* Icon */}
           <div className="flex h-20 w-20 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-900">
