@@ -12,17 +12,22 @@ import { token } from "@/lib/token";
 import { useRouter } from "next/navigation";
 import { getUser } from "@/lib/user";
 import { Protected } from "../(auth)/_components/Protected";
+import LayoutSidebarSkeleton from "./_components/homepage/Layouts/LayoutSidebarSkeleton";
+import LayoutHeaderSkeleton from "./_components/homepage/Layouts/LayoutHeaderSkeleton";
 
 const LayoutSidebar = dynamic(
   () => import("./_components/homepage/Layouts/LayoutSidebar"),
   {
-    ssr: false,
+    // ssr: false,
+    loading: () => <LayoutSidebarSkeleton />,
   }
 );
+
 const LayoutHeader = dynamic(
   () => import("./_components/homepage/Layouts/LayoutHeader"),
   {
-    ssr: false,
+    // ssr: false,
+    loading: () => <LayoutHeaderSkeleton />,
   }
 );
 

@@ -106,3 +106,23 @@ p {
 .animate-slide-up {
   animation: slideUp 0.35s ease-out;
 }
+
+/* Chrome, Edge, Safari */
+.sidebar-main::-webkit-scrollbar {
+  width: 5px;
+}
+
+.sidebar-main::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-main::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+}
+
+/* Firefox */
+.sidebar-main {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+}

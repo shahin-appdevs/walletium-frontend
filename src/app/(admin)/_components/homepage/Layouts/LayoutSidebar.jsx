@@ -13,10 +13,8 @@ const { Sider } = Layout;
 const LayoutSidebar = ({ collapsed }) => {
   const { mode, handleNavigateRoutes, items, activeKey } = useSidebar();
 
-  console.log(activeKey);
-
   return (
-    <div className="hidden sidebar lg:block">
+    <div className="hidden sidebar lg:block ">
       {/* Desktop Sidebar */}
       <Sider
         collapsible
@@ -27,7 +25,7 @@ const LayoutSidebar = ({ collapsed }) => {
         theme={mode}
         collapsedWidth="0"
         // style={{ background: background }}
-        className="sticky! top-0! h-screen! overflow-y-auto overflow-x-hidden! sidebar-main transition-none!"
+        className="sticky! top-0! h-screen! overflow-y-auto overflow-x-hidden!  sidebar-main transition-none!"
       >
         <div className="p-2 lg:px-4  lg:py-8">
           <Link href={"/dashboard"} className="cursor-pointer">
