@@ -9,12 +9,22 @@ import { useTheme } from "@/contexts/ThemeContextProvider";
 import useDrawer from "@/hooks/useDrawer";
 import LayoutMobileSidebar from "./LayoutModileSidebar";
 import NotificationPopup from "../../header/NotificationPopup";
+import { useDashboardContext } from "@/contexts/DashboardProvider";
+import { getImageUrl } from "@/utils/getImageUrl";
 
 const LayoutHeader = ({ collapsed, setCollapsed }) => {
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const { mode, toggleTheme } = useTheme();
   const { isDrawerOpen, handleDrawerOpen, handleDrawerClose } = useDrawer();
   const [notificationOpen, setNotificationOpen] = useState(false);
+
+  const { dashboardData, userInfo } = useDashboardContext();
+
+  const profileImagePaths = dashboardData?.profile_image_paths;
+  const profileImage = dashboardData?.user_info?.image;
+  const profileImageUrl = profileImage
+    ? getImageUrl(`${profileImagePaths?.path_location}/${profileImage}`)
+    : getImageUrl(profileImagePaths?.default_image);
 
   return (
     <>
@@ -58,7 +68,7 @@ const LayoutHeader = ({ collapsed, setCollapsed }) => {
               <span className="text-neutral-800 dark:text-white ">
                 Welcome Back,
               </span>
-              <span className="ms-2">Md. Shahin Hossain</span>
+              <span className="ms-2">{userInfo?.fullname}</span>
             </div>
 
             <div>
@@ -136,18 +146,22 @@ const LayoutHeader = ({ collapsed, setCollapsed }) => {
                 <div className="group/profile relative">
                   <Image
                     onClick={() => setShowProfileDropdown(!showProfileDropdown)}
-                    src="https://i.pravatar.cc/60"
+                    src={profileImageUrl}
                     alt="User"
                     height={100}
                     width={100}
                     className="h-[35px] w-[35px] rounded-full object-cover"
                   />
                   <div className="translate-y-10  opacity-0 group-hover/profile:lg:translate-y-0 group-hover/profile:lg:opacity-100 group-hover/profile:lg:visible invisible duration-300 absolute top-8 right-0 z-30 py-4">
-                    <ProfileDropdown />
+                    <ProfileDropdown
+                      userInfo={{ ...userInfo, image: profileImageUrl }}
+                    />
                   </div>
                   {showProfileDropdown && (
                     <div className="lg:hidden absolute top-8 right-0 z-30 py-4">
-                      <ProfileDropdown />
+                      <ProfileDropdown
+                        userInfo={{ ...userInfo, image: profileImageUrl }}
+                      />
                     </div>
                   )}
                 </div>

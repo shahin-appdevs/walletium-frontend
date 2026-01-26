@@ -14,7 +14,7 @@ const GuestOnly = ({ children }) => {
       return;
     }
     (() => setLoading(false))(); //self call
-  }, [router]);
+  }, []);
 
   if (loading) return null;
 

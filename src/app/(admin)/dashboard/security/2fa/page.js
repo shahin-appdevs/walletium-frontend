@@ -3,6 +3,7 @@
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import useModal from "@/hooks/useModal";
 import showToast from "@/lib/toast";
+import { useGet2faInfoQuery } from "@/redux/api/authApi";
 import { Card, Input, Modal } from "antd";
 import { AlertTriangle, X } from "lucide-react";
 import Image from "next/image";
@@ -10,18 +11,22 @@ import Link from "next/link";
 
 export default function TwoFactorAuthPage() {
   const { isModalOpen, handleCancelModal, handleShowModal } = useModal();
+  const { data, isLoading } = useGet2faInfoQuery();
 
-  const secretKey = "5FAH7Y5FTRZJF2FA";
+  const secretKey = data?.qr_secrete;
 
-  const copyToClipboard = async (text) => {
+  const copyToClipboard = async () => {
     try {
-      navigator.clipboard.writeText(text);
+      navigator.clipboard.writeText(secretKey);
 
       showToast.success("Copied Successfully");
     } catch (err) {
       console.error("Field to copy", err);
     }
   };
+
+  // 2factor auth handler
+  const handle2FactorAuth = async () => {};
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -50,16 +55,11 @@ export default function TwoFactorAuthPage() {
         </div>
 
         <div className="flex justify-center mb-6">
-          <Image
-            src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=2FA"
-            alt="QR Code"
-            width={160}
-            height={160}
-          />
+          <Image src={data?.qr_code} alt="QR Code" width={160} height={160} />
         </div>
 
         <PrimaryButton onClick={handleShowModal} className="w-full">
-          Enable
+          {data?.status === 0 ? "Enable" : "Disable"}
         </PrimaryButton>
 
         <Modal
@@ -73,11 +73,11 @@ export default function TwoFactorAuthPage() {
               <AlertTriangle className="text-red-500" size={50} />
             </div>
 
-            <h2 className="text-center text-lg font-semibold text-neutral-900 ">
+            <h2 className="text-center text-lg font-semibold text-neutral-900 dark:text-neutral-100">
               Are you sure?
             </h2>
 
-            <p className="mt-2 text-center text-sm text-gray-500">
+            <p className="mt-2 text-center text-sm text-neutral-500 dark:text-neutral-200">
               To Enable 2 factor authentication (Powered by google)?
             </p>
 
@@ -87,12 +87,12 @@ export default function TwoFactorAuthPage() {
                 //   onClick={onConfirm}
                 className="w-full  py-2 bg-red-500! duration-300 rounded-lg text-white hover:bg-red-600! cursor-pointer "
               >
-                Enable
+                {data?.status === 0 ? "Enable" : "Disable"}
               </button>
 
               <button
                 onClick={handleCancelModal}
-                className="w-full rounded-lg border border-gray-200 py-2  duration-300 text-sm font-medium text-gray-600 hover:bg-gray-50 cursor-pointer"
+                className="w-full rounded-lg border border-gray-200 py-2  duration-300 text-sm font-medium text-gray-600 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-neutral-600 cursor-pointer"
               >
                 Cancel
               </button>

@@ -6,11 +6,14 @@ import useToggleShow from "@/hooks/useToggleShow";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import StatsSkeleton from "./StatsSkeleton";
 import { useEffect, useState } from "react";
+import { useDashboardContext } from "@/contexts/DashboardProvider";
 
 const Stats = () => {
   const { toggleShow, setToggleShow } = useToggleShow();
   const [showSidebar, setShowSidebar] = useState(true);
+  const { wallets } = useDashboardContext();
 
+  // show sidebar skeleton condition
   useEffect(() => {
     const timer = setTimeout(() => setShowSidebar(false), 1000);
     return () => clearTimeout(timer);
@@ -63,15 +66,8 @@ const Stats = () => {
           </div>
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-            {currencyData.map((item, index) => (
-              <CurrencyCard
-                key={index}
-                icon={item.icon}
-                name={item.name}
-                amount={item.amount}
-                bg={item.bg}
-                iconBg={item.iconBg}
-              />
+            {wallets?.map((item, index) => (
+              <CurrencyCard key={index} item={item} />
             ))}
           </div>
         </div>

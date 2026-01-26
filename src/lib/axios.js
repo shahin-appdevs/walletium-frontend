@@ -2,11 +2,11 @@ import axios from "axios";
 import { token, userInfo } from "./token";
 
 const axiosPublic = axios.create({
-  baseURL: `${process.env.NEXT_PUBLIC_API_URL}/v1`,
+  baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}/v1`,
 });
 
 const axiosPrivate = axios.create({
-  baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api/v1`,
+  baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1`,
 });
 
 //  Attach token to every request
@@ -29,7 +29,7 @@ axiosPrivate.interceptors.response.use(
       window.location.href = "/login";
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export { axiosPublic, axiosPrivate };

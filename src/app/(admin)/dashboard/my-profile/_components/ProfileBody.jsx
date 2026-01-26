@@ -40,11 +40,11 @@ const ProfileBody = ({ userInfo }) => {
   const profileData = [
     {
       property: "Full Name",
-      value: fullName,
+      value: fullName || "N/A",
     },
     {
       property: "Country",
-      value: country,
+      value: country || "N/A",
     },
     {
       property: "Phone",
@@ -52,23 +52,23 @@ const ProfileBody = ({ userInfo }) => {
     },
     {
       property: "Email",
-      value: email,
+      value: email || "N/A",
     },
     {
       property: "Address",
-      value: address,
+      value: address || "N/A",
     },
     {
       property: "City",
-      value: city,
+      value: city || "N/A",
     },
     {
       property: "State",
-      value: state,
+      value: state || "N/A",
     },
     {
       property: "Zip Code",
-      value: zip_code,
+      value: zip_code || "N/A",
     },
   ];
 

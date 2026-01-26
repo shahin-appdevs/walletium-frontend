@@ -73,6 +73,14 @@ export default function LoginPage() {
       token.set(loginInfo?.token, "session");
       userInfo.set(loginInfo?.user_info, "session");
 
+      // const { email_verified, kyc_verified } = dashboardData?.user_info || {};
+
+      // if (email_verified === 0) {
+      //   router.push("/verify-email");
+      // } else if (kyc_verified === 0) {
+      //   router.push("/kyc-onboarding");
+      // }
+
       // success message
       const successMessages = getSuccessMessage(result);
       successMessages.forEach((message) => showToast.success(message));

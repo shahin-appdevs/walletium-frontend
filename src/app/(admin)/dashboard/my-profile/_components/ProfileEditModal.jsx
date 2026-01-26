@@ -10,16 +10,18 @@ import LucideIcon from "@/components/LucideIcon";
 import FormItem from "@/components/ui/form/FormItem";
 import { useUpdateProfileMutation } from "@/redux/api/profileApi";
 import showToast from "@/lib/toast";
+import { useDashboardContext } from "@/contexts/DashboardProvider";
+import { getSuccessMessage } from "@/utils/getSuccessMessage";
 
 const schema = yup.object({
   firstname: yup.string().required("First name is required"),
   lastname: yup.string().required("Last name is required"),
   country: yup.string().required("Country is required"),
   mobile: yup.string().required("Phone is required"),
-  address: yup.string().required("Address is required"),
-  city: yup.string().required("City is required"),
-  state: yup.string().required("State is required"),
-  zip_code: yup.string().required("Zip code is required"),
+  address: yup.string().optional(),
+  city: yup.string().optional(),
+  state: yup.string().optional(),
+  zip_code: yup.string().optional(),
 });
 
 const ProfileEditModal = ({
@@ -31,6 +33,7 @@ const ProfileEditModal = ({
 }) => {
   const [avatar, setAvatar] = useState(null);
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+  const { dashboardRefetch } = useDashboardContext();
 
   const countriesName = countries.map((country) => ({
     label: country.country_name,
@@ -82,8 +85,6 @@ const ProfileEditModal = ({
   }, []);
 
   const onSubmit = async (data) => {
-    console.log(data);
-
     try {
       const formData = new FormData();
 
@@ -103,8 +104,11 @@ const ProfileEditModal = ({
 
       const result = await updateProfile(formData).unwrap();
 
-      showToast.success("Profile updated");
+      const successMessages = getSuccessMessage(result);
+      successMessages.forEach((message) => showToast.success(message));
+
       profileRefetch();
+      dashboardRefetch();
 
       onClose();
     } catch (err) {
@@ -135,7 +139,7 @@ const ProfileEditModal = ({
       footer={null}
       centered
       width={640}
-      closeIcon={false}
+      closeIcon={true}
     >
       <h3 className="text-lg font-semibold mb-6">Edit Profile</h3>
 

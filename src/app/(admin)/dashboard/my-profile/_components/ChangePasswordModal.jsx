@@ -6,6 +6,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import FormItem from "@/components/ui/form/FormItem";
+import { useUpdatePasswordMutation } from "@/redux/api/profileApi";
+import { getErrorMessage } from "@/utils/getErrorMessage";
+import { getSuccessMessage } from "@/utils/getSuccessMessage";
+import showToast from "@/lib/toast";
+import { LoaderCircle } from "lucide-react";
 
 const schema = yup.object({
   currentPassword: yup.string().required("Current password is required"),
@@ -20,6 +25,7 @@ const schema = yup.object({
 });
 
 const ChangePasswordModal = ({ open, onClose }) => {
+  const [updatePassword, { data, isLoading }] = useUpdatePasswordMutation();
   const {
     control,
     handleSubmit,
@@ -32,8 +38,27 @@ const ChangePasswordModal = ({ open, onClose }) => {
     mode: "onTouched",
   });
 
-  const onSubmit = (data) => {
-    console.log("PASSWORD DATA:", data);
+  const onSubmit = async (data) => {
+    try {
+      const formData = new FormData();
+
+      formData.append("current_password", data?.currentPassword);
+      formData.append("password", data?.newPassword);
+      formData.append("password_confirmation", data?.newPassword);
+
+      const result = await updatePassword(formData).unwrap();
+
+      const successMessages = getSuccessMessage(result);
+      successMessages.forEach((message) => showToast.success(message));
+
+      reset({});
+    } catch (error) {
+      const errors = getErrorMessage(error);
+      errors.forEach((err) => {
+        showToast.error(err);
+      });
+    }
+
     onClose();
   };
 
@@ -110,7 +135,11 @@ const ChangePasswordModal = ({ open, onClose }) => {
         </FormItem>
 
         <PrimaryButton type="submit" className="w-full mt-4">
-          Change
+          {isSubmitting ? (
+            <LoaderCircle className="animate-spin text-white" />
+          ) : (
+            "Change"
+          )}
         </PrimaryButton>
       </Form>
     </Modal>

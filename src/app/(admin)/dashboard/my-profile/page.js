@@ -9,6 +9,7 @@ import { useGetProfileQuery } from "@/redux/api/profileApi";
 import { getImageUrl } from "@/utils/getImageUrl";
 import dynamic from "next/dynamic";
 import ProfileSkeleton from "./_components/ProfileSkeleton";
+import { useDashboardContext } from "@/contexts/DashboardProvider";
 
 const options = [
   {
@@ -39,7 +40,7 @@ const options = [
 
 const ProfileEditModal = dynamic(
   () => import("./_components/ProfileEditModal"),
-  { ssr: false }
+  { ssr: false },
 );
 
 const ProfilePage = () => {
@@ -61,7 +62,14 @@ const ProfilePage = () => {
   }));
 
   const userInfo = profileData?.user_info;
-  const profileImage = getImageUrl(profileData?.image_paths?.default_image);
+  // const profileImage = getImageUrl(profileData?.image_paths?.default_image);
+
+  const profileImagePaths = profileData?.image_paths;
+  const profileImage = profileData?.user_info?.image;
+  const profileImageUrl = profileImage
+    ? getImageUrl(`${profileImagePaths?.path_location}/${profileImage}`)
+    : getImageUrl(profileImagePaths?.default_image);
+
   const { email = "", firstname = "", lastname = "" } = userInfo || {};
   const fullName = `${firstname} ${lastname}`;
 
@@ -75,11 +83,11 @@ const ProfilePage = () => {
           <div className=" flex flex-col justify-center  items-center lg:items-end lg:flex-row gap-2 -translate-x-1/2 absolute -top-12 left-1/2 lg:left-0 lg:-translate-x-0 p-4">
             <div className="w-[110px] ">
               <Image
-                src={profileImage}
+                src={profileImageUrl}
                 alt="User"
                 height={110}
                 width={110}
-                className="rounded-xl bg-white dark:bg-slate-900 p-1"
+                className="rounded-xl bg-white dark:bg-slate-900 p-1 max-w-[100px] h-[100px] aspect-square object-contain"
               />
             </div>
             <div className="flex flex-col items-center lg:items-start">
@@ -98,14 +106,14 @@ const ProfilePage = () => {
           </div>
           <div className="absolute right-3 top-2 lg:top-1/2 lg:-translate-y-1/2">
             <PrimaryButton onClick={handleShowModal} icon="Edit" iconSize={16}>
-              Edit Profile
+              <span className="hidden md:flex">Edit Profile</span>
             </PrimaryButton>
           </div>
         </div>
       </div>
       <ProfileBody userInfo={userInfo} />
       <ProfileEditModal
-        userInfo={{ ...userInfo, profileImage }}
+        userInfo={{ ...userInfo, profileImage: profileImageUrl }}
         countries={countries}
         open={isModalOpen}
         onClose={handleCancelModal}

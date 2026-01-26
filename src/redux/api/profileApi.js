@@ -1,4 +1,4 @@
-const { baseApi } = require("./baseApi");
+import { baseApi } from "./baseApi";
 
 const profileApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -16,7 +16,18 @@ const profileApi = baseApi.injectEndpoints({
         data: profileData,
       }),
     }),
+    updatePassword: builder.mutation({
+      query: (passwordInfo) => ({
+        url: "/user/profile/password/update",
+        method: "POST",
+        data: passwordInfo,
+      }),
+    }),
   }),
 });
 
-export const { useGetProfileQuery, useUpdateProfileMutation } = profileApi;
+export const {
+  useGetProfileQuery,
+  useUpdateProfileMutation,
+  useUpdatePasswordMutation,
+} = profileApi;

@@ -14,13 +14,14 @@ import { getUser } from "@/lib/user";
 import { Protected } from "../(auth)/_components/Protected";
 import LayoutSidebarSkeleton from "./_components/homepage/Layouts/LayoutSidebarSkeleton";
 import LayoutHeaderSkeleton from "./_components/homepage/Layouts/LayoutHeaderSkeleton";
+import DashboardProvider from "@/contexts/DashboardProvider";
 
 const LayoutSidebar = dynamic(
   () => import("./_components/homepage/Layouts/LayoutSidebar"),
   {
     // ssr: false,
     loading: () => <LayoutSidebarSkeleton />,
-  }
+  },
 );
 
 const LayoutHeader = dynamic(
@@ -28,20 +29,15 @@ const LayoutHeader = dynamic(
   {
     // ssr: false,
     loading: () => <LayoutHeaderSkeleton />,
-  }
+  },
 );
 
 const { Content } = Layout;
 
 export default function DashboardLayout({ children }) {
   const [collapsed, setCollapsed] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
-    if (!token.get()) {
-      return router.replace("/login");
-    }
-
     getUser()
       .then((data) => data)
       .catch(() => token.remove())
@@ -50,24 +46,26 @@ export default function DashboardLayout({ children }) {
 
   return (
     <Protected>
-      <Layout style={{ minHeight: "100vh" }}>
-        <LayoutSidebar collapsed={collapsed} setCollapsed={setCollapsed} />
-        <Layout>
-          <LayoutHeader collapsed={collapsed} setCollapsed={setCollapsed} />
+      <DashboardProvider>
+        <Layout style={{ minHeight: "100vh" }}>
+          <LayoutSidebar collapsed={collapsed} setCollapsed={setCollapsed} />
+          <Layout>
+            <LayoutHeader collapsed={collapsed} setCollapsed={setCollapsed} />
 
-          {/* Main content */}
-          <Content
-            style={{
-              margin: "24px 16px",
-              // padding: 24,
-              // background: "#fff",
-              overflow: "hidden",
-            }}
-          >
-            {children}
-          </Content>
+            {/* Main content */}
+            <Content
+              style={{
+                margin: "24px 16px",
+                // padding: 24,
+                // background: "#fff",
+                overflow: "hidden",
+              }}
+            >
+              {children}
+            </Content>
+          </Layout>
         </Layout>
-      </Layout>
+      </DashboardProvider>
     </Protected>
   );
 }
