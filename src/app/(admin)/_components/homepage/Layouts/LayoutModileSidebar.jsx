@@ -41,6 +41,8 @@ const LayoutMobileSidebar = ({ isDrawerOpen, handleDrawerClose }) => {
               height={100}
               width={200}
               alt="Logo"
+              decoding="async"
+              loading="eager"
             />
           </div>
           {/* <div

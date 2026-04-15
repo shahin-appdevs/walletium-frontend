@@ -16,6 +16,7 @@ import useModal from "@/hooks/useModal";
 import ConfirmationModal from "@/components/ui/modal/ConfirmationModal";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 import { getSuccessMessage } from "@/utils/getSuccessMessage";
+import Image from "next/image";
 
 export default function ProfileDropdown({ userInfo: userProfileInfo }) {
   const router = useRouter();
@@ -51,10 +52,13 @@ export default function ProfileDropdown({ userInfo: userProfileInfo }) {
         href={"/dashboard/my-profile"}
         className="flex items-center gap-3 p-2  hover:bg-gray-100! dark:hover:bg-primary-500! rounded-xl  "
       >
-        <img
+        <Image
           src={userProfileInfo?.image}
           className="w-12 h-12 rounded-full"
           alt="profile"
+          height={50}
+          width={50}
+          decoding="async"
         />
         <div>
           <h4 className="font-semibold text-gray-800 dark:text-neutral-50">

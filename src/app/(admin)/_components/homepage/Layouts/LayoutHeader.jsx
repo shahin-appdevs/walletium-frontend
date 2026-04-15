@@ -1,6 +1,6 @@
 "use client";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import LucideIcon from "@/components/LucideIcon";
 import { Header } from "antd/es/layout/layout";
@@ -34,7 +34,6 @@ const LayoutHeader = ({ collapsed, setCollapsed }) => {
           display: "flex",
           alignItems: "center",
           background: mode === "dark" ? "oklch(20.8% 0.042 265.755)" : "#fff",
-          // boxShadow: "0 2px 8px #f0f1f2",
           position: "sticky",
           top: "0",
           zIndex: "30",

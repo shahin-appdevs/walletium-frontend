@@ -1,12 +1,13 @@
 import axios from "axios";
 import { token, userInfo } from "./token";
+import { ENV } from "@/config/env";
 
 const axiosPublic = axios.create({
-  baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}/v1`,
+  baseURL: `${ENV.API_URL}`,
 });
 
 const axiosPrivate = axios.create({
-  baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1`,
+  baseURL: `${ENV.API_URL}`,
 });
 
 //  Attach token to every request

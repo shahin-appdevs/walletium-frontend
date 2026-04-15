@@ -1,4 +1,3 @@
-import { token } from "@/lib/token";
 import { useGetDashboardQuery } from "@/redux/api/dashboardApi";
 import { useRouter } from "next/navigation";
 import React, { createContext, useContext, useEffect, useState } from "react";

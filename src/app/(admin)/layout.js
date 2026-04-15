@@ -7,9 +7,7 @@ import { useEffect, useState } from "react";
 // import LayoutSidebar from "./_components/homepage/Layouts/LayoutSidebar";
 
 import dynamic from "next/dynamic";
-import { ToastContainer } from "react-toastify";
 import { token } from "@/lib/token";
-import { useRouter } from "next/navigation";
 import { getUser } from "@/lib/user";
 import { Protected } from "../(auth)/_components/Protected";
 import LayoutSidebarSkeleton from "./_components/homepage/Layouts/LayoutSidebarSkeleton";

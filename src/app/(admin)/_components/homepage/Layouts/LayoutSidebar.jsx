@@ -36,6 +36,8 @@ const LayoutSidebar = ({ collapsed }) => {
               height={100}
               width={200}
               alt="Logo"
+              decoding="async"
+              loading="eager"
             />
           </Link>
         </div>
