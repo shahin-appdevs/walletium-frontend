@@ -11,8 +11,12 @@ import LayoutMobileSidebar from "./LayoutModileSidebar";
 import NotificationPopup from "../../header/NotificationPopup";
 import { useDashboardContext } from "@/contexts/DashboardProvider";
 import { getImageUrl } from "@/utils/getImageUrl";
+import LanguageSwitcher from "@/components/partials/LanguageSwitcher";
+import { useTranslations } from "next-intl";
 
 const LayoutHeader = ({ collapsed, setCollapsed }) => {
+  const t = useTranslations("Dashboard.header");
+
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const { mode, toggleTheme } = useTheme();
   const { isDrawerOpen, handleDrawerOpen, handleDrawerClose } = useDrawer();
@@ -65,7 +69,7 @@ const LayoutHeader = ({ collapsed, setCollapsed }) => {
             <div className="lg:hidden"></div>
             <div className="hidden lg:block">
               <span className="text-neutral-800 dark:text-white ">
-                Welcome Back,
+                {t("welcomeText")},
               </span>
               <span className="ms-2">{userInfo?.fullname}</span>
             </div>
@@ -101,11 +105,12 @@ const LayoutHeader = ({ collapsed, setCollapsed }) => {
                 </button>
 
                 {/* Globe */}
-                <LucideIcon
+                {/* <LucideIcon
                   name="Globe"
                   className="text-[#002d25] dark:text-white cursor-pointer hover:opacity-70 transition"
                   size={24}
-                />
+                /> */}
+                <LanguageSwitcher />
 
                 {/* Notification with dot */}
                 <div className="group/notification relative cursor-pointer ">

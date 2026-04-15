@@ -26,7 +26,7 @@ const PrimaryButton = ({
             bg-linear-to-r from-[#0EBE98] via-[#50C631] to-[#0EBE98]
             transform translate-x-0
             transition-transform duration-1000 ease-in-out
-            group-hover/primary-btn:-translate-x-1/2
+            group-hover/primary-btn:-translate-x-1/2 rtl:group-hover/primary-btn:translate-x-1/2
             `}
       ></span>
 
