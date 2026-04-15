@@ -21,7 +21,8 @@
                 "confirmationToDisable": "To disable 2 factor authentication (Powered by Google)?",
                 "cancel": "Cancel",
                 "copy": "Copy",
-                "copiedSuccess": "Copied Successfully"
+                "copiedSuccess": "Copied Successfully",
+                "somethingWentWrong": "Something went wrong"
             }
         }
     },

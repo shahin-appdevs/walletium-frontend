@@ -21,7 +21,8 @@
                 "confirmationToDisable": "لتعطيل المصادقة الثنائية (بدعم من غوغل)؟",
                 "cancel": "إلغاء",
                 "copy": "نسخ",
-                "copiedSuccess": "تم النسخ بنجاح"
+                "copiedSuccess": "تم النسخ بنجاح",
+                "somethingWentWrong": "حدث خطأ ما"
             }
         }
     },

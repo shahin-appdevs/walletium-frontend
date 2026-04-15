@@ -58,8 +58,18 @@ const authApi = baseApi.injectEndpoints({
       }),
       transformResponse: (res) => res.data,
     }),
-    //2fa verify api
-    submitKycVerification: builder.mutation({
+
+    //2fa status update post api
+    update2faStatus: builder.mutation({
+      query: (status) => ({
+        url: "/authorize/google/2fa/status-update",
+        method: "POST",
+        data: status,
+      }),
+    }),
+
+    //2fa verify post api
+    submit2faVerification: builder.mutation({
       query: (verifyData) => ({
         url: "/authorize/google/2fa/verify",
         method: "POST",
@@ -85,4 +95,5 @@ export const {
   useGetKycInputFieldsQuery,
   useSubmitKycVerificationMutation,
   useGet2faInfoQuery,
+  useUpdate2faStatusMutation,
 } = authApi;

@@ -11,7 +11,7 @@ import { useTranslations } from "next-intl";
 
 export default function TwoFactorAuthClient() {
   const t = useTranslations("Dashboard.security.2fa");
-  const { data, isLoading } = useGet2faInfoQuery();
+  const { data, isLoading, refetch } = useGet2faInfoQuery();
 
   if (isLoading) return <TwoFactorSkeleton />;
 
@@ -29,7 +29,7 @@ export default function TwoFactorAuthClient() {
           <Image src={data?.qr_code} alt="QR Code" width={160} height={160} />
         </div>
 
-        <EnableDisableModal status={data?.status} />
+        <EnableDisableModal status={data?.status} refetch2faStatus={refetch} />
       </Card>
 
       {/* RIGHT CARD */}

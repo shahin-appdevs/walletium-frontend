@@ -37,6 +37,18 @@ const showToast = {
   info: (msg, options = {}) => toast.info(msg, { ...baseConfig, ...options }),
   warning: (msg, options = {}) =>
     toast.warning(msg, { ...baseConfig, ...options }),
+
+  // pass the whole err object
+  apiError: (err, fallback = "Something went wrong") => {
+    const message =
+      err?.data?.message?.error?.[0] ||
+      err?.data?.message ||
+      err?.data?.error ||
+      err?.message ||
+      fallback;
+
+    toast.error(message, { ...baseConfig });
+  },
 };
 
 export default showToast;
