@@ -36,7 +36,6 @@ const PrimaryButton = ({
         ) : (
           children
         )}
-
         {icon && (
           <LucideIcon name={icon} size={iconSize} className={iconClassName} />
         )}
