@@ -1,26 +1,20 @@
 "use client";
 import { createSlice } from "@reduxjs/toolkit";
 
-const getTwoFactorStatus = () => {
-  if (typeof window !== "undefined") {
-    return localStorage.getItem("twoFactorStatus");
-  }
-  return null;
-};
-
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     user: null,
     token: null,
     status: "idle",
-    twoFactorStatus: getTwoFactorStatus(),
+    twoFactorStatus: 0,
   },
   reducers: {
     setUser: (state, action) => {
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.status = "authenticated";
+      state.twoFactorStatus = action.payload.twoFactorStatus;
     },
 
     clearUser: (state) => {

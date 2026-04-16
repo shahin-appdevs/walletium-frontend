@@ -17,6 +17,8 @@ import GuestOnly from "../_components/GuestOnly";
 import ReCAPTCHA from "react-google-recaptcha";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 import { getSuccessMessage } from "@/utils/getSuccessMessage";
+import { useDispatch } from "react-redux";
+import { setTwoFactorStatus } from "@/redux/features/authSlice";
 
 const loginSchema = yup.object({
   credentials: yup.string().required("Email or username is required"),
@@ -29,6 +31,7 @@ const loginSchema = yup.object({
 export default function LoginPage() {
   const [login, { isLoading }] = useLoginMutation();
   const [recaptcha, setRecaptcha] = useState(null);
+  const dispatch = useDispatch();
   const {
     control,
     handleSubmit,
@@ -65,6 +68,8 @@ export default function LoginPage() {
       const result = await login(data).unwrap();
       const loginInfo = result?.data;
 
+      console.log(loginInfo);
+
       // store data
       if (data.remember) {
         token.set(loginInfo?.token, "local");
@@ -73,7 +78,8 @@ export default function LoginPage() {
       token.set(loginInfo?.token, "session");
       userInfo.set(loginInfo?.user_info, "session");
 
-      // const { email_verified, kyc_verified } = dashboardData?.user_info || {};
+      const { email_verified, kyc_verified, two_factor_status } =
+        loginInfo?.user_info || {};
 
       // if (email_verified === 0) {
       //   router.push("/verify-email");
@@ -84,6 +90,13 @@ export default function LoginPage() {
       // success message
       const successMessages = getSuccessMessage(result);
       successMessages.forEach((message) => showToast.success(message));
+
+      if (two_factor_status === 1) {
+        dispatch(setTwoFactorStatus(two_factor_status));
+        router.push("/2fa-verify");
+        return;
+      }
+
       // redirect
       router.replace("/dashboard");
     } catch (error) {

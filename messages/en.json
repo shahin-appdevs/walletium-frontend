@@ -53,5 +53,19 @@
             "required": "This field is required",
             "invalidEmail": "Please enter a valid email"
         }
+    },
+    "Auth": {
+        "2fa": {
+            "title": "Enter OTP",
+            "description": "Please enter the 6-digit verification code.",
+            "otp_required": "OTP must be 6 digits",
+            "six_digits_required": "Please enter all 6 digits",
+            "verify_button": "Verify OTP",
+            "already_have_account": "Already Have An Account?",
+            "login_now": "Login Now",
+            "verify_success": "OTP verified successfully",
+            "verify_failed": "Failed to verify OTP",
+            "must_be_number": "Must be a number"
+        }
     }
 }

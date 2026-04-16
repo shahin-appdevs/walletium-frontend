@@ -10,18 +10,35 @@ import * as yup from "yup";
 import { useSubmit2faVerifyCodeMutation } from "@/redux/api/authApi";
 import showToast from "@/lib/toast";
 import { useRouter } from "next/navigation";
-
-const schema = yup.object().shape({
-  otp: yup
-    .array()
-    .of(yup.string().matches(/^\d$/, "Must be a number").required("Required"))
-    .length(6, "OTP must be 6 digits"),
-});
+import { useDispatch } from "react-redux";
+import { setTwoFactorStatus } from "@/redux/features/authSlice";
+import { useTranslations } from "next-intl";
+import { useMemo } from "react";
 
 export default function TwoFactorVerify() {
+  const t = useTranslations("Auth.2fa");
+  const tc = useTranslations("common.validation");
+
+  const schema = useMemo(
+    () =>
+      yup.object().shape({
+        otp: yup
+          .array()
+          .of(
+            yup
+              .string()
+              .matches(/^\d$/, t("must_be_number"))
+              .required(tc("required")),
+          )
+          .length(6, t("otp_required")),
+      }),
+    [t, tc],
+  );
+
   const [resendOtpTimer, setResendOtpTimer] = useState(0);
   const [pass, setPass] = useState([]);
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const [submit2faVerifyCode, { isLoading }] = useSubmit2faVerifyCodeMutation();
 
@@ -55,10 +72,11 @@ export default function TwoFactorVerify() {
 
     try {
       const res = await submit2faVerifyCode({ code: otp }).unwrap();
-      showToast.apiSuccess(res, "OTP verified successfully");
+      dispatch(setTwoFactorStatus(0));
+      showToast.apiSuccess(res, t("verify_success"));
       router.push("/dashboard");
     } catch (error) {
-      showToast.apiError(error, "Failed to verify OTP");
+      showToast.apiError(error, t("verify_failed"));
     }
   };
 
@@ -111,12 +129,10 @@ export default function TwoFactorVerify() {
         </div>
 
         <Typography.Title level={3} className="text-center mb-6">
-          Enter OTP
+          {t("title")}
         </Typography.Title>
 
-        <p className="text-center text-sm mb-4">
-          Please enter the 6-digit verification code.
-        </p>
+        <p className="text-center text-sm mb-4">{t("description")}</p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <Controller
@@ -148,7 +164,7 @@ export default function TwoFactorVerify() {
           />
           {errors.otp && (
             <p className="text-red-500 text-sm mt-1 text-center">
-              {errors.otp.message || "Please enter all 6 digits"}
+              {errors.otp.message || t("six_digits_required")}
             </p>
           )}
 
@@ -159,13 +175,13 @@ export default function TwoFactorVerify() {
             disabled={isLoading}
             loading={isLoading}
           >
-            Verify OTP
+            {t("verify_button")}
           </Button>
 
           <p className="text-center text-gray-500 text-sm mt-4">
-            Already Have An Account?{" "}
+            {t("already_have_account")}{" "}
             <Link href="/login" className="text-primary-500 hover:underline">
-              Login Now
+              {t("login_now")}
             </Link>
           </p>
         </form>

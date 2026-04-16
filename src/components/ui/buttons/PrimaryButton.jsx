@@ -17,6 +17,7 @@ const PrimaryButton = ({
     <button
       type={type}
       onClick={onClick}
+      disabled={loading}
       className={`${className} group/primary-btn relative overflow-hidden cursor-pointer rounded-xl px-5 py-2 text-white font-medium flex items-center justify-center`}
       {...props}
     >
