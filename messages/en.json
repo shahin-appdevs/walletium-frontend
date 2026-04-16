@@ -28,5 +28,30 @@
     },
     "Login": {
         "Login": "Login"
+    },
+    "common": {
+        "action": {
+            "loading": "Loading...",
+            "cancel": "Cancel",
+            "close": "Close",
+            "save": "Save"
+        },
+        "success": {
+            "default": "Operation completed successfully",
+            "profileUpdated": "Profile updated successfully",
+            "logout": "Logged out successfully",
+            "orderPlaced": "Your order has been placed"
+        },
+        "error": {
+            "default": "Something went wrong. Please try again.",
+            "network": "Network error. Please check your connection.",
+            "unauthorized": "You are not authorized to do this.",
+            "invalidCredentials": "Invalid email or password.",
+            "serverError": "Server error occurred. Please try later."
+        },
+        "validation": {
+            "required": "This field is required",
+            "invalidEmail": "Please enter a valid email"
+        }
     }
 }

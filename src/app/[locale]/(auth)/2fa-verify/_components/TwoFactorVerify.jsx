@@ -7,6 +7,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useSubmit2faVerifyCodeMutation } from "@/redux/api/authApi";
+import showToast from "@/lib/toast";
+import { useRouter } from "next/navigation";
 
 const schema = yup.object().shape({
   otp: yup
@@ -18,6 +21,9 @@ const schema = yup.object().shape({
 export default function TwoFactorVerify() {
   const [resendOtpTimer, setResendOtpTimer] = useState(0);
   const [pass, setPass] = useState([]);
+  const router = useRouter();
+
+  const [submit2faVerifyCode, { isLoading }] = useSubmit2faVerifyCodeMutation();
 
   // form handler
   const {
@@ -44,10 +50,16 @@ export default function TwoFactorVerify() {
 
   const inputsRef = useRef([]);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const otp = data.otp.join("");
-    console.log("Entered OTP:", otp);
-    // call your verify API here
+
+    try {
+      const res = await submit2faVerifyCode({ code: otp }).unwrap();
+      showToast.apiSuccess(res, "OTP verified successfully");
+      router.push("/dashboard");
+    } catch (error) {
+      showToast.apiError(error, "Failed to verify OTP");
+    }
   };
 
   // Handle paste
@@ -140,7 +152,13 @@ export default function TwoFactorVerify() {
             </p>
           )}
 
-          <Button type="primary" htmlType="submit" className="w-full">
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="w-full"
+            disabled={isLoading}
+            loading={isLoading}
+          >
             Verify OTP
           </Button>
 

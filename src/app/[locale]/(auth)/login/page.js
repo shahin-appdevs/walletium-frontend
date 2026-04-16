@@ -2,14 +2,14 @@
 
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Input, Typography, message, Checkbox } from "antd";
+import { Input, Typography, Checkbox } from "antd";
 import Image from "next/image";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import Link from "next/link";
 import * as yup from "yup";
 // import { login } from "@/lib/auth";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { token, userInfo } from "@/lib/token";
 import showToast from "@/lib/toast";
 import { useLoginMutation } from "@/redux/api/authApi";

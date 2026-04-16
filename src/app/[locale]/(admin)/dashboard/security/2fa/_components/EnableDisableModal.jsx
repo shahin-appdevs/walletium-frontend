@@ -6,37 +6,44 @@ import showToast from "@/lib/toast";
 import { useUpdate2faStatusMutation } from "@/redux/api/authApi";
 import { Modal } from "antd";
 import { AlertTriangle, Loader2 } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 export default function EnableDisableModal({ status, refetch2faStatus }) {
   const t = useTranslations("Dashboard.security.2fa");
+  const tc = useTranslations("common");
   const { isModalOpen, handleCancelModal, handleShowModal } = useModal();
   const isEnabled = status === 0;
   const label = isEnabled ? t("enable") : t("disable");
+  const locale = useLocale();
 
   const [update2faStatus, { isLoading }] = useUpdate2faStatusMutation();
 
   const handle2FactorAuth = async () => {
     try {
       const res = await update2faStatus({
-        status: isEnabled ? 1 : 0,
+        status: { status: isEnabled ? 1 : 0 },
+        params: { lang: locale },
       }).unwrap();
 
       if (res.data) {
-        showToast.success(res.message.success[0]);
+        showToast.apiSuccess(res, tc("success.default"));
         refetch2faStatus();
       }
 
       handleCancelModal();
     } catch (err) {
-      showToast.apiError(err, t("somethingWentWrong"));
+      showToast.apiError(err, tc("error.default"));
     }
   };
 
   return (
     <>
-      <PrimaryButton onClick={handleShowModal} className="w-full">
-        {label} {isLoading && <Loader2 className="animate-spin" />}
+      <PrimaryButton
+        onClick={handleShowModal}
+        className="w-full"
+        loading={isLoading}
+      >
+        {label}
       </PrimaryButton>
 
       <Modal

@@ -79,37 +79,40 @@ const LayoutHeader = ({ collapsed, setCollapsed }) => {
                 {/* Theme Switch */}
                 <button
                   onClick={() => toggleTheme()}
-                  className="flex items-center bg-white rounded-full px-1 py-1 shadow-xs border border-gray-200 transition"
+                  className="relative flex items-center bg-white rounded-full p-1 shadow-xs border border-gray-200 w-[72px]"
                 >
-                  {/* Moon */}
+                  {/* Sliding Background */}
                   <div
-                    className={`w-8 h-8 flex items-center justify-center rounded-full transition ${
-                      mode === "dark"
-                        ? "bg-[#002d25] text-white"
-                        : "text-[#002d25]"
+                    className={`absolute top-1 left-1 w-8 h-8 rounded-full bg-[#002d25] transition-all duration-300 ${
+                      mode === "dark" ? "translate-x-0" : "translate-x-8"
                     }`}
-                  >
-                    <LucideIcon name="Moon" size={20} />
+                  />
+
+                  {/* Moon */}
+                  <div className="w-8 h-8 flex items-center justify-center z-10">
+                    <LucideIcon
+                      name="Moon"
+                      size={20}
+                      className={
+                        mode === "dark" ? "text-white" : "text-[#002d25]"
+                      }
+                    />
                   </div>
 
                   {/* Sun */}
-                  <div
-                    className={`w-8 h-8 flex items-center justify-center rounded-full transition ${
-                      mode === "light"
-                        ? "bg-[#002d25] text-white"
-                        : "text-[#002d25]"
-                    }`}
-                  >
-                    <LucideIcon name="Sun" size={20} />
+                  <div className="w-8 h-8 flex items-center justify-center z-10">
+                    <LucideIcon
+                      name="Sun"
+                      size={20}
+                      className={
+                        mode === "light" ? "text-white" : "text-[#002d25]"
+                      }
+                    />
                   </div>
                 </button>
 
                 {/* Globe */}
-                {/* <LucideIcon
-                  name="Globe"
-                  className="text-[#002d25] dark:text-white cursor-pointer hover:opacity-70 transition"
-                  size={24}
-                /> */}
+
                 <LanguageSwitcher />
 
                 {/* Notification with dot */}
