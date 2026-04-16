@@ -12,7 +12,11 @@ import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { token, userInfo } from "@/lib/token";
 import showToast from "@/lib/toast";
-import { useLoginMutation } from "@/redux/api/authApi";
+import {
+  useEmailSendCodeMutation,
+  useLazyEmailSendVerifyCodeQuery,
+  useLoginMutation,
+} from "@/redux/api/authApi";
 import GuestOnly from "../_components/GuestOnly";
 import ReCAPTCHA from "react-google-recaptcha";
 import { getErrorMessage } from "@/utils/getErrorMessage";
@@ -30,6 +34,8 @@ const loginSchema = yup.object({
 
 export default function LoginPage() {
   const [login, { isLoading }] = useLoginMutation();
+  const [sendCode, { data, error }] = useLazyEmailSendVerifyCodeQuery();
+
   const [recaptcha, setRecaptcha] = useState(null);
   const dispatch = useDispatch();
   const {
@@ -74,22 +80,27 @@ export default function LoginPage() {
       if (data.remember) {
         token.set(loginInfo?.token, "local");
         userInfo.set(result?.data?.user_info, "local");
+      } else {
+        token.set(loginInfo?.token, "session");
+        userInfo.set(loginInfo?.user_info, "session");
       }
-      token.set(loginInfo?.token, "session");
-      userInfo.set(loginInfo?.user_info, "session");
 
       const { email_verified, kyc_verified, two_factor_status } =
         loginInfo?.user_info || {};
 
-      // if (email_verified === 0) {
-      //   router.push("/verify-email");
-      // } else if (kyc_verified === 0) {
-      //   router.push("/kyc-onboarding");
-      // }
-
       // success message
       const successMessages = getSuccessMessage(result);
       successMessages.forEach((message) => showToast.success(message));
+
+      if (email_verified === 0) {
+        router.push("/verify-email");
+        await sendCode().unwrap();
+
+        return;
+      } else if (kyc_verified === 0) {
+        router.push("/kyc-onboarding");
+        return;
+      }
 
       if (two_factor_status === 1) {
         dispatch(setTwoFactorStatus(two_factor_status));

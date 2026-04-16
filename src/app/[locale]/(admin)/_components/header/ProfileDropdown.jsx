@@ -122,6 +122,7 @@ export default function ProfileDropdown({ userInfo: userProfileInfo }) {
         open={isModalOpen}
         onCancel={handleCancelModal}
         onConfirm={handleLogout}
+        loading={isLoading}
       />
     </Card>
   );

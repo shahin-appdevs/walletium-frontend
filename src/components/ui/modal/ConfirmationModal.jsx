@@ -1,3 +1,4 @@
+import LucideIcon from "@/components/LucideIcon";
 import { Modal } from "antd";
 import { AlertTriangle } from "lucide-react";
 import React from "react";
@@ -9,6 +10,7 @@ const ConfirmationModal = ({
   open,
   onCancel,
   onConfirm,
+  loading,
   ...props
 }) => {
   return (
@@ -35,9 +37,17 @@ const ConfirmationModal = ({
         <div className="mt-6 flex gap-2">
           <button
             onClick={onConfirm}
+            disabled={loading}
             className="w-full  py-2 bg-red-500! duration-300 rounded-lg text-white hover:bg-red-600! cursor-pointer "
           >
-            {confirmBtn}
+            {loading ? (
+              <LucideIcon
+                name={"LoaderCircle"}
+                className="animate-spin inline ms-2"
+              />
+            ) : (
+              confirmBtn
+            )}
           </button>
 
           <button

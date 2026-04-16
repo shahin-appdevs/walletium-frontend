@@ -125,11 +125,11 @@ const LayoutHeader = ({ collapsed, setCollapsed }) => {
                   />
                   <span className="w-3 h-3 rounded-full bg-green-500 absolute -top-1 -right-1 border-2 border-white"></span>
 
-                  <div className="translate-y-10  opacity-0 group-hover/notification:lg:translate-y-0 group-hover/notification:lg:opacity-100 group-hover/notification:lg:visible invisible duration-300 absolute top-6 -right-2 z-30 py-5">
+                  <div className="translate-y-10  opacity-0 group-hover/notification:lg:translate-y-0 group-hover/notification:lg:opacity-100 group-hover/notification:lg:visible invisible duration-300 absolute top-6 ltr:-right-2 rtl:left-2 z-30 py-5">
                     <NotificationPopup />
                   </div>
                   {notificationOpen && (
-                    <div className="lg:hidden absolute top-8 -right-18 z-30 py-4">
+                    <div className="lg:hidden absolute top-8 ltr:-right-18 rtl:left-0 z-30 py-4">
                       <NotificationPopup
                         onClose={() => setNotificationOpen(false)}
                       />
@@ -159,13 +159,13 @@ const LayoutHeader = ({ collapsed, setCollapsed }) => {
                     width={100}
                     className="h-[35px] w-[35px] rounded-full object-cover"
                   />
-                  <div className="translate-y-10  opacity-0 group-hover/profile:lg:translate-y-0 group-hover/profile:lg:opacity-100 group-hover/profile:lg:visible invisible duration-300 absolute top-8 right-0 z-30 py-4">
+                  <div className="translate-y-10  opacity-0 group-hover/profile:lg:translate-y-0 group-hover/profile:lg:opacity-100 group-hover/profile:lg:visible invisible duration-300 absolute top-8 ltr:right-0 rtl:left-0 z-30 py-4">
                     <ProfileDropdown
                       userInfo={{ ...userInfo, image: profileImageUrl }}
                     />
                   </div>
                   {showProfileDropdown && (
-                    <div className="lg:hidden absolute top-8 right-0 z-30 py-4">
+                    <div className="lg:hidden absolute top-8 ltr:right-0 rtl:left-0 z-30 py-4">
                       <ProfileDropdown
                         userInfo={{ ...userInfo, image: profileImageUrl }}
                       />

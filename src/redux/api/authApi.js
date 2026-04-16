@@ -43,13 +43,6 @@ const authApi = baseApi.injectEndpoints({
       transformResponse: (response) => response.data,
     }),
 
-    // kyc verification api
-    getKycInputFields: builder.query({
-      query: () => ({
-        url: "/authorize/kyc/input-fields",
-        method: "GET",
-      }),
-    }),
     // 2fa verify get api
     get2faInfo: builder.query({
       query: () => ({
@@ -78,6 +71,31 @@ const authApi = baseApi.injectEndpoints({
       }),
     }),
 
+    // email send code post api
+    emailSendVerifyCode: builder.query({
+      query: () => ({
+        url: "/authorize/mail/send/code",
+        method: "GET",
+      }),
+    }),
+
+    // email verify post api
+    submitEmailVerifyCode: builder.mutation({
+      query: (verifyData) => ({
+        url: "/authorize/mail/verify/code",
+        method: "POST",
+        data: verifyData,
+      }),
+    }),
+
+    // kyc verification api
+    getKycInputFields: builder.query({
+      query: () => ({
+        url: "/authorize/kyc/input-fields",
+        method: "GET",
+      }),
+    }),
+
     submitKycVerification: builder.mutation({
       query: (verificationData) => ({
         url: "/authorize/kyc/submit",
@@ -98,4 +116,6 @@ export const {
   useGet2faInfoQuery,
   useUpdate2faStatusMutation,
   useSubmit2faVerifyCodeMutation,
+  useLazyEmailSendVerifyCodeQuery,
+  useSubmitEmailVerifyCodeMutation,
 } = authApi;
