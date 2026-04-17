@@ -65,7 +65,9 @@
             "login_now": "سجل الدخول الآن",
             "verify_success": "تم التحقق من الرمز بنجاح",
             "verify_failed": "فشل التحقق من الرمز",
-            "must_be_number": "يجب أن يكون رقماً"
+            "must_be_number": "يجب أن يكون رقماً",
+            "resend_success": "تم إعادة إرسال الرمز بنجاح",
+            "resend_failed": "فشل إعادة إرسال الرمز"
         }
     }
 }

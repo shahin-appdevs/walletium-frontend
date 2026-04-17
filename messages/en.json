@@ -65,7 +65,9 @@
             "login_now": "Login Now",
             "verify_success": "OTP verified successfully",
             "verify_failed": "Failed to verify OTP",
-            "must_be_number": "Must be a number"
+            "must_be_number": "Must be a number",
+            "resend_success": "OTP resent successfully",
+            "resend_failed": "Failed to resend OTP"
         }
     }
 }

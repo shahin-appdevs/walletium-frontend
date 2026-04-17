@@ -4,10 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import { Typography, Input, Button } from "antd";
 import { Controller, useForm } from "react-hook-form";
 import Image from "next/image";
-import Link from "next/link";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useSubmitEmailVerifyCodeMutation } from "@/redux/api/authApi";
+import {
+  useLazyResendOtpQuery,
+  useSubmitEmailVerifyCodeMutation,
+} from "@/redux/api/authApi";
 import showToast from "@/lib/toast";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,10 +19,12 @@ import {
 } from "@/redux/features/authSlice";
 import { useTranslations } from "next-intl";
 import { useMemo } from "react";
-import { token } from "@/lib/token";
+import { useLocale } from "next-intl";
+import { token, userInfo } from "@/lib/token";
 
-export default function TwoFactorVerify() {
-  const t = useTranslations("Auth.2fa");
+export default function EmailVerify() {
+  const locale = useLocale();
+  const t = useTranslations("Auth.emailVerify");
   const tc = useTranslations("common.validation");
 
   const schema = useMemo(
@@ -39,14 +43,17 @@ export default function TwoFactorVerify() {
     [t, tc],
   );
 
-  const [resendOtpTimer, setResendOtpTimer] = useState(10);
+  const [resendOtpTimer, setResendOtpTimer] = useState(59);
   const [pass, setPass] = useState([]);
   const router = useRouter();
   const dispatch = useDispatch();
   const { emailVerifyToken } = useSelector((state) => state.auth);
-
+  //email verify api call
   const [submitEmailVerifyCode, { isLoading }] =
     useSubmitEmailVerifyCodeMutation();
+
+  //resend otp api call
+  const [resendOtp, { isLoading: resendOtpLoading }] = useLazyResendOtpQuery();
 
   // form handler
   const {
@@ -126,7 +133,18 @@ export default function TwoFactorVerify() {
     }
   };
 
-  const handleResendOtp = () => {};
+  const handleResendOtp = async () => {
+    try {
+      const res = await resendOtp({
+        token: emailVerifyToken,
+        lang: locale,
+      }).unwrap();
+      showToast.apiSuccess(res, t("resend_success"));
+      setResendOtpTimer(10);
+    } catch (error) {
+      showToast.apiError(error, t("resend_failed"));
+    }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
@@ -190,12 +208,15 @@ export default function TwoFactorVerify() {
           ) : (
             <p className="text-center text-gray-500 text-sm mt-4">
               Didn’t receive the OTP?{" "}
-              <Link
-                href="/forgot-password"
-                className="text-red-500 hover:underline font-medium"
+              <Button
+                onClick={handleResendOtp}
+                className="text-red-500! hover:underline font-medium!"
+                disabled={resendOtpLoading}
+                loading={resendOtpLoading}
+                type="link"
               >
                 Resend
-              </Link>
+              </Button>
             </p>
           )}
 
@@ -211,9 +232,17 @@ export default function TwoFactorVerify() {
 
           <p className="text-center text-gray-500 text-sm mt-4">
             {t("already_have_account")}{" "}
-            <Link href="/login" className="text-primary-500 hover:underline">
+            <Button
+              onClick={() => {
+                token.remove();
+                userInfo.remove();
+                router.push("/login");
+              }}
+              className="text-primary-500 hover:underline"
+              type="link"
+            >
               {t("login_now")}
-            </Link>
+            </Button>
           </p>
         </form>
       </div>
