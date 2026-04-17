@@ -61,7 +61,7 @@ export default function OtpVerification() {
         showToast.apiError(result.error);
       } else {
         showToast.apiSuccess(result);
-        router.push(`/reset-password`);
+        router.push(`/forget-password/reset-password`);
       }
     } catch (error) {
       showToast.apiError(error);

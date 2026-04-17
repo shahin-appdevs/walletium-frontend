@@ -1,6 +1,6 @@
 "use client";
 
-import { Modal, Form, Input } from "antd";
+import { Form, Input } from "antd";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -18,7 +18,7 @@ const schema = yup.object({
     .oneOf([yup.ref("newPassword")], "Passwords do not match"),
 });
 
-const ChangePassword = ({}) => {
+const ResetPassword = ({}) => {
   const {
     control,
     handleSubmit,
@@ -87,4 +87,4 @@ const ChangePassword = ({}) => {
   );
 };
 
-export default ChangePassword;
+export default ResetPassword;

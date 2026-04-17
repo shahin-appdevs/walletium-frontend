@@ -47,7 +47,7 @@ const ForgetPassword = () => {
       dispatch(setForgetPasswordToken(result?.data?.data?.token));
 
       showToast.apiSuccess(result.data);
-      router.replace("/otp-verification");
+      router.replace("/forget-password/otp-verification");
     } catch (err) {
       showToast.apiError(err, "Something went wrong");
     }
