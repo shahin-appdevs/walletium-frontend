@@ -68,6 +68,23 @@
             "must_be_number": "Must be a number",
             "resend_success": "OTP resent successfully",
             "resend_failed": "Failed to resend OTP"
+        },
+        "emailVerify": {
+            "title": "Verify Your Email",
+            "description": "We've sent a 6-digit code to your email. Please enter it below.",
+            "must_be_number": "Must be a number",
+            "otp_required": "Please enter 6 digits",
+            "six_digits_required": "Please enter 6 digits",
+            "verify_success": "Email verified successfully",
+            "verify_failed": "Failed to verify email",
+            "resend_success": "OTP resent successfully",
+            "resend_failed": "Failed to resend OTP",
+            "resend_timer_prefix": "You can resend the code after",
+            "didnt_receive_otp": "Didn’t receive the OTP?",
+            "resend": "Resend",
+            "verify_button": "Verify",
+            "already_have_account": "Already have an account?",
+            "login_now": "Login Now"
         }
     }
 }

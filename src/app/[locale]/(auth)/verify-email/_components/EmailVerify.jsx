@@ -48,13 +48,12 @@ export default function EmailVerify() {
   const router = useRouter();
   const dispatch = useDispatch();
   const { emailVerifyToken } = useSelector((state) => state.auth);
+
   //email verify api call
   const [submitEmailVerifyCode, { isLoading }] =
     useSubmitEmailVerifyCodeMutation();
-
   //resend otp api call
   const [resendOtp, { isLoading: resendOtpLoading }] = useLazyResendOtpQuery();
-
   // form handler
   const {
     control,
@@ -114,7 +113,6 @@ export default function EmailVerify() {
     const nextIndex = pasteData.length < 6 ? pasteData.length : 5;
     inputsRef.current[nextIndex].focus();
   };
-
   // Handle individual input change
   const handleChange = (e, index) => {
     const value = e.target.value;
@@ -125,7 +123,6 @@ export default function EmailVerify() {
       }
     }
   };
-
   // Handle backspace
   const handleKeyDown = (e, index) => {
     if (e.key === "Backspace" && !e.target.value && index > 0) {
@@ -140,7 +137,7 @@ export default function EmailVerify() {
         lang: locale,
       }).unwrap();
       showToast.apiSuccess(res, t("resend_success"));
-      setResendOtpTimer(10);
+      setResendOtpTimer(59);
     } catch (error) {
       showToast.apiError(error, t("resend_failed"));
     }
@@ -200,14 +197,14 @@ export default function EmailVerify() {
 
           {resendOtpTimer > 0 ? (
             <p className="text-center text-gray-500 text-sm mt-4">
-              You can resend the code after{" "}
+              {t("resend_timer_prefix")}{" "}
               <span className="text-red-500 font-medium text-base">
                 {resendOtpTimer}s
               </span>
             </p>
           ) : (
             <p className="text-center text-gray-500 text-sm mt-4">
-              Didn’t receive the OTP?{" "}
+              {t("didnt_receive_otp")}{" "}
               <Button
                 onClick={handleResendOtp}
                 className="text-red-500! hover:underline font-medium!"
@@ -215,7 +212,7 @@ export default function EmailVerify() {
                 loading={resendOtpLoading}
                 type="link"
               >
-                Resend
+                {t("resend")}
               </Button>
             </p>
           )}
