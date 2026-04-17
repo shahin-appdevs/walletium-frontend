@@ -96,6 +96,15 @@ const authApi = baseApi.injectEndpoints({
       }),
     }),
 
+    // resend otp api
+    resendForgetPasswordOtp: builder.mutation({
+      query: ({ token, lang }) => ({
+        url: "password/forgot/resend/code",
+        method: "GET",
+        params: { token, lang },
+      }),
+    }),
+
     // verify forget password otp api
     verifyForgetPasswordOtp: builder.mutation({
       query: ({ token, code, lang }) => ({
@@ -138,4 +147,5 @@ export const {
   useSubmitEmailVerifyCodeMutation,
   useLazyResendOtpQuery,
   useVerifyForgetPasswordOtpMutation,
+  useResendForgetPasswordOtpMutation,
 } = authApi;

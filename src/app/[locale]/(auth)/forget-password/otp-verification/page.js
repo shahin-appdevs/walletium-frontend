@@ -8,7 +8,10 @@ import Link from "next/link";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useSelector } from "react-redux";
-import { useVerifyForgetPasswordOtpMutation } from "@/redux/api/authApi";
+import {
+  useResendForgetPasswordOtpMutation,
+  useVerifyForgetPasswordOtpMutation,
+} from "@/redux/api/authApi";
 import { useLocale } from "next-intl";
 import showToast from "@/lib/toast";
 import { useRouter } from "next/navigation";
@@ -29,6 +32,8 @@ export default function OtpVerification() {
   const locale = useLocale();
   const router = useRouter();
   const { resendOtpTimer } = useResendOtpTimer(59);
+  const [resendForgetPasswordOtp, { isLoading: resendOtpLoading }] =
+    useResendForgetPasswordOtpMutation();
 
   // form handler
   const {
@@ -105,6 +110,20 @@ export default function OtpVerification() {
     }
   };
 
+  // resend otp handler
+  const handleResendOtp = async () => {
+    try {
+      const result = await resendForgetPasswordOtp({
+        token: forgetPasswordToken,
+        lang: locale,
+      }).unwrap();
+
+      showToast.apiSuccess(result, "OTP sent successfully");
+    } catch (error) {
+      showToast.apiError(error, "Failed to send OTP");
+    }
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
       <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-6 space-y-3">
@@ -170,12 +189,15 @@ export default function OtpVerification() {
           ) : (
             <p className="text-center text-gray-500 text-sm mt-4">
               Didn’t receive the OTP?{" "}
-              <Link
-                href="/forgot-password"
-                className="text-red-500 hover:underline font-medium"
+              <Button
+                onClick={handleResendOtp}
+                className="text-red-500! hover:underline font-medium!"
+                disabled={resendOtpLoading}
+                loading={resendOtpLoading}
+                type="link"
               >
                 Resend
-              </Link>
+              </Button>
             </p>
           )}
 
