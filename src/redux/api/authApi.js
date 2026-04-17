@@ -33,16 +33,6 @@ const authApi = baseApi.injectEndpoints({
       }),
     }),
 
-    // send otp api
-    sendForgetPasswordOtp: builder.mutation({
-      query: (credentials) => ({
-        url: "/password/forgot/find/user",
-        method: "POST",
-        data: credentials,
-      }),
-      transformResponse: (response) => response.data,
-    }),
-
     // 2fa verify get api
     get2faInfo: builder.query({
       query: () => ({
@@ -86,6 +76,16 @@ const authApi = baseApi.injectEndpoints({
         method: "POST",
         data: verifyData,
       }),
+    }),
+
+    // send otp api
+    sendForgetPasswordOtp: builder.mutation({
+      query: (credentials) => ({
+        url: "/password/forgot/find/user",
+        method: "POST",
+        data: credentials,
+      }),
+      transformResponse: (response) => response.data,
     }),
 
     // kyc verification api

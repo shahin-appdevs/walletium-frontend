@@ -8,6 +8,7 @@ const authSlice = createSlice({
     token: null,
     status: "idle",
     twoFactorStatus: 0,
+    emailVerifyToken: null,
   },
   reducers: {
     setUser: (state, action) => {
@@ -32,8 +33,22 @@ const authSlice = createSlice({
     setTwoFactorStatus: (state, action) => {
       state.twoFactorStatus = action.payload;
     },
+
+    setEmailVerifyToken: (state, action) => {
+      state.emailVerifyToken = action.payload;
+    },
+
+    clearEmailVerifyToken: (state) => {
+      state.emailVerifyToken = null;
+    },
   },
 });
 
-export const { setUser, clearUser, setTwoFactorStatus } = authSlice.actions;
+export const {
+  setUser,
+  clearUser,
+  setTwoFactorStatus,
+  setEmailVerifyToken,
+  clearEmailVerifyToken,
+} = authSlice.actions;
 export default authSlice.reducer;

@@ -10,8 +10,11 @@ import * as yup from "yup";
 import { useSubmitEmailVerifyCodeMutation } from "@/redux/api/authApi";
 import showToast from "@/lib/toast";
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { setTwoFactorStatus } from "@/redux/features/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  clearEmailVerifyToken,
+  setTwoFactorStatus,
+} from "@/redux/features/authSlice";
 import { useTranslations } from "next-intl";
 import { useMemo } from "react";
 import { token } from "@/lib/token";
@@ -36,10 +39,11 @@ export default function TwoFactorVerify() {
     [t, tc],
   );
 
-  const [resendOtpTimer, setResendOtpTimer] = useState(0);
+  const [resendOtpTimer, setResendOtpTimer] = useState(10);
   const [pass, setPass] = useState([]);
   const router = useRouter();
   const dispatch = useDispatch();
+  const { emailVerifyToken } = useSelector((state) => state.auth);
 
   const [submitEmailVerifyCode, { isLoading }] =
     useSubmitEmailVerifyCodeMutation();
@@ -57,11 +61,11 @@ export default function TwoFactorVerify() {
 
   // timer
   useEffect(() => {
-    if (resendOtpTimer > 14) {
+    if (resendOtpTimer < 1) {
       return;
     }
     const intervalId = setInterval(() => {
-      setResendOtpTimer((prev) => prev + 1);
+      setResendOtpTimer((prev) => prev - 1);
     }, 1000);
 
     return () => clearInterval(intervalId);
@@ -75,10 +79,11 @@ export default function TwoFactorVerify() {
     try {
       const res = await submitEmailVerifyCode({
         code: otp,
-        token: token.get("auth_token"),
+        token: emailVerifyToken,
       }).unwrap();
       dispatch(setTwoFactorStatus(0));
       showToast.apiSuccess(res, t("verify_success"));
+      clearEmailVerifyToken(); // clear email verify token
       router.push("/dashboard");
     } catch (error) {
       showToast.apiError(error, t("verify_failed"));
@@ -120,6 +125,8 @@ export default function TwoFactorVerify() {
       inputsRef.current[index - 1].focus();
     }
   };
+
+  const handleResendOtp = () => {};
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
@@ -170,6 +177,25 @@ export default function TwoFactorVerify() {
           {errors.otp && (
             <p className="text-red-500 text-sm mt-1 text-center">
               {errors.otp.message || t("six_digits_required")}
+            </p>
+          )}
+
+          {resendOtpTimer > 0 ? (
+            <p className="text-center text-gray-500 text-sm mt-4">
+              You can resend the code after{" "}
+              <span className="text-red-500 font-medium text-base">
+                {resendOtpTimer}s
+              </span>
+            </p>
+          ) : (
+            <p className="text-center text-gray-500 text-sm mt-4">
+              Didn’t receive the OTP?{" "}
+              <Link
+                href="/forgot-password"
+                className="text-red-500 hover:underline font-medium"
+              >
+                Resend
+              </Link>
             </p>
           )}
 

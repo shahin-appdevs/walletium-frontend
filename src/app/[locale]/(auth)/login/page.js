@@ -13,7 +13,6 @@ import { useRef, useState } from "react";
 import { token, userInfo } from "@/lib/token";
 import showToast from "@/lib/toast";
 import {
-  useEmailSendCodeMutation,
   useLazyEmailSendVerifyCodeQuery,
   useLoginMutation,
 } from "@/redux/api/authApi";
@@ -22,7 +21,10 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 import { getSuccessMessage } from "@/utils/getSuccessMessage";
 import { useDispatch } from "react-redux";
-import { setTwoFactorStatus } from "@/redux/features/authSlice";
+import {
+  setEmailVerifyToken,
+  setTwoFactorStatus,
+} from "@/redux/features/authSlice";
 
 const loginSchema = yup.object({
   credentials: yup.string().required("Email or username is required"),
@@ -93,8 +95,8 @@ export default function LoginPage() {
       successMessages.forEach((message) => showToast.success(message));
 
       if (email_verified === 0) {
+        dispatch(setEmailVerifyToken(loginInfo?.authorization?.token));
         router.push("/verify-email");
-        await sendCode().unwrap();
 
         return;
       } else if (kyc_verified === 0) {

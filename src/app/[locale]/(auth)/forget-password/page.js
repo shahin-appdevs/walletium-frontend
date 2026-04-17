@@ -47,9 +47,7 @@ const ForgetPassword = () => {
       showToast.success("Sent OTP");
       router.replace("/otp-verification");
     } catch (err) {
-      console.log();
-
-      showToast.error(err?.data?.message?.error[0] || "Something went wrong");
+      showToast.apiError(err, "Something went wrong");
     }
   };
 
