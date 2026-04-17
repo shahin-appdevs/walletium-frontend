@@ -14,6 +14,8 @@ import { Controller, useForm } from "react-hook-form";
 
 import * as yup from "yup";
 import GuestOnly from "../_components/GuestOnly";
+import { useDispatch } from "react-redux";
+import { setForgetPasswordToken } from "@/redux/features/authSlice";
 
 const forgetSchema = yup.object({
   credentials: yup.string().required("Email is required"),
@@ -21,6 +23,8 @@ const forgetSchema = yup.object({
 
 const ForgetPassword = () => {
   const [sendOtp, { isLoading }] = useSendForgetPasswordOtpMutation();
+  const dispatch = useDispatch();
+
   const router = useRouter();
 
   const {
@@ -40,11 +44,9 @@ const ForgetPassword = () => {
 
     try {
       const result = await sendOtp(formData);
+      dispatch(setForgetPasswordToken(result?.data?.data?.token));
 
-      if (!result?.error?.status) {
-        throw result.error;
-      }
-      showToast.success("Sent OTP");
+      showToast.apiSuccess(result.data);
       router.replace("/otp-verification");
     } catch (err) {
       showToast.apiError(err, "Something went wrong");

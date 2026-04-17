@@ -51,7 +51,10 @@ const showToast = {
   },
 
   apiSuccess: (res, fallback = "Successfully!") => {
-    const message = res?.message?.success?.[0] || fallback;
+    const message =
+      res?.data?.message?.success?.[0] ||
+      res?.message?.success?.[0] ||
+      fallback;
 
     toast.success(message, { ...baseConfig });
   },

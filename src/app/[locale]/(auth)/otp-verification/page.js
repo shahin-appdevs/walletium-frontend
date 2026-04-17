@@ -1,12 +1,18 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Typography, Input, Button } from "antd";
 import { Controller, useForm } from "react-hook-form";
 import Image from "next/image";
 import Link from "next/link";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useSelector } from "react-redux";
+import { useVerifyForgetPasswordOtpMutation } from "@/redux/api/authApi";
+import { useLocale } from "next-intl";
+import showToast from "@/lib/toast";
+import { useRouter } from "next/navigation";
+import { useResendOtpTimer } from "@/hooks/useResendOtpTimer";
 
 const schema = yup.object().shape({
   otp: yup
@@ -16,8 +22,13 @@ const schema = yup.object().shape({
 });
 
 export default function OtpVerification() {
-  const [resendOtpTimer, setResendOtpTimer] = useState(0);
   const [pass, setPass] = useState([]);
+  const { forgetPasswordToken } = useSelector((state) => state.auth);
+  const [verifyForgetPasswordOtp, { isLoading }] =
+    useVerifyForgetPasswordOtpMutation();
+  const locale = useLocale();
+  const router = useRouter();
+  const { resendOtpTimer } = useResendOtpTimer(59);
 
   // form handler
   const {
@@ -30,23 +41,31 @@ export default function OtpVerification() {
     resolver: yupResolver(schema),
   });
 
-  // timer
-  useEffect(() => {
-    if (resendOtpTimer > 14) {
-      return;
-    }
-    const intervalId = setInterval(() => {
-      setResendOtpTimer((prev) => prev + 1);
-    }, 1000);
-
-    return () => clearInterval(intervalId);
-  }, [resendOtpTimer]);
-
   const inputsRef = useRef([]);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const otp = data.otp.join("");
-    console.log("Entered OTP:", otp);
+
+    const formData = {
+      token: forgetPasswordToken,
+      code: otp,
+    };
+
+    try {
+      const result = await verifyForgetPasswordOtp({
+        ...formData,
+        lang: locale,
+      });
+
+      if (result.error) {
+        showToast.apiError(result.error);
+      } else {
+        showToast.apiSuccess(result);
+        router.push(`/reset-password`);
+      }
+    } catch (error) {
+      showToast.apiError(error);
+    }
     // call your verify API here
   };
 
@@ -141,7 +160,7 @@ export default function OtpVerification() {
             </p>
           )}
 
-          {resendOtpTimer < 15 ? (
+          {resendOtpTimer > 0 ? (
             <p className="text-center text-gray-500 text-sm mt-4">
               You can resend the code after{" "}
               <span className="text-red-500 font-medium text-base">
@@ -160,7 +179,12 @@ export default function OtpVerification() {
             </p>
           )}
 
-          <Button type="primary" htmlType="submit" className="w-full">
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="w-full"
+            loading={isLoading}
+          >
             Verify OTP
           </Button>
 

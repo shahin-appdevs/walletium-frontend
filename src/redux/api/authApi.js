@@ -94,7 +94,16 @@ const authApi = baseApi.injectEndpoints({
         method: "POST",
         data: credentials,
       }),
-      transformResponse: (response) => response.data,
+    }),
+
+    // verify forget password otp api
+    verifyForgetPasswordOtp: builder.mutation({
+      query: ({ token, code, lang }) => ({
+        url: "/password/forgot/verify/code",
+        method: "POST",
+        data: { token, code },
+        params: { lang },
+      }),
     }),
 
     // kyc verification api
@@ -128,4 +137,5 @@ export const {
   useLazyEmailSendVerifyCodeQuery,
   useSubmitEmailVerifyCodeMutation,
   useLazyResendOtpQuery,
+  useVerifyForgetPasswordOtpMutation,
 } = authApi;
