@@ -6,6 +6,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import FormItem from "@/components/ui/form/FormItem";
+import { useResetPasswordMutation } from "@/redux/api/authApi";
+import { useLocale } from "next-intl";
+import { useRouter } from "next/navigation";
+import showToast from "@/lib/toast";
+import { useDispatch, useSelector } from "react-redux";
+import { clearOtpVerifiedForgetPasswordToken } from "@/redux/features/authSlice";
 
 const schema = yup.object({
   newPassword: yup
@@ -19,17 +25,35 @@ const schema = yup.object({
 });
 
 const ResetPassword = ({}) => {
+  const [resetPassword, { isLoading }] = useResetPasswordMutation();
+  const { otpVerifiedForgetPasswordToken } = useSelector((state) => state.auth);
+  const locale = useLocale();
+  const router = useRouter();
+  const dispatch = useDispatch();
   const {
     control,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
     mode: "onTouched",
   });
 
-  const onSubmit = (data) => {
-    console.log("PASSWORD DATA:", data);
+  const onSubmit = async (data) => {
+    const payload = {
+      password: data.newPassword,
+      password_confirmation: data.confirmPassword,
+      token: otpVerifiedForgetPasswordToken,
+    };
+
+    try {
+      const res = await resetPassword({ payload, lang: locale }).unwrap();
+      showToast.apiSuccess(res);
+      dispatch(clearOtpVerifiedForgetPasswordToken());
+      router.push(`/login`);
+    } catch (error) {
+      showToast.apiError(error);
+    }
   };
 
   return (
@@ -78,7 +102,11 @@ const ResetPassword = ({}) => {
             />
           </FormItem>
 
-          <PrimaryButton type="submit" className="w-full mt-4">
+          <PrimaryButton
+            type="submit"
+            className="w-full mt-4"
+            loading={isLoading}
+          >
             Change
           </PrimaryButton>
         </Form>

@@ -10,6 +10,7 @@ const authSlice = createSlice({
     twoFactorStatus: 0,
     emailVerifyToken: null,
     forgetPasswordToken: null,
+    otpVerifiedForgetPasswordToken: null,
   },
   reducers: {
     setUser: (state, action) => {
@@ -50,6 +51,14 @@ const authSlice = createSlice({
     clearForgetPasswordToken: (state) => {
       state.forgetPasswordToken = null;
     },
+
+    setOtpVerifiedForgetPasswordToken: (state, action) => {
+      state.otpVerifiedForgetPasswordToken = action.payload;
+    },
+
+    clearOtpVerifiedForgetPasswordToken: (state) => {
+      state.otpVerifiedForgetPasswordToken = null;
+    },
   },
 });
 
@@ -61,6 +70,8 @@ export const {
   clearEmailVerifyToken,
   setForgetPasswordToken,
   clearForgetPasswordToken,
+  setOtpVerifiedForgetPasswordToken,
+  clearOtpVerifiedForgetPasswordToken,
 } = authSlice.actions;
 
 export default authSlice.reducer;

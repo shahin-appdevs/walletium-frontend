@@ -115,6 +115,17 @@ const authApi = baseApi.injectEndpoints({
       }),
     }),
 
+    // reset password api
+    resetPassword: builder.mutation({
+      query: ({ payload, lang }) => ({
+        url: "/password/forgot/reset",
+        method: "POST",
+        data: payload,
+        params: { lang },
+        axiosInstance: axiosPublic,
+      }),
+    }),
+
     // kyc verification api
     getKycInputFields: builder.query({
       query: () => ({
@@ -148,4 +159,5 @@ export const {
   useLazyResendOtpQuery,
   useVerifyForgetPasswordOtpMutation,
   useResendForgetPasswordOtpMutation,
+  useResetPasswordMutation,
 } = authApi;

@@ -7,7 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   useResendForgetPasswordOtpMutation,
   useVerifyForgetPasswordOtpMutation,
@@ -16,6 +16,10 @@ import { useLocale } from "next-intl";
 import showToast from "@/lib/toast";
 import { useRouter } from "next/navigation";
 import { useResendOtpTimer } from "@/hooks/useResendOtpTimer";
+import {
+  clearForgetPasswordToken,
+  setOtpVerifiedForgetPasswordToken,
+} from "@/redux/features/authSlice";
 
 const schema = yup.object().shape({
   otp: yup
@@ -34,6 +38,7 @@ export default function OtpVerification() {
   const { resendOtpTimer } = useResendOtpTimer(59);
   const [resendForgetPasswordOtp, { isLoading: resendOtpLoading }] =
     useResendForgetPasswordOtpMutation();
+  const dispatch = useDispatch();
 
   // form handler
   const {
@@ -60,18 +65,17 @@ export default function OtpVerification() {
       const result = await verifyForgetPasswordOtp({
         ...formData,
         lang: locale,
-      });
+      }).unwrap();
 
-      if (result.error) {
-        showToast.apiError(result.error);
-      } else {
-        showToast.apiSuccess(result);
-        router.push(`/forget-password/reset-password`);
-      }
+      showToast.apiSuccess(result);
+
+      dispatch(setOtpVerifiedForgetPasswordToken(result?.data?.token));
+      dispatch(clearForgetPasswordToken());
+
+      router.push(`/forget-password/reset-password`);
     } catch (error) {
       showToast.apiError(error);
     }
-    // call your verify API here
   };
 
   // Handle paste
