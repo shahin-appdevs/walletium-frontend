@@ -12,8 +12,15 @@ import FormItem from "@/components/ui/form/FormItem";
 import AddMoneyTransaction from "../Transaction/AddMoneyTransaction";
 
 import Image from "next/image";
-import { useGetPaymentGatewaysQuery } from "@/redux/api/addMoneyApi";
+import {
+  useAddMoneyAutomaticSubmitMutation,
+  useAddMoneyManualMutation,
+  useGetPaymentGatewaysQuery,
+} from "@/redux/api/addMoneyApi";
 import { getImageUrl } from "@/utils/getImageUrl";
+import showToast from "@/lib/toast";
+import { useLocale } from "next-intl";
+import { useRouter } from "next/navigation";
 
 // Form Schema
 const addMoneySchema = yup.object({
@@ -28,9 +35,16 @@ const addMoneySchema = yup.object({
 const AddMoney = () => {
   const [selectedCurrencyCode, setSelectedCurrencyCode] = useState("USD");
   const [selectedGatewayId, setSelectedGatewayId] = useState(null);
+  const router = useRouter();
+
+  const locale = useLocale();
 
   // RTK Query Hook
   const { data, isLoading, error } = useGetPaymentGatewaysQuery();
+  const [addMoneyAutomatic, { isLoading: isAddMoneyAutomaticLoading }] =
+    useAddMoneyAutomaticSubmitMutation();
+  const [addMoneyManual, { isLoading: isAddMoneyManualLoading }] =
+    useAddMoneyManualMutation();
 
   const paymentData = data?.data?.payment_gateways || {};
   const userWallets = paymentData.user_wallet || [];
@@ -57,7 +71,7 @@ const AddMoney = () => {
   const selectedGateway = allGatewayCurrencies.find(
     (g) => g.id === selectedGatewayId,
   );
-
+  // exchange rate
   const exchangeRate = useMemo(() => {
     if (!selectedGateway || !selectedUserWallet) return null;
     const walletRate = selectedUserWallet.rate;
@@ -66,6 +80,7 @@ const AddMoney = () => {
     return (1 / walletRate) * gatewayRate;
   }, [selectedGateway, selectedUserWallet]);
 
+  // exchange rate format
   const exchangeRateFormat = useMemo(() => {
     if (!exchangeRate) return null;
     return `1 ${selectedCurrencyCode} = ${exchangeRate.toFixed(4)} ${selectedGateway?.currency_code}`;
@@ -108,17 +123,26 @@ const AddMoney = () => {
     };
   }, [amount, selectedGateway]);
 
-  const onSubmit = (formData) => {
-    console.log("Deposit Submit:", {
-      amount: formData.amount,
-      currency: selectedCurrencyCode,
-      gatewayId: selectedGatewayId,
-      gateway: selectedGateway?.name,
-      totalFee,
-      youWillReceive,
-    });
+  const onSubmit = async (data) => {
+    // automatic payment gateway
+    if (selectedGateway.gateway?.type === "AUTOMATIC") {
+      try {
+        const payload = {
+          amount: data.amount,
+          gateway_currency: selectedGateway.alias,
+          request_currency: selectedCurrencyCode,
+        };
 
-    // TODO: Call your initiate deposit mutation here
+        const res = await addMoneyAutomatic({
+          payload,
+          lang: locale,
+        }).unwrap();
+        showToast.apiSuccess(res);
+        router.push(res?.data?.redirect_url);
+      } catch (error) {
+        showToast.apiError(error);
+      }
+    }
   };
 
   if (isLoading) {
@@ -216,7 +240,7 @@ const AddMoney = () => {
                                         alt={wallet?.name}
                                         width={24}
                                         height={24}
-                                        className="rounded-full w-6 h-auto"
+                                        className="rounded-full "
                                       />
                                     )}
 
