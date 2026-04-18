@@ -1,6 +1,13 @@
 import { Form } from "antd";
 
-export default function FormItem({ label, name, errors, required, children }) {
+export default function FormItem({
+  label,
+  name,
+  errors,
+  required,
+  children,
+  ...props
+}) {
   const error = errors?.[name];
 
   return (
@@ -9,6 +16,7 @@ export default function FormItem({ label, name, errors, required, children }) {
       required={required}
       validateStatus={error ? "error" : ""}
       help={error?.message}
+      {...props}
     >
       {children}
     </Form.Item>
