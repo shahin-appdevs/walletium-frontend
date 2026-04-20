@@ -26,6 +26,7 @@ import AddMoneyFieldSkeleton from "./AddMoneySkeleton/AddMoneyFieldSkeleton";
 import { isArrayCheck } from "@/utils/IsArrayCheck";
 import dynamic from "next/dynamic";
 import AddMoneySummery from "./AddMoneySummery";
+import { useGetTransactionsQuery } from "@/redux/api/dashboardApi";
 
 // dynamic imports
 const AddMoneyTransaction = dynamic(
@@ -51,12 +52,12 @@ const addMoneySchema = yup.object({
 });
 
 const AddMoney = () => {
+  const router = useRouter();
+  const locale = useLocale();
+
   const [selectedCurrencyCode, setSelectedCurrencyCode] = useState("USD");
   const [selectedGatewayId, setSelectedGatewayId] = useState(null);
   const [manualGatewayInputs, setManualGatewayInputs] = useState(null);
-
-  const router = useRouter();
-  const locale = useLocale();
 
   // RTK Query Hook
   const { data, isLoading, error } = useGetPaymentGatewaysQuery();
@@ -64,8 +65,13 @@ const AddMoney = () => {
   const [addMoneyManualSubmit] = useAddMoneyManualSubmitMutation();
   const [getManualPaymentGatewayFields, { isLoading: isFieldsLoading }] =
     useLazyGetManualPaymentGatewayFieldsQuery();
-
-  console.log(data);
+  const { data: transactionsData, isLoading: isTransactionsLoading } =
+    useGetTransactionsQuery({
+      type: "add-money",
+      page: 1,
+      per_page: 5,
+      lang: locale,
+    });
 
   const paymentData = data?.data?.payment_gateways || {};
   // Optimized & stable derived values
@@ -516,7 +522,10 @@ const AddMoney = () => {
           </div>
         </div>
 
-        <AddMoneyTransaction />
+        <AddMoneyTransaction
+          transactionsData={transactionsData?.data}
+          loading={isTransactionsLoading}
+        />
       </div>
     </section>
   );

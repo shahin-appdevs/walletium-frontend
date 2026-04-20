@@ -1,8 +1,8 @@
 import { Alert, Card } from "antd";
 import { AlertCircle } from "lucide-react";
-import React from "react";
+import React, { memo } from "react";
 
-export default function AddMoneySummery({
+function AddMoneySummery({
   amount,
   selectedCurrencyCode,
   totalFee,
@@ -51,3 +51,5 @@ export default function AddMoneySummery({
     </Card>
   );
 }
+
+export default memo(AddMoneySummery);
