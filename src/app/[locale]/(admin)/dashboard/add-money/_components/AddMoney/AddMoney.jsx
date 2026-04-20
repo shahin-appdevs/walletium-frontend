@@ -1,8 +1,13 @@
 "use client";
 
 import React, { useState, useMemo, useEffect } from "react";
-import { Card, Input, Select, Space, Alert } from "antd";
-import { ArrowUpRight, DollarSign, AlertCircle } from "lucide-react";
+import { Card, Input, Select, Space, Alert, Button, Upload } from "antd";
+import {
+  ArrowUpRight,
+  DollarSign,
+  AlertCircle,
+  UploadCloud,
+} from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -14,13 +19,16 @@ import AddMoneyTransaction from "../Transaction/AddMoneyTransaction";
 import Image from "next/image";
 import {
   useAddMoneyAutomaticSubmitMutation,
-  useAddMoneyManualMutation,
+  useAddMoneyManualSubmitMutation,
   useGetPaymentGatewaysQuery,
+  useLazyGetManualPaymentGatewayFieldsQuery,
 } from "@/redux/api/addMoneyApi";
 import { getImageUrl } from "@/utils/getImageUrl";
 import showToast from "@/lib/toast";
 import { useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
+import AddMoneyPageSkeleton from "../AddMoneySkeleton/AddMoneyPageSkeleton";
+import AddMoneyFieldSkeleton from "../AddMoneySkeleton/AddMoneyFieldSkeleton";
 
 // Form Schema
 const addMoneySchema = yup.object({
@@ -35,16 +43,17 @@ const addMoneySchema = yup.object({
 const AddMoney = () => {
   const [selectedCurrencyCode, setSelectedCurrencyCode] = useState("USD");
   const [selectedGatewayId, setSelectedGatewayId] = useState(null);
-  const router = useRouter();
+  const [manualGatewayInputs, setManualGatewayInputs] = useState(null);
 
+  const router = useRouter();
   const locale = useLocale();
 
   // RTK Query Hook
   const { data, isLoading, error } = useGetPaymentGatewaysQuery();
-  const [addMoneyAutomatic, { isLoading: isAddMoneyAutomaticLoading }] =
-    useAddMoneyAutomaticSubmitMutation();
-  const [addMoneyManual, { isLoading: isAddMoneyManualLoading }] =
-    useAddMoneyManualMutation();
+  const [addMoneyAutomaticSubmit] = useAddMoneyAutomaticSubmitMutation();
+  const [addMoneyManualSubmit] = useAddMoneyManualSubmitMutation();
+  const [getManualPaymentGatewayFields, { isLoading: isFieldsLoading }] =
+    useLazyGetManualPaymentGatewayFieldsQuery();
 
   const paymentData = data?.data?.payment_gateways || {};
   const userWallets = paymentData.user_wallet || [];
@@ -91,6 +100,7 @@ const AddMoney = () => {
     handleSubmit,
     watch,
     setValue,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(addMoneySchema),
@@ -133,7 +143,7 @@ const AddMoney = () => {
           request_currency: selectedCurrencyCode,
         };
 
-        const res = await addMoneyAutomatic({
+        const res = await addMoneyAutomaticSubmit({
           payload,
           lang: locale,
         }).unwrap();
@@ -143,10 +153,56 @@ const AddMoney = () => {
         showToast.apiError(error);
       }
     }
+
+    // manual payment gateway
+    if (selectedGateway.gateway?.type === "MANUAL") {
+      try {
+        const formData = new FormData();
+        formData.append("amount", data.amount);
+        formData.append("currency", selectedGateway.alias);
+        formData.append("request_currency", selectedCurrencyCode);
+
+        // Append dynamic fields
+        manualGatewayInputs.forEach((input) => {
+          if (data[input.name]) {
+            formData.append(input.name, data[input.name]);
+          }
+        });
+
+        const res = await addMoneyManualSubmit({
+          payload: formData,
+          lang: locale,
+        }).unwrap();
+        showToast.apiSuccess(res);
+        // router.push(res?.data?.redirect_url);
+        reset({});
+        setSelectedGatewayId(allGatewayCurrencies[0]?.id);
+        setManualGatewayInputs(null);
+      } catch (error) {
+        showToast.apiError(error);
+      }
+    }
+  };
+
+  // manual gateway field
+  const onChangeManualGateway = async (selectedGateway) => {
+    try {
+      if (selectedGateway.gateway.type === "MANUAL") {
+        const res = await getManualPaymentGatewayFields({
+          alias: selectedGateway.alias,
+          lang: locale,
+        }).unwrap();
+        setManualGatewayInputs(res?.data?.input_fields);
+      } else {
+        setManualGatewayInputs(null);
+      }
+    } catch (error) {
+      showToast.apiError(error);
+    }
   };
 
   if (isLoading) {
-    return <div className="text-center py-20">Loading payment options...</div>;
+    return <AddMoneyPageSkeleton />;
   }
 
   if (error) {
@@ -273,6 +329,12 @@ const AddMoney = () => {
                             onChange={(value) => {
                               field.onChange(value);
                               setSelectedGatewayId(value);
+
+                              const selectedGateway = allGatewayCurrencies.find(
+                                (gateway) => gateway.id === value,
+                              );
+
+                              onChangeManualGateway(selectedGateway);
                             }}
                             options={allGatewayCurrencies.map((gateway) => ({
                               label: (
@@ -307,6 +369,90 @@ const AddMoney = () => {
                       <div className="px-4 py-2 text-sm bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 rounded-2xl">
                         Charge: {selectedGateway.fixed_charge} +{" "}
                         {selectedGateway.percent_charge}%
+                      </div>
+                    </div>
+                  )}
+
+                  {isFieldsLoading && <AddMoneyFieldSkeleton />}
+
+                  {/* Dynamic Manual Fields */}
+                  {manualGatewayInputs && manualGatewayInputs.length > 0 && (
+                    <div className="mt-8 space-y-6  border-gray-200 dark:border-gray-700">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="w-1 h-6 bg-primary rounded-full" />
+                        <h3 className="text-lg font-semibold">
+                          Payment Instruction
+                        </h3>
+                      </div>
+                      {selectedGateway?.gateway?.desc && (
+                        <div
+                          className="mt-2 mb-4 p-4  bg-amber-50/50 dark:bg-amber-500/10 text-amber-800 dark:text-amber-600 rounded-2xl border border-amber-200 dark:border-amber-900/30"
+                          dangerouslySetInnerHTML={{
+                            __html: selectedGateway?.gateway?.desc,
+                          }}
+                        />
+                      )}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
+                        {manualGatewayInputs.map((input) => (
+                          <FormItem
+                            key={input.name}
+                            label={input.label}
+                            name={input.name}
+                            required={input.required}
+                            errors={errors}
+                            layout="vertical"
+                          >
+                            <Controller
+                              name={input.name}
+                              control={control}
+                              rules={{
+                                required: input.required
+                                  ? `${input.label} is required`
+                                  : false,
+                              }}
+                              render={({ field }) => {
+                                if (input.type === "text") {
+                                  return <Input {...field} size="large" />;
+                                }
+                                if (input.type === "textarea") {
+                                  return (
+                                    <Input.TextArea
+                                      {...field}
+                                      rows={4}
+                                      size="large"
+                                    />
+                                  );
+                                }
+                                if (input.type === "file") {
+                                  return (
+                                    <Upload
+                                      beforeUpload={(file) => {
+                                        field.onChange(file);
+                                        return false; // Prevent auto upload
+                                      }}
+                                      maxCount={1}
+                                      onRemove={() => field.onChange(undefined)}
+                                      className="w-full"
+                                    >
+                                      <Button
+                                        icon={
+                                          <UploadCloud className="w-4 h-4" />
+                                        }
+                                        size="large"
+                                        className="w-full text-left flex items-center justify-between"
+                                      >
+                                        <span className="text-gray-400">
+                                          Select {input.label}
+                                        </span>
+                                      </Button>
+                                    </Upload>
+                                  );
+                                }
+                                return null;
+                              }}
+                            />
+                          </FormItem>
+                        ))}
                       </div>
                     </div>
                   )}

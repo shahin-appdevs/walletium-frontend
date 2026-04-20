@@ -16,9 +16,17 @@ const paymentApi = baseApi.injectEndpoints({
         params: { lang },
       }),
     }),
-    addMoneyManual: builder.mutation({
+
+    getManualPaymentGatewayFields: builder.query({
+      query: ({ alias, lang }) => ({
+        url: `/user/add-money/manual/input-fields`,
+        method: "GET",
+        params: { alias, lang },
+      }),
+    }),
+    addMoneyManualSubmit: builder.mutation({
       query: ({ payload, lang }) => ({
-        url: "/user/add-money/manual",
+        url: "/user/add-money/manual/submit",
         method: "POST",
         data: payload,
         params: { lang },
@@ -30,5 +38,6 @@ const paymentApi = baseApi.injectEndpoints({
 export const {
   useGetPaymentGatewaysQuery,
   useAddMoneyAutomaticSubmitMutation,
-  useAddMoneyManualMutation,
+  useAddMoneyManualSubmitMutation,
+  useLazyGetManualPaymentGatewayFieldsQuery,
 } = paymentApi;
