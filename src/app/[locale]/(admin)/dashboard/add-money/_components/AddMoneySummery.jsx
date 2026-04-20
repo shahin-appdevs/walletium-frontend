@@ -1,6 +1,7 @@
 import { Alert, Card } from "antd";
 import { AlertCircle } from "lucide-react";
 import React, { memo } from "react";
+import { useTranslations } from "next-intl";
 
 function AddMoneySummery({
   amount,
@@ -9,13 +10,15 @@ function AddMoneySummery({
   youWillReceive,
   selectedGateway,
 }) {
+  const t = useTranslations("Dashboard.addMoney.summary");
+
   return (
-    <Card title="Summary" className="h-full">
+    <Card title={t("title")} className="h-full">
       <div className="bg-neutral-50 dark:bg-slate-900 rounded-2xl p-6">
         <div className="divide-y divide-gray-200 dark:divide-gray-700 text-sm">
           <div className="flex justify-between py-3">
             <span className="text-gray-600 dark:text-gray-400">
-              Entered Amount
+              {t("enteredAmount")}
             </span>
             <span>
               {amount || 0} {selectedCurrencyCode}
@@ -23,14 +26,14 @@ function AddMoneySummery({
           </div>
           <div className="flex justify-between py-3">
             <span className="text-gray-600 dark:text-gray-400">
-              Total Fees & Charges
+              {t("totalFees")}
             </span>
             <span className="text-red-600">
               {totalFee} {selectedCurrencyCode}
             </span>
           </div>
           <div className="flex justify-between py-4 font-semibold text-base border-t">
-            <span>You will receive</span>
+            <span>{t("youWillReceive")}</span>
             <span>
               {youWillReceive} {selectedCurrencyCode}
             </span>
@@ -39,8 +42,8 @@ function AddMoneySummery({
 
         {selectedGateway?.type === "MANUAL" && (
           <Alert
-            message="Manual Payment"
-            description="Upload payment proof after making the transfer."
+            message={t("manualPayment")}
+            description={t("manualDescription")}
             type="warning"
             showIcon
             icon={<AlertCircle className="w-4 h-4" />}

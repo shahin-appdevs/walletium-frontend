@@ -8,24 +8,7 @@ import useViewport from "@/hooks/useViewport";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import Link from "next/link";
 import LucideIcon from "@/components/LucideIcon";
-
-const statusMap = {
-  1: {
-    text: "Success",
-    className:
-      "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border border-green-200 dark:border-green-800",
-  },
-  2: {
-    text: "Pending",
-    className:
-      "bg-yellow-100/50 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-800",
-  },
-  3: {
-    text: "Rejected",
-    className:
-      "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 border border-red-200 dark:border-red-800",
-  },
-};
+import { useTranslations } from "next-intl";
 
 const AddMoneyTransaction = memo(function AddMoneyTransaction({
   transactionsData,
@@ -34,32 +17,51 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
   const { isModalOpen, handleShowModal, handleCancelModal } = useModal();
   const [singleTable, setSingleTable] = useState([]);
   const { smallScreen } = useViewport();
+  const t = useTranslations("Dashboard.addMoney.transaction");
+
+  const statusMap = {
+    1: {
+      text: t("status.success"),
+      className:
+        "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border border-green-200 dark:border-green-800",
+    },
+    2: {
+      text: t("status.pending"),
+      className:
+        "bg-yellow-100/50 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-800",
+    },
+    3: {
+      text: t("status.rejected"),
+      className:
+        "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 border border-red-200 dark:border-red-800",
+    },
+  };
 
   const transactions = transactionsData?.transactions?.data;
 
   const handleOnRowClick = (record) => {
     const arr = [
-      { label: "Transaction Type", value: record.type },
-      { label: "Gateway Currency", value: record.gateway_currency },
-      { label: "TXID", value: record.trx_id },
+      { label: t("type"), value: record.type },
+      { label: t("gatewayCurrency"), value: record.gateway_currency },
+      { label: t("trxId"), value: record.trx_id },
       {
-        label: "Amount",
+        label: t("amount"),
         value: `${record.request_amount} ${record.request_currency}`,
       },
       {
-        label: "Fee & Charge",
+        label: t("feeCharge"),
         value: `${record.total_charge} ${record.request_currency}`,
       },
       {
-        label: "Total Amount",
+        label: t("totalPayable"),
         value: `${record.total_payable} ${record.request_currency}`,
       },
       {
-        label: "Exchange Rate",
+        label: t("exchangeRate"),
         value: `1 ${record.request_currency} = ${record.exchange_rate} ${record.payment_currency}`,
       },
       {
-        label: "Date",
+        label: t("date"),
         value: new Date(record.created_at).toLocaleString("en-US", {
           day: "2-digit",
           month: "short",
@@ -70,7 +72,7 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
         }),
       },
       {
-        label: "Status",
+        label: t("status.title"),
         value: statusMap[record.status]?.text || "Unknown",
         bold: true,
       },
@@ -82,7 +84,7 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
 
   const columns = [
     {
-      title: "Type",
+      title: t("type"),
       dataIndex: "type",
       width: 250,
       render: (_, record) => (
@@ -105,7 +107,7 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
       ),
     },
     {
-      title: "Amount",
+      title: t("amount"),
       dataIndex: "request_amount",
       render: (amount, record) => (
         <span className="font-semibold text-green-600 whitespace-nowrap">
@@ -114,14 +116,14 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
       ),
     },
     {
-      title: "Trx ID",
+      title: t("trxId"),
       dataIndex: "trx_id",
       render: (id) => (
         <span className="text-gray-600 dark:text-neutral-300">{id}</span>
       ),
     },
     {
-      title: "Total Payable",
+      title: t("totalPayable"),
       dataIndex: "total_payable",
       render: (amount, record) => (
         <span className="font-semibold text-gray-800 dark:text-neutral-300">
@@ -131,7 +133,7 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
     },
 
     {
-      title: "Date",
+      title: t("date"),
       dataIndex: "created_at",
       render: (date) => (
         <span className="text-gray-600 dark:text-neutral-300 whitespace-nowrap">
@@ -145,7 +147,7 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
     },
 
     {
-      title: "Exchange Rate",
+      title: t("exchangeRate"),
       dataIndex: "exchange_rate",
       render: (rate, record) => (
         <span className="text-gray-600 dark:text-neutral-300 whitespace-nowrap">
@@ -154,7 +156,7 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
       ),
     },
     {
-      title: "Fee/Charge",
+      title: t("feeCharge"),
       dataIndex: "total_charge",
       render: (charge, record) => (
         <span className="text-red-500">
@@ -163,7 +165,7 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
       ),
     },
     {
-      title: "Status",
+      title: t("status.title"),
       dataIndex: "status",
       render: (status) => {
         const mapped = statusMap[status] || { text: "Unknown", className: "" };
@@ -185,7 +187,7 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
     <div className="flex items-center gap-2! md:gap-0 ">
       <div className="hidden md:block">
         <Input
-          placeholder="Search"
+          placeholder={t("searchPlaceholder")}
           size="large"
           prefix={<SearchOutlined className="text-gray-400" />}
           className=" rounded-lg"
@@ -211,17 +213,17 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
   );
 
   return (
-    <Card title="Latest Transaction" extra={TableExtra}>
+    <Card title={t("title")} extra={TableExtra}>
       <Modal
         open={isModalOpen}
         onCancel={handleCancelModal}
         closable={false}
-        cancelText="Close"
+        cancelText={t("close")}
         okButtonProps={{ style: { display: "none" } }}
       >
         <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-white dark:bg-[#111] shadow-xs border border-gray-200 dark:border-gray-800">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-            Latest Transaction
+            {t("title")}
           </h2>
 
           <div className="divide-y divide-gray-200 dark:divide-gray-800">

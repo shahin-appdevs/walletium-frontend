@@ -61,6 +61,55 @@
                     "button": "الذهاب إلى لوحة القيادة"
                 }
             }
+        },
+        "addMoney": {
+            "title": "إضافة الأموال",
+            "exchangeRate": "سعر الصرف",
+            "availableBalance": "الرصيد المتاح",
+            "amount": "المبلغ",
+            "paymentGateway": "بوابة الدفع",
+            "selectGateway": "اختر البوابة",
+            "limit": "الحد: {min} — {max} {currency}",
+            "charge": "الرسوم: {fixed} + {percent}%",
+            "paymentInstruction": "تعليمات الدفع",
+            "proceedToPay": "المتابعة للدفع",
+            "loadingTransactions": "جاري تحميل المعاملات الأخيرة...",
+            "errorLoadingGateways": "فشل تحميل بوابات الدفع",
+            "validation": {
+                "amountNumber": "يجب أن يكون المبلغ رقماً",
+                "amountPositive": "يجب أن يكون المبلغ أكبر من 0",
+                "amountRequired": "المبلغ مطلوب",
+                "gatewayRequired": "يرجى اختيار بوابة الدفع",
+                "fieldRequired": "{label} مطلوب"
+            },
+            "summary": {
+                "title": "الملخص",
+                "enteredAmount": "المبلغ المدخل",
+                "totalFees": "إجمالي الرسوم والمصاريف",
+                "youWillReceive": "ستستلم",
+                "manualPayment": "الدفع اليدوي",
+                "manualDescription": "يرجى تحميل إثبات الدفع بعد إجراء التحويل."
+            },
+            "transaction": {
+                "selectFile": "اختر {label}",
+                "title": "أحدث المعاملات",
+                "searchPlaceholder": "بحث...",
+                "close": "إغلاق",
+                "type": "النوع",
+                "gatewayCurrency": "عملة البوابة",
+                "amount": "المبلغ",
+                "trxId": "رقم المعاملة",
+                "totalPayable": "إجمالي المبلغ المطلوب دفعه",
+                "date": "التاريخ",
+                "exchangeRate": "سعر الصرف",
+                "feeCharge": "الرسوم/المصاريف",
+                "status": {
+                    "title": "الحالة",
+                    "success": "ناجح",
+                    "pending": "قيد الانتظار",
+                    "rejected": "مرفوض"
+                }
+            }
         }
     },
     "Login": {

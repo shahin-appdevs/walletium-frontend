@@ -19,7 +19,7 @@ import {
 } from "@/redux/api/addMoneyApi";
 import { getImageUrl } from "@/utils/getImageUrl";
 import showToast from "@/lib/toast";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import AddMoneyPageSkeleton from "./AddMoneySkeleton/AddMoneyPageSkeleton";
 import AddMoneyFieldSkeleton from "./AddMoneySkeleton/AddMoneyFieldSkeleton";
@@ -33,27 +33,27 @@ const AddMoneyTransaction = dynamic(
   () => import("./Transaction/AddMoneyTransaction"),
   {
     ssr: false,
-    loading: () => (
-      <div className="py-8 text-center text-gray-500 animate-pulse">
-        Loading recent transactions...
-      </div>
-    ),
+    loading: () => null, // Placeholder or localized message will be added via prop or parent
   },
 );
 
-// Form Schema
-const addMoneySchema = yup.object({
-  amount: yup
-    .number()
-    .typeError("Amount must be a number")
-    .positive("Amount must be greater than 0")
-    .required("Amount is required"),
-  payment_gateway: yup.number().required("Please select a payment gateway"),
-});
+// Form Schema will be defined inside the component to support localization
 
 const AddMoney = () => {
   const router = useRouter();
   const locale = useLocale();
+  const t = useTranslations("Dashboard.addMoney");
+
+  const addMoneySchema = useMemo(() => {
+    return yup.object({
+      amount: yup
+        .number()
+        .typeError(t("validation.amountNumber"))
+        .positive(t("validation.amountPositive"))
+        .required(t("validation.amountRequired")),
+      payment_gateway: yup.number().required(t("validation.gatewayRequired")),
+    });
+  }, [t]);
 
   const [selectedCurrencyCode, setSelectedCurrencyCode] = useState("USD");
   const [selectedGatewayId, setSelectedGatewayId] = useState(null);
@@ -248,7 +248,7 @@ const AddMoney = () => {
   if (error) {
     return (
       <div className="text-center py-20 text-red-500">
-        Failed to load payment gateways
+        {t("errorLoadingGateways")}
       </div>
     );
   }
@@ -259,7 +259,7 @@ const AddMoney = () => {
         <div className="grid md:grid-cols-5 gap-6">
           {/* Left Column - Form */}
           <div className="md:col-span-3">
-            <Card title="Add Money" className="h-full">
+            <Card title={t("title")} className="h-full">
               {/* Exchange Rate & Balance */}
               <div className="bg-neutral-50 dark:bg-slate-900 mb-6 rounded-2xl p-5 shadow-xs">
                 <div className="flex items-center justify-between mb-4">
@@ -273,13 +273,15 @@ const AddMoney = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 ">
-                    <p className="text-gray-500">Exchange Rate</p>
+                    <p className="text-gray-500">{t("exchangeRate")}</p>
                     <p className="text-xl font-semibold!">
                       {exchangeRateFormat}
                     </p>
                   </div>
                   <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 ">
-                    <p className="text-sm text-gray-500">Available Balance</p>
+                    <p className="text-sm text-gray-500">
+                      {t("availableBalance")}
+                    </p>
                     <p className="text-xl font-semibold!">
                       {selectedUserWallet?.currency_symbol}{" "}
                       {selectedUserWallet?.balance?.toFixed(2) || "0.00"}
@@ -297,7 +299,7 @@ const AddMoney = () => {
                   <div className="grid grid-cols-1 xl:grid-cols-2 xl:gap-6">
                     {/* Amount + Currency */}
                     <FormItem
-                      label="Amount"
+                      label={t("amount")}
                       required
                       errors={errors}
                       layout="vertical"
@@ -353,7 +355,7 @@ const AddMoney = () => {
 
                     {/* Payment Gateway */}
                     <FormItem
-                      label="Payment Gateway"
+                      label={t("paymentGateway")}
                       required
                       errors={errors}
                       layout="vertical"
@@ -365,7 +367,7 @@ const AddMoney = () => {
                           <Select
                             {...field}
                             size="large"
-                            placeholder="Select gateway"
+                            placeholder={t("selectGateway")}
                             onChange={(value) => {
                               field.onChange(value);
                               setSelectedGatewayId(value);
@@ -401,14 +403,19 @@ const AddMoney = () => {
 
                   {/* Limit & Charge */}
                   {selectedGateway && (
-                    <div className="flex flex-wrap gap-3">
-                      <div className="px-4 py-2 text-sm bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 rounded-2xl">
-                        Limit: {selectedGateway.min_limit} —{" "}
-                        {selectedGateway.max_limit} {selectedCurrencyCode}
+                    <div className="flex flex-wrap justify-between gap-3">
+                      <div className="px-4 py-2 text-sm font-medium bg-primary-50 dark:bg-blue-950 text-primary-600 dark:text-primary-400 rounded-lg">
+                        {t("limit", {
+                          min: selectedGateway.min_limit,
+                          max: selectedGateway.max_limit,
+                          currency: selectedCurrencyCode,
+                        })}
                       </div>
-                      <div className="px-4 py-2 text-sm bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 rounded-2xl">
-                        Charge: {selectedGateway.fixed_charge} +{" "}
-                        {selectedGateway.percent_charge}%
+                      <div className="px-4 py-2 text-sm font-medium bg-primary-50 dark:bg-blue-950 text-primary-600 dark:text-primary-400 rounded-lg">
+                        {t("charge", {
+                          fixed: selectedGateway.fixed_charge,
+                          percent: selectedGateway.percent_charge,
+                        })}
                       </div>
                     </div>
                   )}
@@ -421,7 +428,7 @@ const AddMoney = () => {
                       <div className="flex items-center gap-2 mb-2">
                         <div className="w-1 h-6 bg-primary rounded-full" />
                         <h3 className="text-lg font-semibold">
-                          Payment Instruction
+                          {t("paymentInstruction")}
                         </h3>
                       </div>
                       {selectedGateway?.gateway?.desc && (
@@ -447,7 +454,9 @@ const AddMoney = () => {
                               control={control}
                               rules={{
                                 required: input.required
-                                  ? `${input.label} is required`
+                                  ? t("validation.fieldRequired", {
+                                      label: input.label,
+                                    })
                                   : false,
                               }}
                               render={({ field }) => {
@@ -482,7 +491,9 @@ const AddMoney = () => {
                                         className="w-full text-left flex items-center justify-between"
                                       >
                                         <span className="text-gray-400">
-                                          Select {input.label}
+                                          {t("transaction.selectFile", {
+                                            label: input.label,
+                                          })}
                                         </span>
                                       </Button>
                                     </Upload>
@@ -503,7 +514,7 @@ const AddMoney = () => {
                     disabled={!selectedGatewayId || !amount}
                     className="w-full text-base h-12"
                   >
-                    Proceed to Pay
+                    {t("proceedToPay")}
                   </PrimaryButton>
                 </form>
               </div>
