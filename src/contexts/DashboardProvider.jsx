@@ -47,7 +47,7 @@ const DashboardProvider = ({ children }) => {
       if (email_verified === 0) {
         router.push("/verify-email");
       } else if (kyc_verified === 0) {
-        router.push("/kyc-onboarding");
+        // router.push("/kyc-onboarding");
       }
     }
   }, [dashboardData, twoFactorStatus, dashboardLoading, isSuccess]);

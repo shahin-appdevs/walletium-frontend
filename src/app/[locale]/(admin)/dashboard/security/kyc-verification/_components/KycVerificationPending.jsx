@@ -2,8 +2,10 @@ import Link from "next/link";
 import { Card } from "antd";
 import { Clock, User, FileText } from "lucide-react";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
+import { useTranslations } from "next-intl";
 
 export default function KycVerificationPending() {
+  const t = useTranslations("Dashboard.security.kyc.Pending");
   return (
     <Card className="w-full max-w-md rounded-2xl shadow-md dark:bg-neutral-900">
       <div className="flex flex-col items-center text-center gap-4">
@@ -14,13 +16,12 @@ export default function KycVerificationPending() {
 
         {/* Title */}
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-          KYC Verification Pending
+          {t("title")}
         </h2>
 
         {/* Description */}
         <p className="text-sm text-gray-600 dark:text-neutral-400">
-          Your identity verification is still in process. Please wait until our
-          team reviews your documents.
+          {t("description")}
         </p>
 
         {/* Info Section */}
@@ -28,14 +29,14 @@ export default function KycVerificationPending() {
           <div className="flex items-center gap-3 rounded-lg bg-gray-50 p-3 dark:bg-neutral-800">
             <User className="h-5 w-5 text-yellow-500" />
             <span className="text-sm text-gray-700 dark:text-neutral-300">
-              Identity Verification Pending
+              {t("identity")}
             </span>
           </div>
 
           <div className="flex items-center gap-3 rounded-lg bg-gray-50 p-3 dark:bg-neutral-800">
             <FileText className="h-5 w-5 text-yellow-500" />
             <span className="text-sm text-gray-700 dark:text-neutral-300">
-              Documents Under Review
+              {t("documents")}
             </span>
           </div>
         </div>
@@ -49,7 +50,7 @@ export default function KycVerificationPending() {
               "group-hover/primary-btn:translate-1/6 group-hover/primary-btn:-translate-y-1 duration-300"
             }
           >
-            Go to Dashboard
+            {t("button")}
           </PrimaryButton>
         </Link>
       </div>

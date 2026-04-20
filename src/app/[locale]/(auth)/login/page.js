@@ -100,8 +100,8 @@ export default function LoginPage() {
 
         return;
       } else if (kyc_verified === 0) {
-        router.push("/kyc-onboarding");
-        return;
+        // router.push("/kyc-onboarding");
+        // return;
       }
 
       if (two_factor_status === 1) {

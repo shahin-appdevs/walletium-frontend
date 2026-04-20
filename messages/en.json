@@ -23,6 +23,43 @@
                 "copy": "Copy",
                 "copiedSuccess": "Copied Successfully",
                 "somethingWentWrong": "Something went wrong"
+            },
+            "kyc": {
+                "Form": {
+                    "title": "KYC Verification",
+                    "subTitle": "Please submit your KYC information with valid data.",
+                    "backButton": "Back to Dashboard",
+                    "selectFile": "Select File",
+                    "submit": "Submit",
+                    "isRequired": "{label} is required",
+                    "selectPlaceholder": "Select {label}",
+                    "onlyAllow": "Only allow {ext}",
+                    "fileSizeLimit": "File size should be less then {size} MB"
+                },
+                "Unverified": {
+                    "tag": "Unverified"
+                },
+                "Complete": {
+                    "title": "KYC Verification Completed",
+                    "description": "Your identity has been successfully verified. You now have full access to all features and services.",
+                    "identity": "Identity Verified",
+                    "documents": "Documents Approved",
+                    "button": "Go to Dashboard"
+                },
+                "Pending": {
+                    "title": "KYC Verification Pending",
+                    "description": "Your identity verification is still in process. Please wait until our team reviews your documents.",
+                    "identity": "Identity Verification Pending",
+                    "documents": "Documents Under Review",
+                    "button": "Go to Dashboard"
+                },
+                "Rejected": {
+                    "title": "KYC Verification Rejected",
+                    "description": "Unfortunately, your identity verification was not approved. Please review your documents and try again.",
+                    "identity": "Identity Verification Failed",
+                    "documents": "Documents Rejected",
+                    "button": "Go to Dashboard"
+                }
             }
         }
     },

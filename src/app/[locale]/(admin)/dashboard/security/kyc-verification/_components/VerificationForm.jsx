@@ -7,6 +7,7 @@ import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import showToast from "@/lib/toast";
 import { getSuccessMessage } from "@/utils/getSuccessMessage";
 import { getErrorMessage } from "@/utils/getErrorMessage";
+import { useTranslations } from "next-intl";
 
 export default function DynamicVerificationForm({
   inputFields,
@@ -14,6 +15,7 @@ export default function DynamicVerificationForm({
 }) {
   const [submitVerification, { isLoading }] =
     useSubmitKycVerificationMutation();
+  const t = useTranslations("Dashboard.security.kyc.Form");
   const {
     control,
     handleSubmit,
@@ -61,7 +63,9 @@ export default function DynamicVerificationForm({
             name={field.name}
             control={control}
             rules={{
-              required: field.required ? `${field.label} is required` : false,
+              required: field.required
+                ? t("isRequired", { label: field.label })
+                : false,
             }}
             render={({ field: controllerField }) => {
               switch (field.type) {
@@ -89,7 +93,9 @@ export default function DynamicVerificationForm({
                     <Select
                       {...controllerField}
                       size="large"
-                      placeholder={`Select ${field.label}`}
+                      placeholder={t("selectPlaceholder", {
+                        label: field.label,
+                      })}
                       options={field.validation?.options?.map((opt) => ({
                         label: opt,
                         value: opt,
@@ -101,17 +107,19 @@ export default function DynamicVerificationForm({
                     <Upload
                       beforeUpload={(file) => {
                         const validExt = field?.validation?.mimes.map((item) =>
-                          item.trim()
+                          item.trim(),
                         );
                         const validFileSize = field?.validation?.max;
                         const MAX_FILE_SIZE = validFileSize * 1024 * 1024;
                         const isValidSize = file.size <= MAX_FILE_SIZE;
 
                         //valid message
-                        const extMessage = `Only allow ${validExt.join(", ")}`;
+                        const extMessage = t("onlyAllow", {
+                          ext: validExt.join(", "),
+                        });
                         const sizeMessage =
                           isValidSize ||
-                          `File size should be less then ${validFileSize} MB`;
+                          t("fileSizeLimit", { size: validFileSize });
 
                         const fileExt = file.name
                           .split(".")
@@ -138,7 +146,9 @@ export default function DynamicVerificationForm({
                         showRemoveIcon: true,
                       }}
                     >
-                      <Button icon={<UploadOutlined />}>Select File</Button>
+                      <Button icon={<UploadOutlined />}>
+                        {t("selectFile")}
+                      </Button>
                     </Upload>
                   );
                 default:
@@ -150,7 +160,7 @@ export default function DynamicVerificationForm({
       ))}
 
       <PrimaryButton type="submit" className="w-full" loading={isLoading}>
-        Submit
+        {t("submit")}
       </PrimaryButton>
     </Form>
   );

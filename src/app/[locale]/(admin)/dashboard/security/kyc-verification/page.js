@@ -33,8 +33,6 @@ export default function KycVerified() {
       {kycStatus === 1 && <VerificationComplete />}
       {kycStatus === 2 && <KycVerificationPending />}
       {kycStatus === 3 && <KycVerificationRejected />}
-
-      {/* <VerificationComplete /> */}
     </div>
   );
 }
