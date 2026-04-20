@@ -1,20 +1,14 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
-import { Card, Input, Select, Space, Alert, Button, Upload } from "antd";
-import {
-  ArrowUpRight,
-  DollarSign,
-  AlertCircle,
-  UploadCloud,
-} from "lucide-react";
+import React, { useState, useMemo, useEffect, useCallback } from "react";
+import { Card, Input, Select, Space, Button, Upload } from "antd";
+import { ArrowUpRight, DollarSign, UploadCloud } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import FormItem from "@/components/ui/form/FormItem";
-import AddMoneyTransaction from "../Transaction/AddMoneyTransaction";
 
 import Image from "next/image";
 import {
@@ -27,8 +21,24 @@ import { getImageUrl } from "@/utils/getImageUrl";
 import showToast from "@/lib/toast";
 import { useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
-import AddMoneyPageSkeleton from "../AddMoneySkeleton/AddMoneyPageSkeleton";
-import AddMoneyFieldSkeleton from "../AddMoneySkeleton/AddMoneyFieldSkeleton";
+import AddMoneyPageSkeleton from "./AddMoneySkeleton/AddMoneyPageSkeleton";
+import AddMoneyFieldSkeleton from "./AddMoneySkeleton/AddMoneyFieldSkeleton";
+import { isArrayCheck } from "@/utils/IsArrayCheck";
+import dynamic from "next/dynamic";
+import AddMoneySummery from "./AddMoneySummery";
+
+// dynamic imports
+const AddMoneyTransaction = dynamic(
+  () => import("./Transaction/AddMoneyTransaction"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="py-8 text-center text-gray-500 animate-pulse">
+        Loading recent transactions...
+      </div>
+    ),
+  },
+);
 
 // Form Schema
 const addMoneySchema = yup.object({
@@ -55,23 +65,35 @@ const AddMoney = () => {
   const [getManualPaymentGatewayFields, { isLoading: isFieldsLoading }] =
     useLazyGetManualPaymentGatewayFieldsQuery();
 
-  const paymentData = data?.data?.payment_gateways || {};
-  const userWallets = paymentData.user_wallet || [];
-  const gateways = paymentData.gateway_currencies || [];
+  console.log(data);
 
-  const allGatewayCurrencies = gateways.flatMap((gateway) =>
-    gateway.currencies.map((currency) => ({
-      ...currency,
-      gateway: {
-        id: gateway.id,
-        name: gateway.name,
-        type: gateway.type,
-        crypto: gateway.crypto,
-        desc: gateway.desc,
-        status: gateway.status,
-      },
-    })),
-  );
+  const paymentData = data?.data?.payment_gateways || {};
+  // Optimized & stable derived values
+  const userWallets = useMemo(() => {
+    return isArrayCheck(paymentData.user_wallet) ? paymentData.user_wallet : [];
+  }, [paymentData.user_wallet]);
+
+  const gateways = useMemo(() => {
+    return isArrayCheck(paymentData.gateway_currencies)
+      ? paymentData.gateway_currencies
+      : [];
+  }, [paymentData.gateway_currencies]);
+
+  const allGatewayCurrencies = useMemo(() => {
+    return gateways.flatMap((gateway) =>
+      gateway.currencies.map((currency) => ({
+        ...currency,
+        gateway: {
+          id: gateway.id,
+          name: gateway.name,
+          type: gateway.type,
+          crypto: gateway.crypto,
+          desc: gateway.desc,
+          status: gateway.status,
+        },
+      })),
+    );
+  }, [gateways]);
 
   const selectedUserWallet = userWallets.find(
     (w) => w.currency_code === selectedCurrencyCode,
@@ -133,7 +155,9 @@ const AddMoney = () => {
     };
   }, [amount, selectedGateway]);
 
+  // add money submit
   const onSubmit = async (data) => {
+    if (!selectedGateway) return;
     // automatic payment gateway
     if (selectedGateway.gateway?.type === "AUTOMATIC") {
       try {
@@ -185,21 +209,31 @@ const AddMoney = () => {
   };
 
   // manual gateway field
-  const onChangeManualGateway = async (selectedGateway) => {
-    try {
-      if (selectedGateway.gateway.type === "MANUAL") {
-        const res = await getManualPaymentGatewayFields({
-          alias: selectedGateway.alias,
-          lang: locale,
-        }).unwrap();
-        setManualGatewayInputs(res?.data?.input_fields);
-      } else {
+  const onChangeManualGateway = useCallback(
+    async (selectedGateway) => {
+      if (!selectedGateway) {
         setManualGatewayInputs(null);
+        return;
       }
-    } catch (error) {
-      showToast.apiError(error);
-    }
-  };
+
+      try {
+        if (selectedGateway.gateway?.type === "MANUAL") {
+          const res = await getManualPaymentGatewayFields({
+            alias: selectedGateway.alias,
+            lang: locale,
+          }).unwrap();
+
+          setManualGatewayInputs(res?.data?.input_fields || null);
+        } else {
+          setManualGatewayInputs(null);
+        }
+      } catch (error) {
+        showToast.apiError(error);
+        setManualGatewayInputs(null); // Clear on error for better UX
+      }
+    },
+    [getManualPaymentGatewayFields, locale],
+  );
 
   if (isLoading) {
     return <AddMoneyPageSkeleton />;
@@ -472,45 +506,13 @@ const AddMoney = () => {
 
           {/* Summary Column */}
           <div className="md:col-span-2">
-            <Card title="Summary" className="h-full">
-              <div className="bg-neutral-50 dark:bg-slate-900 rounded-2xl p-6">
-                <div className="divide-y divide-gray-200 dark:divide-gray-700 text-sm">
-                  <div className="flex justify-between py-3">
-                    <span className="text-gray-600 dark:text-gray-400">
-                      Entered Amount
-                    </span>
-                    <span>
-                      {amount || 0} {selectedCurrencyCode}
-                    </span>
-                  </div>
-                  <div className="flex justify-between py-3">
-                    <span className="text-gray-600 dark:text-gray-400">
-                      Total Fees & Charges
-                    </span>
-                    <span className="text-red-600">
-                      {totalFee} {selectedCurrencyCode}
-                    </span>
-                  </div>
-                  <div className="flex justify-between py-4 font-semibold text-base border-t">
-                    <span>You will receive</span>
-                    <span>
-                      {youWillReceive} {selectedCurrencyCode}
-                    </span>
-                  </div>
-                </div>
-
-                {selectedGateway?.type === "MANUAL" && (
-                  <Alert
-                    message="Manual Payment"
-                    description="Upload payment proof after making the transfer."
-                    type="warning"
-                    showIcon
-                    icon={<AlertCircle className="w-4 h-4" />}
-                    className="mt-6"
-                  />
-                )}
-              </div>
-            </Card>
+            <AddMoneySummery
+              amount={amount}
+              selectedCurrencyCode={selectedCurrencyCode}
+              totalFee={totalFee}
+              youWillReceive={youWillReceive}
+              selectedGateway={selectedGateway}
+            />
           </div>
         </div>
 

@@ -1,5 +1,5 @@
 import React from "react";
-import AddMoney from "./_components/AddMoney/AddMoney";
+import AddMoney from "./_components/AddMoney";
 import { Suspense } from "react";
 import AddMoneyPageSkeleton from "./_components/AddMoneySkeleton/AddMoneyPageSkeleton";
 
