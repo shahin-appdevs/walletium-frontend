@@ -1,14 +1,13 @@
 "use client";
-import { Input, Button, Card, Modal } from "antd";
+import { Input, Card, Modal } from "antd";
 import {
   ArrowDownOutlined,
   ArrowUpOutlined,
   SearchOutlined,
-  FilterOutlined,
 } from "@ant-design/icons";
 import Table from "@/components/ui/Table";
 import useModal from "@/hooks/useModal";
-import { useState } from "react";
+import { memo, useState } from "react";
 import useViewport from "@/hooks/useViewport";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import Link from "next/link";
@@ -69,10 +68,10 @@ const data = [
   },
 ];
 
-export default function SendMoneyTransaction() {
+const SendMoneyTransaction = memo(function SendMoneyTransaction({}) {
   const { isModalOpen, handleShowModal, handleCancelModal } = useModal();
   const [singleTable, setSingleTable] = useState([]);
-  const { smallScreen, mediumScreen } = useViewport();
+  const { smallScreen } = useViewport();
 
   const handleOnRowClick = (record) => {
     const labels = [
@@ -212,20 +211,6 @@ export default function SendMoneyTransaction() {
   ];
 
   const smallScreenColumn = smallScreen ? [...columns.slice(0, 2)] : columns;
-  // const mediumScreenColumn = mediumScreen ? [...columns.slice(0, 4)] : columns;
-
-  // const Extra = (
-  //   <div className="flex items-center gap-3">
-  //     <Input
-  //       placeholder="Search"
-  //       prefix={<SearchOutlined className="text-gray-400" />}
-  //       className="w-48 rounded-lg"
-  //     />
-  //     <Button icon={<FilterOutlined />} className="rounded-lg">
-  //       Filter
-  //     </Button>
-  //   </div>
-  // );
 
   const TableExtra = (
     <div className="flex items-center gap-2! md:gap-0 ">
@@ -321,4 +306,6 @@ export default function SendMoneyTransaction() {
       </div>
     </Card>
   );
-}
+});
+
+export default SendMoneyTransaction;

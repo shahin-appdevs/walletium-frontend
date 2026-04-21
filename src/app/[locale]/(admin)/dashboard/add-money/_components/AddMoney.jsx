@@ -27,6 +27,8 @@ import { isArrayCheck } from "@/utils/IsArrayCheck";
 import dynamic from "next/dynamic";
 import AddMoneySummery from "./AddMoneySummery";
 import { useGetTransactionsQuery } from "@/redux/api/dashboardApi";
+import useGatewayLimits from "@/hooks/useGatewayLimits";
+import { getExchangeRate, formatExchangeRate } from "@/utils/exchangeRate";
 
 // dynamic imports
 const AddMoneyTransaction = dynamic(
@@ -43,6 +45,7 @@ const AddMoney = () => {
   const router = useRouter();
   const locale = useLocale();
   const t = useTranslations("Dashboard.addMoney");
+  const tTrx = useTranslations("Dashboard.addMoney.transaction");
 
   const addMoneySchema = useMemo(() => {
     return yup.object({
@@ -108,20 +111,19 @@ const AddMoney = () => {
   const selectedGateway = allGatewayCurrencies.find(
     (g) => g.id === selectedGatewayId,
   );
-  // exchange rate
-  const exchangeRate = useMemo(() => {
-    if (!selectedGateway || !selectedUserWallet) return null;
-    const walletRate = selectedUserWallet.rate;
-    const gatewayRate = selectedGateway.rate;
 
-    return (1 / walletRate) * gatewayRate;
-  }, [selectedGateway, selectedUserWallet]);
+  // exchange rate calculation
+  const exchangeRate = getExchangeRate(
+    selectedUserWallet?.rate,
+    selectedGateway?.rate,
+  );
 
   // exchange rate format
-  const exchangeRateFormat = useMemo(() => {
-    if (!exchangeRate) return null;
-    return `1 ${selectedCurrencyCode} = ${exchangeRate.toFixed(4)} ${selectedGateway?.currency_code}`;
-  }, [exchangeRate, selectedCurrencyCode, selectedGateway?.currency_code]);
+  const exchangeRateFormat = formatExchangeRate(
+    exchangeRate,
+    selectedCurrencyCode,
+    selectedGateway?.currency_code,
+  );
 
   const {
     control,
@@ -139,6 +141,12 @@ const AddMoney = () => {
   });
 
   const amount = watch("amount");
+
+  //min max limit calculation hook
+  const { minLimit, maxLimit } = useGatewayLimits(
+    selectedGateway,
+    exchangeRate,
+  );
 
   useEffect(() => {
     if (!selectedGatewayId) {
@@ -240,6 +248,8 @@ const AddMoney = () => {
     },
     [getManualPaymentGatewayFields, locale],
   );
+
+  // limit
 
   if (isLoading) {
     return <AddMoneyPageSkeleton />;
@@ -406,8 +416,8 @@ const AddMoney = () => {
                     <div className="flex flex-wrap justify-between gap-3">
                       <div className="px-4 py-2 text-sm font-medium bg-primary-50 dark:bg-blue-950 text-primary-600 dark:text-primary-400 rounded-lg">
                         {t("limit", {
-                          min: selectedGateway.min_limit,
-                          max: selectedGateway.max_limit,
+                          min: minLimit,
+                          max: maxLimit,
                           currency: selectedCurrencyCode,
                         })}
                       </div>
@@ -536,6 +546,7 @@ const AddMoney = () => {
         <AddMoneyTransaction
           transactionsData={transactionsData?.data}
           loading={isTransactionsLoading}
+          t={tTrx}
         />
       </div>
     </section>

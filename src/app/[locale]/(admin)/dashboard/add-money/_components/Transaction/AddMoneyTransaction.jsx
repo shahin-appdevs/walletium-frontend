@@ -8,16 +8,15 @@ import useViewport from "@/hooks/useViewport";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import Link from "next/link";
 import LucideIcon from "@/components/LucideIcon";
-import { useTranslations } from "next-intl";
 
 const AddMoneyTransaction = memo(function AddMoneyTransaction({
   transactionsData,
   loading,
+  t,
 }) {
   const { isModalOpen, handleShowModal, handleCancelModal } = useModal();
   const [singleTable, setSingleTable] = useState([]);
   const { smallScreen } = useViewport();
-  const t = useTranslations("Dashboard.addMoney.transaction");
 
   const statusMap = {
     1: {

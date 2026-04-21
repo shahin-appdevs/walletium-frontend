@@ -102,11 +102,38 @@
                 "date": "Date",
                 "exchangeRate": "Exchange Rate",
                 "feeCharge": "Fee/Charge",
+                "selectFile": "Select File",
                 "status": {
                     "title": "Status",
                     "success": "Success",
                     "pending": "Pending",
                     "rejected": "Rejected"
+                }
+            },
+            "sendMoney": {
+                "title": "Send Money",
+                "exchangeRate": "Exchange Rate",
+                "availableBalance": "Available Balance",
+                "senderAmount": "Sender Amount",
+                "recipientAmount": "Recipient Amount",
+                "limit": "Limit: {min} — {max} {currency}",
+                "charge": "Charge: {fixed} + {percent}%",
+                "sendButton": "Send Money",
+                "validation": {
+                    "senderAmountRequired": "Sender amount is required",
+                    "recipientAmountRequired": "Recipient amount is required",
+                    "amountNumber": "Amount must be a number",
+                    "amountPositive": "Amount must be greater than 0"
+                },
+                "summary": {
+                    "title": "Summary",
+                    "senderWallet": "Sender Wallet",
+                    "receiverWallet": "Receiver Wallet",
+                    "sendingAmount": "Sending Amount",
+                    "totalFees": "Total Fees & Charges",
+                    "exchangeRate": "Exchange Rate",
+                    "receiverWillGet": "Receiver Will Get",
+                    "totalPayable": "Total Payable Amount"
                 }
             }
         }
