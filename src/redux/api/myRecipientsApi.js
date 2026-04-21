@@ -2,9 +2,9 @@ import { baseApi } from "./baseApi";
 
 const sendMoneyApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getSendMoneyIndex: builder.query({
-      query: ({ lang }) => ({
-        url: "/user/send-money/index",
+    getMyRecipients: builder.query({
+      query: ({ lang}) => ({
+        url: "/user/recipient/my-recipient",
         method: "GET",
         params: { lang },
       }),
@@ -20,5 +20,4 @@ const sendMoneyApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetSendMoneyIndexQuery, useSendMoneySubmitMutation } =
-  sendMoneyApi;
+export const { useGetMyRecipientsQuery } = sendMoneyApi;

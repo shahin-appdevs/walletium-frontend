@@ -11,7 +11,7 @@ import dynamic from "next/dynamic";
 import { useLocale } from "next-intl";
 import {
   useGetSendMoneyIndexQuery,
-  useSendMoneyAutomaticSubmitMutation,
+  useSendMoneySubmitMutation,
 } from "@/redux/api/sendMoneyApi";
 import SendMoneyPageSkeleton from "./SendMoneySkeleton/SendMoneyPageSkeleton";
 import { useEffect, useMemo, useState } from "react";
@@ -21,6 +21,7 @@ import { useRouter } from "next/navigation";
 import { getImageUrl } from "@/utils/getImageUrl";
 import { getExchangeRate } from "@/utils/exchangeRate";
 import useGatewayLimits from "@/hooks/useGatewayLimits";
+import showToast from "@/lib/toast";
 
 const sendMoneySchema = yup.object({
   sender_amount: yup.string().required("Sender amount is required"),
@@ -37,6 +38,7 @@ const SendMoneyTransaction = dynamic(
 
 const SendMoney = () => {
   const locale = useLocale();
+  // api hooks
   const {
     data: sendMoneyIndexData,
     isLoading,
@@ -44,6 +46,8 @@ const SendMoney = () => {
   } = useGetSendMoneyIndexQuery({
     lang: locale,
   });
+  const [sendMoneySubmit, { isLoading: sendMoneyLoading }] =
+    useSendMoneySubmitMutation();
 
   const sendMoneyData = sendMoneyIndexData?.data || {};
   const userWallets = useMemo(
@@ -139,10 +143,6 @@ const SendMoney = () => {
     }
   }, [recipientAmount, setValue]);
 
-  const [sendMoneyAutomaticSubmit, { isLoading: isSubmitting }] =
-    useSendMoneyAutomaticSubmitMutation();
-  const router = useRouter();
-
   const handleSenderAmountChange = (e) => {
     const val = e.target.value;
     setValue("sender_amount", val);
@@ -162,22 +162,17 @@ const SendMoney = () => {
   const onSubmit = async (data) => {
     try {
       const payload = {
-        amount: data.sender_amount,
-        sender_wallet: selectedSenderCurrency,
-        receiver_wallet: selectedReceiverCurrency,
-        // The API might expect more fields based on its requirements,
-        // but these are the ones typically required for a send money submit.
+        sender_amount: data.sender_amount,
+        sender_currency: selectedSenderCurrency,
+        receiver_currency: selectedReceiverCurrency,
       };
 
-      const res = await sendMoneyAutomaticSubmit({
+      const res = await sendMoneySubmit({
         payload,
         lang: locale,
       }).unwrap();
 
       showToast.apiSuccess(res);
-      if (res?.data?.redirect_url) {
-        router.push(res.data.redirect_url);
-      }
     } catch (error) {
       showToast.apiError(error);
     }

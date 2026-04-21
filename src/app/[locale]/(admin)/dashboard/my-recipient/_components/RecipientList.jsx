@@ -1,62 +1,57 @@
 "use client";
-import { Input, Card, Modal, Space } from "antd";
+
+import { Input, Card, Modal, Space, Skeleton } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import Table from "@/components/ui/Table";
 import useModal from "@/hooks/useModal";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import useViewport from "@/hooks/useViewport";
 import LucideIcon from "@/components/LucideIcon";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import Link from "next/link";
-
-export const data = [
-  {
-    key: "1",
-    name: "John Doe",
-    country: "United States",
-    zip_code: "10001",
-    email: "john.doe@example.com",
-    fee_charge: "$12.50",
-  },
-  {
-    key: "2",
-    name: "Ayesha Rahman",
-    country: "Bangladesh",
-    zip_code: "1207",
-    email: "ayesha.rahman@gmail.com",
-    fee_charge: "৳150.00",
-  },
-  {
-    key: "3",
-    name: "Ravi Kumar",
-    country: "India",
-    zip_code: "560001",
-    email: "ravi.kumar@outlook.com",
-    fee_charge: "₹99.00",
-  },
-  {
-    key: "4",
-    name: "Sarah Williams",
-    country: "United Kingdom",
-    zip_code: "SW1A 1AA",
-    email: "sarah.williams@yahoo.com",
-    fee_charge: "£8.75",
-  },
-  {
-    key: "5",
-    name: "Ali Hassan",
-    country: "Pakistan",
-    zip_code: "44000",
-    email: "ali.hassan@mail.com",
-    fee_charge: "₨250.00",
-  },
-];
+import { useGetMyRecipientsQuery } from "@/redux/api/myRecipientsApi";
+import { useLocale } from "next-intl";
+import RecipientListSkeleton from "./myRecipientSkeleton/RecipientListSkeleton";
+import Image from "next/image";
+import { getImageUrl } from "@/utils/getImageUrl";
 
 export default function RecipientList() {
   const { isModalOpen, handleShowModal, handleCancelModal } = useModal();
   const [singleTable, setSingleTable] = useState([]);
-  const { smallScreen, mediumScreen } = useViewport();
+  const { smallScreen } = useViewport();
+  const locale = useLocale();
 
+  // ==================== API DATA ====================
+  const { data: apiData, isLoading } = useGetMyRecipientsQuery({
+    lang: locale,
+  });
+
+  // Transform API response to match your Table structure
+  const tableData = useMemo(() => {
+    if (
+      !apiData?.data?.receipients ||
+      !Array.isArray(apiData.data.receipients)
+    ) {
+      return [];
+    }
+
+    return apiData.data.receipients.map((item) => ({
+      key: item.id || item.receipient_id,
+      name: `${item.firstname || ""} ${item.lastname || ""}`.trim(),
+      country: item.country || "",
+      zip_code: item.zip_code || "",
+      email: item.email || "",
+      // Extra fields (kept for future use / modal)
+      address: item.address || "",
+      state: item.state || "",
+      city: item.city || "",
+      image: item.image || "",
+      path_location: item.path_location || "",
+      default_image: item.default_image || "",
+    }));
+  }, [apiData]);
+
+  // ==================== Handlers (UNCHANGED) ====================
   const handleOnRowClick = (record) => {
     const labels = ["Name", "Country", "Zip Code", "Email"];
     const values = ["name", "country", "zip_code", "email"];
@@ -71,22 +66,36 @@ export default function RecipientList() {
 
   const handleEdit = (record, e) => {
     e.stopPropagation();
-
     console.log(record);
   };
 
   const handleDelete = (record, e) => {
     e.stopPropagation();
-
     console.log(record);
   };
 
+  // ==================== Columns (UNCHANGED) ====================
   const columns = [
     {
       title: "Name",
       dataIndex: "name",
-      render: (name) => (
-        <span className="text-gray-600 dark:text-neutral-300">{name}</span>
+      render: (name, record) => (
+        <div className="flex items-center gap-3">
+          {/* Image added here */}
+
+          <Image
+            src={
+              record.image
+                ? getImageUrl(record.image, record.path_location)
+                : getImageUrl(record.default_image)
+            }
+            alt={name}
+            width={40}
+            height={40}
+            className="rounded-full object-cover border border-gray-200 dark:border-gray-700 shrink-0"
+          />
+          <span className="text-gray-600 dark:text-neutral-300">{name}</span>
+        </div>
       ),
     },
     {
@@ -103,7 +112,6 @@ export default function RecipientList() {
         <span className="text-gray-600 dark:text-neutral-300">{zip_code}</span>
       ),
     },
-
     {
       title: "Email",
       dataIndex: "email",
@@ -111,7 +119,6 @@ export default function RecipientList() {
         <span className="px-3 py-1 rounded-full text-sm ">{email}</span>
       ),
     },
-
     {
       title: "Action",
       key: "action",
@@ -135,8 +142,8 @@ export default function RecipientList() {
   ];
 
   const smallScreenColumn = smallScreen ? [...columns.slice(0, 2)] : columns;
-  // const mediumScreenColumn = mediumScreen ? [...columns.slice(0, 4)] : columns;
 
+  // ==================== Extra Header (UNCHANGED) ====================
   const TableExtra = (
     <div className="flex items-center gap-2 md:gap-0 ">
       <div className="md:w-full hidden md:block">
@@ -156,7 +163,7 @@ export default function RecipientList() {
         </PrimaryButton>
       </div>
       <div className="md:w-full md:flex justify-end">
-        <Link href={"/dashboard/my-recipient/add-new-recipient "}>
+        <Link href="/dashboard/my-recipient/add-new-recipient">
           <PrimaryButton
             icon={"Plus"}
             iconClassName={"group-hover/primary-btn:rotate-90 duration-200"}
@@ -174,7 +181,14 @@ export default function RecipientList() {
       extra={TableExtra}
       className="overflow-x-auto!"
     >
-      <Modal open={isModalOpen} onCancel={handleCancelModal} closable={false}>
+      {/* Modal (UNCHANGED) */}
+      <Modal
+        open={isModalOpen}
+        onCancel={handleCancelModal}
+        closable={false}
+        okButtonProps={{ style: { display: "none" } }}
+        cancelText="Close"
+      >
         <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-white dark:bg-[#111] shadow-xs border border-gray-200 dark:border-gray-800">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
             Latest Transaction
@@ -202,35 +216,22 @@ export default function RecipientList() {
           </div>
         </div>
       </Modal>
-      {/* Header */}
-      {/* <div className="flex flex-col lg:flex-row gap-4 justify-between items-center mb-4">
-        <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-300">
-          Latest Transaction
-        </h2>
 
-        <div className="flex items-center gap-3">
-          <Input
-            placeholder="Search"
-            prefix={<SearchOutlined className="text-gray-400" />}
-            className="w-48 rounded-lg"
-          />
-          <Button icon={<FilterOutlined />} className="rounded-lg">
-            Filter
-          </Button>
-        </div>
-      </div> */}
-
-      {/* Styled Table */}
-      <Table
-        columns={smallScreenColumn}
-        dataSource={data}
-        pagination={false}
-        onRowClick={handleOnRowClick}
-        className="rounded-xl  border! border-gray-200/50! dark:border-neutral-950! md:min-w-[820px]! "
-        rowClassName={() =>
-          "even:bg-gray-50 dark:even:bg-slate-950 rounded-xl! cursor-pointer!"
-        }
-      />
+      {/* Table with real data */}
+      {isLoading ? (
+        <RecipientListSkeleton />
+      ) : (
+        <Table
+          columns={smallScreenColumn}
+          dataSource={tableData}
+          pagination={false}
+          onRowClick={handleOnRowClick}
+          className="rounded-xl border! border-gray-200/50! dark:border-neutral-950! md:min-w-[820px]! "
+          rowClassName={() =>
+            "even:bg-gray-50 dark:even:bg-slate-950 rounded-xl! cursor-pointer!"
+          }
+        />
+      )}
     </Card>
   );
 }
