@@ -3,15 +3,23 @@ import { baseApi } from "./baseApi";
 const sendMoneyApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getMyRecipients: builder.query({
-      query: ({ lang}) => ({
+      query: ({ lang }) => ({
         url: "/user/recipient/my-recipient",
         method: "GET",
         params: { lang },
       }),
     }),
-    sendMoneySubmit: builder.mutation({
+    getSearchRecipients: builder.query({
+      query: ({ lang, text }) => ({
+        url: `/user/recipient/user-search`,
+        method: "GET",
+        params: { lang, text },
+      }),
+    }),
+
+    addNewRecipient: builder.mutation({
       query: ({ payload, lang }) => ({
-        url: "/user/send-money/submit",
+        url: "/user/recipient/store-recipient",
         method: "POST",
         data: payload,
         params: { lang },
@@ -20,4 +28,9 @@ const sendMoneyApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetMyRecipientsQuery } = sendMoneyApi;
+export const {
+  useGetMyRecipientsQuery,
+  useGetSearchRecipientsQuery,
+  useLazyGetSearchRecipientsQuery,
+  useAddNewRecipientMutation,
+} = sendMoneyApi;

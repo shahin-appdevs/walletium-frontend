@@ -5,7 +5,6 @@ import ProfileBody from "./_components/ProfileBody";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 // import ProfileEditModal from "./_components/ProfileEditModal";
 import useModal from "@/hooks/useModal";
-import { useGetProfileQuery } from "@/redux/api/profileApi";
 import { getImageUrl } from "@/utils/getImageUrl";
 import dynamic from "next/dynamic";
 import ProfileSkeleton from "./_components/ProfileSkeleton";
@@ -46,14 +45,9 @@ const ProfileEditModal = dynamic(
 const ProfilePage = () => {
   const { isModalOpen, handleCancelModal, handleShowModal } = useModal();
 
-  const {
-    data: profileData,
-    isLoading,
-    refetch,
-    isError,
-  } = useGetProfileQuery();
+  const { profileData, profileLoading, profileRefetch } = useDashboardContext();
 
-  if (isLoading) return <ProfileSkeleton />;
+  if (profileLoading) return <ProfileSkeleton />;
 
   // all countries
   const countries = profileData?.countries?.map((country) => ({
@@ -117,7 +111,7 @@ const ProfilePage = () => {
         countries={countries}
         open={isModalOpen}
         onClose={handleCancelModal}
-        profileRefetch={refetch}
+        profileRefetch={profileRefetch}
       />
     </div>
   );

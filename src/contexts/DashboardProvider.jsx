@@ -1,4 +1,5 @@
 import { useGetDashboardQuery } from "@/redux/api/dashboardApi";
+import { useGetProfileQuery } from "@/redux/api/profileApi";
 import { useRouter } from "next/navigation";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -19,6 +20,13 @@ const DashboardProvider = ({ children }) => {
     refetch,
   } = useGetDashboardQuery();
 
+  const {
+    data: profileData,
+    isLoading: profileLoading,
+    refetch: profileRefetch,
+    isError: profileIsError,
+  } = useGetProfileQuery();
+
   const { twoFactorStatus } = useSelector((state) => state.auth);
 
   const values = {
@@ -27,6 +35,11 @@ const DashboardProvider = ({ children }) => {
     userInfo: dashboardData?.user_info,
     dashboardLoading,
     dashboardRefetch: refetch,
+    // profile
+    profileData,
+    profileLoading,
+    profileRefetch,
+    profileIsError,
   };
 
   // loading before mount dashboard api
