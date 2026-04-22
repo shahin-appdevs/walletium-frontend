@@ -17,8 +17,19 @@ const sendMoneyApi = baseApi.injectEndpoints({
         params: { lang },
       }),
     }),
+    sendMoneyConfirm: builder.mutation({
+      query: ({ payload, lang }) => ({
+        url: "/user/send-money/recipient-submit",
+        method: "POST",
+        data: payload,
+        params: { lang },
+      }),
+    }),
   }),
 });
 
-export const { useGetSendMoneyIndexQuery, useSendMoneySubmitMutation } =
-  sendMoneyApi;
+export const {
+  useGetSendMoneyIndexQuery,
+  useSendMoneySubmitMutation,
+  useSendMoneyConfirmMutation,
+} = sendMoneyApi;

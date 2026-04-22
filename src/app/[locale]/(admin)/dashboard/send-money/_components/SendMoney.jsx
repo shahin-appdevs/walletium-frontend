@@ -12,16 +12,18 @@ import { useLocale } from "next-intl";
 import {
   useGetSendMoneyIndexQuery,
   useSendMoneySubmitMutation,
+  useSendMoneyConfirmMutation,
 } from "@/redux/api/sendMoneyApi";
 import SendMoneyPageSkeleton from "./SendMoneySkeleton/SendMoneyPageSkeleton";
 import { useEffect, useMemo, useState } from "react";
 import { isArrayCheck } from "@/utils/IsArrayCheck";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+
 import { getImageUrl } from "@/utils/getImageUrl";
 import { getExchangeRate } from "@/utils/exchangeRate";
 import useGatewayLimits from "@/hooks/useGatewayLimits";
 import showToast from "@/lib/toast";
+import RecipientsModal from "./RecipientsModal";
 
 const sendMoneySchema = yup.object({
   sender_amount: yup.string().required("Sender amount is required"),
@@ -38,6 +40,11 @@ const SendMoneyTransaction = dynamic(
 
 const SendMoney = () => {
   const locale = useLocale();
+  const [isRecipientModalOpen, setIsRecipientModalOpen] = useState(false);
+  const [formData, setFormData] = useState(null);
+  const [confirmDetails, setConfirmDetails] = useState(null);
+  const [selectedRecipient, setSelectedRecipient] = useState({});
+
   // api hooks
   const {
     data: sendMoneyIndexData,
@@ -48,6 +55,8 @@ const SendMoney = () => {
   });
   const [sendMoneySubmit, { isLoading: sendMoneyLoading }] =
     useSendMoneySubmitMutation();
+  const [sendMoneyConfirm, { isLoading: confirmLoading }] =
+    useSendMoneyConfirmMutation();
 
   const sendMoneyData = sendMoneyIndexData?.data || {};
   const userWallets = useMemo(
@@ -159,20 +168,50 @@ const SendMoney = () => {
     }
   };
 
-  const onSubmit = async (data) => {
+  const onSubmit = (data) => {
+    setFormData(data);
+    setIsRecipientModalOpen(true);
+  };
+
+  const handleRecipientConfirm = async (recipient) => {
     try {
       const payload = {
-        sender_amount: data.sender_amount,
+        sender_amount: formData.sender_amount,
         sender_currency: selectedSenderCurrency,
         receiver_currency: selectedReceiverCurrency,
+        recipient_id: recipient.key,
       };
+
+      setSelectedRecipient(recipient);
 
       const res = await sendMoneySubmit({
         payload,
         lang: locale,
       }).unwrap();
 
+      setConfirmDetails(res.data);
+
       showToast.apiSuccess(res);
+      // setIsRecipientModalOpen(false);
+      setFormData(null);
+    } catch (error) {
+      showToast.apiError(error);
+    }
+  };
+
+  const handleConfirmSend = async (details) => {
+    try {
+      const res = await sendMoneyConfirm({
+        payload: {
+          identifier: details.identifier,
+          recipient: selectedRecipient.key,
+        },
+        lang: locale,
+      }).unwrap();
+
+      showToast.apiSuccess(res);
+      setIsRecipientModalOpen(false);
+      setConfirmDetails(null);
     } catch (error) {
       showToast.apiError(error);
     }
@@ -403,6 +442,20 @@ const SendMoney = () => {
           <SendMoneyTransaction />
         </div>
       </div>
+
+      <RecipientsModal
+        open={isRecipientModalOpen}
+        onCancel={() => {
+          setIsRecipientModalOpen(false);
+          setFormData(null);
+          setConfirmDetails(null);
+        }}
+        onConfirm={handleRecipientConfirm}
+        onConfirmSend={handleConfirmSend}
+        loading={sendMoneyLoading}
+        confirmDetails={confirmDetails}
+        confirmLoading={confirmLoading}
+      />
     </section>
   );
 };
