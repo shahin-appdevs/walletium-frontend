@@ -30,6 +30,7 @@ const axiosBaseQuery =
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: axiosBaseQuery({ axiosInstance: axiosPrivate }),
-  tagTypes: ["Auth", "OTP"],
+  tagTypes: ["Auth", "OTP", "recipients"],
   endpoints: () => ({}),
+  
 });

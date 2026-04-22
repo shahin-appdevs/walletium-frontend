@@ -13,18 +13,13 @@ import { useLocale } from "next-intl";
 import {
   useLazyGetSearchRecipientsQuery,
   useAddNewRecipientMutation,
+  useUpdateRecipientMutation, // Ensure this exists in your API slice
 } from "@/redux/api/myRecipientsApi";
 import showToast from "@/lib/toast";
 import { useDashboardContext } from "@/contexts/DashboardProvider";
+import AddNewRecipientSkeleton from "./myRecipientSkeleton/AddRecipientSkeleton";
 
-const { TextArea } = Input;
-
-const countryOptions = [
-  { label: "United States", value: "US" },
-  { label: "Bangladesh", value: "BD" },
-  { label: "India", value: "IN" },
-];
-
+// ... recipientSchema and countryOptions remain the same ...
 export const recipientSchema = yup.object({
   email: yup
     .string()
@@ -39,39 +34,43 @@ export const recipientSchema = yup.object({
   address: yup.string().required("Address is required"),
 });
 
-export default function AddNewRecipient() {
+export default function AddNewRecipient({ searchParams }) {
+  const updateUser = searchParams?.update_user; // This is the ID or Email to update
+  const isUpdateMode = !!updateUser;
+
   const locale = useLocale();
   const router = useRouter();
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState(updateUser || "");
   const debounceTimer = useRef(null);
-
   const { profileData } = useDashboardContext();
 
   const countries = profileData?.countries?.map((country) => ({
     label: country.name,
-    value: country.id,
+    value: country.name,
   }));
 
-  // Search recipient API
+  // API Hooks
   const [searchRecipient, { isFetching: isSearching }] =
     useLazyGetSearchRecipientsQuery();
-
-  // Add recipient API
   const [addNewRecipient, { isLoading: isAdding }] =
     useAddNewRecipientMutation();
+  const [updateRecipient, { isLoading: isUpdating }] =
+    useUpdateRecipientMutation();
 
   const {
     control,
     handleSubmit,
     reset,
+
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(recipientSchema),
     defaultValues: {
+      id: "",
       email: "",
       firstname: "",
       lastname: "",
-      country: countryOptions[0].label || "",
+      country: "",
       city: "",
       state: "",
       zip: "",
@@ -79,49 +78,80 @@ export default function AddNewRecipient() {
     },
   });
 
-  // Debounced search - fires 3 seconds after user stops typing
-  useEffect(() => {
-    if (!searchText.trim()) return;
+  // Function to fetch and populate data
+  const handlePopulateData = async (queryText) => {
+    try {
+      const res = await searchRecipient({
+        lang: locale,
+        text: queryText,
+      }).unwrap();
 
-    if (debounceTimer.current) {
-      clearTimeout(debounceTimer.current);
-    }
-
-    debounceTimer.current = setTimeout(async () => {
-      try {
-        const res = await searchRecipient({
-          lang: locale,
-          text: searchText,
-        }).unwrap();
-
-        const userData = res?.data?.user_data;
-        if (userData) {
-          reset({
-            email: userData.email || "",
-            firstname: userData.firstname || "",
-            lastname: userData.lastname || "",
-            country: userData.address?.country || countryOptions[0].label || "",
-            city: userData.address?.city || "",
-            state: userData.address?.state || "",
-            zip: userData.address?.zip || "",
-            address: userData.address?.address || "",
-          });
-          showToast.apiSuccess(res);
-        }
-      } catch (error) {
-        showToast.apiError(error);
+      const userData = res?.data?.user_data;
+      if (userData) {
+        reset({
+          email: userData.email || "",
+          firstname: userData.firstname || "",
+          lastname: userData.lastname || "",
+          country: userData.address?.country || "",
+          city: userData.address?.city || "",
+          state: userData.address?.state || "",
+          zip: userData.address?.zip || "",
+          address: userData.address?.address || "",
+        });
       }
+    } catch (error) {
+      showToast.apiError(error);
+    }
+  };
+
+  // Initial fetch for Update Mode
+  useEffect(() => {
+    const updateUser = JSON.parse(sessionStorage.getItem("update_user"));
+
+    if (!updateUser) return;
+
+    reset({
+      id: updateUser?.key || "",
+      email: updateUser?.email || "",
+      firstname: updateUser?.firstname || "",
+      lastname: updateUser?.lastname || "",
+      country: updateUser?.country || "",
+      city: updateUser?.city || "",
+      state: updateUser?.state || "",
+      zip: updateUser?.zip_code || "",
+      address: updateUser?.address || "",
+    });
+  }, [reset]);
+
+  // Debounced search for manual typing
+  useEffect(() => {
+    if (!searchText.trim() || isUpdateMode) return;
+
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+
+    debounceTimer.current = setTimeout(() => {
+      handlePopulateData(searchText);
     }, 2000);
 
     return () => clearTimeout(debounceTimer.current);
-  }, [searchText, locale, searchRecipient, reset]);
+  }, [searchText, locale]);
 
   const onSubmit = async (data) => {
     try {
-      const res = await addNewRecipient({
-        payload: data,
-        lang: locale,
-      }).unwrap();
+      let res;
+      if (isUpdateMode) {
+        // Logic for Update
+        res = await updateRecipient({
+          payload: { ...data },
+          lang: locale,
+        }).unwrap();
+      } else {
+        // Logic for Add
+        res = await addNewRecipient({
+          payload: data,
+          lang: locale,
+        }).unwrap();
+      }
 
       showToast.apiSuccess(res);
       router.push(`/${locale}/dashboard/my-recipient`);
@@ -130,45 +160,51 @@ export default function AddNewRecipient() {
     }
   };
 
+  if (isUpdateMode && isSearching) {
+    return <AddNewRecipientSkeleton />;
+  }
+
   return (
     <>
       <Card
-        title="Add New Recipient"
+        title={isUpdateMode ? "Update Recipient" : "Add New Recipient"}
         extra={
           <button
             onClick={() => router.back()}
             className="text-primary cursor-pointer flex items-center gap-1 bg-primary-50 rounded-2xl border duration-200 hover:text-primary-600 hover:bg-primary-100 border-primary px-3 py-1"
           >
             <LucideIcon name={"ArrowLeft"} size={18} />
-            <span className="hidden md:block">Back to recipient page</span>
+            <span className="hidden md:block">Back</span>
           </button>
         }
       >
-        <div className="bg-white dark:bg-neutral-900 rounded-xl mb-4 ">
-          <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-            Search by username or email
-          </label>
-          <div className="flex items-center gap-3 mt-2">
-            <Input
-              size="large"
-              placeholder="Search by username or email..."
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-              prefix={
-                <span>
-                  {isSearching && (
+        {/* Hide search bar if in update mode to prevent confusion, or keep it enabled */}
+        {!isUpdateMode && (
+          <div className="bg-white dark:bg-neutral-900 rounded-xl mb-4 ">
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              Search by username or email
+            </label>
+            <div className="flex items-center gap-3 mt-2">
+              <Input
+                size="large"
+                placeholder="Search by username or email..."
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                prefix={
+                  isSearching && (
                     <LucideIcon
                       name="LoaderCircle"
                       size={18}
                       className="animate-spin text-primary"
                     />
-                  )}
-                </span>
-              }
-              className="flex-1"
-            />
+                  )
+                }
+                className="flex-1"
+              />
+            </div>
           </div>
-        </div>
+        )}
+
         <Form
           layout="vertical"
           onFinish={handleSubmit(onSubmit)}
@@ -189,7 +225,6 @@ export default function AddNewRecipient() {
                 )}
               />
             </FormItem>
-
             <FormItem
               label="Last Name"
               name="lastname"
@@ -212,7 +247,12 @@ export default function AddNewRecipient() {
                 name="email"
                 control={control}
                 render={({ field }) => (
-                  <Input {...field} size="large" placeholder="Enter Email..." />
+                  <Input
+                    {...field}
+                    size="large"
+                    placeholder="Enter Email..."
+                    disabled={isUpdateMode}
+                  />
                 )}
               />
             </FormItem>
@@ -241,7 +281,6 @@ export default function AddNewRecipient() {
                 )}
               />
             </FormItem>
-
             <FormItem label="State" name="state" required errors={errors}>
               <Controller
                 name="state"
@@ -280,13 +319,12 @@ export default function AddNewRecipient() {
           </div>
 
           <PrimaryButton
-            icon={isAdding || "Plus"}
+            icon={!isSubmitting && (isUpdateMode ? "Check" : "Plus")}
             type="submit"
-            loading={isAdding}
+            loading={isSubmitting}
             className={"w-full"}
-            iconClassName={"group-hover/primary-btn:rotate-90 duration-200"}
           >
-            Add Now
+            {isUpdateMode ? "Update Recipient" : "Add Now"}
           </PrimaryButton>
         </Form>
       </Card>

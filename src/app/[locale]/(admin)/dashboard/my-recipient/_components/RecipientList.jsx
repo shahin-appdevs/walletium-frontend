@@ -9,22 +9,38 @@ import useViewport from "@/hooks/useViewport";
 import LucideIcon from "@/components/LucideIcon";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import Link from "next/link";
-import { useGetMyRecipientsQuery } from "@/redux/api/myRecipientsApi";
+import {
+  useDeleteRecipientMutation,
+  useGetMyRecipientsQuery,
+} from "@/redux/api/myRecipientsApi";
 import { useLocale } from "next-intl";
 import RecipientListSkeleton from "./myRecipientSkeleton/RecipientListSkeleton";
 import Image from "next/image";
 import { getImageUrl } from "@/utils/getImageUrl";
+import ConfirmationModal from "@/components/ui/modal/ConfirmationModal";
+import showToast from "@/lib/toast";
+import { useRouter } from "next/navigation";
 
 export default function RecipientList() {
   const { isModalOpen, handleShowModal, handleCancelModal } = useModal();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [singleTable, setSingleTable] = useState([]);
   const { smallScreen } = useViewport();
   const locale = useLocale();
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const router = useRouter();
 
   // ==================== API DATA ====================
-  const { data: apiData, isLoading } = useGetMyRecipientsQuery({
+  const {
+    data: apiData,
+    isLoading,
+    isFetching,
+  } = useGetMyRecipientsQuery({
     lang: locale,
   });
+
+  const [deleteRecipient, { isLoading: isDeleting }] =
+    useDeleteRecipientMutation();
 
   // Transform API response to match your Table structure
   const tableData = useMemo(() => {
@@ -38,6 +54,8 @@ export default function RecipientList() {
     return apiData.data.receipients.map((item) => ({
       key: item.id || item.receipient_id,
       name: `${item.firstname || ""} ${item.lastname || ""}`.trim(),
+      firstname: item.firstname || "",
+      lastname: item.lastname || "",
       country: item.country || "",
       zip_code: item.zip_code || "",
       email: item.email || "",
@@ -50,6 +68,8 @@ export default function RecipientList() {
       default_image: item.default_image || "",
     }));
   }, [apiData]);
+
+  console.log(tableData);
 
   // ==================== Handlers (UNCHANGED) ====================
   const handleOnRowClick = (record) => {
@@ -66,12 +86,24 @@ export default function RecipientList() {
 
   const handleEdit = (record, e) => {
     e.stopPropagation();
-    console.log(record);
+    sessionStorage.setItem("update_user", JSON.stringify(record));
+
+    router.push(
+      `/dashboard/my-recipient/add-new-recipient?update_user=${record.email}`,
+    );
   };
 
-  const handleDelete = (record, e) => {
-    e.stopPropagation();
-    console.log(record);
+  const handleDelete = async (record) => {
+    try {
+      const res = await deleteRecipient({
+        target: record.key,
+        lang: locale,
+      }).unwrap();
+      showToast.apiSuccess(res);
+      setIsDeleteModalOpen(false);
+    } catch (error) {
+      showToast.apiError(error);
+    }
   };
 
   // ==================== Columns (UNCHANGED) ====================
@@ -131,7 +163,11 @@ export default function RecipientList() {
             <LucideIcon name={"SquarePen"} size={20} />
           </button>
           <button
-            onClick={(e) => handleDelete(record, e)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setDeleteTarget(record);
+              setIsDeleteModalOpen(true);
+            }}
             className="cursor-pointer text-red-500!"
           >
             <LucideIcon name="Trash2" size={20} />
@@ -223,8 +259,14 @@ export default function RecipientList() {
       ) : (
         <Table
           columns={smallScreenColumn}
-          dataSource={tableData}
-          pagination={false}
+          isLoading={isLoading || isFetching}
+          dataSource={tableData || []}
+          pagination={{
+            pageSize: 10,
+            total: tableData.length,
+            showTotal: (total) => `Total ${total} items`,
+          }}
+          rowKey="key"
           onRowClick={handleOnRowClick}
           className="rounded-xl border! border-gray-200/50! dark:border-neutral-950! md:min-w-[820px]! "
           rowClassName={() =>
@@ -232,6 +274,14 @@ export default function RecipientList() {
           }
         />
       )}
+      <ConfirmationModal
+        open={isDeleteModalOpen}
+        onCancel={() => setIsDeleteModalOpen(false)}
+        onConfirm={() => handleDelete(deleteTarget)}
+        loading={isDeleting}
+        title="Delete Recipient"
+        description="Are you sure you want to delete this recipient?"
+      />
     </Card>
   );
 }

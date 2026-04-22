@@ -21,6 +21,7 @@ const Table = (props) => {
     isSelected = false,
     handleAllDelete,
     rowClassName,
+    isLoading = false,
   } = props;
 
   // check server mode
@@ -29,9 +30,9 @@ const Table = (props) => {
 
   const [data, setData] = useState(isArrayCheck(dataSource) ? dataSource : []);
   const [total, setTotal] = useState(
-    isArrayCheck(dataSource) ? dataSource.length : 0
+    isArrayCheck(dataSource) ? dataSource.length : 0,
   );
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(isLoading);
   // pagination options / search / sort
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(initialPageSize);
@@ -70,7 +71,7 @@ const Table = (props) => {
       setData(isArrayCheck(dataSource) ? dataSource : []);
       setTotal(isArrayCheck(dataSource) ? dataSource.length : 0);
     }
-  }, [serverMode]);
+  }, [serverMode, dataSource]);
 
   const finalColumns = useMemo(() => {
     const baseColumn = isArrayCheck(columns) ? [...columns] : [];
@@ -143,7 +144,7 @@ const Table = (props) => {
           const values = Object.values(row);
           const items = values.some(
             (cell) =>
-              typeof cell === "string" && cell.toLowerCase().includes(query)
+              typeof cell === "string" && cell.toLowerCase().includes(query),
           );
           return items;
         });
@@ -178,7 +179,7 @@ const Table = (props) => {
         columns={finalColumns}
         pagination={pagination}
         onChange={handleTableChange}
-        loading={loading}
+        loading={loading || isLoading}
         rowSelection={rowSelection}
         onRow={(record) => ({
           onClick: () => onRowClick?.(record),

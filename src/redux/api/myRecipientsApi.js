@@ -1,6 +1,6 @@
 import { baseApi } from "./baseApi";
 
-const sendMoneyApi = baseApi.injectEndpoints({
+const recipientApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getMyRecipients: builder.query({
       query: ({ lang }) => ({
@@ -8,6 +8,7 @@ const sendMoneyApi = baseApi.injectEndpoints({
         method: "GET",
         params: { lang },
       }),
+      providesTags: ["recipients"],
     }),
     getSearchRecipients: builder.query({
       query: ({ lang, text }) => ({
@@ -24,6 +25,24 @@ const sendMoneyApi = baseApi.injectEndpoints({
         data: payload,
         params: { lang },
       }),
+      invalidatesTags: ["recipients"],
+    }),
+    deleteRecipient: builder.mutation({
+      query: ({ target, lang }) => ({
+        url: "/user/recipient/delete",
+        method: "DELETE",
+        params: { target, lang },
+      }),
+      invalidatesTags: ["recipients"],
+    }),
+    updateRecipient: builder.mutation({
+      query: ({ payload, lang }) => ({
+        url: `/user/recipient/update`,
+        method: "POST",
+        data: payload,
+        params: { lang },
+      }),
+      invalidatesTags: ["recipients"],
     }),
   }),
 });
@@ -33,4 +52,6 @@ export const {
   useGetSearchRecipientsQuery,
   useLazyGetSearchRecipientsQuery,
   useAddNewRecipientMutation,
-} = sendMoneyApi;
+  useDeleteRecipientMutation,
+  useUpdateRecipientMutation,
+} = recipientApi;
