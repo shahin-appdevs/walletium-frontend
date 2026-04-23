@@ -425,7 +425,7 @@ const SendMoney = () => {
                     type="submit"
                     className={"text-base w-full"}
                     iconClassName={
-                      "group-hover/primary-btn:translate-1/6 group-hover/primary-btn:-translate-y-1 duration-300"
+                      "group-hover/primary-btn:translate-1/6 group-hover/primary-btn:-translate-y-1 duration-300 rtl:-rotate-90 rtl:group-hover/primary-btn:-translate-x-1"
                     }
                   >
                     {t("sendButton")}
