@@ -110,6 +110,29 @@
                     "rejected": "مرفوض"
                 }
             }
+        },
+        "sendMoney": {
+            "transactions": {
+                "title": "أحدث المعاملات",
+                "type": "النوع",
+                "amount": "المبلغ",
+                "trxId": "رقم العملية",
+                "totalPayable": "إجمالي المبلغ المستحق",
+                "date": "التاريخ",
+                "exchangeRate": "سعر الصرف",
+                "feeCharge": "الرسوم والمصاريف",
+                "gatewayCurrency": "عملة البوابة",
+                "searchPlaceholder": "بحث في المعاملات...",
+                "close": "إغلاق",
+                "viewMore": "عرض المزيد",
+                "sendTo": "إرسال الأموال إلى",
+                "status": {
+                    "title": "الحالة",
+                    "success": "ناجحة",
+                    "pending": "قيد الانتظار",
+                    "rejected": "مرفوضة"
+                }
+            }
         }
     },
     "Login": {

@@ -136,6 +136,29 @@
                     "totalPayable": "Total Payable Amount"
                 }
             }
+        },
+        "sendMoney": {
+            "transactions": {
+                "title": "Latest Transactions",
+                "type": "Type",
+                "amount": "Amount",
+                "trxId": "Transaction ID",
+                "totalPayable": "Total Payable",
+                "date": "Date",
+                "exchangeRate": "Exchange Rate",
+                "feeCharge": "Fee & Charge",
+                "gatewayCurrency": "Gateway Currency",
+                "searchPlaceholder": "Search transactions...",
+                "close": "Close",
+                "viewMore": "View More",
+                "sendTo": "Send Money to",
+                "status": {
+                    "title": "Status",
+                    "success": "Success",
+                    "pending": "Pending",
+                    "rejected": "Rejected"
+                }
+            }
         }
     },
     "Login": {

@@ -8,6 +8,8 @@ const eslintConfig = defineConfig([
     rules: {
       // Warn for unused variables
       "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+      // Error if a function or variable is used but not defined
+      "no-undef": "error",
     },
   },
 

@@ -3,12 +3,11 @@ import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import { Card, Form, Input, Select, Space } from "antd";
 import { ArrowUpRight, DollarSign } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
-
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import FormItem from "@/components/ui/form/FormItem";
 import dynamic from "next/dynamic";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import {
   useGetSendMoneyIndexQuery,
   useSendMoneySubmitMutation,
@@ -24,6 +23,7 @@ import { getExchangeRate } from "@/utils/exchangeRate";
 import useGatewayLimits from "@/hooks/useGatewayLimits";
 import showToast from "@/lib/toast";
 import RecipientsModal from "./RecipientsModal";
+import { useGetTransactionsQuery } from "@/redux/api/dashboardApi";
 
 const sendMoneySchema = yup.object({
   sender_amount: yup.string().required("Sender amount is required"),
@@ -43,7 +43,8 @@ const SendMoney = () => {
   const [isRecipientModalOpen, setIsRecipientModalOpen] = useState(false);
   const [formData, setFormData] = useState(null);
   const [confirmDetails, setConfirmDetails] = useState(null);
-  const [selectedRecipient, setSelectedRecipient] = useState({});
+  const t = useTranslations("Dashboard.sendMoney");
+  const tTrx = useTranslations("Dashboard.sendMoney.transactions");
 
   // api hooks
   const {
@@ -53,10 +54,21 @@ const SendMoney = () => {
   } = useGetSendMoneyIndexQuery({
     lang: locale,
   });
+  // send money submit
   const [sendMoneySubmit, { isLoading: sendMoneyLoading }] =
     useSendMoneySubmitMutation();
+  // send money confirm
   const [sendMoneyConfirm, { isLoading: confirmLoading }] =
     useSendMoneyConfirmMutation();
+
+  // trx api
+  const { data: transactionsData, isLoading: isTrxLoading } =
+    useGetTransactionsQuery({
+      type: "money-transfer",
+      page: 1,
+      per_page: 5,
+      lang: locale,
+    });
 
   const sendMoneyData = sendMoneyIndexData?.data || {};
   const userWallets = useMemo(
@@ -182,8 +194,6 @@ const SendMoney = () => {
         recipient_id: recipient.key,
       };
 
-      setSelectedRecipient(recipient);
-
       const res = await sendMoneySubmit({
         payload,
         lang: locale,
@@ -204,7 +214,7 @@ const SendMoney = () => {
       const res = await sendMoneyConfirm({
         payload: {
           identifier: details.identifier,
-          recipient: selectedRecipient.key,
+          recipient: details?.receipient_id,
         },
         lang: locale,
       }).unwrap();
@@ -439,7 +449,11 @@ const SendMoney = () => {
           </div>
         </div>
         <div>
-          <SendMoneyTransaction />
+          <SendMoneyTransaction
+            transactionsData={transactionsData?.data}
+            loading={isTrxLoading}
+            t={tTrx}
+          />
         </div>
       </div>
 

@@ -3,10 +3,9 @@ import { baseApi } from "./baseApi";
 const sendMoneyApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getSendMoneyIndex: builder.query({
-      query: ({ lang }) => ({
+      query: () => ({
         url: "/user/send-money/index",
         method: "GET",
-        params: { lang },
       }),
     }),
     sendMoneySubmit: builder.mutation({

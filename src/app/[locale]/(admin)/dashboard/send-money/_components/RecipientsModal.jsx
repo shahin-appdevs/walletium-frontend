@@ -38,7 +38,8 @@ const RecipientsModal = ({
     }
 
     return apiData.data.receipients.map((item) => ({
-      key: item.id || item.receipient_id,
+      id: item.id,
+      receipient_id: item.receipient_id,
       name: `${item.firstname || ""} ${item.lastname || ""}`.trim(),
       firstname: item.firstname || "",
       lastname: item.lastname || "",
@@ -69,7 +70,7 @@ const RecipientsModal = ({
 
   const handleSelect = (recipient) => {
     setSelectedRecipient(
-      selectedRecipient?.key === recipient.key ? null : recipient,
+      selectedRecipient?.id === recipient.id ? null : recipient,
     );
   };
 
@@ -173,10 +174,15 @@ const RecipientsModal = ({
             type="button"
             className="text-base w-full"
             iconClassName="group-hover/primary-btn:translate-1/6 group-hover/primary-btn:-translate-y-1 duration-300"
-            onClick={() => onConfirmSend?.(confirmDetails)}
+            onClick={() =>
+              onConfirmSend?.({
+                ...confirmDetails,
+                receipient_id: selectedRecipient?.receipient_id,
+              })
+            }
             loading={confirmLoading}
           >
-            Confirm Send Money
+            Confirm
           </PrimaryButton>
         </div>
       ) : (
@@ -227,10 +233,10 @@ const RecipientsModal = ({
               />
             ) : (
               filteredRecipients.map((recipient) => {
-                const isSelected = selectedRecipient?.key === recipient.key;
+                const isSelected = selectedRecipient?.id === recipient.id;
                 return (
                   <div
-                    key={recipient.key}
+                    key={recipient.id}
                     onClick={() => handleSelect(recipient)}
                     className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all duration-200 border
                       ${
