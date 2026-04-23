@@ -230,40 +230,38 @@ const SendMoney = () => {
   if (isLoading) return <SendMoneyPageSkeleton />;
   if (error)
     return (
-      <div className="p-10 text-center text-red-500">
-        Failed to load Send Money information.
-      </div>
+      <div className="p-10 text-center text-red-500">{t("errorLoading")}</div>
     );
 
   const singleTable = [
     {
-      label: "Sender Wallet",
+      label: t("summary.senderWallet"),
       value: `${selectedSenderWallet?.name || "N/A"} (${selectedSenderCurrency})`,
     },
     {
-      label: "Receiver Wallet",
+      label: t("summary.receiverWallet"),
       value: `${selectedReceiverWallet?.name || "N/A"} (${selectedReceiverCurrency})`,
     },
     {
-      label: "Sending Amount",
+      label: t("summary.sendingAmount"),
       value: `${senderAmount || 0} ${selectedSenderCurrency}`,
     },
     {
-      label: "Total Fees & Charges",
+      label: t("summary.totalFees"),
       value: `${totalFee} ${selectedSenderCurrency}`,
     },
     {
-      label: "Exchange Rate",
+      label: t("summary.exchangeRate"),
       value: `1 ${selectedSenderCurrency} = ${exchangeRate.toFixed(4)} ${selectedReceiverCurrency}`,
     },
     {
-      label: "Receiver Will Get",
+      label: t("summary.receiverWillGet"),
       value: `${recipientAmount} ${selectedReceiverCurrency}`,
     },
     {
       label: (
         <span className="font-bold text-base lg:text-lg">
-          Total Payable Amount
+          {t("summary.totalPayable")}
         </span>
       ),
       value: (
@@ -279,7 +277,7 @@ const SendMoney = () => {
       <div className="space-y-4 lg:space-y-6">
         <div className="grid md:grid-cols-5 gap-4 lg:gap-6">
           <div className="col-span-1 md:col-span-3 ">
-            <Card title="Send Money" className="h-full!">
+            <Card title={t("title")} className="h-full!">
               <div className="bg-neutral-50 dark:bg-slate-900 mb-4 dark-border rounded-2xl shadow-xs p-4 flex flex-col gap-3 overflow-hidden">
                 <div className="flex items-center justify-between">
                   <div className="w-7 h-7 rounded-full flex items-center justify-center bg-primary-50! dark:bg-primary-500! border border-primary/50">
@@ -292,14 +290,19 @@ const SendMoney = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                   <div className="bg-white dark:bg-slate-900 dark-border rounded-2xl p-4">
-                    <p className="text-gray-500 text-sm">Exchange Rate</p>
-                    <p className="text-base lg:text-xl text-neutral-800 dark:text-neutral-300 font-semibold">
+                    <p className="text-gray-500 text-sm">{t("exchangeRate")}</p>
+                    <p
+                      dir="ltr"
+                      className="text-base lg:text-xl text-neutral-800 dark:text-neutral-300 font-semibold rtl:text-right"
+                    >
                       1 {selectedSenderCurrency} = {exchangeRate.toFixed(4)}{" "}
                       {selectedReceiverCurrency}
                     </p>
                   </div>
                   <div className="bg-white dark:bg-slate-900 dark-border rounded-2xl p-4">
-                    <p className="text-gray-500 text-sm">Available balance:</p>
+                    <p className="text-gray-500 text-sm">
+                      {t("availableBalance")}:
+                    </p>
                     <p className="text-base lg:text-xl text-neutral-800 dark:text-neutral-300 font-semibold">
                       {selectedSenderWallet?.currency_symbol}{" "}
                       {selectedSenderWallet?.balance || "0.00"}
@@ -315,7 +318,7 @@ const SendMoney = () => {
                 >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                     <FormItem
-                      label={"Sender Amount"}
+                      label={t("senderAmount")}
                       required={true}
                       name="sender_amount"
                       errors={errors}
@@ -327,7 +330,7 @@ const SendMoney = () => {
                           render={({ field }) => (
                             <Input
                               {...field}
-                              placeholder="Amount"
+                              placeholder={t("amountPlaceholder")}
                               type="number"
                               onChange={handleSenderAmountChange}
                             />
@@ -357,7 +360,7 @@ const SendMoney = () => {
                     </FormItem>
 
                     <FormItem
-                      label={"Recipients Amount"}
+                      label={t("recipientAmount")}
                       name={"recipient_amount"}
                       required={true}
                       errors={errors}
@@ -369,7 +372,7 @@ const SendMoney = () => {
                           render={({ field }) => (
                             <Input
                               {...field}
-                              placeholder="Amount"
+                              placeholder={t("amountPlaceholder")}
                               type="number"
                               onChange={handleRecipientAmountChange}
                             />
@@ -399,14 +402,21 @@ const SendMoney = () => {
                     </FormItem>
                   </div>
 
-                  <div className="flex flex-col md:flex-row gap-2 justify-between items-center ">
+                  <div className="flex flex-col md:flex-row rtl:md:flex-row-reverse gap-2 justify-between items-center text-left rtl:text-right">
                     <p className="p-2 px-4 text-xs lg:text-base rounded-2xl bg-primary-50 dark:bg-primary-500! dark:text-primary-50! font-medium text-primary-600">
-                      Limit: {minLimit} {selectedSenderCurrency} - {maxLimit}{" "}
-                      {selectedSenderCurrency}
+                      {t("limit")}:{" "}
+                      <span dir="ltr">
+                        {minLimit} {selectedSenderCurrency} - {maxLimit}{" "}
+                        {selectedSenderCurrency}
+                      </span>
                     </p>
+
                     <p className="p-2 px-4 text-xs lg:text-base rounded-2xl bg-primary-50 font-medium text-primary-600 dark:bg-primary-500! dark:text-primary-50!">
-                      Charge: {charges.fixed_charge} {charges.currency_code} +{" "}
-                      {charges.percent_charge}%
+                      {t("charge")}:{" "}
+                      <span dir="ltr">
+                        {charges.fixed_charge} {charges.currency_code} +{" "}
+                        {charges.percent_charge}%
+                      </span>
                     </p>
                   </div>
 
@@ -418,14 +428,14 @@ const SendMoney = () => {
                       "group-hover/primary-btn:translate-1/6 group-hover/primary-btn:-translate-y-1 duration-300"
                     }
                   >
-                    Send Money
+                    {t("sendButton")}
                   </PrimaryButton>
                 </Form>
               </div>
             </Card>
           </div>
           <div className="col-span-1 md:col-span-2">
-            <Card title="Summary" className="h-full! ">
+            <Card title={t("summary.title")} className="h-full! ">
               <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-neutral-50 dark:bg-slate-900 dark-border shadow-xs   ">
                 <div className="divide-y divide-gray-200 dark:divide-gray-800 ">
                   {singleTable?.map((row, idx) => (

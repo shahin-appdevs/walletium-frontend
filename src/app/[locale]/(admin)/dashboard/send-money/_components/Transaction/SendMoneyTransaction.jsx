@@ -1,6 +1,6 @@
 "use client";
-import { Input, Card, Modal } from "antd";
-import { ArrowDownOutlined, SearchOutlined } from "@ant-design/icons";
+import { Card, Modal } from "antd";
+import { ArrowDownOutlined } from "@ant-design/icons";
 import Table from "@/components/ui/Table";
 import useModal from "@/hooks/useModal";
 import { memo, useState } from "react";
@@ -87,10 +87,8 @@ const SendMoneyTransaction = memo(function SendMoneyTransaction({
       dataIndex: "type",
       width: 250,
       render: (_, record) => (
-        <div className="flex items-center gap-3">
-          <div
-            className={`w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-300 dark:text-neutral-800`}
-          >
+        <div className="flex items-center gap-3 text-left rtl:text-right">
+          <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-300 dark:text-neutral-800">
             <ArrowDownOutlined className="text-gray-500 rotate-45 text-lg" />
           </div>
 
@@ -105,27 +103,41 @@ const SendMoneyTransaction = memo(function SendMoneyTransaction({
         </div>
       ),
     },
+
     {
       title: t("amount"),
       dataIndex: "request_amount",
+      align: "right",
       render: (amount, record) => (
-        <span className="font-semibold text-green-600 whitespace-nowrap">
+        <span
+          className="font-semibold text-green-600 whitespace-nowrap"
+          dir="ltr"
+        >
           + {Number(amount).toFixed(2)} {record.request_currency}
         </span>
       ),
     },
+
     {
       title: t("trxId"),
       dataIndex: "trx_id",
+      align: "center",
       render: (id) => (
-        <span className="text-gray-600 dark:text-neutral-300">{id}</span>
+        <span className="text-gray-600 dark:text-neutral-300" dir="ltr">
+          {id}
+        </span>
       ),
     },
+
     {
       title: t("totalPayable"),
       dataIndex: "total_payable",
+      align: "right",
       render: (amount, record) => (
-        <span className="font-semibold text-gray-800 dark:text-neutral-300">
+        <span
+          className="font-semibold text-gray-800 dark:text-neutral-300"
+          dir="ltr"
+        >
           {Number(amount).toFixed(2)} {record.request_currency}
         </span>
       ),
@@ -134,8 +146,12 @@ const SendMoneyTransaction = memo(function SendMoneyTransaction({
     {
       title: t("date"),
       dataIndex: "created_at",
+      align: "center",
       render: (date) => (
-        <span className="text-gray-600 dark:text-neutral-300 whitespace-nowrap">
+        <span
+          className="text-gray-600 dark:text-neutral-300 whitespace-nowrap"
+          dir="ltr"
+        >
           {new Date(date).toLocaleDateString("en-US", {
             day: "2-digit",
             month: "short",
@@ -148,26 +164,38 @@ const SendMoneyTransaction = memo(function SendMoneyTransaction({
     {
       title: t("exchangeRate"),
       dataIndex: "exchange_rate",
+      align: "center",
       render: (rate, record) => (
-        <span className="text-gray-600 dark:text-neutral-300 whitespace-nowrap">
+        <span
+          className="text-gray-600 dark:text-neutral-300 whitespace-nowrap"
+          dir="ltr"
+        >
           1 {record.request_currency} = {rate} {record.payment_currency}
         </span>
       ),
     },
+
     {
       title: t("feeCharge"),
       dataIndex: "total_charge",
+      align: "right",
       render: (charge, record) => (
-        <span className="text-red-500">
+        <span className="text-red-500 whitespace-nowrap" dir="ltr">
           {charge} {record.request_currency}
         </span>
       ),
     },
+
     {
       title: t("status.title"),
       dataIndex: "status",
+      align: "center",
       render: (status) => {
-        const mapped = statusMap[status] || { text: "Unknown", className: "" };
+        const mapped = statusMap[status] || {
+          text: "Unknown",
+          className: "",
+        };
+
         return (
           <span
             className={`px-3 py-1 rounded-full text-xs font-medium ${mapped.className}`}
@@ -184,24 +212,10 @@ const SendMoneyTransaction = memo(function SendMoneyTransaction({
 
   const TableExtra = (
     <div className="flex items-center gap-2! md:gap-0 ">
-      <div className="hidden md:block">
-        <Input
-          placeholder={t("searchPlaceholder")}
-          size="large"
-          prefix={<SearchOutlined className="text-gray-400" />}
-          className=" rounded-lg"
-        />
-      </div>
-      <div className="md:hidden">
-        <PrimaryButton
-          icon={"Search"}
-          iconClassName={"group-hover/primary-btn:rotate-90 duration-200"}
-        ></PrimaryButton>
-      </div>
       <div className=" md:flex justify-end ">
-        <Link href={"#"}>
+        <Link href={"/dashboard/transactions/send-money-log"}>
           <PrimaryButton>
-            <span className="hidden md:block">View More</span>
+            <span className="hidden md:block">{t("viewMore")}</span>
             <span>
               <LucideIcon name={"Eye"} size={20} />
             </span>
@@ -220,7 +234,7 @@ const SendMoneyTransaction = memo(function SendMoneyTransaction({
         cancelText={t("close")}
         okButtonProps={{ style: { display: "none" } }}
       >
-        <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-white dark:bg-[#111] shadow-xs border border-gray-200 dark:border-gray-800">
+        <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-white dark:bg-[#111] shadow-xs border border-gray-200 dark:border-gray-800 text-left rtl:text-right">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
             {t("title")}
           </h2>
@@ -229,16 +243,19 @@ const SendMoneyTransaction = memo(function SendMoneyTransaction({
             {singleTable?.map((row, idx) => (
               <div
                 key={idx}
-                className="flex justify-between items-center py-3 text-sm"
+                className="flex justify-between items-center py-3 text-sm "
               >
+                {/* Label */}
                 <span className="text-gray-600 dark:text-gray-400">
                   {row.label}
                 </span>
 
+                {/* Value */}
                 <span
                   className={`text-gray-900 dark:text-gray-100 ${
                     row.bold ? "font-semibold" : "font-medium"
                   }`}
+                  dir="ltr"
                 >
                   {row.value}
                 </span>
@@ -247,23 +264,6 @@ const SendMoneyTransaction = memo(function SendMoneyTransaction({
           </div>
         </div>
       </Modal>
-      {/* Header */}
-      {/* <div className="flex flex-col lg:flex-row gap-4 justify-between items-center mb-4">
-        <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-300">
-          Latest Transaction
-        </h2>
-
-        <div className="flex items-center gap-3">
-          <Input
-            placeholder="Search"
-            prefix={<SearchOutlined className="text-gray-400" />}
-            className="w-48 rounded-lg"
-          />
-          <Button icon={<FilterOutlined />} className="rounded-lg">
-            Filter
-          </Button>
-        </div>
-      </div> */}
 
       {/* Styled Table */}
       <div className="overflow-x-auto!">

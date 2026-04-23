@@ -112,6 +112,26 @@
             }
         },
         "sendMoney": {
+            "title": "إرسال الأموال",
+            "exchangeRate": "سعر الصرف",
+            "availableBalance": "الرصيد المتاح",
+            "senderAmount": "مبلغ المرسل",
+            "recipientAmount": "مبلغ المستلم",
+            "amountPlaceholder": "المبلغ",
+            "limit": "الحد",
+            "charge": "الرسوم",
+            "sendButton": "إرسال الأموال",
+            "errorLoading": "فشل تحميل معلومات إرسال الأموال.",
+            "summary": {
+                "title": "الملخص",
+                "senderWallet": "محفظة المرسل",
+                "receiverWallet": "محفظة المستلم",
+                "sendingAmount": "مبلغ الإرسال",
+                "totalFees": "إجمالي الرسوم والمصاريف",
+                "exchangeRate": "سعر الصرف",
+                "receiverWillGet": "سيحصل المستلم على",
+                "totalPayable": "إجمالي المبلغ المستحق"
+            },
             "transactions": {
                 "title": "أحدث المعاملات",
                 "type": "النوع",

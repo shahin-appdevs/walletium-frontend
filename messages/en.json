@@ -138,6 +138,26 @@
             }
         },
         "sendMoney": {
+            "title": "Send Money",
+            "exchangeRate": "Exchange Rate",
+            "availableBalance": "Available Balance",
+            "senderAmount": "Sender Amount",
+            "recipientAmount": "Recipients Amount",
+            "amountPlaceholder": "Amount",
+            "limit": "Limit",
+            "charge": "Charge",
+            "sendButton": "Send Money",
+            "errorLoading": "Failed to load Send Money information.",
+            "summary": {
+                "title": "Summary",
+                "senderWallet": "Sender Wallet",
+                "receiverWallet": "Receiver Wallet",
+                "sendingAmount": "Sending Amount",
+                "totalFees": "Total Fees & Charges",
+                "exchangeRate": "Exchange Rate",
+                "receiverWillGet": "Receiver Will Get",
+                "totalPayable": "Total Payable Amount"
+            },
             "transactions": {
                 "title": "Latest Transactions",
                 "type": "Type",
