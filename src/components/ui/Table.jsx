@@ -22,6 +22,7 @@ const Table = (props) => {
     handleAllDelete,
     rowClassName,
     isLoading = false,
+    ...rest
   } = props;
 
   // check server mode
@@ -184,6 +185,7 @@ const Table = (props) => {
         onRow={(record) => ({
           onClick: () => onRowClick?.(record),
         })}
+        {...rest}
       />
     </div>
   );

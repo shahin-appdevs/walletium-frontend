@@ -1,7 +1,7 @@
 "use client";
 import { Card, Result, Spin } from "antd";
 import { useLocale, useTranslations } from "next-intl";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   useGetRequestMoneyInformationQuery,
   useRequestMoneyConfirmMutation,
@@ -23,6 +23,7 @@ export default function SharePage() {
   const token = searchParams.get("token");
   const locale = useLocale();
   const t = useTranslations("Dashboard.sendMoney");
+  const router = useRouter();
 
   const { data, isLoading, error } = useGetRequestMoneyInformationQuery(
     { token, lang: locale },
@@ -39,6 +40,7 @@ export default function SharePage() {
         lang: locale,
       }).unwrap();
       showToast.apiSuccess(res);
+      router.replace(`/${locale}/dashboard/request-money`);
     } catch (err) {
       showToast.apiError(err);
     }
@@ -198,7 +200,7 @@ export default function SharePage() {
               <PrimaryButton
                 onClick={handleConfirm}
                 loading={isConfirming}
-                className="w-full text-base py-6"
+                className="w-full text-base"
                 icon="CheckCircle2"
               >
                 Confirm Payment

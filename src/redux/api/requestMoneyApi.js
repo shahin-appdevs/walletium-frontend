@@ -25,7 +25,7 @@ const requestMoneyApi = baseApi.injectEndpoints({
     }),
     requestMoneyConfirm: builder.mutation({
       query: ({ payload, lang }) => ({
-        url: "/user/request-money/confirm",
+        url: "/user/request-money/payment-submit",
         method: "POST",
         data: payload,
         params: { lang },

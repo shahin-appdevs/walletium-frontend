@@ -21,6 +21,7 @@ import { getImageUrl } from "@/utils/getImageUrl";
 import useGatewayLimits from "@/hooks/useGatewayLimits";
 import showToast from "@/lib/toast";
 import { getExchangeRate } from "@/utils/exchangeRate";
+import { useGetRequestMoneyTrxQuery } from "@/redux/api/transactionsApi";
 
 const requestMoneySchema = yup.object({
   request_amount: yup.string().required("Request amount is required"),
@@ -44,6 +45,15 @@ const RequestMoney = () => {
   const [requestMoneySubmit, { isLoading: submitLoading }] =
     useRequestMoneySubmitMutation();
 
+  // trx api
+  const { data: transactionsData, isLoading: isTrxLoading } =
+    useGetRequestMoneyTrxQuery({
+      page: 1,
+      per_page: 5,
+    });
+
+  const transactions = transactionsData?.transactions?.data || [];
+
   const requestMoneyData = requestMoneyIndexData?.data || {};
   const userWallets = useMemo(
     () =>
@@ -60,6 +70,7 @@ const RequestMoney = () => {
     control,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(requestMoneySchema),
@@ -129,6 +140,7 @@ const RequestMoney = () => {
         const formattedLink = `${baseUrl}/${locale}/dashboard/request-money/share?token=${token}`;
         setShareLink(formattedLink);
         setIsModalOpen(true);
+        reset({});
       }
     } catch (error) {
       showToast.apiError(error);
@@ -196,11 +208,13 @@ const RequestMoney = () => {
                 </div>
 
                 <div className="grid grid-cols-1 ">
-                  <div className="  rounded-2xl p-4 bg-white dark:bg-slate-900 dark-border">
-                    <p className="text-gray-500 text-sm">Available balance:</p>
+                  <div className="  rounded-2xl p-4 bg-white dark:bg-slate-900 dark-border flex items-center  justify-between">
+                    <p className="text-gray-500 text-base!">
+                      Available balance:
+                    </p>
                     <p className="text-lg! font-medium! text-neutral-800 dark:text-neutral-300 ">
                       {selectedWallet?.currency_symbol}{" "}
-                      {selectedWallet?.balance || "0.00"}
+                      {selectedWallet?.balance?.toFixed(4) || "0.0000"}
                     </p>
                   </div>
                 </div>
@@ -332,7 +346,7 @@ const RequestMoney = () => {
           </div>
         </div>
         <div>
-          <RequestMoneyTransaction />
+          <RequestMoneyTransaction transactions={transactions} />
         </div>
       </div>
 
@@ -363,22 +377,23 @@ const RequestMoney = () => {
             Your money request has been submitted. You can share this link with
             the recipient:
           </p>
-          <Input
-            value={shareLink}
-            readOnly
-            dir="ltr"
-            className="py-2 rounded-xl bg-gray-50 border-gray-200 text-left rtl:text-right"
-            addonAfter={
-              <Tooltip title="Copy Link">
-                <Button
-                  type="text"
-                  onClick={copyToClipboard}
-                  icon={<CopyOutlined />}
-                  className="flex items-center justify-center"
-                />
-              </Tooltip>
-            }
-          />
+          <Space.Compact className="w-full">
+            <Input
+              value={shareLink}
+              readOnly
+              dir="ltr"
+              className="py-2 rounded-l-xl rtl:rounded-r-xl rtl:rounded-l-none bg-gray-50 border-gray-200 text-left rtl:text-right"
+            />
+
+            <Tooltip title="Copy Link">
+              <Button
+                type="default"
+                onClick={copyToClipboard}
+                icon={<CopyOutlined />}
+                className="rounded-r-xl rtl:rounded-l-xl rtl:rounded-r-none"
+              />
+            </Tooltip>
+          </Space.Compact>
           <p className="text-xs text-gray-400">
             The recipient will be able to view and fulfill your request using
             this link.
