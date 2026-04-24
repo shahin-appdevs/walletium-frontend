@@ -8,14 +8,11 @@ import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import Link from "next/link";
 import * as yup from "yup";
 // import { login } from "@/lib/auth";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useRef, useState } from "react";
 import { token, userInfo } from "@/lib/token";
 import showToast from "@/lib/toast";
-import {
-  useLazyEmailSendVerifyCodeQuery,
-  useLoginMutation,
-} from "@/redux/api/authApi";
+import { useLoginMutation } from "@/redux/api/authApi";
 import GuestOnly from "../_components/GuestOnly";
 import ReCAPTCHA from "react-google-recaptcha";
 import { getErrorMessage } from "@/utils/getErrorMessage";
@@ -36,7 +33,8 @@ const loginSchema = yup.object({
 
 export default function LoginPage() {
   const [login, { isLoading }] = useLoginMutation();
-  const [sendCode, { data, error }] = useLazyEmailSendVerifyCodeQuery();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect");
 
   const [recaptcha, setRecaptcha] = useState(null);
   const dispatch = useDispatch();
@@ -76,8 +74,6 @@ export default function LoginPage() {
       const result = await login(data).unwrap();
       const loginInfo = result?.data;
 
-      console.log(loginInfo);
-
       // store data
       if (data.remember) {
         token.set(loginInfo?.token, "local");
@@ -111,7 +107,7 @@ export default function LoginPage() {
       }
 
       // redirect
-      router.replace("/dashboard");
+      router.replace(redirect || "/dashboard");
     } catch (error) {
       const errMessages = getErrorMessage(error);
       errMessages.forEach((err) => {

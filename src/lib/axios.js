@@ -27,7 +27,7 @@ axiosPrivate.interceptors.response.use(
     if (error.response?.status === 401) {
       token.remove();
       userInfo.remove();
-      window.location.href = "/login";
+      // return (window.location.href = "/login");
     }
     return Promise.reject(error);
   },
