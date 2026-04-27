@@ -11,7 +11,12 @@ import showToast from "@/lib/toast";
 import { statusMap } from "@/utils/statusMap";
 import { useRouter } from "next/navigation";
 
-export default function RequestMoneyTransaction({ transactions }) {
+export default function RequestMoneyTransaction({
+  transactions,
+  t,
+  tc,
+  loading,
+}) {
   const { isModalOpen, handleShowModal, handleCancelModal } = useModal();
   const [singleTable, setSingleTable] = useState([]);
   const { smallScreen } = useViewport();
@@ -21,28 +26,28 @@ export default function RequestMoneyTransaction({ transactions }) {
   const handleOnRowClick = (record) => {
     const shareLink = `${window.location.origin}/${locale}/dashboard/request-money/share?token=${record.identifier}`;
     const labels = [
-      "Transaction Type",
-      "Link",
-      "Created By",
-      "Identifier",
-      "Amount",
-      "Fee & Charge",
-      "Total Payable",
-      "Exchange Rate",
-      "Remarks",
-      "Status",
+      t("type"),
+      t("link"),
+      t("createdBy"),
+      t("trxId"),
+      t("amount"),
+      t("feeCharge"),
+      t("totalPayable"),
+      t("exchangeRate"),
+      t("remarks"),
+      t("status.title"),
     ];
 
     const values = [
-      "Request Money",
+      t("requestMoneyTitle") || "Request Money",
       <div key={1} className="flex items-center gap-2">
         <span className="max-w-[200px] truncate">{shareLink}</span>
-        <Tooltip title="Copy Link">
+        <Tooltip title={t("copyLink") || "Copy Link"}>
           <CopyOutlined
             className="cursor-pointer text-primary"
             onClick={() => {
               navigator.clipboard.writeText(shareLink);
-              showToast.success("Link copied!");
+              showToast.success(t("copySuccess") || "Link copied!");
             }}
           />
         </Tooltip>
@@ -75,7 +80,7 @@ export default function RequestMoneyTransaction({ transactions }) {
 
   const columns = [
     {
-      title: "Type",
+      title: t("type"),
       dataIndex: "transaction_type",
       width: 250,
       render: (_, record) => (
@@ -88,15 +93,17 @@ export default function RequestMoneyTransaction({ transactions }) {
 
           <div>
             <p className="font-medium text-gray-800 dark:text-neutral-300">
-              Request Money
+              {t("requestMoneyTitle") || "Request Money"}
             </p>
-            <p className="text-gray-400  text-sm">Receive Money</p>
+            <p className="text-gray-400  text-sm">
+              {t("receiveMoney") || "Receive Money"}
+            </p>
           </div>
         </div>
       ),
     },
     {
-      title: "Link",
+      title: t("link"),
       dataIndex: "identifier",
       render: (identifier) => {
         const shareLink = `${window.location.origin}/${locale}/dashboard/request-money/share?token=${identifier}`;
@@ -105,7 +112,7 @@ export default function RequestMoneyTransaction({ transactions }) {
             <span className="text-gray-600 dark:text-neutral-300">
               {shareLink.slice(0, 20)}...
             </span>
-            <Tooltip title="Copy Link">
+            <Tooltip title={t("copyLink") || "Copy Link"}>
               <Button
                 type="text"
                 size="small"
@@ -113,7 +120,7 @@ export default function RequestMoneyTransaction({ transactions }) {
                 onClick={(e) => {
                   e.stopPropagation();
                   navigator.clipboard.writeText(shareLink);
-                  showToast.success("Link copied!");
+                  showToast.success(t("copySuccess") || "Link copied!");
                 }}
               />
             </Tooltip>
@@ -122,27 +129,33 @@ export default function RequestMoneyTransaction({ transactions }) {
       },
     },
     {
-      title: "Amount",
+      title: t("amount"),
       dataIndex: "request_amount",
       render: (amount, record) => (
-        <span className="font-semibold text-green-600 whitespace-nowrap">
+        <span
+          dir="ltr"
+          className="font-semibold text-green-600 whitespace-nowrap"
+        >
           +{amount.toLocaleString()} {record.request_currency}
         </span>
       ),
     },
 
     {
-      title: "Total Payable",
+      title: t("totalPayable"),
       dataIndex: "total_payable",
       render: (amount, record) => (
-        <span className="font-semibold text-green-600 whitespace-nowrap">
+        <span
+          dir="ltr"
+          className="font-semibold text-green-600 whitespace-nowrap"
+        >
           {amount.toLocaleString()} {record.request_currency}
         </span>
       ),
     },
 
     {
-      title: "Created By",
+      title: t("createdBy"),
       dataIndex: "created_by",
       render: (createdBy) => (
         <span className="text-gray-600 dark:text-neutral-300">{createdBy}</span>
@@ -150,27 +163,30 @@ export default function RequestMoneyTransaction({ transactions }) {
     },
 
     {
-      title: "Exchange Rate",
+      title: t("exchangeRate"),
       dataIndex: "exchange_rate",
       render: (exchange_rate, record) => {
         return (
-          <span className="text-gray-600 dark:text-neutral-300 whitespace-nowrap">
+          <span
+            dir="ltr"
+            className="text-gray-600 dark:text-neutral-300 whitespace-nowrap"
+          >
             1 {record.request_currency} = 1 {record.request_currency}
           </span>
         );
       },
     },
     {
-      title: "Fee/Charge",
+      title: t("feeCharge"),
       dataIndex: "total_charge",
       render: (total_charge, record) => (
-        <span className="text-gray-600 dark:text-neutral-300">
+        <span dir="ltr" className="text-gray-600 dark:text-neutral-300">
           {total_charge} {record.request_currency}
         </span>
       ),
     },
     {
-      title: "Status",
+      title: t("status.title"),
       dataIndex: "status",
       render: (status) => (
         <span
@@ -191,28 +207,28 @@ export default function RequestMoneyTransaction({ transactions }) {
       icon="ArrowUpRight"
       className={"text-sm w-full"}
       iconClassName={
-        "group-hover/primary-btn:translate-1/6 group-hover/primary-btn:-translate-y-1 duration-300"
+        "group-hover/primary-btn:translate-1/6 group-hover/primary-btn:-translate-y-1 duration-300 rtl:-rotate-90 rtl:group-hover/primary-btn:-translate-x-1"
       }
       onClick={() =>
         router.push(`/${locale}/dashboard/transactions/money-request-log`)
       }
     >
-      View More
+      {t("viewMore")}
     </PrimaryButton>
   );
 
   return (
-    <Card title="Latest Transaction" extra={TableExtra}>
+    <Card title={t("title")} extra={TableExtra}>
       <Modal
         open={isModalOpen}
         onCancel={handleCancelModal}
         closable={false}
-        cancelText="Close"
+        cancelText={tc("action.close") || "Close"}
         okButtonProps={{ style: { display: "none" } }}
       >
         <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-white dark:bg-[#111] shadow-xs border border-gray-200 dark:border-gray-800">
           <h2 className="text-lg! font-semibold text-gray-900 dark:text-gray-100 mb-4">
-            Latest Transaction
+            {t("title")}
           </h2>
 
           <div className="divide-y divide-gray-200 dark:divide-gray-800">
@@ -226,6 +242,7 @@ export default function RequestMoneyTransaction({ transactions }) {
                 </span>
 
                 <span
+                  dir="ltr"
                   className={`text-gray-900 dark:text-gray-100 overflow-x-auto! ${
                     row.bold ? "font-semibold" : "font-medium"
                   }`}
@@ -250,6 +267,7 @@ export default function RequestMoneyTransaction({ transactions }) {
             "even:bg-gray-50 dark:even:bg-slate-950 rounded-xl! cursor-pointer!"
           }
           rowKey="id"
+          loading={loading}
         />
       </div>
     </Card>

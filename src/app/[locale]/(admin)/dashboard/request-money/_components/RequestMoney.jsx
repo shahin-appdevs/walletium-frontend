@@ -6,9 +6,8 @@ import { Button, Card, Form, Input, Modal, Select, Space, Tooltip } from "antd";
 import { CheckOutlined, CopyOutlined } from "@ant-design/icons";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
-// import RequestMoneyTransaction from "./RequestMoneyTransaction";
 import { ArrowUpRight, DollarSign } from "lucide-react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import {
   useGetRequestMoneyIndexQuery,
   useRequestMoneySubmitMutation,
@@ -42,6 +41,9 @@ const RequestMoney = () => {
   const locale = useLocale();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [shareLink, setShareLink] = useState("");
+  const t = useTranslations("Dashboard.requestMoney");
+  const tTrx = useTranslations("Dashboard.requestMoney.transactions");
+  const tc = useTranslations("common");
 
   // api hooks
   const {
@@ -60,6 +62,7 @@ const RequestMoney = () => {
     useGetRequestMoneyTrxQuery({
       page: 1,
       per_page: 5,
+      lang: locale,
     });
 
   const transactions = transactionsData?.transactions?.data || [];
@@ -110,7 +113,11 @@ const RequestMoney = () => {
   const { totalFee, totalPayable, fixedCharge } = useMemo(() => {
     const amount = parseFloat(requestAmount);
     if (!selectedWallet || !amount || isNaN(amount)) {
-      return { totalFee: 0, totalPayable: 0 };
+      return {
+        totalFee: 0,
+        totalPayable: 0,
+        fixedCharge: charges.fixed_charge,
+      };
     }
 
     const fixedChargeInSelectedCurrency =
@@ -159,34 +166,34 @@ const RequestMoney = () => {
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(shareLink);
-    showToast.success("Link copied to clipboard");
+    showToast.success(t("modal.copySuccess") || "Link copied to clipboard");
   };
 
   if (isLoading) return <RequestMoneySkeleton />;
   if (error)
     return (
       <div className="p-10 text-center text-red-500">
-        Failed to load Request Money information.
+        {t("errorLoading") || "Failed to load Request Money information."}
       </div>
     );
 
   const singleTable = [
     {
-      label: "Request Wallet",
+      label: t("summary.requestWallet"),
       value: `${selectedWallet?.name || "N/A"} (${selectedCurrency})`,
     },
     {
-      label: "Request Amount",
+      label: t("summary.requestAmount"),
       value: `${requestAmount || 0} ${selectedCurrency}`,
     },
     {
-      label: "Total Fees & Charges",
+      label: t("summary.totalFees"),
       value: `${totalFee} ${selectedCurrency}`,
     },
     {
       label: (
         <span className="font-bold text-base lg:text-lg">
-          Total Payable Amount
+          {t("summary.totalPayable")}
         </span>
       ),
       value: (
@@ -202,7 +209,7 @@ const RequestMoney = () => {
       <div className="space-y-4 lg:space-y-6">
         <div className="grid md:grid-cols-5 gap-4 lg:gap-6">
           <div className="col-span-1 md:col-span-3 ">
-            <Card title="Request Money" className="h-full!">
+            <Card title={t("title")} className="h-full!">
               <div className="mb-4 bg-neutral-50 dark:bg-slate-900 dark-border  rounded-2xl shadow-xs p-4 flex flex-col gap-3 overflow-hidden">
                 <div className="flex items-center justify-between ">
                   <div
@@ -220,7 +227,7 @@ const RequestMoney = () => {
                 <div className="grid grid-cols-1 ">
                   <div className="  rounded-2xl p-4 bg-white dark:bg-slate-900 dark-border flex items-center  justify-between">
                     <p className="text-gray-500 text-base!">
-                      Available balance:
+                      {t("availableBalance")}:
                     </p>
                     <p className="text-lg! font-medium! text-neutral-800 dark:text-neutral-300 ">
                       {selectedWallet?.currency_symbol}{" "}
@@ -239,7 +246,7 @@ const RequestMoney = () => {
                   <div>
                     <FormItem
                       required
-                      label={"Request Amount"}
+                      label={t("requestAmount")}
                       name={"request_amount"}
                       errors={errors}
                     >
@@ -251,7 +258,7 @@ const RequestMoney = () => {
                             <div className="w-full relative">
                               <Input
                                 {...field}
-                                placeholder="Enter Amount"
+                                placeholder={t("amountPlaceholder")}
                                 type="number"
                               />
                             </div>
@@ -282,8 +289,10 @@ const RequestMoney = () => {
                     <Form.Item
                       label={
                         <span>
-                          Remarks{" "}
-                          <span className="text-primary-500">(Optional)</span>
+                          {t("remarks")}{" "}
+                          <span className="text-primary-500">
+                            ({t("optional")})
+                          </span>
                         </span>
                       }
                     >
@@ -295,7 +304,7 @@ const RequestMoney = () => {
                             <Input.TextArea
                               rows={4}
                               {...field}
-                              placeholder="Explain Request Process Here"
+                              placeholder={t("remarksPlaceholder")}
                               size="large"
                             />
                           </div>
@@ -305,12 +314,18 @@ const RequestMoney = () => {
                   </div>
                   <div className="flex flex-col md:flex-row gap-2 justify-between items-center">
                     <p className="p-2 text-xs lg:text-base px-4 rounded-2xl bg-primary-50 dark:bg-primary-500! dark:text-primary-50! font-medium text-primary-600">
-                      Limit: {minLimit} {selectedCurrency} - {maxLimit}{" "}
-                      {selectedCurrency}
+                      {t("limit")}:{" "}
+                      <span dir="ltr">
+                        {minLimit} {selectedCurrency} - {maxLimit}{" "}
+                        {selectedCurrency}
+                      </span>
                     </p>
                     <p className="p-2 px-4 text-xs lg:text-base rounded-2xl bg-primary-50  font-medium text-primary-600 dark:bg-primary-500! dark:text-primary-50!">
-                      Charge: {fixedCharge} {selectedCurrency} +{" "}
-                      {charges.percent_charge}%
+                      {t("charge")}:{" "}
+                      <span dir="ltr">
+                        {fixedCharge} {selectedCurrency} +{" "}
+                        {charges.percent_charge}%
+                      </span>
                     </p>
                   </div>
                   <PrimaryButton
@@ -319,17 +334,17 @@ const RequestMoney = () => {
                     className={"text-base w-full"}
                     loading={submitLoading}
                     iconClassName={
-                      "group-hover/primary-btn:translate-1/6 group-hover/primary-btn:-translate-y-1 duration-300 rtl:-rotate-90 rtl:group-hover/primary-btn:-translate-x-1"
+                      "group-hover/primary-btn:translate-1/6 group-hover/primary-btn:-translate-y-1 duration-300 rtl:-rotate-90 rtl:group-hover/primary-btn:-translate-x-1 rtl:-rotate-90 rtl:group-hover/primary-btn:-translate-x-1"
                     }
                   >
-                    Request Money{" "}
+                    {t("requestButton")}
                   </PrimaryButton>
                 </Form>
               </div>
             </Card>
           </div>
           <div className="col-span-1 md:col-span-2">
-            <Card title="Summary" className="h-full!">
+            <Card title={t("summary.title")} className="h-full!">
               <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-neutral-50 dark:bg-slate-900 shadow-xs  dark-border">
                 <div className="divide-y divide-gray-200 dark:divide-gray-800">
                   {singleTable?.map((row, idx) => (
@@ -342,6 +357,7 @@ const RequestMoney = () => {
                       </span>
 
                       <span
+                        dir="ltr"
                         className={`text-gray-900 dark:text-gray-100  ${
                           row.bold ? "font-semibold" : "font-medium"
                         }`}
@@ -356,7 +372,12 @@ const RequestMoney = () => {
           </div>
         </div>
         <div>
-          <RequestMoneyTransaction transactions={transactions} />
+          <RequestMoneyTransaction
+            transactions={transactions}
+            t={tTrx}
+            tc={tc}
+            loading={isTrxLoading}
+          />
         </div>
       </div>
 
@@ -366,7 +387,7 @@ const RequestMoney = () => {
             <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
               <CheckOutlined className="text-green-600" />
             </div>
-            <span>Request Submitted Successfully</span>
+            <span>{t("modal.title")}</span>
           </div>
         }
         open={isModalOpen}
@@ -377,16 +398,13 @@ const RequestMoney = () => {
             onClick={() => setIsModalOpen(false)}
             className="w-full"
           >
-            Close
+            {tc("action.close") || "Close"}
           </PrimaryButton>,
         ]}
         centered
       >
         <div className="space-y-4 py-4 text-left rtl:text-right">
-          <p className="text-gray-600">
-            Your money request has been submitted. You can share this link with
-            the recipient:
-          </p>
+          <p className="text-gray-600">{t("modal.description")}</p>
           <Space.Compact className="w-full">
             <Input
               value={shareLink}
@@ -395,7 +413,7 @@ const RequestMoney = () => {
               className="py-2 rounded-l-xl rtl:rounded-r-xl rtl:rounded-l-none bg-gray-50 border-gray-200 text-left rtl:text-right"
             />
 
-            <Tooltip title="Copy Link">
+            <Tooltip title={t("modal.copyLink")}>
               <Button
                 type="default"
                 onClick={copyToClipboard}
@@ -404,10 +422,7 @@ const RequestMoney = () => {
               />
             </Tooltip>
           </Space.Compact>
-          <p className="text-xs text-gray-400">
-            The recipient will be able to view and fulfill your request using
-            this link.
-          </p>
+          <p className="text-xs text-gray-400">{t("modal.footer")}</p>
         </div>
       </Modal>
     </section>

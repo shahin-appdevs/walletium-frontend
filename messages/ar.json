@@ -153,6 +153,53 @@
                     "rejected": "مرفوضة"
                 }
             }
+        },
+        "requestMoney": {
+            "title": "طلب المال",
+            "availableBalance": "الرصيد المتاح",
+            "requestAmount": "مبلغ الطلب",
+            "amountPlaceholder": "أدخل المبلغ",
+            "remarks": "ملاحظات",
+            "optional": "اختياري",
+            "remarksPlaceholder": "اشرح عملية الطلب هنا",
+            "limit": "الحد",
+            "charge": "الرسوم",
+            "requestButton": "طلب المال",
+            "errorLoading": "فشل تحميل معلومات طلب المال.",
+            "summary": {
+                "title": "الملخص",
+                "requestWallet": "محفظة الطلب",
+                "requestAmount": "مبلغ الطلب",
+                "totalFees": "إجمالي الرسوم والمصاريف",
+                "totalPayable": "إجمالي المبلغ المستحق"
+            },
+            "modal": {
+                "title": "تم تقديم الطلب بنجاح",
+                "description": "لقد تم تقديم طلب المال الخاص بك. يمكنك مشاركة هذا الرابط مع المستلم:",
+                "copyLink": "نسخ الرابط",
+                "copySuccess": "تم نسخ الرابط إلى الحافظة",
+                "footer": "سيتمكن المستلم من عرض وطلبك باستخدام هذا الرابط."
+            },
+            "transactions": {
+                "title": "أحدث المعاملات",
+                "type": "النوع",
+                "link": "الرابط",
+                "createdBy": "أنشئ بواسطة",
+                "trxId": "رقم العملية",
+                "amount": "المبلغ",
+                "feeCharge": "الرسوم والمصاريف",
+                "totalPayable": "إجمالي المبلغ المستحق",
+                "exchangeRate": "سعر الصرف",
+                "remarks": "ملاحظات",
+                "status": {
+                    "title": "الحالة"
+                },
+                "viewMore": "عرض المزيد",
+                "requestMoneyTitle": "طلب المال",
+                "receiveMoney": "استلام المال",
+                "copyLink": "نسخ الرابط",
+                "copySuccess": "تم النسخ!"
+            }
         }
     },
     "Login": {

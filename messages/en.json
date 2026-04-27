@@ -179,6 +179,53 @@
                     "rejected": "Rejected"
                 }
             }
+        },
+        "requestMoney": {
+            "title": "Request Money",
+            "availableBalance": "Available Balance",
+            "requestAmount": "Request Amount",
+            "amountPlaceholder": "Enter Amount",
+            "remarks": "Remarks",
+            "optional": "Optional",
+            "remarksPlaceholder": "Explain Request Process Here",
+            "limit": "Limit",
+            "charge": "Charge",
+            "requestButton": "Request Money",
+            "errorLoading": "Failed to load Request Money information.",
+            "summary": {
+                "title": "Summary",
+                "requestWallet": "Request Wallet",
+                "requestAmount": "Request Amount",
+                "totalFees": "Total Fees & Charges",
+                "totalPayable": "Total Payable Amount"
+            },
+            "modal": {
+                "title": "Request Submitted Successfully",
+                "description": "Your money request has been submitted. You can share this link with the recipient:",
+                "copyLink": "Copy Link",
+                "copySuccess": "Link copied to clipboard",
+                "footer": "The recipient will be able to view and fulfill your request using this link."
+            },
+            "transactions": {
+                "title": "Latest Transactions",
+                "type": "Type",
+                "link": "Link",
+                "createdBy": "Created By",
+                "trxId": "Transaction ID",
+                "amount": "Amount",
+                "feeCharge": "Fee & Charge",
+                "totalPayable": "Total Payable",
+                "exchangeRate": "Exchange Rate",
+                "remarks": "Remarks",
+                "status": {
+                    "title": "Status"
+                },
+                "viewMore": "View More",
+                "requestMoneyTitle": "Request Money",
+                "receiveMoney": "Receive Money",
+                "copyLink": "Copy Link",
+                "copySuccess": "Link copied!"
+            }
         }
     },
     "Login": {
