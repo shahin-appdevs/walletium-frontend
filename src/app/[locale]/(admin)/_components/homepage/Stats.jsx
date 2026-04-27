@@ -7,11 +7,13 @@ import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import StatsSkeleton from "./StatsSkeleton";
 import { useEffect, useState } from "react";
 import { useDashboardContext } from "@/contexts/DashboardProvider";
+import { useRouter } from "next/navigation";
 
-const Stats = () => {
+const Stats = ({ t }) => {
   const { toggleShow, setToggleShow } = useToggleShow();
   const [showSidebar, setShowSidebar] = useState(true);
   const { wallets } = useDashboardContext();
+  const router = useRouter();
 
   // show sidebar skeleton condition
   useEffect(() => {
@@ -30,9 +32,9 @@ const Stats = () => {
             <div className="flex items-center gap-4 mb-4">
               <div>
                 <p className="text-muted text-base font-medium ">
-                  Total Wallet Balance
+                  {t("totalWalletBalance")}
                 </p>
-                <h2 className="text-2xl font-bold text-title">
+                <h2 className="text-2xl font-bold text-title" dir="ltr">
                   {toggleShow ? "$98,000.00" : "********"}
                 </h2>
               </div>
@@ -49,18 +51,22 @@ const Stats = () => {
 
             {/* Right Buttons */}
             <div className="flex items-center gap-3">
-              <button className="flex items-center gap-2 bg-green-950 text-white px-5 py-2 rounded-xl hover:bg-green-900 transition">
-                Add Money <LucideIcon name={"Plus"} className="w-4 h-4" />
+              <button
+                onClick={() => router.push("/dashboard/add-money")}
+                className="flex items-center gap-2 bg-green-950 text-white px-5 py-2 rounded-xl hover:bg-green-900 transition"
+              >
+                {t("addMoney")} <LucideIcon name={"Plus"} className="w-4 h-4" />
               </button>
 
               <PrimaryButton
                 icon="ArrowUpRight"
                 className={"text-sm font-normal!"}
+                onClick={() => router.push("/dashboard/send-money")}
                 iconClassName={
-                  "group-hover/primary-btn:translate-1/6 group-hover/primary-btn:-translate-y-1 duration-300"
+                  "group-hover/primary-btn:translate-1/6 group-hover/primary-btn:-translate-y-1 duration-300 rtl:-rotate-90 rtl:group-hover/primary-btn:-translate-x-1"
                 }
               >
-                Send Money
+                {t("sendMoney")}
               </PrimaryButton>
             </div>
           </div>
@@ -77,76 +83,3 @@ const Stats = () => {
 };
 
 export default Stats;
-
-export const currencyData = [
-  {
-    name: "United States Dollar",
-    amount: "$910,000.00",
-    icon: "/icons/dollar.png",
-    bg: "bg-blue-300",
-    iconBg: "bg-blue-200",
-  },
-  {
-    name: "Bangladeshi Taka",
-    amount: "৳1,88,000.00",
-    icon: "/icons/taka.png", // best match for BDT
-    bg: "bg-purple-300",
-    iconBg: "bg-purple-200",
-  },
-  {
-    name: "Indian Rupee",
-    amount: "₹50,000.00",
-    icon: "/icons/taka.png",
-    bg: "bg-sky-300",
-    iconBg: "bg-sky-200",
-  },
-  {
-    name: "Pakistani Rupee",
-    amount: "₨70,000.00",
-    icon: "/icons/taka.png", // general currency icon
-    bg: "bg-green-300",
-    iconBg: "bg-green-200",
-  },
-  {
-    name: "British Pound",
-    amount: "£10,000.00",
-    icon: "/icons/taka.png",
-    bg: "bg-pink-300",
-    iconBg: "bg-pink-200",
-  },
-  {
-    name: "British Pound",
-    amount: "£10,000.00",
-    icon: "/icons/taka.png",
-    bg: "bg-pink-300",
-    iconBg: "bg-pink-200",
-  },
-  {
-    name: "British Pound",
-    amount: "£10,000.00",
-    icon: "/icons/taka.png",
-    bg: "bg-pink-300",
-    iconBg: "bg-pink-200",
-  },
-  {
-    name: "British Pound",
-    amount: "£10,000.00",
-    icon: "/icons/taka.png",
-    bg: "bg-pink-300",
-    iconBg: "bg-pink-200",
-  },
-  {
-    name: "British Pound",
-    amount: "£10,000.00",
-    icon: "/icons/taka.png",
-    bg: "bg-pink-300",
-    iconBg: "bg-pink-200",
-  },
-  {
-    name: "British Pound",
-    amount: "£10,000.00",
-    icon: "/icons/taka.png",
-    bg: "bg-pink-300",
-    iconBg: "bg-pink-200",
-  },
-];

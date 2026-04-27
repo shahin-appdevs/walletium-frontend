@@ -4,6 +4,34 @@
         "header": {
             "welcomeText": "مرحبا"
         },
+        "home": {
+            "totalWalletBalance": "إجمالي رصيد المحفظة",
+            "addMoney": "إضافة أموال",
+            "sendMoney": "إرسال أموال",
+            "overviewTitle": "نظرة عامة على المعاملات",
+            "transactions": {
+                "title": "سجل المعاملات",
+                "type": "النوع",
+                "trxId": "رقم العملية",
+                "date": "التاريخ",
+                "amount": "المبلغ",
+                "currency": "العملة",
+                "status": "الحالة",
+                "viewMore": "عرض المزيد"
+            },
+            "status": {
+                "title": "الحالة",
+                "success": "ناجحة",
+                "pending": "قيد الانتظار",
+                "hold": "معلقة",
+                "rejected": "مرفوضة"
+            },
+            "virtualCard": {
+                "title": "بطاقتي الافتراضية",
+                "totalBalance": "إجمالي الرصيد",
+                "topUp": "شحن البطاقة"
+            }
+        },
         "security": {
             "2fa": {
                 "title": "المصادقة الثنائية",

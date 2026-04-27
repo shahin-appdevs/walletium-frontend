@@ -6,7 +6,6 @@ const useToggleShow = () => {
   useEffect(() => {
     if (toggleShow) {
       const timer = setTimeout(() => {
-        console.log("hello");
         setToggleShow(false);
       }, 3000);
 

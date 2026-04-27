@@ -1,7 +1,6 @@
 "use client";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
-import { EyeInvisibleOutlined } from "@ant-design/icons";
 import Image from "next/image";
 
 import "swiper/css";
@@ -9,10 +8,12 @@ import "swiper/css/pagination";
 import useToggleShow from "@/hooks/useToggleShow";
 import LucideIcon from "@/components/LucideIcon";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
+import { useTranslations } from "next-intl";
 
 const cardImage = "/images/partials/card.png";
 
 export default function VirtualCardSlider() {
+  const t = useTranslations("Dashboard.home");
   const { toggleShow, setToggleShow } = useToggleShow();
 
   const cards = [
@@ -39,7 +40,7 @@ export default function VirtualCardSlider() {
   return (
     <div className="  p-5 rounded-xl bg-white dark:bg-slate-900 shadow-xs ">
       <h3 className="text-xl font-bold text-gray-800 dark:text-slate-100 mb-4">
-        My Virtual Card
+        {t("virtualCard.title")}
       </h3>
 
       {/* Swiper Carousel */}
@@ -61,8 +62,10 @@ export default function VirtualCardSlider() {
       {/* Balance Section */}
       <div className="flex justify-between items-center mt-5">
         <div>
-          <p className="text-gray-500 text-sm">Total Balance</p>
-          <p className="text-2xl font-bold">
+          <p className="text-gray-500 text-sm">
+            {t("virtualCard.totalBalance")}
+          </p>
+          <p className="text-2xl font-bold" dir="ltr">
             {" "}
             {toggleShow ? "$98,000" : "********"}
           </p>
@@ -85,7 +88,7 @@ export default function VirtualCardSlider() {
             "group-hover/primary-btn:translate-1/6 group-hover/primary-btn:-translate-y-1 duration-300"
           }
         >
-          Card Top Up
+          {t("virtualCard.topUp")}
         </PrimaryButton>
       </div>
     </div>

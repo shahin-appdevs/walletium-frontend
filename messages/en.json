@@ -4,6 +4,34 @@
         "header": {
             "welcomeText": "Welcome Back"
         },
+        "home": {
+            "totalWalletBalance": "Total Wallet Balance",
+            "addMoney": "Add Money",
+            "sendMoney": "Send Money",
+            "overviewTitle": "Transaction Overview",
+            "transactions": {
+                "title": "Transaction History",
+                "type": "Type",
+                "trxId": "Trx ID",
+                "date": "Date",
+                "amount": "Amount",
+                "currency": "Currency",
+                "status": "Status",
+                "viewMore": "View More"
+            },
+            "status": {
+                "title": "Status",
+                "success": "Success",
+                "pending": "Pending",
+                "hold": "Hold",
+                "rejected": "Rejected"
+            },
+            "virtualCard": {
+                "title": "My Virtual Card",
+                "totalBalance": "Total Balance",
+                "topUp": "Card Top Up"
+            }
+        },
         "security": {
             "2fa": {
                 "title": "Two Factor Authentication",

@@ -1,7 +1,7 @@
 import { useGetDashboardQuery } from "@/redux/api/dashboardApi";
 import { useGetProfileQuery } from "@/redux/api/profileApi";
 import { useRouter } from "next/navigation";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 const DashboardContext = createContext(null);

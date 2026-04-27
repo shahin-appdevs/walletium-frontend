@@ -1,71 +1,22 @@
 "use client";
-import { Input, Button, Card, Modal } from "antd";
-import {
-  ArrowDownOutlined,
-  ArrowUpOutlined,
-  SearchOutlined,
-  FilterOutlined,
-} from "@ant-design/icons";
+import { Card, Modal } from "antd";
+import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
 import Table from "@/components/ui/Table";
 import useModal from "@/hooks/useModal";
 import { useState } from "react";
 import useViewport from "@/hooks/useViewport";
 import { useDashboardContext } from "@/contexts/DashboardProvider";
 import dayjs from "dayjs";
-
-// const data = [
-//   {
-//     key: "1",
-//     transaction_type: "Receive Money",
-//     transaction_id: "TXID123",
-//     fee_charge: 20,
-//     exchange_rate: "2%",
-//     date: "07 Jun 2025",
-//     id: "#MY548G214",
-//     amount: 2500,
-//     status: "Success",
-//     direction: "in",
-//   },
-//   {
-//     key: "2",
-//     transaction_type: "Money Out",
-//     transaction_id: "TXID123",
-//     fee_charge: 20,
-//     exchange_rate: "2%",
-//     date: "07 Jun 2025",
-//     id: "#MY548G214",
-//     amount: -8600,
-//     status: "Success",
-//     direction: "out",
-//   },
-//   {
-//     key: "3",
-//     transaction_type: "Receive Money",
-//     transaction_id: "TXID123",
-//     fee_charge: 20,
-//     exchange_rate: "2%",
-//     date: "07 Jun 2025",
-//     id: "#MY548G214",
-//     amount: -6140,
-//     status: "Success",
-//     direction: "out",
-//   },
-//   {
-//     key: "4",
-//     transaction_type: "Receive Money",
-//     transaction_id: "TXID123",
-//     fee_charge: 20,
-//     exchange_rate: "2%",
-//     date: "07 Jun 2025",
-//     id: "#MY548G214",
-//     amount: 2500,
-//     status: "Success",
-//     direction: "in",
-//   },
-// ];
+import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
+import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export default function TransactionHistory() {
+  const t = useTranslations("Dashboard.home");
+  const tc = useTranslations("common");
+  const router = useRouter();
   const { isModalOpen, handleShowModal, handleCancelModal } = useModal();
+
   const [singleTable, setSingleTable] = useState([]);
   const { smallScreen, mediumScreen } = useViewport();
   const { dashboardData, dashboardLoading } = useDashboardContext();
@@ -79,12 +30,12 @@ export default function TransactionHistory() {
 
   const handleOnRowClick = (record) => {
     const labels = [
-      "Transaction Type",
-      "TXID",
-      "Date",
-      "Amount",
-      "Currency",
-      "Status",
+      t("transactions.type"),
+      t("transactions.trxId"),
+      t("transactions.date"),
+      t("transactions.amount"),
+      t("transactions.currency"),
+      t("status.title"),
     ];
     const values = [
       "type",
@@ -96,35 +47,37 @@ export default function TransactionHistory() {
     ];
 
     const singleTableData = labels.map((item, idx) => {
-      if (item === "Status") {
+      if (idx === 5) {
+        // Status column
         switch (record[values[idx]]) {
           case 1:
             return {
               label: item,
-              value: <span className="text-green-500">Success</span>,
+              value: <span className="text-green-500">{t("status.success")}</span>,
             };
 
           case 2:
             return {
               label: item,
-              value: <span className="text-yellow-500">Pending</span>,
+              value: <span className="text-yellow-500">{t("status.pending")}</span>,
             };
 
           case 3:
             return {
               label: item,
-              value: <span className="text-yellow-500">Hold</span>,
+              value: <span className="text-yellow-500">{t("status.hold")}</span>,
             };
 
           default:
             return {
               label: item,
-              value: <span className="text-red-500">Rejected</span>,
+              value: <span className="text-red-500">{t("status.rejected")}</span>,
             };
         }
       }
 
-      if (item === "Date") {
+      if (idx === 2) {
+        // Date column
         return {
           label: item,
           value: dayjs(record[values[idx]]).format("DD MMM YYYY, hh:mm A"),
@@ -140,7 +93,7 @@ export default function TransactionHistory() {
 
   const columns = [
     {
-      title: "Type",
+      title: t("transactions.type"),
       dataIndex: "type",
       width: 250,
       render: (type) => {
@@ -167,14 +120,14 @@ export default function TransactionHistory() {
     },
 
     {
-      title: "Trx ID",
+      title: t("transactions.trxId"),
       dataIndex: "trx_id",
       render: (id) => (
         <span className="text-gray-600 dark:text-neutral-300">{id}</span>
       ),
     },
     {
-      title: "Date",
+      title: t("transactions.date"),
       dataIndex: "created_at",
       render: (date) => (
         <span className="text-gray-600 dark:text-neutral-300">
@@ -184,17 +137,21 @@ export default function TransactionHistory() {
     },
 
     {
-      title: "Amount",
+      title: t("transactions.amount"),
       dataIndex: "receive_amount",
       render: (amount, record) => {
         const isIn = record.type === "DEPOSIT";
 
-        return <span className={`font-semibold`}>{amount?.toFixed(4)}</span>;
+        return (
+          <span className={`font-semibold`}>
+            {amount?.toFixed(4)} {record?.request_currency}
+          </span>
+        );
       },
     },
 
     {
-      title: "Currency",
+      title: t("transactions.currency"),
       dataIndex: "request_currency",
       render: (currency) => (
         <span className="text-gray-600 dark:text-neutral-300">{currency}</span>
@@ -202,27 +159,27 @@ export default function TransactionHistory() {
     },
 
     {
-      title: "Status",
+      title: t("status.title"),
       dataIndex: "status",
       render: (status) => {
         const statusMap = {
           1: {
-            label: "Success",
+            label: t("status.success"),
             className:
               "bg-green-100 text-green-700 dark:bg-green-700 dark:text-green-100",
           },
           2: {
-            label: "Pending",
+            label: t("status.pending"),
             className:
               "bg-yellow-100 text-yellow-700 dark:bg-yellow-700 dark:text-yellow-100",
           },
           3: {
-            label: "Hold",
+            label: t("status.hold"),
             className:
               "bg-yellow-100 text-yellow-700 dark:bg-yellow-700 dark:text-yellow-100",
           },
           4: {
-            label: "Rejected",
+            label: t("status.rejected"),
             className:
               "bg-red-100 text-red-700 dark:bg-red-700 dark:text-red-100",
           },
@@ -244,15 +201,34 @@ export default function TransactionHistory() {
   const smallScreenColumn = smallScreen ? [...columns.slice(0, 2)] : columns;
   // const mediumScreenColumn = mediumScreen ? [...columns.slice(0, 4)] : columns;
 
+  const TableExtra = (
+    <PrimaryButton
+      icon="ArrowUpRight"
+      className={"text-sm w-full"}
+      iconClassName={
+        "group-hover/primary-btn:translate-1/6 group-hover/primary-btn:-translate-y-1 duration-300 rtl:-rotate-90 rtl:group-hover/primary-btn:-translate-x-1"
+      }
+      onClick={() => router.push(`/dashboard/transactions/money-request-log`)}
+    >
+      {t("transactions.viewMore")}
+    </PrimaryButton>
+  );
+
   return (
-    <Card className=" overflow-x-auto! dark:border-neutral-900! shadow-xs border-0!">
+    <Card
+      title={t("transactions.title")}
+      extra={TableExtra}
+      className=" overflow-x-auto! dark:border-neutral-900! shadow-xs border-0!"
+    >
       <Modal
         open={isModalOpen}
-        onCancel={handleCancelModal}
         onOk={handleCancelModal}
+        okText={tc("action.close")}
+        cancelButtonProps={{ style: { display: "none" } }}
+        closeIcon={false}
       >
         <h4 className=" font-semibold text-gray-900 dark:text-gray-100 mb-4">
-          Transaction History
+          {t("transactions.title")}
         </h4>
         <div className="w-full max-w-2xl mx-auto px-4 rounded-xl bg-white dark:bg-[#111] shadow-xs border border-gray-200 dark:border-gray-800">
           <div className="divide-y divide-gray-200 dark:divide-gray-800">
@@ -278,22 +254,11 @@ export default function TransactionHistory() {
         </div>
       </Modal>
       {/* Header */}
-      <div className="flex flex-col lg:flex-row gap-4 justify-between items-center mb-4">
+      {/* <div className="flex flex-col lg:flex-row gap-4 justify-between items-center mb-4">
         <h4 className="font-bold text-neutral-800 dark:text-neutral-300">
           Transaction History
         </h4>
-
-        <div className="flex items-center gap-3">
-          <Input
-            placeholder="Search"
-            prefix={<SearchOutlined className="text-gray-400" />}
-            className="w-48 rounded-lg"
-          />
-          <Button icon={<FilterOutlined />} className="rounded-lg">
-            Filter
-          </Button>
-        </div>
-      </div>
+      </div> */}
 
       {/* Styled Table */}
       <Table
