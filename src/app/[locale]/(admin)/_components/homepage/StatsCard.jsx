@@ -38,7 +38,10 @@ function CurrencyCard({ item }) {
         <p className="text-gray-500 text-sm!">
           {name} ({currency_code})
         </p>
-        <h4 className="text-xl text-neutral-800 dark:text-neutral-300 font-semibold">
+        <h4
+          dir="ltr"
+          className="text-xl text-neutral-800 dark:text-neutral-300 font-semibold rtl:text-right"
+        >
           <span className="text-neutral-700 dark:text-neutral-200">
             {currency_symbol}
           </span>{" "}

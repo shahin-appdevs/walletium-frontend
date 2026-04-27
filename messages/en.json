@@ -271,6 +271,46 @@
                 "tokenID": "Token ID",
                 "confirmButton": "Confirm Payment"
             }
+        },
+        "withdrawMoney": {
+            "title": "Withdraw Money",
+            "exchangeRate": "Exchange Rate",
+            "availableBalance": "Available Balance",
+            "amount": "Amount",
+            "paymentGateway": "Payment Gateway",
+            "selectGateway": "Select gateway",
+            "selectFile": "Select File",
+            "limit": "Limit: {min} — {max} {currency}",
+            "charge": "Charge: {fixed} + {percent}%",
+            "paymentInstruction": "Payment Instruction",
+            "proceedToWithdraw": "Proceed to Withdraw",
+            "errorLoadingGateways": "Failed to load payment gateways",
+            "validation": {
+                "amountNumber": "Amount must be a number",
+                "amountPositive": "Amount must be greater than 0",
+                "amountRequired": "Amount is required",
+                "gatewayRequired": "Please select a payment gateway",
+                "fieldRequired": "{label} is required"
+            },
+            "summary": {
+                "title": "Summary",
+                "enteredAmount": "Entered Amount",
+                "totalFees": "Total Fees & Charges",
+                "youWillGet": "You will get",
+                "totalPayable": "Total Payable Amount"
+            },
+            "transaction": {
+                "title": "Latest Transaction",
+                "viewMore": "View More",
+                "type": "Type",
+                "amount": "Amount",
+                "trxId": "Trx ID",
+                "totalPayable": "Total Payable",
+                "date": "Date",
+                "exchangeRate": "Exchange Rate",
+                "feeCharge": "Fee/Charge",
+                "status": "Status"
+            }
         }
     },
     "Login": {
@@ -281,7 +321,8 @@
             "loading": "Loading...",
             "cancel": "Cancel",
             "close": "Close",
-            "save": "Save"
+            "save": "Save",
+            "confirm": "Confirm"
         },
         "success": {
             "default": "Operation completed successfully",

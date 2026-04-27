@@ -228,6 +228,46 @@
                 "copyLink": "نسخ الرابط",
                 "copySuccess": "تم النسخ!"
             },
+            "withdrawMoney": {
+                "title": "سحب المال",
+                "exchangeRate": "سعر الصرف",
+                "availableBalance": "الرصيد المتاح",
+                "amount": "المبلغ",
+                "paymentGateway": "بوابة الدفع",
+                "selectGateway": "اختر البوابة",
+                "selectFile": "اختر ملف",
+                "limit": "الحد: {min} — {max} {currency}",
+                "charge": "الرسوم: {fixed} + {percent}%",
+                "paymentInstruction": "تعليمات الدفع",
+                "proceedToWithdraw": "متابعة السحب",
+                "errorLoadingGateways": "فشل تحميل بوابات الدفع",
+                "validation": {
+                    "amountNumber": "يجب أن يكون المبلغ رقماً",
+                    "amountPositive": "يجب أن يكون المبلغ أكبر من 0",
+                    "amountRequired": "المبلغ مطلوب",
+                    "gatewayRequired": "يرجى اختيار بوابة الدفع",
+                    "fieldRequired": "{label} مطلوب"
+                },
+                "summary": {
+                    "title": "الملخص",
+                    "enteredAmount": "المبلغ المدخل",
+                    "totalFees": "إجمالي الرسوم والمصاريف",
+                    "youWillGet": "سوف تحصل على",
+                    "totalPayable": "إجمالي المبلغ المستحق"
+                },
+                "transaction": {
+                    "title": "أحدث المعاملات",
+                    "viewMore": "عرض المزيد",
+                    "type": "النوع",
+                    "amount": "المبلغ",
+                    "trxId": "رقم العملية",
+                    "totalPayable": "إجمالي المبلغ المستحق",
+                    "date": "التاريخ",
+                    "exchangeRate": "سعر الصرف",
+                    "feeCharge": "الرسوم والمصاريف",
+                    "status": "الحالة"
+                }
+            },
             "shareLink": {
                 "invalidToken": "رمز غير صالح",
                 "invalidTokenSubtitle": "رابط المشاركة يفتقد إلى رمز صالح.",
@@ -255,7 +295,8 @@
             "loading": "جار التحميل...",
             "cancel": "إلغاء",
             "close": "إغلاق",
-            "save": "حفظ"
+            "save": "حفظ",
+            "confirm": "تأكيد"
         },
         "success": {
             "default": "تمت العملية بنجاح",

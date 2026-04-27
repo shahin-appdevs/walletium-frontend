@@ -53,25 +53,33 @@ export default function TransactionHistory() {
           case 1:
             return {
               label: item,
-              value: <span className="text-green-500">{t("status.success")}</span>,
+              value: (
+                <span className="text-green-500">{t("status.success")}</span>
+              ),
             };
 
           case 2:
             return {
               label: item,
-              value: <span className="text-yellow-500">{t("status.pending")}</span>,
+              value: (
+                <span className="text-yellow-500">{t("status.pending")}</span>
+              ),
             };
 
           case 3:
             return {
               label: item,
-              value: <span className="text-yellow-500">{t("status.hold")}</span>,
+              value: (
+                <span className="text-yellow-500">{t("status.hold")}</span>
+              ),
             };
 
           default:
             return {
               label: item,
-              value: <span className="text-red-500">{t("status.rejected")}</span>,
+              value: (
+                <span className="text-red-500">{t("status.rejected")}</span>
+              ),
             };
         }
       }
@@ -143,7 +151,7 @@ export default function TransactionHistory() {
         const isIn = record.type === "DEPOSIT";
 
         return (
-          <span className={`font-semibold`}>
+          <span dir="ltr" className={`font-semibold`}>
             {amount?.toFixed(4)} {record?.request_currency}
           </span>
         );

@@ -364,7 +364,7 @@ const RecipientsModal = ({
             loading={loading}
             disabled={!selectedRecipient}
           >
-            Confirm & Send Money
+            Confirm
           </PrimaryButton>
         </div>
       )}
