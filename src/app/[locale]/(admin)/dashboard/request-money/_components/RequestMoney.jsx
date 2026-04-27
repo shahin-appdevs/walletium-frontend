@@ -229,7 +229,10 @@ const RequestMoney = () => {
                     <p className="text-gray-500 text-base!">
                       {t("availableBalance")}:
                     </p>
-                    <p className="text-lg! font-medium! text-neutral-800 dark:text-neutral-300 ">
+                    <p
+                      dir="ltr"
+                      className="text-lg! font-medium! text-neutral-800 dark:text-neutral-300 "
+                    >
                       {selectedWallet?.currency_symbol}{" "}
                       {selectedWallet?.balance?.toFixed(4) || "0.0000"}
                     </p>

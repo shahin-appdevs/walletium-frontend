@@ -225,6 +225,23 @@
                 "receiveMoney": "Receive Money",
                 "copyLink": "Copy Link",
                 "copySuccess": "Link copied!"
+            },
+            "shareLink": {
+                "invalidToken": "Invalid Token",
+                "invalidTokenSubtitle": "The shareable link is missing a valid token.",
+                "failedToLoad": "Failed to load request info",
+                "failedToLoadSubtitle": "The request might be expired or the token is invalid.",
+                "statusUnknown": "Unknown",
+                "recipientEmail": "Recipient Email",
+                "requestAmount": "Request Amount",
+                "totalFees": "Total Fees & Charges",
+                "totalPayable": "Total Payable",
+                "status": "Status",
+                "cardTitle": "Money Request Details",
+                "requestedAmountLabel": "Requested Amount",
+                "remarks": "Remarks",
+                "tokenID": "Token ID",
+                "confirmButton": "Confirm Payment"
             }
         }
     },

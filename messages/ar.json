@@ -199,6 +199,23 @@
                 "receiveMoney": "استلام المال",
                 "copyLink": "نسخ الرابط",
                 "copySuccess": "تم النسخ!"
+            },
+            "shareLink": {
+                "invalidToken": "رمز غير صالح",
+                "invalidTokenSubtitle": "رابط المشاركة يفتقد إلى رمز صالح.",
+                "failedToLoad": "فشل تحميل معلومات الطلب",
+                "failedToLoadSubtitle": "قد يكون الطلب قد انتهى صلاحيته أو أن الرمز غير صالح.",
+                "statusUnknown": "غير معروف",
+                "recipientEmail": "البريد الإلكتروني للمستلم",
+                "requestAmount": "مبلغ الطلب",
+                "totalFees": "إجمالي الرسوم والمصاريف",
+                "totalPayable": "إجمالي المبلغ المستحق",
+                "status": "الحالة",
+                "cardTitle": "تفاصيل طلب المال",
+                "requestedAmountLabel": "المبلغ المطلوب",
+                "remarks": "ملاحظات",
+                "tokenID": "رقم الرمز",
+                "confirmButton": "تأكيد الدفع"
             }
         }
     },
