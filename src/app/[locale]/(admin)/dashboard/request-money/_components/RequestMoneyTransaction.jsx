@@ -35,7 +35,18 @@ export default function RequestMoneyTransaction({ transactions }) {
 
     const values = [
       "Request Money",
-      shareLink,
+      <div key={1} className="flex items-center gap-2">
+        <span className="max-w-[200px] truncate">{shareLink}</span>
+        <Tooltip title="Copy Link">
+          <CopyOutlined
+            className="cursor-pointer text-primary"
+            onClick={() => {
+              navigator.clipboard.writeText(shareLink);
+              showToast.success("Link copied!");
+            }}
+          />
+        </Tooltip>
+      </div>,
       record.created_by,
       record.identifier,
       `${record.request_amount} ${record.request_currency}`,

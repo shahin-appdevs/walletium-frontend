@@ -6,7 +6,7 @@ import { Button, Card, Form, Input, Modal, Select, Space, Tooltip } from "antd";
 import { CheckOutlined, CopyOutlined } from "@ant-design/icons";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
-import RequestMoneyTransaction from "./RequestMoneyTransaction";
+// import RequestMoneyTransaction from "./RequestMoneyTransaction";
 import { ArrowUpRight, DollarSign } from "lucide-react";
 import { useLocale } from "next-intl";
 import {
@@ -22,6 +22,16 @@ import useGatewayLimits from "@/hooks/useGatewayLimits";
 import showToast from "@/lib/toast";
 import { getExchangeRate } from "@/utils/exchangeRate";
 import { useGetRequestMoneyTrxQuery } from "@/redux/api/transactionsApi";
+import dynamic from "next/dynamic";
+import TransactionTableSkeleton from "../../../_components/Skeleton/TransactionTableSkeleton";
+
+const RequestMoneyTransaction = dynamic(
+  () => import("./RequestMoneyTransaction"),
+  {
+    loading: () => <TransactionTableSkeleton />,
+    ssr: false,
+  },
+);
 
 const requestMoneySchema = yup.object({
   request_amount: yup.string().required("Request amount is required"),

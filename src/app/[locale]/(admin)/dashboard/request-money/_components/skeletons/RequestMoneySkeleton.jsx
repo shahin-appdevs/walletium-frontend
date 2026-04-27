@@ -1,3 +1,4 @@
+import TransactionTableSkeleton from "@/app/[locale]/(admin)/_components/Skeleton/TransactionTableSkeleton";
 import { Card, Skeleton } from "antd";
 
 const RequestMoneySkeleton = () => {
@@ -119,12 +120,7 @@ const RequestMoneySkeleton = () => {
 
         {/* Bottom Section: Transaction Table */}
         <div className="mt-6">
-          <Card>
-            <div className="space-y-4">
-              <Skeleton.Input active size="large" style={{ width: "30%" }} />
-              <Skeleton active paragraph={{ rows: 4 }} title={false} />
-            </div>
-          </Card>
+          <TransactionTableSkeleton />
         </div>
       </div>
     </section>
