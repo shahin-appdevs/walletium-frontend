@@ -1,3 +1,4 @@
+import { isArrayCheck } from "@/utils/IsArrayCheck";
 import { Bounce, toast } from "react-toastify";
 
 const baseConfig = {
@@ -47,7 +48,15 @@ const showToast = {
       err?.message ||
       fallback;
 
-    toast.error(message, { ...baseConfig });
+    const errors = err?.data?.message?.error;
+
+    if (isArrayCheck(errors)) {
+      errors.forEach((error) => {
+        toast.error(error, { ...baseConfig });
+      });
+    } else {
+      toast.error(message, { ...baseConfig });
+    }
   },
 
   apiSuccess: (res, fallback = "Successfully!") => {

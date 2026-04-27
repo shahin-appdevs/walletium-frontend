@@ -35,10 +35,10 @@ export default function ShareLink() {
         payload: { token },
         lang: locale,
       }).unwrap();
-      showToast.apiSuccess(res);
+      showToast.apiSuccess(res, tc("success.default"));
       router.replace(`/${locale}/dashboard/request-money`);
     } catch (err) {
-      showToast.apiError(err);
+      showToast.apiError(err, tc("error.default"));
     }
   };
 
