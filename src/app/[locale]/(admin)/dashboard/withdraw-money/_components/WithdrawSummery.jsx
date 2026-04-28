@@ -13,6 +13,7 @@ function WithdrawSummery({
   conversionAmount,
 }) {
   const t = useTranslations("Dashboard.withdrawMoney.summary");
+  const tRoot = useTranslations("Dashboard.withdrawMoney");
 
   return (
     <Card title={t("title")} className="h-full">
@@ -21,33 +22,39 @@ function WithdrawSummery({
           <div className="divide-y divide-gray-200 dark:divide-gray-800">
             {[
               {
-                label: "Gateway",
+                label: t("gatewayName"),
                 value: manualSubmitInfo.gateway_currency_name,
               },
               {
-                label: "Request Amount",
+                label: t("enteredAmount"),
                 value: manualSubmitInfo.request_amount,
+                dir: "ltr",
               },
               {
-                label: "Exchange Rate",
+                label: tRoot("exchangeRate"),
                 value: manualSubmitInfo.exchange_rate,
+                dir: "ltr",
               },
               {
-                label: "Conversion Amount",
+                label: t("conversionAmount"),
                 value: manualSubmitInfo.conversion_amount,
+                dir: "ltr",
               },
               {
-                label: "Total Charge",
+                label: t("totalFees"),
                 value: manualSubmitInfo.total_charge,
+                dir: "ltr",
               },
               {
-                label: "Will Get",
+                label: t("youWillGet"),
                 value: manualSubmitInfo.will_get,
+                dir: "ltr",
               },
               {
-                label: "Total Payable",
+                label: t("totalPayable"),
                 value: manualSubmitInfo.payable,
                 bold: true,
+                dir: "ltr",
               },
             ].map((row, idx) => (
               <div
@@ -67,6 +74,7 @@ function WithdrawSummery({
                       ? "font-bold text-base lg:text-lg text-primary!"
                       : "font-medium"
                   }`}
+                  dir={row.dir}
                 >
                   {row.value}
                 </span>
@@ -89,7 +97,7 @@ function WithdrawSummery({
               <span className="text-gray-600 dark:text-gray-400">
                 {t("enteredAmount")}
               </span>
-              <span>
+              <span dir="ltr">
                 {amount || 0} {selectedCurrencyCode}
               </span>
             </div>
@@ -97,7 +105,7 @@ function WithdrawSummery({
               <span className="text-gray-600 dark:text-gray-400">
                 {t("conversionAmount")}
               </span>
-              <span>
+              <span dir="ltr">
                 {conversionAmount || 0} {selectedGateway?.currency_code}
               </span>
             </div>
@@ -105,7 +113,7 @@ function WithdrawSummery({
               <span className="text-gray-600 dark:text-gray-400">
                 {t("totalFees")}
               </span>
-              <span className="text-red-600">
+              <span className="text-red-600" dir="ltr">
                 {totalFee} {selectedGateway?.currency_code}
               </span>
             </div>
@@ -114,14 +122,14 @@ function WithdrawSummery({
               <span className="text-gray-600 dark:text-gray-400">
                 {t("youWillGet")}
               </span>
-              <span>
+              <span dir="ltr">
                 {youWillGet?.toFixed(2)} {selectedGateway?.currency_code}
               </span>
             </div>
 
             <div className="flex justify-between py-4 font-semibold text-base border-t">
               <span>{t("totalPayable")}</span>
-              <span>
+              <span dir="ltr">
                 {totalPayable} {selectedCurrencyCode}
               </span>
             </div>

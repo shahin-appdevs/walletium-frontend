@@ -389,17 +389,19 @@ const WithdrawMoney = () => {
                   {selectedGateway && (
                     <div className="flex flex-wrap justify-between gap-3">
                       <div className="px-4 py-2 text-sm font-medium bg-primary-50 dark:bg-blue-950 text-primary-600 dark:text-primary-400 rounded-lg">
-                        {t("limit", {
-                          min: minLimit,
-                          max: maxLimit,
-                          currency: selectedCurrencyCode,
-                        })}
+                        {t("limit")}:{" "}
+                        <span dir="ltr">
+                          {minLimit} {selectedCurrencyCode} - {maxLimit}{" "}
+                          {selectedCurrencyCode}{" "}
+                        </span>
                       </div>
                       <div className="px-4 py-2 text-sm font-medium bg-primary-50 dark:bg-blue-950 text-primary-600 dark:text-primary-400 rounded-lg">
-                        {t("charge", {
-                          fixed: selectedGateway.fixed_charge,
-                          percent: selectedGateway.percent_charge,
-                        })}
+                        {t("charge")}:{" "}
+                        <span dir="ltr">
+                          {selectedGateway?.fixed_charge}{" "}
+                          {selectedGateway?.currency_code} +{" "}
+                          {selectedGateway?.percent_charge}%
+                        </span>
                       </div>
                     </div>
                   )}

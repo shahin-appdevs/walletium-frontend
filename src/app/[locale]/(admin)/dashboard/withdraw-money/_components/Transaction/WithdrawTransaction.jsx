@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 
 export default function WithdrawTransaction({ transactionsData, isLoading }) {
   const t = useTranslations("Dashboard.withdrawMoney.transaction");
+  const tStatus = useTranslations("Dashboard.home.status");
   const { isModalOpen, handleShowModal, handleCancelModal } = useModal();
   const [singleTable, setSingleTable] = useState([]);
   const { smallScreen } = useViewport();
@@ -50,18 +51,34 @@ export default function WithdrawTransaction({ transactionsData, isLoading }) {
         value = dayjs(value).format("DD MMM YYYY, hh:mm A");
       }
       if (values[idx] === "request_amount") {
-        value = `${value?.toFixed(4)} ${record?.request_currency}`;
+        value = (
+          <span dir="ltr">
+            {`${value?.toFixed(4)} ${record?.request_currency}`}
+          </span>
+        );
       }
       if (values[idx] === "total_charge") {
-        value = `${value?.toFixed(4)} ${record?.payment_currency}`;
+        value = (
+          <span dir="ltr">
+            {`${value?.toFixed(4)} ${record?.payment_currency}`}
+          </span>
+        );
       }
       if (values[idx] === "receive_amount") {
-        value = `${value?.toFixed(4)} ${record?.payment_currency}`;
+        value = (
+          <span dir="ltr">
+            {`${value?.toFixed(4)} ${record?.payment_currency}`}
+          </span>
+        );
       }
       if (values[idx] === "exchange_rate") {
-        value = `1 ${record?.request_currency} = ${record?.exchange_rate?.toFixed(
-          4,
-        )} ${record?.payment_currency}`;
+        value = (
+          <span dir="ltr">
+            {`1 ${record?.request_currency} = ${record?.exchange_rate?.toFixed(
+              4,
+            )} ${record?.payment_currency}`}
+          </span>
+        );
       }
       if (values[idx] === "status") {
         const label = statusMap[value]?.label;
@@ -69,7 +86,7 @@ export default function WithdrawTransaction({ transactionsData, isLoading }) {
         value =
           (label && className && (
             <span className={`${className} px-3 py-1 text-sm rounded-full`}>
-              {label}
+              {tStatus(label.toLowerCase())}
             </span>
           )) ||
           "Unknown";
@@ -161,7 +178,7 @@ export default function WithdrawTransaction({ transactionsData, isLoading }) {
           <span
             className={`px-3 py-1 rounded-full text-sm ${current.className}`}
           >
-            {current.label}
+            {current.label !== "Unknown" ? tStatus(current.label.toLowerCase()) : current.label}
           </span>
         );
       },

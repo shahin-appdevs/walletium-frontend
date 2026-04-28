@@ -24,7 +24,8 @@
                 "success": "ناجحة",
                 "pending": "قيد الانتظار",
                 "hold": "معلقة",
-                "rejected": "مرفوضة"
+                "rejected": "مرفوضة",
+                "waiting": "في الانتظار"
             },
             "virtualCard": {
                 "title": "بطاقتي الافتراضية",
@@ -228,48 +229,6 @@
                 "copyLink": "نسخ الرابط",
                 "copySuccess": "تم النسخ!"
             },
-            "withdrawMoney": {
-                "title": "سحب المال",
-                "exchangeRate": "سعر الصرف",
-                "availableBalance": "الرصيد المتاح",
-                "amount": "المبلغ",
-                "paymentGateway": "بوابة الدفع",
-                "selectGateway": "اختر البوابة",
-                "selectFile": "اختر ملف",
-                "limit": "الحد: {min} — {max} {currency}",
-                "charge": "الرسوم: {fixed} + {percent}%",
-                "paymentInstruction": "تعليمات الدفع",
-                "proceedToWithdraw": "متابعة السحب",
-                "errorLoadingGateways": "فشل تحميل بوابات الدفع",
-                "validation": {
-                    "amountNumber": "يجب أن يكون المبلغ رقماً",
-                    "amountPositive": "يجب أن يكون المبلغ أكبر من 0",
-                    "amountRequired": "المبلغ مطلوب",
-                    "gatewayRequired": "يرجى اختيار بوابة الدفع",
-                    "fieldRequired": "{label} مطلوب"
-                },
-                "summary": {
-                    "title": "الملخص",
-                    "enteredAmount": "المبلغ المدخل",
-                    "totalFees": "إجمالي الرسوم والمصاريف",
-                    "youWillGet": "سوف تحصل على",
-                    "totalPayable": "إجمالي المبلغ المستحق",
-                    "gatewayName": "اسم البوابة",
-                    "conversionAmount": "مبلغ التحويل"
-                },
-                "transaction": {
-                    "title": "أحدث المعاملات",
-                    "viewMore": "عرض المزيد",
-                    "type": "النوع",
-                    "requestAmount": "مبلغ الطلب",
-                    "receivedAmount": "المبلغ المستلم",
-                    "trxId": "رقم العملية",
-                    "date": "التاريخ",
-                    "exchangeRate": "سعر الصرف",
-                    "totalCharge": "الرسوم والمصاريف",
-                    "status": "الحالة"
-                }
-            },
             "shareLink": {
                 "invalidToken": "رمز غير صالح",
                 "invalidTokenSubtitle": "رابط المشاركة يفتقد إلى رمز صالح.",
@@ -286,6 +245,48 @@
                 "remarks": "ملاحظات",
                 "tokenID": "رقم الرمز",
                 "confirmButton": "تأكيد الدفع"
+            }
+        },
+        "withdrawMoney": {
+            "title": "سحب المال",
+            "exchangeRate": "سعر الصرف",
+            "availableBalance": "الرصيد المتاح",
+            "amount": "المبلغ",
+            "paymentGateway": "بوابة الدفع",
+            "selectGateway": "اختر البوابة",
+            "selectFile": "اختر ملف",
+            "limit": "الحد",
+            "charge": "الرسوم",
+            "paymentInstruction": "تعليمات الدفع",
+            "proceedToWithdraw": "متابعة السحب",
+            "errorLoadingGateways": "فشل تحميل بوابات الدفع",
+            "validation": {
+                "amountNumber": "يجب أن يكون المبلغ رقماً",
+                "amountPositive": "يجب أن يكون المبلغ أكبر من 0",
+                "amountRequired": "المبلغ مطلوب",
+                "gatewayRequired": "يرجى اختيار بوابة الدفع",
+                "fieldRequired": "{label} مطلوب"
+            },
+            "summary": {
+                "title": "الملخص",
+                "enteredAmount": "المبلغ المدخل",
+                "totalFees": "إجمالي الرسوم والمصاريف",
+                "youWillGet": "سوف تحصل على",
+                "totalPayable": "إجمالي المبلغ المستحق",
+                "gatewayName": "اسم البوابة",
+                "conversionAmount": "مبلغ التحويل"
+            },
+            "transaction": {
+                "title": "أحدث المعاملات",
+                "viewMore": "عرض المزيد",
+                "type": "النوع",
+                "requestAmount": "مبلغ الطلب",
+                "receivedAmount": "المبلغ المستلم",
+                "trxId": "رقم العملية",
+                "date": "التاريخ",
+                "exchangeRate": "سعر الصرف",
+                "totalCharge": "الرسوم والمصاريف",
+                "status": "الحالة"
             }
         }
     },

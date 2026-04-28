@@ -24,7 +24,8 @@
                 "success": "Success",
                 "pending": "Pending",
                 "hold": "Hold",
-                "rejected": "Rejected"
+                "rejected": "Rejected",
+                "waiting": "Waiting"
             },
             "virtualCard": {
                 "title": "My Virtual Card",
@@ -280,8 +281,8 @@
             "paymentGateway": "Payment Gateway",
             "selectGateway": "Select gateway",
             "selectFile": "Select File",
-            "limit": "Limit: {min} — {max} {currency}",
-            "charge": "Charge: {fixed} + {percent}%",
+            "limit": "Limit",
+            "charge": "Charge",
             "paymentInstruction": "Payment Instruction",
             "proceedToWithdraw": "Proceed to Withdraw",
             "errorLoadingGateways": "Failed to load payment gateways",
