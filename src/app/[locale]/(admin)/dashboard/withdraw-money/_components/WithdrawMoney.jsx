@@ -27,6 +27,7 @@ import WithdrawSummery from "./WithdrawSummery";
 import WithdrawTransaction from "./Transaction/WithdrawTransaction";
 import useGatewayLimits from "@/hooks/useGatewayLimits";
 import { getExchangeRate, formatExchangeRate } from "@/utils/exchangeRate";
+import { useGetTransactionsQuery } from "@/redux/api/dashboardApi";
 
 const WithdrawMoney = () => {
   const router = useRouter();
@@ -58,6 +59,12 @@ const WithdrawMoney = () => {
     useWithdrawMoneySubmitMutation();
 
   const [withdrawMoneyManualConfirm] = useWithdrawMoneyManualConfirmMutation();
+  const { data: transactionsData, isLoading: isTransactionsLoading } =
+    useGetTransactionsQuery({
+      type: "withdraw",
+      page: 1,
+      per_page: 5,
+    });
 
   const withdrawData = data?.data || {};
   const userWallets = useMemo(() => {
@@ -126,19 +133,23 @@ const WithdrawMoney = () => {
   }, [gateways]);
 
   // Live Fee Calculation
-  const { totalFee, youWillGet, totalPayable } = useMemo(() => {
-    if (!selectedGateway || !amount) {
-      return { totalFee: 0, youWillGet: 0, totalPayable: 0 };
-    }
-    const percentFee = (amount * selectedGateway.percent_charge) / 100;
-    const fee = percentFee + selectedGateway.fixed_charge;
+  const { totalFee, youWillGet, totalPayable, conversionAmount } =
+    useMemo(() => {
+      if (!selectedGateway || !amount) {
+        return { totalFee: 0, youWillGet: 0, totalPayable: 0 };
+      }
+      const conversionAmount = amount * exchangeRate;
+      const percentFee =
+        (conversionAmount * selectedGateway.percent_charge) / 100;
+      const fee = percentFee + selectedGateway.fixed_charge;
 
-    return {
-      totalFee: Number(fee.toFixed(2)),
-      youWillGet: Number((amount * exchangeRate - fee)?.toFixed(2)),
-      totalPayable: Number(amount + fee)?.toFixed(4),
-    };
-  }, [amount, selectedGateway, exchangeRate]);
+      return {
+        totalFee: Number(fee.toFixed(2)),
+        youWillGet: Number((conversionAmount - fee)?.toFixed(2)),
+        totalPayable: Number(amount)?.toFixed(4),
+        conversionAmount: Number(conversionAmount?.toFixed(2)),
+      };
+    }, [amount, selectedGateway, exchangeRate]);
 
   // console.log("amount", amount);
 
@@ -500,16 +511,21 @@ const WithdrawMoney = () => {
           <div className="md:col-span-2">
             <WithdrawSummery
               amount={amount}
+              selectedGateway={selectedGateway}
               selectedCurrencyCode={selectedCurrencyCode}
               totalFee={totalFee}
               youWillGet={youWillGet}
               totalPayable={totalPayable}
               manualSubmitInfo={manualSubmitInfo?.payment_informations}
+              conversionAmount={conversionAmount}
             />
           </div>
         </div>
 
-        <WithdrawTransaction />
+        <WithdrawTransaction
+          transactionsData={transactionsData?.data?.transactions?.data}
+          isLoading={isTransactionsLoading}
+        />
       </div>
     </section>
   );

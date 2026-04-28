@@ -9,6 +9,8 @@ function WithdrawSummery({
   youWillGet,
   totalPayable,
   manualSubmitInfo,
+  selectedGateway,
+  conversionAmount,
 }) {
   const t = useTranslations("Dashboard.withdrawMoney.summary");
 
@@ -77,6 +79,14 @@ function WithdrawSummery({
           <div className="divide-y divide-gray-200 dark:divide-gray-700 text-sm">
             <div className="flex justify-between py-3">
               <span className="text-gray-600 dark:text-gray-400">
+                {t("gatewayName")}
+              </span>
+              <span>
+                {selectedGateway?.name} ({selectedGateway?.currency_code})
+              </span>
+            </div>
+            <div className="flex justify-between py-3">
+              <span className="text-gray-600 dark:text-gray-400">
                 {t("enteredAmount")}
               </span>
               <span>
@@ -85,10 +95,18 @@ function WithdrawSummery({
             </div>
             <div className="flex justify-between py-3">
               <span className="text-gray-600 dark:text-gray-400">
+                {t("conversionAmount")}
+              </span>
+              <span>
+                {conversionAmount || 0} {selectedGateway?.currency_code}
+              </span>
+            </div>
+            <div className="flex justify-between py-3">
+              <span className="text-gray-600 dark:text-gray-400">
                 {t("totalFees")}
               </span>
               <span className="text-red-600">
-                {totalFee} {selectedCurrencyCode}
+                {totalFee} {selectedGateway?.currency_code}
               </span>
             </div>
 
@@ -97,7 +115,7 @@ function WithdrawSummery({
                 {t("youWillGet")}
               </span>
               <span>
-                {youWillGet?.toFixed(2)} {selectedCurrencyCode}
+                {youWillGet?.toFixed(2)} {selectedGateway?.currency_code}
               </span>
             </div>
 

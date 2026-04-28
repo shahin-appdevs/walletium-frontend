@@ -297,18 +297,21 @@
                 "enteredAmount": "Entered Amount",
                 "totalFees": "Total Fees & Charges",
                 "youWillGet": "You will get",
-                "totalPayable": "Total Payable Amount"
+                "totalPayable": "Total Payable Amount",
+                "gatewayName": "Gateway Name",
+                "conversionAmount": "Conversion Amount"
             },
             "transaction": {
                 "title": "Latest Transaction",
                 "viewMore": "View More",
                 "type": "Type",
-                "amount": "Amount",
+                "requestAmount": "Request Amount",
+                "receivedAmount": "Received Amount",
                 "trxId": "Trx ID",
-                "totalPayable": "Total Payable",
+                "totalCharge": "Fee & Charge",
                 "date": "Date",
                 "exchangeRate": "Exchange Rate",
-                "feeCharge": "Fee/Charge",
+                "feeCharge": "Fee & Charge",
                 "status": "Status"
             }
         }

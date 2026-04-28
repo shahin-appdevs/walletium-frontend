@@ -253,18 +253,20 @@
                     "enteredAmount": "المبلغ المدخل",
                     "totalFees": "إجمالي الرسوم والمصاريف",
                     "youWillGet": "سوف تحصل على",
-                    "totalPayable": "إجمالي المبلغ المستحق"
+                    "totalPayable": "إجمالي المبلغ المستحق",
+                    "gatewayName": "اسم البوابة",
+                    "conversionAmount": "مبلغ التحويل"
                 },
                 "transaction": {
                     "title": "أحدث المعاملات",
                     "viewMore": "عرض المزيد",
                     "type": "النوع",
-                    "amount": "المبلغ",
+                    "requestAmount": "مبلغ الطلب",
+                    "receivedAmount": "المبلغ المستلم",
                     "trxId": "رقم العملية",
-                    "totalPayable": "إجمالي المبلغ المستحق",
                     "date": "التاريخ",
                     "exchangeRate": "سعر الصرف",
-                    "feeCharge": "الرسوم والمصاريف",
+                    "totalCharge": "الرسوم والمصاريف",
                     "status": "الحالة"
                 }
             },
