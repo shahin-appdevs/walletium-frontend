@@ -9,8 +9,10 @@ import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import dayjs from "dayjs";
 import { statusMap } from "@/utils/statusMap";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export default function MoneyExchangeLog({ transactionsData, isLoading }) {
+  const t = useTranslations("Dashboard.exchangeMoney");
   const { isModalOpen, handleShowModal, handleCancelModal } = useModal();
   const [singleTable, setSingleTable] = useState([]);
   const { smallScreen } = useViewport();
@@ -21,15 +23,15 @@ export default function MoneyExchangeLog({ transactionsData, isLoading }) {
 
   const handleOnRowClick = (record) => {
     const labels = [
-      "Type",
-      "Trx ID",
-      "Request Amount",
-      "Fee & Charge",
-      "Total Payable",
-      "Received Amount",
-      "Exchange Rate",
-      "Date",
-      "Status",
+      t("transaction.type"),
+      t("transaction.trxId"),
+      t("transaction.exchangeAmount"),
+      t("transaction.feeCharge"),
+      t("summary.totalPayable"),
+      t("transaction.convertedAmount"),
+      t("transaction.exchangeRate"),
+      t("transaction.date"),
+      t("transaction.status"),
     ];
     const values = [
       "type",
@@ -108,13 +110,13 @@ export default function MoneyExchangeLog({ transactionsData, isLoading }) {
 
   const columns = [
     {
-      title: "Type",
+      title: t("transaction.type"),
       dataIndex: "type",
       width: 200,
       render: (type) => (
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-300">
-            <ArrowUpOutlined className="text-gray-500 text-lg rotate-45" />
+            <ArrowUpOutlined className="text-gray-500 text-lg rotate-45 rtl:-rotate-45" />
           </div>
 
           <div>
@@ -126,7 +128,7 @@ export default function MoneyExchangeLog({ transactionsData, isLoading }) {
       ),
     },
     {
-      title: "Amount",
+      title: t("transaction.exchangeAmount"),
       dataIndex: "request_amount",
       render: (amount, record) => (
         <span className={`font-semibold  text-red-500 text-nowrap`} dir="ltr">
@@ -135,14 +137,14 @@ export default function MoneyExchangeLog({ transactionsData, isLoading }) {
       ),
     },
     {
-      title: "Trx ID",
+      title: t("transaction.trxId"),
       dataIndex: "trx_id",
       render: (id) => (
         <span className="text-gray-600 dark:text-neutral-300">#{id}</span>
       ),
     },
     {
-      title: "Received Amount",
+      title: t("transaction.convertedAmount"),
       dataIndex: "receive_amount",
       render: (amount, record) => (
         <span className="font-semibold text-green-500 text-nowrap" dir="ltr">
@@ -151,7 +153,7 @@ export default function MoneyExchangeLog({ transactionsData, isLoading }) {
       ),
     },
     {
-      title: "Total Payable",
+      title: t("summary.totalPayable"),
       dataIndex: "total_payable",
       render: (amount, record) => (
         <span
@@ -163,7 +165,7 @@ export default function MoneyExchangeLog({ transactionsData, isLoading }) {
       ),
     },
     {
-      title: "Date",
+      title: t("transaction.date"),
       dataIndex: "created_at",
       render: (date) => (
         <span className="text-gray-600 dark:text-neutral-300">
@@ -172,7 +174,7 @@ export default function MoneyExchangeLog({ transactionsData, isLoading }) {
       ),
     },
     {
-      title: "Exchange Rate",
+      title: t("transaction.exchangeRate"),
       dataIndex: "exchange_rate",
       render: (rate, record) => (
         <span
@@ -185,7 +187,7 @@ export default function MoneyExchangeLog({ transactionsData, isLoading }) {
       ),
     },
     {
-      title: "Fee/Charge",
+      title: t("transaction.feeCharge"),
       dataIndex: "total_charge",
       render: (charge, record) => (
         <span className="text-red-500 text-nowrap" dir="ltr">
@@ -194,7 +196,7 @@ export default function MoneyExchangeLog({ transactionsData, isLoading }) {
       ),
     },
     {
-      title: "Status",
+      title: t("transaction.status"),
       dataIndex: "status",
       render: (status) => {
         const current = statusMap[status] || {
@@ -231,14 +233,14 @@ export default function MoneyExchangeLog({ transactionsData, isLoading }) {
             "group-hover/primary-btn:translate-1/6 group-hover/primary-btn:-translate-y-1 duration-300 rtl:-rotate-90 rtl:group-hover/primary-btn:-translate-x-1"
           }
         >
-          <span className="hidden md:block">View More</span>
+          <span className="hidden md:block">{t("transaction.viewMore")}</span>
         </PrimaryButton>
       </div>
     </div>
   );
 
   return (
-    <Card title="Money Exchange Log" extra={TableExtra}>
+    <Card title={t("transaction.title")} extra={TableExtra}>
       <Modal
         open={isModalOpen}
         onOk={handleCancelModal}
@@ -249,7 +251,7 @@ export default function MoneyExchangeLog({ transactionsData, isLoading }) {
       >
         <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-white dark:bg-[#111] shadow-xs border border-gray-200 dark:border-gray-800">
           <h2 className="text-lg! font-semibold text-gray-900 dark:text-gray-100 mb-4">
-            Transaction Details
+            {t("transaction.title")}
           </h2>
 
           <div className="divide-y divide-gray-200 dark:divide-gray-800">

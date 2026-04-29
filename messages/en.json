@@ -315,6 +315,46 @@
                 "feeCharge": "Fee & Charge",
                 "status": "Status"
             }
+        },
+        "exchangeMoney": {
+            "title": "Money Exchange",
+            "exchangeRate": "Exchange Rate",
+            "availableBalance": "Available balance:",
+            "exchangeFrom": "Exchange From",
+            "exchangeTo": "Exchange To",
+            "amountPlaceholder": "Amount",
+            "limit": "Limit:",
+            "charge": "Charge:",
+            "button": "Exchange Money",
+            "errorLoading": "Error loading data",
+            "validation": {
+                "fromAmountRequired": "Exchange from amount is required",
+                "toAmountRequired": "Exchange to amount is required"
+            },
+            "summary": {
+                "title": "Summary",
+                "exchangeFromWallet": "Exchange From Wallet",
+                "exchangeToWallet": "Exchange To Wallet",
+                "exchangeAmount": "Exchange Amount",
+                "totalFees": "Total Fees & Charges",
+                "exchangeRate": "Exchange Rate",
+                "convertedAmount": "Converted Amount",
+                "totalPayable": "Total Payable Amount"
+            },
+            "transaction": {
+                "title": "Latest Transaction",
+                "viewMore": "View More",
+                "type": "Type",
+                "exchangeFrom": "Exchange From",
+                "exchangeTo": "Exchange To",
+                "exchangeAmount": "Exchange Amount",
+                "convertedAmount": "Converted Amount",
+                "trxId": "Trx ID",
+                "date": "Date",
+                "exchangeRate": "Exchange Rate",
+                "feeCharge": "Fee & Charge",
+                "status": "Status"
+            }
         }
     },
     "Login": {

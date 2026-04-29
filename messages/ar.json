@@ -288,6 +288,46 @@
                 "totalCharge": "الرسوم والمصاريف",
                 "status": "الحالة"
             }
+        },
+        "exchangeMoney": {
+            "title": "تبادل الأموال",
+            "exchangeRate": "سعر الصرف",
+            "availableBalance": "الرصيد المتاح:",
+            "exchangeFrom": "التحويل من",
+            "exchangeTo": "التحويل إلى",
+            "amountPlaceholder": "المبلغ",
+            "limit": "الحد:",
+            "charge": "الرسوم:",
+            "button": "تحويل الأموال",
+            "errorLoading": "خطأ في تحميل البيانات",
+            "validation": {
+                "fromAmountRequired": "مبلغ التحويل من مطلوب",
+                "toAmountRequired": "مبلغ التحويل إلى مطلوب"
+            },
+            "summary": {
+                "title": "الملخص",
+                "exchangeFromWallet": "التحويل من محفظة",
+                "exchangeToWallet": "التحويل إلى محفظة",
+                "exchangeAmount": "مبلغ التحويل",
+                "totalFees": "إجمالي الرسوم والمصاريف",
+                "exchangeRate": "سعر الصرف",
+                "convertedAmount": "المبلغ المحول",
+                "totalPayable": "إجمالي المبلغ المستحق"
+            },
+            "transaction": {
+                "title": "أحدث المعاملات",
+                "viewMore": "عرض المزيد",
+                "type": "النوع",
+                "exchangeFrom": "التحويل من",
+                "exchangeTo": "التحويل إلى",
+                "exchangeAmount": "مبلغ التحويل",
+                "convertedAmount": "المبلغ المحول",
+                "trxId": "رقم العملية",
+                "date": "التاريخ",
+                "exchangeRate": "سعر الصرف",
+                "feeCharge": "الرسوم والمصاريف",
+                "status": "الحالة"
+            }
         }
     },
     "Login": {

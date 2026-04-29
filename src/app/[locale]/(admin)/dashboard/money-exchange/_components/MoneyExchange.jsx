@@ -30,18 +30,17 @@ import { useLocale, useTranslations } from "next-intl";
 import { useGetTransactionsQuery } from "@/redux/api/dashboardApi";
 import SendMoneyPageSkeleton from "../../send-money/_components/SendMoneySkeleton/SendMoneyPageSkeleton";
 
-const exchangeMoneySchema = yup.object({
-  exchange_from_amount: yup
-    .string()
-    .required("Exchange from amount is required"),
-  exchange_to_amount: yup.string().required("Exchange to amount is required"),
-});
+const exchangeMoneySchema = (t) =>
+  yup.object({
+    exchange_from_amount: yup
+      .string()
+      .required(t("validation.fromAmountRequired")),
+    exchange_to_amount: yup.string().required(t("validation.toAmountRequired")),
+  });
 
 const ExchangeMoney = () => {
   const locale = useLocale();
   const t = useTranslations("Dashboard.exchangeMoney");
-  const tc = useTranslations("common");
-  const tTrx = useTranslations("Dashboard.exchangeMoney.transaction");
 
   const {
     data: exchangeMoneyIndexData,
@@ -83,7 +82,7 @@ const ExchangeMoney = () => {
     reset,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(exchangeMoneySchema),
+    resolver: yupResolver(exchangeMoneySchema(t)),
     defaultValues: {
       exchange_from_amount: "",
       exchange_to_amount: "",
@@ -201,42 +200,67 @@ const ExchangeMoney = () => {
   if (isLoading) return <SendMoneyPageSkeleton />;
   if (error)
     return (
-      <div className="p-10 text-center text-red-500">Error loading data</div>
+      <div className="p-10 text-center text-red-500">{t("errorLoading")}</div>
     );
 
   const singleTable = [
     {
-      label: "Exchange From Wallet",
-      value: `${selectedFromWallet?.name || "N/A"} (${selectedFromCurrency})`,
+      label: t("summary.exchangeFromWallet"),
+      value: (
+        <span dir="ltr" className="font-medium text-sm xl:text-base">
+          {`${selectedFromWallet?.name || "N/A"} (${selectedFromCurrency})`}
+        </span>
+      ),
     },
     {
-      label: "Exchange To Wallet",
-      value: `${selectedToWallet?.name || "N/A"} (${selectedToCurrency})`,
+      label: t("summary.exchangeToWallet"),
+      value: (
+        <span dir="ltr" className="font-medium text-sm xl:text-base">
+          {`${selectedToWallet?.name || "N/A"} (${selectedToCurrency})`}
+        </span>
+      ),
     },
     {
-      label: "Exchange Amount",
-      value: `${exchangeFromAmount || 0} ${selectedFromCurrency}`,
+      label: t("summary.exchangeAmount"),
+      value: (
+        <span dir="ltr" className="font-medium text-sm xl:text-base">
+          {exchangeFromAmount || 0} {selectedFromCurrency}
+        </span>
+      ),
     },
     {
-      label: "Total Fees & Charges",
-      value: `${totalFee} ${selectedFromCurrency}`,
+      label: t("summary.totalFees"),
+      value: (
+        <span dir="ltr" className="font-medium text-sm xl:text-base">
+          {totalFee} {selectedFromCurrency}
+        </span>
+      ),
     },
     {
-      label: "Exchange Rate",
-      value: `1 ${selectedFromCurrency} = ${exchangeRate.toFixed(4)} ${selectedToCurrency}`,
+      label: t("summary.exchangeRate"),
+      value: (
+        <span dir="ltr" className="font-medium text-sm xl:text-base">
+          1 {selectedFromCurrency} = {exchangeRate.toFixed(4)}{" "}
+          {selectedToCurrency}
+        </span>
+      ),
     },
     {
-      label: "Converted Amount",
-      value: `${recipientAmount} ${selectedToCurrency}`,
+      label: t("summary.convertedAmount"),
+      value: (
+        <span dir="ltr" className="font-medium text-sm xl:text-base">
+          {recipientAmount} {selectedToCurrency}
+        </span>
+      ),
     },
     {
       label: (
         <span className="font-bold text-sm xl:text-lg">
-          Total Payable Amount
+          {t("summary.totalPayable")}
         </span>
       ),
       value: (
-        <span className="font-bold text-sm xl:text-lg">
+        <span dir="ltr" className="font-bold text-sm xl:text-lg">
           {totalPayable} {selectedFromCurrency}
         </span>
       ),
@@ -248,7 +272,7 @@ const ExchangeMoney = () => {
       <div className="space-y-4 lg:space-y-6">
         <div className="grid md:grid-cols-12 gap-4 xl:gap-6">
           <div className="col-span-12 md:col-span-12 lg:col-span-7 ">
-            <Card title="Money Exchange" className="h-full!">
+            <Card title={t("title")} className="h-full!">
               <div className="mb-4 bg-neutral-50 dark:bg-slate-900 dark-border rounded-2xl shadow-xs p-4 flex flex-col gap-3 overflow-hidden">
                 <div className="flex items-center justify-between">
                   <div className="w-7 h-7 rounded-full flex items-center justify-center bg-primary-50! dark:bg-primary-500! border border-primary/50">
@@ -261,7 +285,7 @@ const ExchangeMoney = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                   <div className="bg-white dark:bg-slate-900 dark-border rounded-2xl p-4">
-                    <p className="text-gray-500 text-sm">Exchange Rate</p>
+                    <p className="text-gray-500 text-sm">{t("exchangeRate")}</p>
                     <p
                       dir="ltr"
                       className="text-base! lg:text-lg! text-neutral-800 dark:text-neutral-300 font-semibold! rtl:text-right"
@@ -271,8 +295,13 @@ const ExchangeMoney = () => {
                     </p>
                   </div>
                   <div className="bg-white dark:bg-slate-900 dark-border rounded-2xl p-4">
-                    <p className="text-gray-500 text-sm">Available balance:</p>
-                    <p className="text-base! lg:text-lg! text-neutral-800 dark:text-neutral-300 font-semibold!">
+                    <p className="text-gray-500 text-sm">
+                      {t("availableBalance")}
+                    </p>
+                    <p
+                      dir="ltr"
+                      className="text-base! lg:text-lg! text-neutral-800 dark:text-neutral-300 font-semibold! rtl:text-right"
+                    >
                       {selectedFromWallet?.currency_symbol}{" "}
                       {Number(selectedFromWallet?.balance || 0).toFixed(4)}
                     </p>
@@ -287,7 +316,7 @@ const ExchangeMoney = () => {
                 >
                   <div className="grid grid-cols-1 xl:grid-cols-2 gap-2">
                     <FormItem
-                      label={"Exchange From"}
+                      label={t("exchangeFrom")}
                       required={true}
                       name="exchange_from_amount"
                       errors={errors}
@@ -299,7 +328,7 @@ const ExchangeMoney = () => {
                           render={({ field }) => (
                             <Input
                               {...field}
-                              placeholder="Amount"
+                              placeholder={t("amountPlaceholder")}
                               type="number"
                               size="large"
                               onChange={handleFromAmountChange}
@@ -331,7 +360,7 @@ const ExchangeMoney = () => {
                     </FormItem>
 
                     <FormItem
-                      label={"Exchange To"}
+                      label={t("exchangeTo")}
                       name={"exchange_to_amount"}
                       required={true}
                       errors={errors}
@@ -376,7 +405,7 @@ const ExchangeMoney = () => {
 
                   <div className="flex flex-col xl:flex-row rtl:md:flex-row-reverse gap-2 justify-between items-center text-left rtl:text-right">
                     <p className="p-2 px-4 text-xs lg:text-base rounded-2xl bg-primary-50 dark:bg-primary-500! dark:text-primary-50! font-medium text-primary-600">
-                      Limit:{" "}
+                      {t("limit")}{" "}
                       <span dir="ltr">
                         {minLimit} {selectedFromCurrency} - {maxLimit}{" "}
                         {selectedFromCurrency}
@@ -384,7 +413,7 @@ const ExchangeMoney = () => {
                     </p>
 
                     <p className="p-2 px-4 text-xs lg:text-base rounded-2xl bg-primary-50 font-medium text-primary-600 dark:bg-primary-500! dark:text-primary-50!">
-                      Charge:{" "}
+                      {t("charge")}{" "}
                       <span dir="ltr">
                         {fixedCharge} {selectedFromCurrency} +{" "}
                         {charges?.percent_charge}%
@@ -401,14 +430,14 @@ const ExchangeMoney = () => {
                       "group-hover/primary-btn:translate-1/6 group-hover/primary-btn:-translate-y-1 duration-300 rtl:-rotate-90 rtl:group-hover/primary-btn:-translate-x-1"
                     }
                   >
-                    Exchange Money
+                    {t("button")}
                   </PrimaryButton>
                 </Form>
               </div>
             </Card>
           </div>
           <div className="col-span-12 md:col-span-12 lg:col-span-5">
-            <Card title="Summary" className="h-full!">
+            <Card title={t("summary.title")} className="h-full!">
               <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-neutral-50 dark:bg-slate-900 dark-border shadow-xs">
                 <div className="divide-y divide-gray-200 dark:divide-gray-800">
                   {singleTable?.map((row, idx) => (
