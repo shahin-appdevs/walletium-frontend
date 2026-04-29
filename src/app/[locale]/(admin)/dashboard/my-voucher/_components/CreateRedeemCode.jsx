@@ -2,20 +2,19 @@ import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import showToast from "@/lib/toast";
 import { Input, Modal } from "antd";
 import React from "react";
-import { Slide, toast } from "react-toastify";
 
 const CreateRedeemCode = ({
   isModalOpen,
   handleCancelModal,
   handleOkModal,
+  generatedCode = "",
 }) => {
   const copyToClipboard = async (text) => {
     try {
-      navigator.clipboard.writeText(text);
-
+      await navigator.clipboard.writeText(text);
       showToast.success("Copied Successfully");
     } catch (err) {
-      console.error("Field to copy", err);
+      console.error("Failed to copy", err);
     }
   };
 
@@ -36,11 +35,17 @@ const CreateRedeemCode = ({
 
           <div className="flex gap-2 items-center">
             <div className="w-full relative">
-              <Input placeholder="Redeem Code" size="large" type="text" />
+              <Input
+                value={generatedCode}
+                placeholder="Redeem Code"
+                size="large"
+                type="text"
+                readOnly
+              />
             </div>
 
             <PrimaryButton
-              onClick={() => copyToClipboard("Something")}
+              onClick={() => copyToClipboard(generatedCode)}
               className={"text-base shrink-0"}
               iconClassName={
                 "group-hover/primary-btn:translate-1/6 group-hover/primary-btn:-translate-y-1 duration-300"
