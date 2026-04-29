@@ -1,6 +1,6 @@
 "use client";
 import { Card, Modal } from "antd";
-import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
+import { ArrowUpOutlined } from "@ant-design/icons";
 import Table from "@/components/ui/Table";
 import useModal from "@/hooks/useModal";
 import { useState } from "react";
@@ -111,14 +111,10 @@ export default function MoneyExchangeLog({ transactionsData, isLoading }) {
       title: "Type",
       dataIndex: "type",
       width: 200,
-      render: (type, record) => (
+      render: (type) => (
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-300">
-            {record.attribute === "SEND" ? (
-              <ArrowUpOutlined className="text-gray-500 text-lg rotate-45" />
-            ) : (
-              <ArrowDownOutlined className="text-gray-500 text-lg -rotate-45" />
-            )}
+            <ArrowUpOutlined className="text-gray-500 text-lg rotate-45" />
           </div>
 
           <div>
