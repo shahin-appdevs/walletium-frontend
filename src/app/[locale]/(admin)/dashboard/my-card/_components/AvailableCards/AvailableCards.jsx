@@ -29,7 +29,7 @@ const AvailableCards = () => {
   return (
     <>
       <Card title="Available Cards" extra={CardExtra}>
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 place-items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4 gap-4 place-items-center">
           {[1, 2, 3, 4].map((item, idx) => (
             <VirtualCard key={idx} />
           ))}

@@ -15,6 +15,7 @@ const dashboardApi = baseApi.injectEndpoints({
         method: "GET",
         params: { slug: type, page, per_page, lang },
       }),
+      providesTags: ["transaction"],
     }),
   }),
 });
