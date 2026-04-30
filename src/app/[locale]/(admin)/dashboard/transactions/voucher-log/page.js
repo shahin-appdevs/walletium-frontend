@@ -1,14 +1,10 @@
 import React from "react";
-import MyVoucherTransaction from "../../my-voucher/_components/Transaction/MyVoucherTransaction";
+import VoucherLog from "./VoucherLog";
 
-const VoucherLogPage = () => {
+export default function VoucherLogPage() {
   return (
     <div>
-      <h2>
-        <MyVoucherTransaction />
-      </h2>
+      <VoucherLog />
     </div>
   );
-};
-
-export default VoucherLogPage;
+}
