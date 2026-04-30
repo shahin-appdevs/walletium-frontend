@@ -132,6 +132,8 @@
                 "exchangeRate": "Exchange Rate",
                 "feeCharge": "Fee/Charge",
                 "selectFile": "Select File",
+                "totalPage": "Total {total} Items",
+                "perPage": "Per Page",
                 "status": {
                     "title": "Status",
                     "success": "Success",

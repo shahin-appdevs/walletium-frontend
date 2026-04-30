@@ -1,12 +1,12 @@
 import React from "react";
-import AddMoneyTransaction from "../../add-money/_components/Transaction/AddMoneyTransaction";
+import AddMoneyLog from "./AddMoneyLog";
 
-const AddMoneyLog = () => {
+const AddMoneyLogPage = () => {
   return (
     <div>
-      <AddMoneyTransaction />
+      <AddMoneyLog />
     </div>
   );
 };
 
-export default AddMoneyLog;
+export default AddMoneyLogPage;

@@ -132,6 +132,8 @@
                 "date": "التاريخ",
                 "exchangeRate": "سعر الصرف",
                 "feeCharge": "الرسوم/المصاريف",
+                "totalPage": "إجمالي {total} عنصر",
+                "perPage": "لكل صف",
                 "status": {
                     "title": "الحالة",
                     "success": "ناجح",
