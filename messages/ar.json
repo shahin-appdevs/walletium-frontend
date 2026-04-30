@@ -290,6 +290,10 @@
                 "date": "التاريخ",
                 "exchangeRate": "سعر الصرف",
                 "totalCharge": "الرسوم والمصاريف",
+                "totalPage": "إجمالي {total} عنصر",
+                "perPage": "لكل صف",
+                "searchPlaceholder": "بحث في المعاملات...",
+                "close": "إغلاق",
                 "status": "الحالة"
             }
         },
