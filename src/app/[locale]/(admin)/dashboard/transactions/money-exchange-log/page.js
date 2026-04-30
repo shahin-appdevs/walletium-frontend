@@ -1,29 +1,32 @@
 "use client";
-import { Card, Modal } from "antd";
-import { ArrowUpOutlined } from "@ant-design/icons";
+import { Card, Input, Modal } from "antd";
+import { ArrowUpOutlined, SearchOutlined } from "@ant-design/icons";
 import Table from "@/components/ui/Table";
 import useModal from "@/hooks/useModal";
 import { useState } from "react";
 import useViewport from "@/hooks/useViewport";
-import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import dayjs from "dayjs";
 import { statusMap } from "@/utils/statusMap";
-import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useGetTransactionsQuery } from "@/redux/api/dashboardApi";
+import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 
 export default function MoneyExchangeLog() {
   const t = useTranslations("Dashboard.exchangeMoney");
   const { isModalOpen, handleShowModal, handleCancelModal } = useModal();
   const [singleTable, setSingleTable] = useState([]);
   const { smallScreen } = useViewport();
-  const router = useRouter();
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   const { data: transactionsData, isLoading } = useGetTransactionsQuery({
     type: "money-exchange",
-    page: 1,
-    per_page: 10,
+    page: currentPage,
+    per_page: pageSize,
   });
+
+  const paginationInfo = transactionsData?.data?.transactions;
 
   const transactions = transactionsData?.data?.transactions?.data || [];
 
@@ -179,19 +182,19 @@ export default function MoneyExchangeLog() {
         </span>
       ),
     },
-    {
-      title: t("transaction.exchangeRate"),
-      dataIndex: "exchange_rate",
-      render: (rate, record) => (
-        <span
-          className="text-gray-600 dark:text-neutral-300 text-nowrap"
-          dir="ltr"
-        >
-          1 {record?.request_currency} = {rate?.toFixed(2)}{" "}
-          {record?.payment_currency}
-        </span>
-      ),
-    },
+    // {
+    //   title: t("transaction.exchangeRate"),
+    //   dataIndex: "exchange_rate",
+    //   render: (rate, record) => (
+    //     <span
+    //       className="text-gray-600 dark:text-neutral-300 text-nowrap"
+    //       dir="ltr"
+    //     >
+    //       1 {record?.request_currency} = {rate?.toFixed(2)}{" "}
+    //       {record?.payment_currency}
+    //     </span>
+    //   ),
+    // },
     {
       title: t("transaction.feeCharge"),
       dataIndex: "total_charge",
@@ -227,15 +230,34 @@ export default function MoneyExchangeLog() {
 
   const smallScreenColumn = smallScreen ? columns.slice(0, 2) : columns;
 
+  const TableExtra = (
+    <div className="flex items-center gap-2! md:gap-0 ">
+      <div className="hidden md:block">
+        <Input
+          placeholder={t("transaction.searchPlaceholder")}
+          size="large"
+          prefix={<SearchOutlined className="text-gray-400" />}
+          className=" rounded-lg"
+        />
+      </div>
+      <div className="md:hidden">
+        <PrimaryButton
+          icon={"Search"}
+          iconClassName={"group-hover/primary-btn:rotate-90 duration-200"}
+        ></PrimaryButton>
+      </div>
+    </div>
+  );
+
   return (
-    <Card title={t("transaction.title")}>
+    <Card title={t("transaction.title")} extra={TableExtra}>
       <Modal
         open={isModalOpen}
         onOk={handleCancelModal}
         onCancel={handleCancelModal}
         closable={false}
         cancelButtonProps={{ style: { display: "none" } }}
-        okText="Close"
+        okText={t("transaction.close")}
       >
         <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-white dark:bg-[#111] shadow-xs border border-gray-200 dark:border-gray-800">
           <h2 className="text-lg! font-semibold text-gray-900 dark:text-gray-100 mb-4">
@@ -268,7 +290,21 @@ export default function MoneyExchangeLog() {
           columns={smallScreenColumn}
           dataSource={tableData}
           loading={isLoading}
-          pagination={true}
+          pagination={{
+            current: paginationInfo?.current_page || 1,
+            pageSize: paginationInfo?.per_page || 10,
+            total: paginationInfo?.total || 0,
+            onChange: (page, pageSize) => {
+              setCurrentPage(page);
+              setPageSize(pageSize);
+            },
+            showTotal: (total) => t(`transaction.totalPage`, { total }),
+            showSizeChanger: true,
+            pageSizeOptions: ["10", "20", "30", "50", "100"],
+            locale: {
+              items_per_page: `/ ${t("transaction.perPage")}`,
+            },
+          }}
           onRowClick={handleOnRowClick}
           className="rounded-xl border border-gray-200/50 dark:border-neutral-950 md:min-w-[820px]"
           rowClassName={() =>

@@ -293,7 +293,7 @@
                 "totalPage": "إجمالي {total} عنصر",
                 "perPage": "لكل صف",
                 "searchPlaceholder": "بحث في المعاملات...",
-                "close": "إغلاق",
+                "close": "إغلاق", 
                 "status": "الحالة"
             }
         },
@@ -334,6 +334,10 @@
                 "date": "التاريخ",
                 "exchangeRate": "سعر الصرف",
                 "feeCharge": "الرسوم والمصاريف",
+                "totalPage": "إجمالي {total} عنصر",
+                "perPage": "لكل صف",
+                "searchPlaceholder": "بحث في المعاملات...",
+                "close": "إغلاق",
                 "status": "الحالة"
             }
         },

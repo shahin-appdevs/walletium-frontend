@@ -361,6 +361,10 @@
                 "date": "Date",
                 "exchangeRate": "Exchange Rate",
                 "feeCharge": "Fee & Charge",
+                "totalPage": "Total {total} Items",
+                "perPage": "Per Page",
+                "searchPlaceholder": "Search transactions...",
+                "close": "Close",
                 "status": "Status"
             }
         },
