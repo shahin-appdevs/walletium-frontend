@@ -13,6 +13,7 @@ import { useGetVoucherMoneyTrxQuery } from "@/redux/api/transactionsApi";
 import { useMyVoucherCancelMutation } from "@/redux/api/myVoucherApi";
 import showToast from "@/lib/toast";
 import ConfirmationModal from "@/components/ui/modal/ConfirmationModal";
+import { useTranslations } from "next-intl";
 
 export default function MyVoucherTransaction() {
   const { isModalOpen, handleShowModal, handleCancelModal } = useModal();
@@ -20,6 +21,7 @@ export default function MyVoucherTransaction() {
   const [cancelCode, setCancelCode] = useState(null);
   const { smallScreen } = useViewport();
   const router = useRouter();
+  const t = useTranslations("Dashboard.myVoucher.transactions");
 
   const { data: transactionsData, isLoading } = useGetVoucherMoneyTrxQuery({
     page: 1,
@@ -44,13 +46,13 @@ export default function MyVoucherTransaction() {
 
   const handleOnRowClick = (record) => {
     const labels = [
-      "Redeem Code",
-      "Paid By",
-      "Request Amount",
-      "Fee & Charge",
-      "Total Payable",
-      "Date",
-      "Status",
+      t("redeemCode"),
+      t("paidBy"),
+      t("requestAmount"),
+      t("feeCharge"),
+      t("totalPayable"),
+      t("date"),
+      t("status"),
     ];
     const values = [
       "code",
@@ -69,7 +71,7 @@ export default function MyVoucherTransaction() {
           <div className="flex items-center gap-2">
             <span className="font-mono text-xs">{record?.code || "N/A"}</span>
             {record?.code !== "N/A" && (
-              <Tooltip title="Copy Code">
+              <Tooltip title={t("copyCode")}>
                 <Button
                   type="text"
                   size="small"
@@ -77,7 +79,7 @@ export default function MyVoucherTransaction() {
                   onClick={(e) => {
                     e.stopPropagation();
                     navigator.clipboard.writeText(record?.code);
-                    showToast.success("Code copied!");
+                    showToast.success(t("codeCopied"));
                   }}
                 />
               </Tooltip>
@@ -86,7 +88,7 @@ export default function MyVoucherTransaction() {
         );
       }
       if (values[idx] === "paid_by") {
-        value = <span dir="ltr">{record?.paid_by || "Not available"}</span>;
+        value = <span dir="ltr">{record?.paid_by || t("notAvailable")}</span>;
       }
       if (values[idx] === "created_at") {
         value = dayjs(value).format("DD MMM YYYY, hh:mm A");
@@ -120,7 +122,7 @@ export default function MyVoucherTransaction() {
           <div className="flex items-center gap-2">
             <span className="font-mono text-xs">{redeemCode}</span>
             {redeemCode !== "N/A" && (
-              <Tooltip title="Copy Code">
+              <Tooltip title={t("copyCode")}>
                 <Button
                   type="text"
                   size="small"
@@ -128,7 +130,7 @@ export default function MyVoucherTransaction() {
                   onClick={(e) => {
                     e.stopPropagation();
                     navigator.clipboard.writeText(redeemCode);
-                    showToast.success("Code copied!");
+                    showToast.success(t("codeCopied"));
                   }}
                 />
               </Tooltip>
@@ -139,7 +141,7 @@ export default function MyVoucherTransaction() {
       if (values[idx] === "status") {
         const label =
           statusMap[value]?.label === "Rejected"
-            ? "Canceled"
+            ? t("canceled")
             : statusMap[value]?.label;
         const className = statusMap[value]?.className;
         value =
@@ -161,7 +163,7 @@ export default function MyVoucherTransaction() {
 
   const columns = [
     {
-      title: "Redeem Code",
+      title: t("redeemCode"),
       dataIndex: "code",
       width: 200,
       render: (code) => (
@@ -174,7 +176,7 @@ export default function MyVoucherTransaction() {
             <p className="font-medium text-gray-800 dark:text-neutral-300">
               {code}
             </p>
-            <Tooltip title="Copy Code">
+            <Tooltip title={t("copyCode")}>
               <Button
                 type="text"
                 size="small"
@@ -182,7 +184,7 @@ export default function MyVoucherTransaction() {
                 onClick={(e) => {
                   e.stopPropagation();
                   navigator.clipboard.writeText(code);
-                  showToast.success("Code copied!");
+                  showToast.success(t("codeCopied"));
                 }}
               />
             </Tooltip>
@@ -191,7 +193,7 @@ export default function MyVoucherTransaction() {
       ),
     },
     {
-      title: "Amount",
+      title: t("amount"),
       dataIndex: "request_amount",
       render: (amount, record) => (
         <span className="font-semibold text-green-500 text-nowrap" dir="ltr">
@@ -200,20 +202,20 @@ export default function MyVoucherTransaction() {
       ),
     },
     {
-      title: "Paid By",
+      title: t("paidBy"),
       dataIndex: "paid_by",
       render: (paidBy, record) => (
         <span className="text-gray-600 dark:text-neutral-300">
           {paidBy ?? (
             <span className="text-red-500 dark:text-red-300">
-              Not available
+              {t("notAvailable")}
             </span>
           )}
         </span>
       ),
     },
     {
-      title: "Total Payable",
+      title: t("totalPayable"),
       dataIndex: "total_payable",
       render: (amount, record) => (
         <span
@@ -225,7 +227,7 @@ export default function MyVoucherTransaction() {
       ),
     },
     {
-      title: "Fee/Charge",
+      title: t("feeCharge"),
       dataIndex: "total_charge",
       render: (charge, record) => (
         <span className="text-red-500 text-nowrap" dir="ltr">
@@ -234,7 +236,7 @@ export default function MyVoucherTransaction() {
       ),
     },
     {
-      title: "Date",
+      title: t("date"),
       dataIndex: "created_at",
       render: (date) => (
         <span className="text-gray-600 dark:text-neutral-300">
@@ -243,7 +245,7 @@ export default function MyVoucherTransaction() {
       ),
     },
     {
-      title: "Status",
+      title: t("status"),
       dataIndex: "status",
       render: (status) => {
         const current = statusMap[status] || {
@@ -254,13 +256,13 @@ export default function MyVoucherTransaction() {
           <span
             className={`px-3 py-1 rounded-full text-sm ${current.className}`}
           >
-            {current.label === "Rejected" ? "Canceled" : current.label}
+            {current.label === "Rejected" ? t("canceled") : current.label}
           </span>
         );
       },
     },
     {
-      title: "Action",
+      title: t("action"),
       dataIndex: "details",
       render: (details, record) => {
         // Only show cancel for pending/waiting vouchers (status 2 or 5)
@@ -270,9 +272,9 @@ export default function MyVoucherTransaction() {
             <button
               disabled
               onClick={(e) => e.stopPropagation()}
-              className="px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-700 dark:bg-gray-700/30 dark:text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700/50 transition-colors cursor-pointer"
+              className="px-3 py-1  w-full rounded-full text-sm text-nowrap bg-gray-100 text-gray-700 dark:bg-gray-700/30 dark:text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700/50 transition-colors cursor-pointer"
             >
-              Inactive
+              {t("inactive")}
             </button>
           );
         return (
@@ -281,9 +283,9 @@ export default function MyVoucherTransaction() {
               e.stopPropagation();
               setCancelCode(record.code);
             }}
-            className="px-3 py-1 rounded-full text-sm bg-red-500 text-white font-medium dark:bg-red-600 dark:text-white-500 hover:bg-red-600 dark:hover:bg-red-700 transition-colors cursor-pointer"
+            className="px-3 py-1 w-full rounded-full text-nowrap text-sm bg-red-500 text-white font-medium dark:bg-red-600 dark:text-white-500 hover:bg-red-600 dark:hover:bg-red-700 transition-colors cursor-pointer"
           >
-            Cancel
+            {t("cancel")}
           </button>
         );
       },
@@ -303,33 +305,31 @@ export default function MyVoucherTransaction() {
     <div className="flex items-center gap-2! md:gap-0 ">
       <div className=" md:flex justify-end ">
         <PrimaryButton
-          onClick={() =>
-            router.push("/dashboard/transactions/voucher-money-log")
-          }
+          onClick={() => router.push("/dashboard/transactions/voucher-log")}
           icon="ArrowUpRight"
           iconClassName={
             "group-hover/primary-btn:translate-1/6 group-hover/primary-btn:-translate-y-1 duration-300 rtl:-rotate-90 rtl:group-hover/primary-btn:-translate-x-1"
           }
         >
-          <span className="hidden md:block">View More</span>
+          <span className="hidden md:block">{t("viewMore")}</span>
         </PrimaryButton>
       </div>
     </div>
   );
 
   return (
-    <Card title="Voucher Transaction Log" extra={TableExtra}>
+    <Card title={t("title")} extra={TableExtra}>
       <Modal
         open={isModalOpen}
         onOk={handleCancelModal}
         onCancel={handleCancelModal}
         closable={false}
         cancelButtonProps={{ style: { display: "none" } }}
-        okText="Close"
+        okText={t("close")}
       >
         <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-white dark:bg-[#111] shadow-xs border border-gray-200 dark:border-gray-800">
           <h2 className="text-lg! font-semibold text-gray-900 dark:text-gray-100 mb-4">
-            Transaction Details
+            {t("transactionDetails")}
           </h2>
 
           <div className="divide-y divide-gray-200 dark:divide-gray-800">
@@ -358,9 +358,9 @@ export default function MyVoucherTransaction() {
         onCancel={() => setCancelCode(null)}
         onConfirm={handleCancelVoucher}
         loading={isCancelling}
-        message="Are you sure you want to cancel this voucher?"
-        confirmBtn="Yes, Cancel"
-        cancelBtn="No"
+        message={t("cancelMessage")}
+        confirmBtn={t("cancelConfirm")}
+        cancelBtn={t("cancelDeny")}
       />
 
       <div className="overflow-x-auto">

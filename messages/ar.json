@@ -328,6 +328,57 @@
                 "feeCharge": "الرسوم والمصاريف",
                 "status": "الحالة"
             }
+        },
+        "myVoucher": {
+            "title": "قسيمتي",
+            "availableBalance": "الرصيد المتاح",
+            "selectedWallet": "المحفظة المختارة",
+            "amount": "المبلغ",
+            "amountPlaceholder": "أدخل المبلغ",
+            "create": "إنشاء",
+            "limit": "الحد",
+            "charge": "الرسوم",
+            "errorLoading": "خطأ في تحميل البيانات",
+            "redeemCode": "رمز الاسترداد",
+            "redeemCodePlaceholder": "أدخل رمز الاسترداد",
+            "confirmRedeem": "تأكيد الاسترداد",
+            "summary": {
+                "title": "الملخص",
+                "enteredAmount": "المبلغ المدخل",
+                "totalFees": "إجمالي الرسوم والمصاريف",
+                "willGet": "ستحصل على",
+                "totalPayable": "إجمالي المبلغ المستحق"
+            },
+            "modal": {
+                "title": "رمز الاسترداد",
+                "copy": "نسخ",
+                "copySuccess": "تم النسخ بنجاح",
+                "done": "تم"
+            },
+            "transactions": {
+                "title": "سجل معاملات القسائم",
+                "transactionDetails": "تفاصيل المعاملة",
+                "redeemCode": "رمز الاسترداد",
+                "paidBy": "الدافع",
+                "requestAmount": "مبلغ الطلب",
+                "feeCharge": "الرسوم والمصاريف",
+                "totalPayable": "إجمالي المبلغ المستحق",
+                "date": "التاريخ",
+                "status": "الحالة",
+                "amount": "المبلغ",
+                "action": "الإجراء",
+                "inactive": "غير نشط",
+                "cancel": "إلغاء",
+                "cancelMessage": "هل أنت متأكد من إلغاء هذه القسيمة؟",
+                "cancelConfirm": "نعم، إلغاء",
+                "cancelDeny": "لا",
+                "notAvailable": "غير متاح",
+                "canceled": "ملغاة",
+                "copyCode": "نسخ الرمز",
+                "codeCopied": "تم نسخ الرمز!",
+                "close": "إغلاق",
+                "viewMore": "عرض المزيد"
+            }
         }
     },
     "Login": {

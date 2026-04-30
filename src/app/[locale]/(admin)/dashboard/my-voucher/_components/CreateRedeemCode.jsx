@@ -2,6 +2,7 @@ import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import showToast from "@/lib/toast";
 import { Input, Modal } from "antd";
 import React from "react";
+import { useTranslations } from "next-intl";
 
 const CreateRedeemCode = ({
   isModalOpen,
@@ -9,10 +10,12 @@ const CreateRedeemCode = ({
   handleOkModal,
   generatedCode = "",
 }) => {
+  const t = useTranslations("Dashboard.myVoucher.modal");
+
   const copyToClipboard = async (text) => {
     try {
       await navigator.clipboard.writeText(text);
-      showToast.success("Copied Successfully");
+      showToast.success(t("copySuccess"));
     } catch (err) {
       console.error("Failed to copy", err);
     }
@@ -26,18 +29,18 @@ const CreateRedeemCode = ({
         closeIcon={false}
         onCancel={handleCancelModal}
         cancelButtonProps={{ style: { display: "none" } }}
-        okText={"Done"}
+        okText={t("done")}
       >
         <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-white dark:bg-slate-900 shadow-xs border-gray-200 dark:border-gray-800">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-            Redeem Code
+            {t("title")}
           </h2>
 
           <div className="flex gap-2 items-center">
             <div className="w-full relative">
               <Input
                 value={generatedCode}
-                placeholder="Redeem Code"
+                placeholder={t("title")}
                 size="large"
                 type="text"
                 readOnly
@@ -51,7 +54,7 @@ const CreateRedeemCode = ({
                 "group-hover/primary-btn:translate-1/6 group-hover/primary-btn:-translate-y-1 duration-300"
               }
             >
-              Copy
+              {t("copy")}
             </PrimaryButton>
           </div>
         </div>

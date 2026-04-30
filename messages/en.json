@@ -355,6 +355,57 @@
                 "feeCharge": "Fee & Charge",
                 "status": "Status"
             }
+        },
+        "myVoucher": {
+            "title": "My Voucher",
+            "availableBalance": "Available Balance",
+            "selectedWallet": "Selected Wallet",
+            "amount": "Amount",
+            "amountPlaceholder": "Enter Amount",
+            "create": "Create",
+            "limit": "Limit",
+            "charge": "Charge",
+            "errorLoading": "Error loading data",
+            "redeemCode": "Redeem Code",
+            "redeemCodePlaceholder": "Enter Redeem Code",
+            "confirmRedeem": "Confirm Redeem",
+            "summary": {
+                "title": "Summary",
+                "enteredAmount": "Entered Amount",
+                "totalFees": "Total Fees & Charges",
+                "willGet": "Will Get",
+                "totalPayable": "Total Payable Amount"
+            },
+            "modal": {
+                "title": "Redeem Code",
+                "copy": "Copy",
+                "copySuccess": "Copied Successfully",
+                "done": "Done"
+            },
+            "transactions": {
+                "title": "Voucher Transaction Log",
+                "transactionDetails": "Transaction Details",
+                "redeemCode": "Redeem Code",
+                "paidBy": "Paid By",
+                "requestAmount": "Request Amount",
+                "feeCharge": "Fee & Charge",
+                "totalPayable": "Total Payable",
+                "date": "Date",
+                "status": "Status",
+                "amount": "Amount",
+                "action": "Action",
+                "inactive": "Inactive",
+                "cancel": "Cancel",
+                "cancelMessage": "Are you sure you want to cancel this voucher?",
+                "cancelConfirm": "Yes, Cancel",
+                "cancelDeny": "No",
+                "notAvailable": "Not available",
+                "canceled": "Canceled",
+                "copyCode": "Copy Code",
+                "codeCopied": "Code copied!",
+                "close": "Close",
+                "viewMore": "View More"
+            }
         }
     },
     "Login": {
