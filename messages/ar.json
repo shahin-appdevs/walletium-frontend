@@ -177,6 +177,8 @@
                 "close": "إغلاق",
                 "viewMore": "عرض المزيد",
                 "sendTo": "إرسال الأموال إلى",
+                "totalPage": "إجمالي {total} عنصر",
+                "perPage": "لكل صف",
                 "status": {
                     "title": "الحالة",
                     "success": "ناجحة",

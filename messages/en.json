@@ -203,6 +203,8 @@
                 "close": "Close",
                 "viewMore": "View More",
                 "sendTo": "Send Money to",
+                "totalPage": "Total {total} Items",
+                "perPage": "Per Page",
                 "status": {
                     "title": "Status",
                     "success": "Success",

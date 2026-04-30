@@ -1,12 +1,12 @@
 import React from "react";
-import SendMoneyTransaction from "../../send-money/_components/Transaction/SendMoneyTransaction";
+import SendMoneyLog from "./SendMoneyLog";
 
-const SendMoneyLog = () => {
+const page = () => {
   return (
     <div>
-      <SendMoneyTransaction />
+      <SendMoneyLog />
     </div>
   );
 };
 
-export default SendMoneyLog;
+export default page;
