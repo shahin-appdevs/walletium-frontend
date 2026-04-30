@@ -30,7 +30,6 @@ import showToast from "@/lib/toast";
 import { useLocale } from "next-intl";
 import useModal from "@/hooks/useModal";
 import SendMoneyPageSkeleton from "../send-money/_components/SendMoneySkeleton/SendMoneyPageSkeleton";
-import { useGetTransactionsQuery } from "@/redux/api/dashboardApi";
 
 const voucherCreateSchema = yup.object({
   amount: yup.string().required("Amount is required"),
@@ -50,14 +49,6 @@ const MyVoucher = () => {
   } = useGetMyVoucherIndexQuery({
     lang: locale,
   });
-
-  const { data: transactionsData, isLoading: isTransactionsLoading } =
-    useGetTransactionsQuery({
-      type: "voucher-money",
-      page: 1,
-      per_page: 5,
-      lang: locale,
-    });
 
   const [myVoucherSubmit, { isLoading: isSubmitting }] =
     useMyVoucherSubmitMutation();
@@ -303,7 +294,7 @@ const MyVoucher = () => {
                       name={"amount"}
                       errors={createErrors}
                     >
-                      <div className="flex gap-2 items-center">
+                      <div className="flex flex-col md:flex-row gap-2 items-center">
                         <Space.Compact size="large" className="w-full ">
                           <Controller
                             name="amount"
@@ -438,10 +429,7 @@ const MyVoucher = () => {
           </div>
         </div>
         <div>
-          <MyVoucherTransaction
-            transactionsData={transactionsData?.data}
-            isLoading={isTransactionsLoading}
-          />
+          <MyVoucherTransaction />
         </div>
       </div>
     </section>

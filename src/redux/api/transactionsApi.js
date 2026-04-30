@@ -10,7 +10,17 @@ const transactionsApi = baseApi.injectEndpoints({
       }),
       transformResponse: (response) => response.data,
     }),
+    getVoucherMoneyTrx: builder.query({
+      query: ({ page, per_page }) => ({
+        url: "/user/transaction/voucher-money",
+        method: "GET",
+        params: { page, per_page },
+      }),
+      transformResponse: (response) => response.data,
+      providesTags: ["transaction"],
+    }),
   }),
 });
 
-export const { useGetRequestMoneyTrxQuery } = transactionsApi;
+export const { useGetRequestMoneyTrxQuery, useGetVoucherMoneyTrxQuery } =
+  transactionsApi;
