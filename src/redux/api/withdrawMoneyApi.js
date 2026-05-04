@@ -25,6 +25,7 @@ const withdrawMoneyApi = baseApi.injectEndpoints({
         data: payload,
         params: { lang },
       }),
+      invalidatesTags: ["transaction"],
     }),
   }),
 });

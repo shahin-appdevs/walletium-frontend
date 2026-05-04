@@ -33,7 +33,6 @@ const WithdrawMoney = () => {
   const router = useRouter();
   const locale = useLocale();
   const t = useTranslations("Dashboard.withdrawMoney");
-  const tTrx = useTranslations("Dashboard.withdrawMoney.transaction");
   const tc = useTranslations("common");
 
   const withdrawMoneySchema = useMemo(() => {
@@ -146,7 +145,7 @@ const WithdrawMoney = () => {
       return {
         totalFee: Number(fee.toFixed(2)),
         youWillGet: Number((conversionAmount - fee)?.toFixed(2)),
-        totalPayable: Number(amount)?.toFixed(4),
+        totalPayable: Number(amount?.toFixed(2)),
         conversionAmount: Number(conversionAmount?.toFixed(2)),
       };
     }, [amount, selectedGateway, exchangeRate]);
@@ -248,7 +247,7 @@ const WithdrawMoney = () => {
                   <div className="w-8 h-8 rounded-full bg-primary-50 flex items-center justify-center border border-primary/30">
                     <DollarSign className="w-5 h-5 text-primary" />
                   </div>
-                  <div className="w-8 h-8 rounded-full bg-primary-50 flex items-center justify-center border border-primary/30">
+                  <div className="w-8 h-8 rounded-full bg-primary-50 flex items-center justify-center border border-primary/30 rtl:-rotate-90">
                     <ArrowUpRight className="w-5 h-5 text-primary" />
                   </div>
                 </div>
@@ -256,7 +255,10 @@ const WithdrawMoney = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 ">
                     <p className="text-gray-500">{t("exchangeRate")}</p>
-                    <p className="text-xl font-semibold!" dir="ltr">
+                    <p
+                      className="text-xl font-semibold! rtl:text-right"
+                      dir="ltr"
+                    >
                       {exchangeRateFormat}
                     </p>
                   </div>
@@ -264,7 +266,10 @@ const WithdrawMoney = () => {
                     <p className="text-sm text-gray-500">
                       {t("availableBalance")}
                     </p>
-                    <p className="text-xl font-semibold!" dir="ltr">
+                    <p
+                      className="text-xl font-semibold! rtl:text-right"
+                      dir="ltr"
+                    >
                       {selectedUserWallet?.currency_symbol}{" "}
                       {selectedUserWallet?.balance?.toFixed(2) || "0.00"}
                     </p>
@@ -398,7 +403,9 @@ const WithdrawMoney = () => {
                       <div className="px-4 py-2 text-sm font-medium bg-primary-50 dark:bg-blue-950 text-primary-600 dark:text-primary-400 rounded-lg">
                         {t("charge")}:{" "}
                         <span dir="ltr">
-                          {selectedGateway?.fixed_charge}{" "}
+                          {Number(selectedGateway?.fixed_charge || 0).toFixed(
+                            2,
+                          )}{" "}
                           {selectedGateway?.currency_code} +{" "}
                           {selectedGateway?.percent_charge}%
                         </span>

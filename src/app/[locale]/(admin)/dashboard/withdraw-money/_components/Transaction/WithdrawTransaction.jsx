@@ -53,30 +53,30 @@ export default function WithdrawTransaction({ transactionsData, isLoading }) {
       if (values[idx] === "request_amount") {
         value = (
           <span dir="ltr">
-            {`${value?.toFixed(4)} ${record?.request_currency}`}
+            {`${Number(value || 0)?.toFixed(2)} ${record?.request_currency}`}
           </span>
         );
       }
       if (values[idx] === "total_charge") {
         value = (
           <span dir="ltr">
-            {`${value?.toFixed(4)} ${record?.payment_currency}`}
+            {`${Number(value || 0)?.toFixed(2)} ${record?.payment_currency}`}
           </span>
         );
       }
       if (values[idx] === "receive_amount") {
         value = (
           <span dir="ltr">
-            {`${value?.toFixed(4)} ${record?.payment_currency}`}
+            {`${Number(value || 0)?.toFixed(2)} ${record?.payment_currency}`}
           </span>
         );
       }
       if (values[idx] === "exchange_rate") {
         value = (
           <span dir="ltr">
-            {`1 ${record?.request_currency} = ${record?.exchange_rate?.toFixed(
-              4,
-            )} ${record?.payment_currency}`}
+            {`1 ${record?.request_currency} = ${Number(
+              record?.exchange_rate || 0,
+            )?.toFixed(2)} ${record?.payment_currency}`}
           </span>
         );
       }
@@ -110,7 +110,7 @@ export default function WithdrawTransaction({ transactionsData, isLoading }) {
           </div>
 
           <div>
-            <p className="font-medium text-gray-800 dark:text-neutral-300">
+            <p className="font-medium text-sm! text-gray-800 dark:text-neutral-300">
               {type} ({record.gateway_currency})
             </p>
           </div>
@@ -122,7 +122,7 @@ export default function WithdrawTransaction({ transactionsData, isLoading }) {
       dataIndex: "receive_amount",
       render: (amount, record) => (
         <span className="font-semibold text-green-500" dir="ltr">
-          {amount?.toFixed(4)} {record?.payment_currency}
+          +{Number(amount || 0)?.toFixed(2)} {record?.payment_currency}
         </span>
       ),
     },
@@ -130,7 +130,9 @@ export default function WithdrawTransaction({ transactionsData, isLoading }) {
       title: t("trxId"),
       dataIndex: "trx_id",
       render: (id) => (
-        <span className="text-gray-600 dark:text-neutral-300">#{id}</span>
+        <span dir="ltr" className="text-gray-600 dark:text-neutral-300">
+          #{id}
+        </span>
       ),
     },
     {
@@ -138,7 +140,7 @@ export default function WithdrawTransaction({ transactionsData, isLoading }) {
       dataIndex: "request_amount",
       render: (amount, record) => (
         <span className="font-semibold text-red-500" dir="ltr">
-          -{amount?.toFixed(4)} {record?.request_currency}
+          -{Number(amount || 0)?.toFixed(2)} {record?.request_currency}
         </span>
       ),
     },
@@ -147,7 +149,7 @@ export default function WithdrawTransaction({ transactionsData, isLoading }) {
       dataIndex: "total_charge",
       render: (amount, record) => (
         <span className="font-semibold text-red-500" dir="ltr">
-          -{amount?.toFixed(4)} {record?.payment_currency}
+          {Number(amount || 0)?.toFixed(2)} {record?.payment_currency}
         </span>
       ),
     },
@@ -156,7 +158,7 @@ export default function WithdrawTransaction({ transactionsData, isLoading }) {
       dataIndex: "created_at",
       render: (date) => (
         <span className="text-gray-600 dark:text-neutral-300">
-          {dayjs(date).format("DD MMM YYYY, hh:mm A")}
+          {dayjs(date).format("DD MMM YYYY")}
         </span>
       ),
     },
@@ -176,9 +178,11 @@ export default function WithdrawTransaction({ transactionsData, isLoading }) {
         };
         return (
           <span
-            className={`px-3 py-1 rounded-full text-sm ${current.className}`}
+            className={`px-3 py-1 rounded-full text-sm! ${current.className}`}
           >
-            {current.label !== "Unknown" ? tStatus(current.label.toLowerCase()) : current.label}
+            {current.label !== "Unknown"
+              ? tStatus(current.label.toLowerCase())
+              : current.label}
           </span>
         );
       },

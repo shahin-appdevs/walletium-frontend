@@ -89,7 +89,7 @@ function WithdrawSummery({
               <span className="text-gray-600 dark:text-gray-400">
                 {t("gatewayName")}
               </span>
-              <span>
+              <span className="font-medium!">
                 {selectedGateway?.name} ({selectedGateway?.currency_code})
               </span>
             </div>
@@ -97,24 +97,25 @@ function WithdrawSummery({
               <span className="text-gray-600 dark:text-gray-400">
                 {t("enteredAmount")}
               </span>
-              <span dir="ltr">
-                {amount || 0} {selectedCurrencyCode}
+              <span dir="ltr" className="font-medium!">
+                {Number(amount || 0).toFixed(2)} {selectedCurrencyCode}
               </span>
             </div>
             <div className="flex justify-between py-3">
               <span className="text-gray-600 dark:text-gray-400">
                 {t("conversionAmount")}
               </span>
-              <span dir="ltr">
-                {conversionAmount || 0} {selectedGateway?.currency_code}
+              <span dir="ltr" className="font-medium!">
+                {Number(conversionAmount || 0).toFixed(2)}{" "}
+                {selectedGateway?.currency_code}
               </span>
             </div>
             <div className="flex justify-between py-3">
               <span className="text-gray-600 dark:text-gray-400">
                 {t("totalFees")}
               </span>
-              <span className="text-red-600" dir="ltr">
-                {totalFee} {selectedGateway?.currency_code}
+              <span className=" font-medium!" dir="ltr">
+                {(totalFee ?? 0)?.toFixed(2)} {selectedGateway?.currency_code}
               </span>
             </div>
 
@@ -122,15 +123,15 @@ function WithdrawSummery({
               <span className="text-gray-600 dark:text-gray-400">
                 {t("youWillGet")}
               </span>
-              <span dir="ltr">
-                {youWillGet?.toFixed(2)} {selectedGateway?.currency_code}
+              <span dir="ltr" className="font-medium!">
+                {(youWillGet ?? 0)?.toFixed(2)} {selectedGateway?.currency_code}
               </span>
             </div>
 
             <div className="flex justify-between py-4 font-semibold text-base border-t">
               <span>{t("totalPayable")}</span>
-              <span dir="ltr">
-                {totalPayable} {selectedCurrencyCode}
+              <span dir="ltr" className="font-bold! ">
+                {(totalPayable ?? 0)?.toFixed(2)} {selectedCurrencyCode}
               </span>
             </div>
           </div>
