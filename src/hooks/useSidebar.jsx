@@ -4,12 +4,14 @@ import { DashboardOutlined } from "@ant-design/icons";
 import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "@/contexts/ThemeContextProvider";
 import LucideIcon from "@/components/LucideIcon";
+import { useLocale } from "next-intl";
 
 const useSidebar = () => {
   const router = useRouter();
   const { mode } = useTheme();
   const pathname = usePathname();
-  const [activeKey, setActiveKey] = useState(pathname);
+  const activePath = `/${pathname.split("/").slice(2).join("/")}`;
+  const [activeKey, setActiveKey] = useState(activePath);
 
   const handleNavigateRoutes = (e) => {
     router.push(e.key || "/");

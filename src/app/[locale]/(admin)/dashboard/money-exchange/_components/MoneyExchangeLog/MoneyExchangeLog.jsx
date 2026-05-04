@@ -118,9 +118,8 @@ export default function MoneyExchangeLog({ transactionsData, isLoading }) {
           <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-300">
             <ArrowUpOutlined className="text-gray-500 text-lg rotate-45 rtl:-rotate-45" />
           </div>
-
           <div>
-            <p className="font-medium text-gray-800 dark:text-neutral-300">
+            <p className="font-medium text-sm! text-gray-800 dark:text-neutral-300">
               {type}
             </p>
           </div>
@@ -140,7 +139,9 @@ export default function MoneyExchangeLog({ transactionsData, isLoading }) {
       title: t("transaction.trxId"),
       dataIndex: "trx_id",
       render: (id) => (
-        <span className="text-gray-600 dark:text-neutral-300">#{id}</span>
+        <span dir="ltr" className="text-gray-600 dark:text-neutral-300">
+          #{id}
+        </span>
       ),
     },
     {

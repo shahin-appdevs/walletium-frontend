@@ -45,14 +45,14 @@ const LayoutHeader = ({ collapsed, setCollapsed }) => {
       >
         {collapsed ? (
           <MenuUnfoldOutlined
-            className="trigger hidden! lg:block!"
+            className="trigger hidden! lg:block! rtl:rotate-180!"
             onClick={() => setCollapsed(false)}
             // onClick={() => handleDrawerOpen(false)}
             style={{ fontSize: 20, cursor: "pointer" }}
           />
         ) : (
           <MenuFoldOutlined
-            className="trigger hidden! lg:block!"
+            className="trigger hidden! lg:block! rtl:rotate-180!"
             onClick={() => setCollapsed(true)}
             // onClick={() => handleDrawerOpen(true)}
             style={{ fontSize: 20, cursor: "pointer" }}
@@ -65,10 +65,10 @@ const LayoutHeader = ({ collapsed, setCollapsed }) => {
         />
         {/* <h2 style={{ marginLeft: 16, marginBottom: 0 }}>Dashboard</h2> */}
         <div className="lg:px-4  w-full!">
-          <div className="flex items-center justify-between! ">
+          <div className="flex items-center justify-between!">
             <div className="lg:hidden"></div>
             <div className="hidden lg:block">
-              <span className="text-neutral-800 dark:text-white ">
+              <span className="text-neutral-800 dark:text-white">
                 {t("welcomeText")},
               </span>
               <span className="ms-2">{userInfo?.fullname}</span>
@@ -78,8 +78,9 @@ const LayoutHeader = ({ collapsed, setCollapsed }) => {
               <div className="flex items-center gap-6 bg-transparent p-4">
                 {/* Theme Switch */}
                 <button
+                  dir="ltr"
                   onClick={() => toggleTheme()}
-                  className="relative flex items-center bg-white rounded-full p-1 shadow-xs border border-gray-200 w-[72px]"
+                  className="relative flex items-center bg-white rounded-full p-1  border border-gray-200 w-[72px]"
                 >
                   {/* Sliding Background */}
                   <div
@@ -150,7 +151,7 @@ const LayoutHeader = ({ collapsed, setCollapsed }) => {
                 </div>
 
                 {/* Avatar */}
-                <div className="group/profile relative">
+                <div className="group/profile relative border p-2 rounded-lg border-black/10 dark:border-white/10">
                   <Image
                     onClick={() => setShowProfileDropdown(!showProfileDropdown)}
                     src={profileImageUrl}
