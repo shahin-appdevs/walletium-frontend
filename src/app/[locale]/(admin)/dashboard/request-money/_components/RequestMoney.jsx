@@ -184,11 +184,11 @@ const RequestMoney = () => {
     },
     {
       label: t("summary.requestAmount"),
-      value: `${requestAmount || 0} ${selectedCurrency}`,
+      value: `${Number(requestAmount || 0).toFixed(2)} ${selectedCurrency}`,
     },
     {
       label: t("summary.totalFees"),
-      value: `${totalFee} ${selectedCurrency}`,
+      value: `${Number(totalFee || 0).toFixed(2)} ${selectedCurrency}`,
     },
     {
       label: (
@@ -198,7 +198,7 @@ const RequestMoney = () => {
       ),
       value: (
         <span className="font-bold text-base lg:text-lg">
-          {totalPayable} {selectedCurrency}
+          {Number(totalPayable || 0).toFixed(2)} {selectedCurrency}
         </span>
       ),
     },
@@ -326,8 +326,8 @@ const RequestMoney = () => {
                     <p className="p-2 px-4 text-xs lg:text-base rounded-2xl bg-primary-50  font-medium text-primary-600 dark:bg-primary-500! dark:text-primary-50!">
                       {t("charge")}:{" "}
                       <span dir="ltr">
-                        {fixedCharge} {selectedCurrency} +{" "}
-                        {charges.percent_charge}%
+                        {Number(fixedCharge || 0).toFixed(2)} {selectedCurrency}{" "}
+                        + {charges.percent_charge}%
                       </span>
                     </p>
                   </div>

@@ -15,6 +15,7 @@ const requestMoneyApi = baseApi.injectEndpoints({
         data: payload,
         params: { lang },
       }),
+      invalidatesTags: ["transaction"],
     }),
     getRequestMoneyInformation: builder.query({
       query: ({ token, lang }) => ({
@@ -30,6 +31,7 @@ const requestMoneyApi = baseApi.injectEndpoints({
         data: payload,
         params: { lang },
       }),
+      invalidatesTags: ["transaction"],
     }),
   }),
 });

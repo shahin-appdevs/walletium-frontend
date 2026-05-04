@@ -9,6 +9,7 @@ const transactionsApi = baseApi.injectEndpoints({
         params: { page, per_page },
       }),
       transformResponse: (response) => response.data,
+      providesTags: ["transaction"],
     }),
     getVoucherMoneyTrx: builder.query({
       query: ({ page, per_page }) => ({

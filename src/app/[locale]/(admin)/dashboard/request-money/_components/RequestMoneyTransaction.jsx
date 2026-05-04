@@ -54,9 +54,9 @@ export default function RequestMoneyTransaction({
       </div>,
       record.created_by,
       record.identifier,
-      `${record.request_amount} ${record.request_currency}`,
-      `${record.total_charge} ${record.request_currency}`,
-      `${record.total_payable} ${record.request_currency}`,
+      `${Number(record.request_amount || 0).toFixed(2)} ${record.request_currency}`,
+      `${Number(record.total_charge || 0).toFixed(2)} ${record.request_currency}`,
+      `${Number(record.total_payable || 0).toFixed(2)} ${record.request_currency}`,
       `1 ${record.request_currency} = 1 ${record.request_currency}`,
       record.remark || "N/A",
       (
@@ -95,7 +95,7 @@ export default function RequestMoneyTransaction({
             <p className="font-medium text-gray-800 dark:text-neutral-300">
               {t("requestMoneyTitle") || "Request Money"}
             </p>
-            <p className="text-gray-400  text-sm">
+            <p className="text-gray-400  text-sm!">
               {t("receiveMoney") || "Receive Money"}
             </p>
           </div>
@@ -136,7 +136,7 @@ export default function RequestMoneyTransaction({
           dir="ltr"
           className="font-semibold text-green-600 whitespace-nowrap"
         >
-          +{amount.toLocaleString()} {record.request_currency}
+          +{Number(amount || 0).toFixed(2)} {record.request_currency}
         </span>
       ),
     },
@@ -147,9 +147,9 @@ export default function RequestMoneyTransaction({
       render: (amount, record) => (
         <span
           dir="ltr"
-          className="font-semibold text-green-600 whitespace-nowrap"
+          className="font-semibold text-red-500 whitespace-nowrap"
         >
-          {amount.toLocaleString()} {record.request_currency}
+          -{Number(amount || 0).toFixed(2)} {record.request_currency}
         </span>
       ),
     },
@@ -180,8 +180,8 @@ export default function RequestMoneyTransaction({
       title: t("feeCharge"),
       dataIndex: "total_charge",
       render: (total_charge, record) => (
-        <span dir="ltr" className="text-gray-600 dark:text-neutral-300">
-          {total_charge} {record.request_currency}
+        <span dir="ltr" className="text-red-500 ">
+          {Number(total_charge).toFixed(2)} {record.request_currency}
         </span>
       ),
     },
@@ -222,9 +222,10 @@ export default function RequestMoneyTransaction({
       <Modal
         open={isModalOpen}
         onCancel={handleCancelModal}
+        onOk={handleCancelModal}
         closable={false}
-        cancelText={tc("action.close") || "Close"}
-        okButtonProps={{ style: { display: "none" } }}
+        okText={tc("action.close") || "Close"}
+        cancelButtonProps={{ style: { display: "none" } }}
       >
         <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-white dark:bg-[#111] shadow-xs border border-gray-200 dark:border-gray-800">
           <h2 className="text-lg! font-semibold text-gray-900 dark:text-gray-100 mb-4">

@@ -3,10 +3,9 @@ import { baseApi } from "./baseApi";
 const recipientApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getMyRecipients: builder.query({
-      query: ({ lang }) => ({
+      query: () => ({
         url: "/user/recipient/my-recipient",
         method: "GET",
-        params: { lang },
       }),
       providesTags: ["recipients"],
     }),
