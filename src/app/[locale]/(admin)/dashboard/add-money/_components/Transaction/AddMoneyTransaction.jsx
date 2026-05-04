@@ -95,11 +95,11 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
           </div>
 
           <div>
-            <p className="font-medium text-gray-800 dark:text-neutral-300">
-              {record.type}
+            <p className="font-medium text-gray-800 dark:text-neutral-300 text-sm!">
+              {record?.type}
             </p>
-            <p className="text-gray-400 text-sm whitespace-nowrap">
-              {record.gateway_currency}
+            <p className="text-gray-400 text-sm! whitespace-nowrap">
+              {record?.gateway_currency}
             </p>
           </div>
         </div>
@@ -109,7 +109,10 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
       title: t("amount"),
       dataIndex: "request_amount",
       render: (amount, record) => (
-        <span className="font-semibold text-green-600 whitespace-nowrap">
+        <span
+          dir="ltr"
+          className="font-semibold text-green-600 whitespace-nowrap"
+        >
           + {Number(amount).toFixed(2)} {record.request_currency}
         </span>
       ),
@@ -118,14 +121,19 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
       title: t("trxId"),
       dataIndex: "trx_id",
       render: (id) => (
-        <span className="text-gray-600 dark:text-neutral-300">{id}</span>
+        <span dir="ltr" className="text-gray-600 dark:text-neutral-300">
+          #{id}
+        </span>
       ),
     },
     {
       title: t("totalPayable"),
       dataIndex: "total_payable",
       render: (amount, record) => (
-        <span className="font-semibold text-gray-800 dark:text-neutral-300">
+        <span
+          dir="ltr"
+          className="font-semibold text-gray-800 dark:text-neutral-300"
+        >
           {Number(amount).toFixed(2)} {record.request_currency}
         </span>
       ),
@@ -149,7 +157,10 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
       title: t("exchangeRate"),
       dataIndex: "exchange_rate",
       render: (rate, record) => (
-        <span className="text-gray-600 dark:text-neutral-300 whitespace-nowrap">
+        <span
+          dir="ltr"
+          className="text-gray-600 dark:text-neutral-300 whitespace-nowrap"
+        >
           1 {record.request_currency} = {rate} {record.payment_currency}
         </span>
       ),
@@ -158,8 +169,8 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
       title: t("feeCharge"),
       dataIndex: "total_charge",
       render: (charge, record) => (
-        <span className="text-red-500">
-          {charge} {record.request_currency}
+        <span dir="ltr" className="text-red-500">
+          {Number(charge || 0).toFixed(4)} {record.request_currency}
         </span>
       ),
     },
@@ -169,11 +180,11 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
       render: (status) => {
         const mapped = statusMap[status] || { text: "Unknown", className: "" };
         return (
-          <span
-            className={`px-3 py-1 rounded-full text-xs font-medium ${mapped.className}`}
+          <p
+            className={`px-3 py-1! rounded-full text-xs! font-medium text-nowrap w-full text-center ${mapped.className}`}
           >
             {mapped.text}
-          </span>
+          </p>
         );
       },
     },
@@ -184,27 +195,16 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
 
   const TableExtra = (
     <div className="flex items-center gap-2! md:gap-0 ">
-      <div className="hidden md:block">
-        <Input
-          placeholder={t("searchPlaceholder")}
-          size="large"
-          prefix={<SearchOutlined className="text-gray-400" />}
-          className=" rounded-lg"
-        />
-      </div>
-      <div className="md:hidden">
-        <PrimaryButton
-          icon={"Search"}
-          iconClassName={"group-hover/primary-btn:rotate-90 duration-200"}
-        ></PrimaryButton>
-      </div>
       <div className=" md:flex justify-end ">
-        <Link href={"#"}>
-          <PrimaryButton>
-            <span className="hidden md:block">View More</span>
-            <span>
-              <LucideIcon name={"Eye"} size={20} />
-            </span>
+        <Link href={`/dashboard/transactions/add-money-log`}>
+          <PrimaryButton
+            icon="ArrowUpRight"
+            className={"text-sm w-full"}
+            iconClassName={
+              "group-hover/primary-btn:translate-1/6 group-hover/primary-btn:-translate-y-1 duration-300 rtl:-rotate-90 rtl:group-hover/primary-btn:-translate-x-1"
+            }
+          >
+            <span className="hidden md:block">{t("viewMore")}</span>
           </PrimaryButton>
         </Link>
       </div>
@@ -236,6 +236,7 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
                 </span>
 
                 <span
+                  dir="ltr"
                   className={`text-gray-900 dark:text-gray-100 ${
                     row.bold ? "font-semibold" : "font-medium"
                   }`}
@@ -247,23 +248,6 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
           </div>
         </div>
       </Modal>
-      {/* Header */}
-      {/* <div className="flex flex-col lg:flex-row gap-4 justify-between items-center mb-4">
-        <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-300">
-          Latest Transaction
-        </h2>
-
-        <div className="flex items-center gap-3">
-          <Input
-            placeholder="Search"
-            prefix={<SearchOutlined className="text-gray-400" />}
-            className="w-48 rounded-lg"
-          />
-          <Button icon={<FilterOutlined />} className="rounded-lg">
-            Filter
-          </Button>
-        </div>
-      </div> */}
 
       {/* Styled Table */}
       <div className="overflow-x-auto!">

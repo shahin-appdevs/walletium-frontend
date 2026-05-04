@@ -1,12 +1,10 @@
 import React from "react";
-import MoneyExchangeLog from "../../money-exchange/_components/MoneyExchangeLog/MoneyExchangeLog";
+import RequestMoneyLog from "./RequestMoneyLog";
 
-const MoneyRequestLogPage = () => {
+export default function RequestMoneyLogPage() {
   return (
     <div>
-      <MoneyExchangeLog />
+      <RequestMoneyLog />
     </div>
   );
-};
-
-export default MoneyRequestLogPage;
+}

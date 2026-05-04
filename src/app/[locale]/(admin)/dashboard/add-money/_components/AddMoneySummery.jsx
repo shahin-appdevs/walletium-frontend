@@ -7,8 +7,9 @@ function AddMoneySummery({
   amount,
   selectedCurrencyCode,
   totalFee,
-  youWillReceive,
+  totalPayable,
   selectedGateway,
+  conversionAmount,
 }) {
   const t = useTranslations("Dashboard.addMoney.summary");
 
@@ -21,7 +22,16 @@ function AddMoneySummery({
               {t("enteredAmount")}
             </span>
             <span>
-              {amount || 0} {selectedCurrencyCode}
+              {(amount ?? 0).toFixed(2)} {selectedCurrencyCode}
+            </span>
+          </div>
+          <div className="flex justify-between py-3">
+            <span className="text-gray-600 dark:text-gray-400">
+              {t("conversionAmount")}
+            </span>
+            <span>
+              {(conversionAmount ?? 0).toFixed(2)}{" "}
+              {selectedGateway?.currency_code}
             </span>
           </div>
           <div className="flex justify-between py-3">
@@ -29,13 +39,13 @@ function AddMoneySummery({
               {t("totalFees")}
             </span>
             <span className="text-red-600">
-              {totalFee} {selectedCurrencyCode}
+              {(totalFee ?? 0).toFixed(2)} {selectedGateway?.currency_code}
             </span>
           </div>
           <div className="flex justify-between py-4 font-semibold text-base border-t">
-            <span>{t("youWillReceive")}</span>
+            <span>{t("totalPayable")}</span>
             <span>
-              {youWillReceive} {selectedCurrencyCode}
+              {(totalPayable ?? 0)?.toFixed(2)} {selectedGateway?.currency_code}
             </span>
           </div>
         </div>

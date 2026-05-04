@@ -140,7 +140,7 @@ const AddMoney = () => {
     },
   });
 
-  const amount = watch("amount");
+  const amount = parseFloat(watch("amount")) || 0;
 
   //min max limit calculation hook
   const { minLimit, maxLimit } = useGatewayLimits(
@@ -157,17 +157,21 @@ const AddMoney = () => {
   }, [allGatewayCurrencies]);
 
   // Live Fee Calculation
-  const { totalFee, youWillReceive } = useMemo(() => {
+  const { totalFee, totalPayable, conversionAmount } = useMemo(() => {
     if (!selectedGateway || !amount) {
-      return { totalFee: 0, youWillReceive: 0 };
+      return { totalFee: 0, totalPayable: 0, conversionAmount: 0 };
     }
-    const percentFee = (amount * selectedGateway.percent_charge) / 100;
+    const conversionAmount = amount * exchangeRate;
+    const percentFee =
+      (conversionAmount * selectedGateway.percent_charge) / 100;
     const fee = percentFee + selectedGateway.fixed_charge;
+
     return {
-      totalFee: Number(fee.toFixed(2)),
-      youWillReceive: Number((amount - fee).toFixed(2)),
+      totalFee: Number(fee?.toFixed(2)),
+      totalPayable: Number((conversionAmount + fee)?.toFixed(2)),
+      conversionAmount: Number(conversionAmount?.toFixed(2)),
     };
-  }, [amount, selectedGateway]);
+  }, [amount, selectedGateway, exchangeRate]);
 
   // add money submit
   const onSubmit = async (data) => {
@@ -185,7 +189,9 @@ const AddMoney = () => {
           payload,
           lang: locale,
         }).unwrap();
+
         showToast.apiSuccess(res);
+
         router.push(res?.data?.redirect_url);
       } catch (error) {
         showToast.apiError(error);
@@ -277,14 +283,17 @@ const AddMoney = () => {
                     <DollarSign className="w-5 h-5 text-primary" />
                   </div>
                   <div className="w-8 h-8 rounded-full bg-primary-50 flex items-center justify-center border border-primary/30">
-                    <ArrowUpRight className="w-5 h-5 text-primary" />
+                    <ArrowUpRight className="w-5 h-5 text-primary rtl:-rotate-90" />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 ">
                     <p className="text-gray-500">{t("exchangeRate")}</p>
-                    <p className="text-xl font-semibold!">
+                    <p
+                      dir="ltr"
+                      className="text-xl font-semibold! rtl:text-right"
+                    >
                       {exchangeRateFormat}
                     </p>
                   </div>
@@ -292,7 +301,10 @@ const AddMoney = () => {
                     <p className="text-sm text-gray-500">
                       {t("availableBalance")}
                     </p>
-                    <p className="text-xl font-semibold!">
+                    <p
+                      dir="ltr"
+                      className="text-xl font-semibold! rtl:text-right"
+                    >
                       {selectedUserWallet?.currency_symbol}{" "}
                       {selectedUserWallet?.balance?.toFixed(2) || "0.00"}
                     </p>
@@ -415,17 +427,21 @@ const AddMoney = () => {
                   {selectedGateway && (
                     <div className="flex flex-wrap justify-between gap-3">
                       <div className="px-4 py-2 text-sm font-medium bg-primary-50 dark:bg-blue-950 text-primary-600 dark:text-primary-400 rounded-lg">
-                        {t("limit", {
-                          min: minLimit,
-                          max: maxLimit,
-                          currency: selectedCurrencyCode,
-                        })}
+                        {t("limit")}:{" "}
+                        <span dir="ltr">
+                          {minLimit} {selectedCurrencyCode} - {maxLimit}{" "}
+                          {selectedCurrencyCode}
+                        </span>
                       </div>
                       <div className="px-4 py-2 text-sm font-medium bg-primary-50 dark:bg-blue-950 text-primary-600 dark:text-primary-400 rounded-lg">
-                        {t("charge", {
-                          fixed: selectedGateway.fixed_charge,
-                          percent: selectedGateway.percent_charge,
-                        })}
+                        {t("charge")}:{" "}
+                        <span dir="ltr">
+                          {Number(selectedGateway?.fixed_charge ?? 0)?.toFixed(
+                            2,
+                          )}{" "}
+                          {selectedGateway?.currency_code} +{" "}
+                          {selectedGateway?.percent_charge}%
+                        </span>
                       </div>
                     </div>
                   )}
@@ -537,8 +553,9 @@ const AddMoney = () => {
               amount={amount}
               selectedCurrencyCode={selectedCurrencyCode}
               totalFee={totalFee}
-              youWillReceive={youWillReceive}
+              totalPayable={totalPayable}
               selectedGateway={selectedGateway}
+              conversionAmount={conversionAmount}
             />
           </div>
         </div>

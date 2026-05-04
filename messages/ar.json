@@ -98,8 +98,8 @@
             "amount": "المبلغ",
             "paymentGateway": "بوابة الدفع",
             "selectGateway": "اختر البوابة",
-            "limit": "الحد: {min} — {max} {currency}",
-            "charge": "الرسوم: {fixed} + {percent}%",
+            "limit": "الحد",
+            "charge": "الرسوم",
             "paymentInstruction": "تعليمات الدفع",
             "proceedToPay": "المتابعة للدفع",
             "loadingTransactions": "جاري تحميل المعاملات الأخيرة...",
@@ -117,7 +117,9 @@
                 "totalFees": "إجمالي الرسوم والمصاريف",
                 "youWillReceive": "ستستلم",
                 "manualPayment": "الدفع اليدوي",
-                "manualDescription": "يرجى تحميل إثبات الدفع بعد إجراء التحويل."
+                "manualDescription": "يرجى تحميل إثبات الدفع بعد إجراء التحويل.",
+                "conversionAmount": "مبلغ التحويل",
+                "totalPayable": "إجمالي المبلغ المطلوب دفعه"
             },
             "transaction": {
                 "selectFile": "اختر {label}",
@@ -134,6 +136,7 @@
                 "feeCharge": "الرسوم/المصاريف",
                 "totalPage": "إجمالي {total} عنصر",
                 "perPage": "لكل صف",
+                "viewMore": "عرض المزيد",
                 "status": {
                     "title": "الحالة",
                     "success": "ناجح",
@@ -231,7 +234,11 @@
                 "requestMoneyTitle": "طلب المال",
                 "receiveMoney": "استلام المال",
                 "copyLink": "نسخ الرابط",
-                "copySuccess": "تم النسخ!"
+                "copySuccess": "تم النسخ!",
+                "searchPlaceholder": "بحث في المعاملات...",
+                "close": "إغلاق",
+                "totalPage": "إجمالي {total} عنصر",
+                "perPage": "لكل صف"
             },
             "shareLink": {
                 "invalidToken": "رمز غير صالح",
@@ -293,7 +300,7 @@
                 "totalPage": "إجمالي {total} عنصر",
                 "perPage": "لكل صف",
                 "searchPlaceholder": "بحث في المعاملات...",
-                "close": "إغلاق", 
+                "close": "إغلاق",
                 "status": "الحالة"
             }
         },

@@ -98,8 +98,8 @@
             "amount": "Amount",
             "paymentGateway": "Payment Gateway",
             "selectGateway": "Select gateway",
-            "limit": "Limit: {min} — {max} {currency}",
-            "charge": "Charge: {fixed} + {percent}%",
+            "limit": "Limit",
+            "charge": "Charge",
             "paymentInstruction": "Payment Instruction",
             "proceedToPay": "Proceed to Pay",
             "loadingTransactions": "Loading recent transactions...",
@@ -117,7 +117,9 @@
                 "totalFees": "Total Fees & Charges",
                 "youWillReceive": "You will receive",
                 "manualPayment": "Manual Payment",
-                "manualDescription": "Upload payment proof after making the transfer."
+                "manualDescription": "Upload payment proof after making the transfer.",
+                "conversionAmount": "Conversion Amount",
+                "totalPayable": "Total Payable"
             },
             "transaction": {
                 "title": "Latest Transaction",
@@ -134,6 +136,7 @@
                 "selectFile": "Select File",
                 "totalPage": "Total {total} Items",
                 "perPage": "Per Page",
+                "viewMore": "View More",
                 "status": {
                     "title": "Status",
                     "success": "Success",
@@ -257,7 +260,11 @@
                 "requestMoneyTitle": "Request Money",
                 "receiveMoney": "Receive Money",
                 "copyLink": "Copy Link",
-                "copySuccess": "Link copied!"
+                "copySuccess": "Link copied!",
+                "searchPlaceholder": "Search transactions...",
+                "close": "Close",
+                "totalPage": "Total {total} Items",
+                "perPage": "Per Page"
             },
             "shareLink": {
                 "invalidToken": "Invalid Token",
