@@ -8,6 +8,7 @@ import useViewport from "@/hooks/useViewport";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import Link from "next/link";
 import LucideIcon from "@/components/LucideIcon";
+import { statusMap } from "@/utils/statusMap";
 
 const SendMoneyTransaction = memo(function SendMoneyTransaction({
   transactionsData,
@@ -18,46 +19,36 @@ const SendMoneyTransaction = memo(function SendMoneyTransaction({
   const [singleTable, setSingleTable] = useState([]);
   const { smallScreen } = useViewport();
 
-  const statusMap = {
-    1: {
-      text: t("status.success"),
-      className:
-        "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border border-green-200 dark:border-green-800",
-    },
-    2: {
-      text: t("status.pending"),
-      className:
-        "bg-yellow-100/50 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-800",
-    },
-    3: {
-      text: t("status.rejected"),
-      className:
-        "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 border border-red-200 dark:border-red-800",
-    },
-  };
-
   const transactions = transactionsData?.transactions?.data;
 
   const handleOnRowClick = (record) => {
     const arr = [
       { label: t("type"), value: record.type },
       { label: t("sendTo"), value: record.receiver_username },
-      { label: t("trxId"), value: record.trx_id },
+      { label: t("trxId"), value: `#${record.trx_id}` },
       {
         label: t("amount"),
-        value: `${record.request_amount} ${record.request_currency}`,
+        value: `${Number(record.request_amount || 0).toFixed(2)} ${
+          record.request_currency
+        }`,
       },
       {
         label: t("feeCharge"),
-        value: `${record.total_charge} ${record.request_currency}`,
+        value: `${Number(record.total_charge || 0).toFixed(2)} ${
+          record.request_currency
+        }`,
       },
       {
         label: t("totalPayable"),
-        value: `${record.total_payable} ${record.request_currency}`,
+        value: `${Number(record.total_payable || 0).toFixed(2)} ${
+          record.request_currency
+        }`,
       },
       {
         label: t("exchangeRate"),
-        value: `1 ${record.request_currency} = ${record.exchange_rate} ${record.payment_currency}`,
+        value: `1 ${record.request_currency} = ${Number(record.exchange_rate || 0).toFixed(4)} ${
+          record.payment_currency
+        }`,
       },
       {
         label: t("date"),
@@ -72,7 +63,14 @@ const SendMoneyTransaction = memo(function SendMoneyTransaction({
       },
       {
         label: t("status.title"),
-        value: statusMap[record.status]?.text || "Unknown",
+        value: (
+          <span
+            className={`${statusMap[record.status]?.className} px-3 py-1 text-sm rounded-full`}
+          >
+            {statusMap[record.status]?.label || "Unknown"}
+          </span>
+        ),
+
         bold: true,
       },
     ];
@@ -96,7 +94,7 @@ const SendMoneyTransaction = memo(function SendMoneyTransaction({
             <p className="font-medium text-gray-800 dark:text-neutral-300">
               {record.type}
             </p>
-            <p className="text-gray-400 text-sm whitespace-nowrap">
+            <p className="text-gray-400 text-sm! whitespace-nowrap">
               {t("sendTo")} {record.receiver_username}
             </p>
           </div>
@@ -170,7 +168,8 @@ const SendMoneyTransaction = memo(function SendMoneyTransaction({
           className="text-gray-600 dark:text-neutral-300 whitespace-nowrap"
           dir="ltr"
         >
-          1 {record.request_currency} = {rate} {record.payment_currency}
+          1 {record.request_currency} = {Number(rate || 0).toFixed(4)}{" "}
+          {record.payment_currency}
         </span>
       ),
     },
@@ -192,7 +191,7 @@ const SendMoneyTransaction = memo(function SendMoneyTransaction({
       align: "center",
       render: (status) => {
         const mapped = statusMap[status] || {
-          text: "Unknown",
+          label: "Unknown",
           className: "",
         };
 
@@ -200,7 +199,7 @@ const SendMoneyTransaction = memo(function SendMoneyTransaction({
           <span
             className={`px-3 py-1 rounded-full text-xs font-medium ${mapped.className}`}
           >
-            {mapped.text}
+            {mapped.label}
           </span>
         );
       },
@@ -231,11 +230,12 @@ const SendMoneyTransaction = memo(function SendMoneyTransaction({
         open={isModalOpen}
         onCancel={handleCancelModal}
         closable={false}
-        cancelText={t("close")}
-        okButtonProps={{ style: { display: "none" } }}
+        onOk={handleCancelModal}
+        cancelButtonProps={{ style: { display: "none" } }}
+        okText={t("close")}
       >
         <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-white dark:bg-[#111] shadow-xs border border-gray-200 dark:border-gray-800 text-left rtl:text-right">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+          <h2 className="text-lg! font-semibold text-gray-900 dark:text-gray-100 mb-4">
             {t("title")}
           </h2>
 

@@ -188,6 +188,25 @@
                     "pending": "قيد الانتظار",
                     "rejected": "مرفوضة"
                 }
+            },
+            "recipientModal": {
+                "sendingAmount": "مبلغ الإرسال",
+                "exchangeRate": "سعر الصرف",
+                "receiverWillGet": "سيحصل المستلم على",
+                "totalCharge": "إجمالي الرسوم",
+                "totalPayableAmount": "إجمالي المبلغ المستحق",
+                "sendMoneyPreview": "معاينة إرسال الأموال",
+                "selectRecipient": "اختر المستلم",
+                "confirm": "تأكيد",
+                "searchPlaceholder": "بحث بالاسم، البريد الإلكتروني أو البلد...",
+                "noResultsFound": "لا يوجد مستلمون يطابقون بحثك",
+                "noRecipientsFound": "لم يتم العثور على مستلمين",
+                "selectedRecipient": "المستلم المحدد",
+                "name": "الاسم",
+                "email": "البريد الإلكتروني",
+                "country": "البلد",
+                "address": "العنوان",
+                "na": "غير متاح"
             }
         },
         "requestMoney": {

@@ -214,6 +214,25 @@
                     "pending": "Pending",
                     "rejected": "Rejected"
                 }
+            },
+            "recipientModal": {
+                "sendingAmount": "Sending Amount",
+                "exchangeRate": "Exchange Rate",
+                "receiverWillGet": "Receiver Will Get",
+                "totalCharge": "Total Charge",
+                "totalPayableAmount": "Total Payable Amount",
+                "sendMoneyPreview": "Send Money Preview",
+                "selectRecipient": "Select Recipient",
+                "confirm": "Confirm",
+                "searchPlaceholder": "Search by name, email or country...",
+                "noResultsFound": "No recipients match your search",
+                "noRecipientsFound": "No recipients found",
+                "selectedRecipient": "Selected Recipient",
+                "name": "Name",
+                "email": "Email",
+                "country": "Country",
+                "address": "Address",
+                "na": "N/A"
             }
         },
         "requestMoney": {

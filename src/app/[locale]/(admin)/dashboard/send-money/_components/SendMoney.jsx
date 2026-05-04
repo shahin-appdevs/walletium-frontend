@@ -102,7 +102,7 @@ const SendMoney = () => {
     },
   });
 
-  const senderAmount = watch("sender_amount");
+  const senderAmount = parseFloat(watch("sender_amount")) || 0;
 
   // Set default currencies
   useEffect(() => {
@@ -133,6 +133,8 @@ const SendMoney = () => {
     selectedSenderWallet?.rate,
     selectedReceiverWallet?.rate,
   );
+
+  // fee calculation
 
   const { totalFee, totalPayable, recipientAmount } = useMemo(() => {
     if (!selectedSenderWallet || !senderAmount || isNaN(senderAmount)) {
@@ -222,6 +224,8 @@ const SendMoney = () => {
       showToast.apiSuccess(res);
       setIsRecipientModalOpen(false);
       setConfirmDetails(null);
+      setValue("sender_amount", "");
+      setValue("recipient_amount", "");
     } catch (error) {
       showToast.apiError(error);
     }
@@ -244,11 +248,11 @@ const SendMoney = () => {
     },
     {
       label: t("summary.sendingAmount"),
-      value: `${senderAmount || 0} ${selectedSenderCurrency}`,
+      value: `${Number(senderAmount ?? 0).toFixed(2)} ${selectedSenderCurrency}`,
     },
     {
       label: t("summary.totalFees"),
-      value: `${totalFee} ${selectedSenderCurrency}`,
+      value: `${Number(totalFee ?? 0).toFixed(2)} ${selectedSenderCurrency}`,
     },
     {
       label: t("summary.exchangeRate"),
@@ -256,7 +260,7 @@ const SendMoney = () => {
     },
     {
       label: t("summary.receiverWillGet"),
-      value: `${recipientAmount} ${selectedReceiverCurrency}`,
+      value: `${Number(recipientAmount ?? 0).toFixed(2)} ${selectedReceiverCurrency}`,
     },
     {
       label: (
@@ -265,8 +269,8 @@ const SendMoney = () => {
         </span>
       ),
       value: (
-        <span className="font-bold text-base lg:text-lg">
-          {totalPayable} {selectedSenderCurrency}
+        <span className="font-bold text-base lg:text-lg ">
+          {Number(totalPayable ?? 0).toFixed(2)} {selectedSenderCurrency}
         </span>
       ),
     },
@@ -293,7 +297,7 @@ const SendMoney = () => {
                     <p className="text-gray-500 text-sm">{t("exchangeRate")}</p>
                     <p
                       dir="ltr"
-                      className="text-base lg:text-xl text-neutral-800 dark:text-neutral-300 font-semibold rtl:text-right"
+                      className="text-base lg:text-xl text-neutral-800 dark:text-neutral-300 font-semibold! rtl:text-right"
                     >
                       1 {selectedSenderCurrency} = {exchangeRate.toFixed(4)}{" "}
                       {selectedReceiverCurrency}
@@ -303,9 +307,13 @@ const SendMoney = () => {
                     <p className="text-gray-500 text-sm">
                       {t("availableBalance")}:
                     </p>
-                    <p className="text-base lg:text-xl text-neutral-800 dark:text-neutral-300 font-semibold">
+                    <p
+                      dir="ltr"
+                      className="text-base lg:text-xl rtl:text-right text-neutral-800 dark:text-neutral-300 font-semibold!"
+                    >
                       {selectedSenderWallet?.currency_symbol}{" "}
-                      {selectedSenderWallet?.balance || "0.00"}
+                      {Number(selectedSenderWallet?.balance).toFixed(4) ||
+                        "0.00"}
                     </p>
                   </div>
                 </div>
@@ -354,7 +362,7 @@ const SendMoney = () => {
                             ),
                             value: w.currency_code,
                           }))}
-                          className="w-32!"
+                          className="w-36!"
                         />
                       </Space.Compact>
                     </FormItem>
@@ -396,7 +404,7 @@ const SendMoney = () => {
                             ),
                             value: w.currency_code,
                           }))}
-                          className="w-32!"
+                          className="w-36!"
                         />
                       </Space.Compact>
                     </FormItem>
@@ -414,8 +422,8 @@ const SendMoney = () => {
                     <p className="p-2 px-4 text-xs lg:text-base rounded-2xl bg-primary-50 font-medium text-primary-600 dark:bg-primary-500! dark:text-primary-50!">
                       {t("charge")}:{" "}
                       <span dir="ltr">
-                        {charges.fixed_charge} {charges.currency_code} +{" "}
-                        {charges.percent_charge}%
+                        {Number(charges.fixed_charge ?? 0).toFixed(2)}{" "}
+                        {charges.currency_code} + {charges.percent_charge}%
                       </span>
                     </p>
                   </div>
@@ -441,12 +449,13 @@ const SendMoney = () => {
                   {singleTable?.map((row, idx) => (
                     <div
                       key={idx}
-                      className="flex justify-between items-center py-3 text-sm"
+                      className="flex justify-between items-center py-3 text-sm last:border-t"
                     >
                       <span className="text-gray-600 font-medium dark:text-gray-400">
                         {row.label}
                       </span>
                       <span
+                        dir="ltr"
                         className={`text-gray-900 dark:text-gray-100 ${row.bold ? "font-semibold" : "font-medium"}`}
                       >
                         {row.value}
