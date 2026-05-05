@@ -6,6 +6,8 @@ import { useState } from "react";
 import ChangePasswordModal from "./ChangePasswordModal";
 import useModal from "@/hooks/useModal";
 
+import { useTranslations } from "next-intl";
+
 const ProfileItem = ({ property, value, icon }) => {
   return (
     <div className="flex items-center gap-2 text-base justify-between pb-2">
@@ -19,6 +21,7 @@ const ProfileItem = ({ property, value, icon }) => {
 };
 
 const ProfileBody = ({ userInfo }) => {
+  const t = useTranslations("Dashboard.myProfile");
   const { isModalOpen, handleCancelModal, handleShowModal } = useModal();
   const [isRemoveBtnActive, setIsRemoveBtnActive] = useState(false);
   const [isChangeBtnActive, setIsChangeBtnActive] = useState(false);
@@ -39,36 +42,36 @@ const ProfileBody = ({ userInfo }) => {
 
   const profileData = [
     {
-      property: "Full Name",
-      value: fullName || "N/A",
+      property: t("fullName"),
+      value: fullName || t("notAvailable"),
     },
     {
-      property: "Country",
-      value: country || "N/A",
+      property: t("country"),
+      value: country || t("notAvailable"),
     },
     {
-      property: "Phone",
+      property: t("phone"),
       value: `${mobile_code}${mobile}`,
     },
     {
-      property: "Email",
-      value: email || "N/A",
+      property: t("email"),
+      value: email || t("notAvailable"),
     },
     {
-      property: "Address",
-      value: address || "N/A",
+      property: t("address"),
+      value: address || t("notAvailable"),
     },
     {
-      property: "City",
-      value: city || "N/A",
+      property: t("city"),
+      value: city || t("notAvailable"),
     },
     {
-      property: "State",
-      value: state || "N/A",
+      property: t("state"),
+      value: state || t("notAvailable"),
     },
     {
-      property: "Zip Code",
-      value: zip_code || "N/A",
+      property: t("zipCode"),
+      value: zip_code || t("notAvailable"),
     },
   ];
 
@@ -83,7 +86,7 @@ const ProfileBody = ({ userInfo }) => {
                 className="text-lg lg:text-xl font-thin
                text-neutral-400 mb-4"
               >
-                About
+                {t("about")}
               </h4>
 
               <div className="divide-y lg:text-base divide-gray-200 dark:divide-gray-800 space-y-2 ">
@@ -117,13 +120,13 @@ const ProfileBody = ({ userInfo }) => {
         {/* Delete Account */}
         <Card className="md:h-[calc(50%-0.5rem)]!">
           <h4 className="text-lg font-thin text-neutral-500">
-            Change Password
+            {t("changePassword")}
           </h4>
 
           <div className="flex flex-col gap-2 lg:gap-4 mt-2">
             <Checkbox onChange={() => setIsChangeBtnActive(!isChangeBtnActive)}>
               <span className="text-sm md:text-base">
-                I want change my password
+                {t("changePasswordInfo")}
               </span>
             </Checkbox>
 
@@ -133,22 +136,24 @@ const ProfileBody = ({ userInfo }) => {
               danger
               disabled={!isChangeBtnActive}
             >
-              Change Password
+              {t("changePassword")}
             </Button>
           </div>
         </Card>
         <Card className="md:h-[calc(50%-0.5rem)]!">
-          <h4 className="text-lg font-thin text-neutral-500">Delete Account</h4>
+          <h4 className="text-lg font-thin text-neutral-500">
+            {t("deleteAccount")}
+          </h4>
 
           <div className="flex flex-col gap-2 lg:gap-4 mt-2">
             <Checkbox onChange={() => setIsRemoveBtnActive(!isRemoveBtnActive)}>
               <span className="text-sm md:text-base">
-                I confirm my account deactivation
+                {t("deleteAccountInfo")}
               </span>
             </Checkbox>
 
             <Button type="primary" danger disabled={!isRemoveBtnActive}>
-              Remove
+              {t("remove")}
             </Button>
           </div>
         </Card>

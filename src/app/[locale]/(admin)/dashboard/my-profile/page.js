@@ -9,33 +9,7 @@ import { getImageUrl } from "@/utils/getImageUrl";
 import dynamic from "next/dynamic";
 import ProfileSkeleton from "./_components/ProfileSkeleton";
 import { useDashboardContext } from "@/contexts/DashboardProvider";
-
-const options = [
-  {
-    label: "Bangla",
-    value: "bangla",
-    emoji: "🇧🇩",
-    desc: "Bangla (বাংলা)",
-  },
-  {
-    label: "USA",
-    value: "usa",
-    emoji: "🇺🇸",
-    desc: "USA (美国)",
-  },
-  {
-    label: "Japan",
-    value: "japan",
-    emoji: "🇯🇵",
-    desc: "Japan (日本)",
-  },
-  {
-    label: "Korea",
-    value: "korea",
-    emoji: "🇰🇷",
-    desc: "Korea (韩国)",
-  },
-];
+import { useTranslations } from "next-intl";
 
 const ProfileEditModal = dynamic(
   () => import("./_components/ProfileEditModal"),
@@ -43,6 +17,7 @@ const ProfileEditModal = dynamic(
 );
 
 const ProfilePage = () => {
+  const t = useTranslations("Dashboard.myProfile");
   const { isModalOpen, handleCancelModal, handleShowModal } = useModal();
 
   const { profileData, profileLoading, profileRefetch } = useDashboardContext();
@@ -100,7 +75,7 @@ const ProfilePage = () => {
           </div>
           <div className="absolute right-3 top-2 lg:top-1/2 lg:-translate-y-1/2">
             <PrimaryButton onClick={handleShowModal} icon="Edit" iconSize={16}>
-              <span className="hidden md:flex">Edit Profile</span>
+              <span className="hidden md:flex">{t("editProfile")}</span>
             </PrimaryButton>
           </div>
         </div>

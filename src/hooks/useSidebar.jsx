@@ -4,7 +4,7 @@ import { DashboardOutlined } from "@ant-design/icons";
 import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "@/contexts/ThemeContextProvider";
 import LucideIcon from "@/components/LucideIcon";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 const useSidebar = () => {
   const router = useRouter();
@@ -18,11 +18,13 @@ const useSidebar = () => {
     setActiveKey(e.key);
   };
 
+  const t = useTranslations("Dashboard.sidebar");
+
   const items = [
     {
       key: "/dashboard",
       icon: <DashboardOutlined />,
-      label: <span>Dashboard</span>,
+      label: <span>{t("dashboard")}</span>,
     },
     // {
     //   key: "3",
@@ -36,28 +38,32 @@ const useSidebar = () => {
       // icon: <UserOutlined />,
       label: (
         <span className="text-neutral-400 dark:text-neutral-500 font-medium text-sm">
-          Money Transfer
+          {t("moneyTransfer")}
         </span>
       ),
       children: [
         {
           key: "/dashboard/add-money",
-          label: <span className="text-sm font-semibold">Add Money</span>,
+          label: <span className="text-sm font-semibold">{t("addMoney")}</span>,
           icon: <LucideIcon name={"CirclePlus"} size={14} />,
         },
         {
           key: "/dashboard/send-money",
-          label: <span className="text-sm font-semibold">Send Money</span>,
+          label: (
+            <span className="text-sm font-semibold">{t("sendMoney")}</span>
+          ),
           icon: <LucideIcon name={"Send"} size={14} />,
         },
         {
           key: "/dashboard/request-money",
-          label: <span className="text-sm font-semibold">Request Money</span>,
+          label: (
+            <span className="text-sm font-semibold">{t("requestMoney")}</span>
+          ),
           icon: <LucideIcon name={"HandCoins"} size={14} />,
         },
         {
           key: "/dashboard/withdraw-money",
-          label: <span className="text-sm font-semibold">Withdraw</span>,
+          label: <span className="text-sm font-semibold">{t("withdraw")}</span>,
           icon: <LucideIcon name={"BanknoteArrowDown"} size={14} />,
         },
       ],
@@ -67,29 +73,35 @@ const useSidebar = () => {
       // icon: <UserOutlined />,
       label: (
         <span className="text-neutral-400 dark:text-neutral-500 font-medium text-sm">
-          Wallet Action
+          {t("walletAction")}
         </span>
       ),
       children: [
         {
           key: "/dashboard/my-card",
-          label: <span className="text-sm font-semibold">My Card</span>,
+          label: <span className="text-sm font-semibold">{t("myCard")}</span>,
           icon: <LucideIcon name={"Crown"} size={14} />,
         },
         {
           key: "/dashboard/my-recipient",
-          label: <span className="text-sm font-semibold">My Recipients</span>,
+          label: (
+            <span className="text-sm font-semibold">{t("myRecipients")}</span>
+          ),
           icon: <LucideIcon name={"ArrowDownLeft"} size={14} />,
         },
 
         {
           key: "/dashboard/money-exchange",
-          label: <span className="text-sm font-semibold">Money Exchange</span>,
+          label: (
+            <span className="text-sm font-semibold">{t("moneyExchange")}</span>
+          ),
           icon: <LucideIcon name={"ArrowRightLeft"} size={14} />,
         },
         {
           key: "/dashboard/my-voucher",
-          label: <span className="text-sm font-semibold">My Voucher</span>,
+          label: (
+            <span className="text-sm font-semibold">{t("myVoucher")}</span>
+          ),
           icon: <LucideIcon name={"ReceiptText"} size={14} />,
         },
       ],
@@ -99,50 +111,64 @@ const useSidebar = () => {
       // icon: <UserOutlined />,
       label: (
         <span className="text-neutral-400 dark:text-neutral-500 font-medium text-sm">
-          Transaction Log
+          {t("transactionLog")}
         </span>
       ),
       children: [
         {
           key: "/dashboard/transactions/all-transactions",
           label: (
-            <span className="text-sm font-semibold">All Transactions</span>
+            <span className="text-sm font-semibold">
+              {t("allTransactions")}
+            </span>
           ),
           icon: <LucideIcon name={"ListFilter"} size={14} />,
         },
         {
           key: "/dashboard/transactions/add-money-log",
-          label: <span className="text-sm font-semibold">Add Money Log</span>,
+          label: (
+            <span className="text-sm font-semibold">{t("addMoneyLog")}</span>
+          ),
           icon: <LucideIcon name={"CirclePlus"} size={14} />,
         },
         {
           key: "/dashboard/transactions/send-money-log",
-          label: <span className="text-sm font-semibold">Send Money Log</span>,
+          label: (
+            <span className="text-sm font-semibold">{t("sendMoneyLog")}</span>
+          ),
           icon: <LucideIcon name={"Send"} size={14} />,
         },
         {
           key: "/dashboard/transactions/withdraw-log",
-          label: <span className="text-sm font-semibold">Withdraw Log</span>,
+          label: (
+            <span className="text-sm font-semibold">{t("withdrawLog")}</span>
+          ),
           icon: <LucideIcon name={"BanknoteArrowDown"} size={14} />,
         },
         {
           key: "/dashboard/transactions/money-exchange-log",
           label: (
-            <span className="text-sm font-semibold">Money Exchange Log</span>
+            <span className="text-sm font-semibold">
+              {t("moneyExchangeLog")}
+            </span>
           ),
           icon: <LucideIcon name={"ArrowRightLeft"} size={14} />,
         },
         {
           key: "/dashboard/transactions/money-request-log",
           label: (
-            <span className="text-sm font-semibold">Money Request Log</span>
+            <span className="text-sm font-semibold">
+              {t("moneyRequestLog")}
+            </span>
           ),
           // icon: <LucideIcon name={"ArrowRightLeft"} size={14} />,
           icon: <LucideIcon name={"HandCoins"} size={14} />,
         },
         {
           key: "/dashboard/transactions/voucher-log",
-          label: <span className="text-sm font-semibold">Voucher Log</span>,
+          label: (
+            <span className="text-sm font-semibold">{t("voucherLog")}</span>
+          ),
           icon: <LucideIcon name={"ArrowRightLeft"} size={14} />,
         },
       ],

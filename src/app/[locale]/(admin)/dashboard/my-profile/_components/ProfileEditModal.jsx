@@ -13,16 +13,7 @@ import showToast from "@/lib/toast";
 import { useDashboardContext } from "@/contexts/DashboardProvider";
 import { getSuccessMessage } from "@/utils/getSuccessMessage";
 
-const schema = yup.object({
-  firstname: yup.string().required("First name is required"),
-  lastname: yup.string().required("Last name is required"),
-  country: yup.string().required("Country is required"),
-  mobile: yup.string().required("Phone is required"),
-  address: yup.string().optional(),
-  city: yup.string().optional(),
-  state: yup.string().optional(),
-  zip_code: yup.string().optional(),
-});
+import { useTranslations } from "next-intl";
 
 const ProfileEditModal = ({
   userInfo,
@@ -31,6 +22,18 @@ const ProfileEditModal = ({
   countries,
   profileRefetch,
 }) => {
+  const t = useTranslations("Dashboard.myProfile");
+  const schema = yup.object({
+    firstname: yup.string().required(t("validation.firstNameRequired")),
+    lastname: yup.string().required(t("validation.lastNameRequired")),
+    country: yup.string().required(t("validation.countryRequired")),
+    mobile: yup.string().required(t("validation.phoneRequired")),
+    address: yup.string().optional(),
+    city: yup.string().optional(),
+    state: yup.string().optional(),
+    zip_code: yup.string().optional(),
+  });
+
   const [avatar, setAvatar] = useState(null);
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
   const { dashboardRefetch } = useDashboardContext();
@@ -112,7 +115,7 @@ const ProfileEditModal = ({
 
       onClose();
     } catch (err) {
-      showToast.error(err?.data?.message?.error[0] || "Something went wrong");
+      showToast.error(err?.data?.message?.error[0] || t("somethingWentWrong"));
     }
   };
 
@@ -141,7 +144,7 @@ const ProfileEditModal = ({
       width={640}
       closeIcon={true}
     >
-      <h3 className="text-lg font-semibold mb-6">Edit Profile</h3>
+      <h3 className="text-lg font-semibold mb-6">{t("editProfileTitle")}</h3>
 
       {/* Avatar */}
       <div className="flex justify-center mb-6">
@@ -162,7 +165,12 @@ const ProfileEditModal = ({
       <Form layout="vertical" onFinish={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           {/* Full Name */}
-          <FormItem required={true} errors={errors} label="First Name" name="">
+          <FormItem
+            required={true}
+            errors={errors}
+            label={t("firstName")}
+            name=""
+          >
             <Controller
               name="firstname"
               control={control}
@@ -170,7 +178,12 @@ const ProfileEditModal = ({
             />
           </FormItem>
           {/* Last Name */}
-          <FormItem required={true} errors={errors} label="Last Name" name="">
+          <FormItem
+            required={true}
+            errors={errors}
+            label={t("lastName")}
+            name=""
+          >
             <Controller
               name="lastname"
               control={control}
@@ -183,7 +196,7 @@ const ProfileEditModal = ({
           <FormItem
             required={true}
             errors={errors}
-            label="Country"
+            label={t("country")}
             name="country"
           >
             <Controller
@@ -200,7 +213,12 @@ const ProfileEditModal = ({
               )}
             />
           </FormItem>
-          <FormItem required={true} errors={errors} label="Phone" name="mobile">
+          <FormItem
+            required={true}
+            errors={errors}
+            label={t("phone")}
+            name="mobile"
+          >
             <Space.Compact size="large" className="w-full">
               {/* Currency Select */}
 
@@ -224,7 +242,7 @@ const ProfileEditModal = ({
                   <div className="w-full relative">
                     <Input
                       {...field}
-                      placeholder="Phone Number"
+                      placeholder={t("phoneNumberPlaceholder")}
                       type="number"
                     />
                   </div>
@@ -237,7 +255,7 @@ const ProfileEditModal = ({
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           {/* Address */}
-          <FormItem label="Address" name="">
+          <FormItem label={t("address")} name="">
             <Controller
               name="address"
               control={control}
@@ -245,7 +263,7 @@ const ProfileEditModal = ({
             />
           </FormItem>
           {/* City */}
-          <FormItem label="City" name="">
+          <FormItem label={t("city")} name="">
             <Controller
               name="city"
               control={control}
@@ -256,7 +274,7 @@ const ProfileEditModal = ({
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {/* State */}
-          <FormItem label="State" name="state">
+          <FormItem label={t("state")} name="state">
             <Controller
               name="state"
               control={control}
@@ -265,7 +283,7 @@ const ProfileEditModal = ({
           </FormItem>
 
           {/* Zip */}
-          <FormItem label="Zip Code" name="zip_code">
+          <FormItem label={t("zipCode")} name="zip_code">
             <Controller
               name="zip_code"
               control={control}
@@ -279,7 +297,7 @@ const ProfileEditModal = ({
           loading={isLoading}
           className="w-full mt-4"
         >
-          Save Changes
+          {t("saveChanges")}
         </PrimaryButton>
       </Form>
     </Modal>

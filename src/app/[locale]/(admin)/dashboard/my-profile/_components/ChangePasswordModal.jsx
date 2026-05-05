@@ -12,19 +12,24 @@ import { getSuccessMessage } from "@/utils/getSuccessMessage";
 import showToast from "@/lib/toast";
 import { LoaderCircle } from "lucide-react";
 
-const schema = yup.object({
-  currentPassword: yup.string().required("Current password is required"),
-  newPassword: yup
-    .string()
-    .required("New password is required")
-    .notOneOf([yup.ref("currentPassword")], "New password must be different"),
-  confirmPassword: yup
-    .string()
-    .required("Confirm password is required")
-    .oneOf([yup.ref("newPassword")], "Passwords do not match"),
-});
+import { useTranslations } from "next-intl";
 
 const ChangePasswordModal = ({ open, onClose }) => {
+  const t = useTranslations("Dashboard.myProfile");
+  const schema = yup.object({
+    currentPassword: yup
+      .string()
+      .required(t("validation.currentPasswordRequired")),
+    newPassword: yup
+      .string()
+      .required(t("validation.newPasswordRequired"))
+      .notOneOf([yup.ref("currentPassword")], t("validation.newPasswordDifferent")),
+    confirmPassword: yup
+      .string()
+      .required(t("validation.confirmPasswordRequired"))
+      .oneOf([yup.ref("newPassword")], t("validation.passwordsDoNotMatch")),
+  });
+
   const [updatePassword, { data, isLoading }] = useUpdatePasswordMutation();
   const {
     control,
@@ -71,12 +76,12 @@ const ChangePasswordModal = ({ open, onClose }) => {
       closeIcon={false}
       width={520}
     >
-      <h3 className="text-lg font-semibold mb-6">Change Password</h3>
+      <h3 className="text-lg font-semibold mb-6">{t("changePasswordTitle")}</h3>
 
       <Form layout="vertical" onFinish={handleSubmit(onSubmit)}>
         {/* Current Password */}
         <FormItem
-          label="Current Password"
+          label={t("currentPassword")}
           required={true}
           name={"currentPassword"}
           errors={errors}
@@ -88,7 +93,7 @@ const ChangePasswordModal = ({ open, onClose }) => {
               <Input.Password
                 {...field}
                 size="large"
-                placeholder="Enter Password..."
+                placeholder={t("enterPasswordPlaceholder")}
               />
             )}
           />
@@ -97,7 +102,7 @@ const ChangePasswordModal = ({ open, onClose }) => {
         {/* New Password */}
         <FormItem
           name={"newPassword"}
-          label="New Password"
+          label={t("newPassword")}
           required={true}
           errors={errors}
         >
@@ -108,7 +113,7 @@ const ChangePasswordModal = ({ open, onClose }) => {
               <Input.Password
                 {...field}
                 size="large"
-                placeholder="Enter New Password..."
+                placeholder={t("enterNewPasswordPlaceholder")}
               />
             )}
           />
@@ -116,7 +121,7 @@ const ChangePasswordModal = ({ open, onClose }) => {
 
         {/* Confirm Password */}
         <FormItem
-          label="Confirm Password"
+          label={t("confirmPassword")}
           name={"confirmPassword"}
           required={true}
           errors={errors}
@@ -128,7 +133,7 @@ const ChangePasswordModal = ({ open, onClose }) => {
               <Input.Password
                 {...field}
                 size="large"
-                placeholder="Enter Confirm Password..."
+                placeholder={t("enterConfirmPasswordPlaceholder")}
               />
             )}
           />
@@ -138,7 +143,7 @@ const ChangePasswordModal = ({ open, onClose }) => {
           {isSubmitting ? (
             <LoaderCircle className="animate-spin text-white" />
           ) : (
-            "Change"
+            t("change")
           )}
         </PrimaryButton>
       </Form>
