@@ -264,12 +264,12 @@ const SendMoney = () => {
     },
     {
       label: (
-        <span className="font-bold text-base lg:text-lg">
+        <span className="font-semibold text-base lg:text-lg! py-3 block">
           {t("summary.totalPayable")}
         </span>
       ),
       value: (
-        <span className="font-bold text-base lg:text-lg ">
+        <span className="font-semibold text-base lg:text-lg! py-3 block">
           {Number(totalPayable ?? 0).toFixed(2)} {selectedSenderCurrency}
         </span>
       ),
@@ -282,7 +282,7 @@ const SendMoney = () => {
         <div className="grid md:grid-cols-5 gap-4 lg:gap-6">
           <div className="col-span-1 md:col-span-3 ">
             <Card title={t("title")} className="h-full!">
-              <div className="bg-neutral-50 dark:bg-slate-900 mb-4 dark-border rounded-2xl shadow-xs p-4 flex flex-col gap-3 overflow-hidden">
+              <div className="bg-neutral-50 dark:bg-slate-950 mb-4  rounded-2xl shadow-xs p-4 flex flex-col gap-3 overflow-hidden">
                 <div className="flex items-center justify-between">
                   <div className="w-7 h-7 rounded-full flex items-center justify-center bg-primary-50! dark:bg-primary-500! border border-primary/50">
                     <DollarSign className="w-4 h-4 text-primary dark:text-primary-50! " />
@@ -293,8 +293,10 @@ const SendMoney = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                  <div className="bg-white dark:bg-slate-900 dark-border rounded-2xl p-4">
-                    <p className="text-gray-500 text-sm">{t("exchangeRate")}</p>
+                  <div className="bg-white dark:bg-slate-800 rounded-2xl p-4">
+                    <p className="text-gray-600 dark:text-gray-400 text-sm">
+                      {t("exchangeRate")}
+                    </p>
                     <p
                       dir="ltr"
                       className="text-base lg:text-xl text-neutral-800 dark:text-neutral-300 font-semibold! rtl:text-right"
@@ -303,8 +305,8 @@ const SendMoney = () => {
                       {selectedReceiverCurrency}
                     </p>
                   </div>
-                  <div className="bg-white dark:bg-slate-900 dark-border rounded-2xl p-4">
-                    <p className="text-gray-500 text-sm">
+                  <div className="bg-white dark:bg-slate-800 rounded-2xl p-4">
+                    <p className="text-gray-600 dark:text-gray-400 ">
                       {t("availableBalance")}:
                     </p>
                     <p
@@ -319,7 +321,7 @@ const SendMoney = () => {
                 </div>
               </div>
 
-              <div className="rounded-2xl shadow-xs p-4 bg-neutral-50 dark:bg-slate-900 dark-border">
+              <div className="rounded-2xl shadow-xs p-4 bg-neutral-50 dark:bg-slate-950 ">
                 <Form
                   onFinish={handleSubmit(onSubmit)}
                   layout="vertical space-y-4!"
@@ -444,12 +446,12 @@ const SendMoney = () => {
           </div>
           <div className="col-span-1 md:col-span-2">
             <Card title={t("summary.title")} className="h-full! ">
-              <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-neutral-50 dark:bg-slate-900 dark-border shadow-xs   ">
-                <div className="divide-y divide-gray-200 dark:divide-gray-800 ">
+              <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-neutral-50 dark:bg-slate-950  shadow-xs   ">
+                <div className="space-y-4">
                   {singleTable?.map((row, idx) => (
                     <div
                       key={idx}
-                      className="flex justify-between items-center py-3 text-sm last:border-t"
+                      className="flex justify-between items-center  text-sm last:border-t  border-neutral-200 dark:border-gray-700"
                     >
                       <span className="text-gray-600  dark:text-gray-400">
                         {row.label}
