@@ -109,7 +109,7 @@ export default function TransactionHistory() {
 
         return (
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-300">
+            <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-600">
               {isIn ? (
                 <ArrowDownOutlined className="text-gray-500 rotate-45 text-lg" />
               ) : (
@@ -118,7 +118,7 @@ export default function TransactionHistory() {
             </div>
 
             <div>
-              <p className="font-medium text-gray-800 dark:text-neutral-300">
+              <p className="text-sm! font-medium text-gray-800 dark:text-neutral-300">
                 {type}
               </p>
             </div>
@@ -131,7 +131,10 @@ export default function TransactionHistory() {
       title: t("transactions.trxId"),
       dataIndex: "trx_id",
       render: (id) => (
-        <span className="text-gray-600 dark:text-neutral-300">{id}</span>
+        <span
+          dir="ltr"
+          className="text-gray-600 dark:text-neutral-300"
+        >{`#${id}`}</span>
       ),
     },
     {
@@ -143,21 +146,17 @@ export default function TransactionHistory() {
         </span>
       ),
     },
-
     {
       title: t("transactions.amount"),
       dataIndex: "receive_amount",
       render: (amount, record) => {
-        const isIn = record.type === "DEPOSIT";
-
         return (
-          <span dir="ltr" className={`font-semibold`}>
-            {amount?.toFixed(4)} {record?.request_currency}
+          <span dir="ltr" className={`font-semibold text-primary`}>
+            +{amount?.toFixed(4)} {record?.request_currency}
           </span>
         );
       },
     },
-
     {
       title: t("transactions.currency"),
       dataIndex: "request_currency",
@@ -165,7 +164,6 @@ export default function TransactionHistory() {
         <span className="text-gray-600 dark:text-neutral-300">{currency}</span>
       ),
     },
-
     {
       title: t("status.title"),
       dataIndex: "status",
@@ -224,7 +222,7 @@ export default function TransactionHistory() {
 
   return (
     <Card
-      title={t("transactions.title")}
+      title={<h5>{t("transactions.title")}</h5>}
       extra={TableExtra}
       className=" overflow-x-auto! dark:border-neutral-900! shadow-xs border-0!"
     >

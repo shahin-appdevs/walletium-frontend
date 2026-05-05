@@ -5,20 +5,19 @@ import TransactionOverview from "../_components/homepage/TransactionOverview/Tra
 import TransactionHistory from "../_components/homepage/TransactionHistory/TransactionHistory";
 import VirtualCardSlider from "../_components/homepage/VirtualCardSlider/VirtualCardSlider";
 import { useTranslations } from "next-intl";
+import AdSliders from "../_components/homepage/AdSliders/AdSliders";
 
 const DashboardHome = () => {
   const t = useTranslations("Dashboard.home");
   return (
     <div className="space-y-4 lg:space-y-6">
-      <div className="grid grid-cols-1 2xl:grid-cols-3 gap-4 lg:grid-6">
-        <div className="col-span-1 2xl:col-span-2">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 lg:grid-6">
+        <div className="col-span-1 xl:col-span-2">
           <Stats t={t} />
-
-          {/* <LatestTransactions /> */}
         </div>
-        <div className="2xl:col-span-1 hidden 2xl:block">
-          <div>
-            {/* <AdSliders /> */}
+        <div className="col-span-1 xl:col-span-1">
+          <div className="space-y-4 lg:space-y-4">
+            <AdSliders />
             <VirtualCardSlider />
           </div>
         </div>

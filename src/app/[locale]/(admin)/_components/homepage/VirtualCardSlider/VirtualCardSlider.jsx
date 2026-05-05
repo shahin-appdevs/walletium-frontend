@@ -38,10 +38,10 @@ export default function VirtualCardSlider() {
   ];
 
   return (
-    <div className="  p-5 rounded-xl bg-white dark:bg-slate-900 shadow-xs ">
-      <h3 className="text-xl font-bold text-gray-800 dark:text-slate-100 mb-4">
+    <div className="  p-4 rounded-2xl bg-white dark:bg-slate-900 shadow-xs ">
+      <h5 className="font-bold text-gray-800 dark:text-slate-100">
         {t("virtualCard.title")}
-      </h3>
+      </h5>
 
       {/* Swiper Carousel */}
       <Swiper
@@ -50,17 +50,17 @@ export default function VirtualCardSlider() {
         spaceBetween={20}
         slidesPerView={1.3}
         centeredSlides={true}
-        className="pb-8"
+        className="pb-4!"
       >
         {cards.map((card, i) => (
           <SwiperSlide key={i}>
-            <Image src={cardImage} alt="Image" height={300} width={500} />
+            <Image src={cardImage} alt="Image" height={400} width={500} />
           </SwiperSlide>
         ))}
       </Swiper>
 
       {/* Balance Section */}
-      <div className="flex justify-between items-center mt-5">
+      <div className="flex justify-between items-center ">
         <div>
           <p className="text-gray-500 text-sm">
             {t("virtualCard.totalBalance")}
@@ -73,7 +73,7 @@ export default function VirtualCardSlider() {
 
         <button
           onClick={() => setToggleShow(!toggleShow)}
-          className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600"
+          className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 dark:bg-gray-700! cursor-pointer dark:text-neutral-300 hover:bg-gray-100 transition-none"
         >
           <LucideIcon
             name={toggleShow ? "EyeOff" : "Eye"}

@@ -8,9 +8,9 @@ const TransactionOverview = () => {
     <div>
       <Card
         title={
-          <span className="text-xl font-bold text-neutral-800 dark:text-neutral-300 ">
+          <h5 className=" font-bold text-neutral-800 dark:text-neutral-300 ">
             {t("overviewTitle")}
-          </span>
+          </h5>
         }
         className="shadow-xs border-0!"
       >

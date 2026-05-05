@@ -27,11 +27,11 @@ const Stats = ({ t }) => {
         <StatsSkeleton />
       ) : (
         <div>
-          <div className="w-full flex flex-col md:flex-row items-center justify-between pb-4 lg:pb-6">
+          <div className="w-full flex flex-col md:flex-row items-center justify-between pb-4 lg:pb-0">
             {/* Left Section */}
             <div className="flex items-center gap-4 mb-4">
               <div>
-                <p className="text-muted text-base font-medium ">
+                <p className="text-muted text-base! font-medium! ">
                   {t("totalWalletBalance")}
                 </p>
                 <h2 className="text-2xl font-bold text-title" dir="ltr">
@@ -40,7 +40,7 @@ const Stats = ({ t }) => {
               </div>
               <button
                 onClick={() => setToggleShow(!toggleShow)}
-                className="p-2 rounded-full border border-gray-300 hover:bg-gray-100 transition"
+                className="p-2 rounded-full   bg-white dark:bg-gray-700! cursor-pointer dark:text-neutral-300 transition-none"
               >
                 <LucideIcon
                   name={toggleShow ? "EyeOff" : "Eye"}
@@ -71,7 +71,7 @@ const Stats = ({ t }) => {
             </div>
           </div>
           {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5 gap-4">
             {wallets?.map((item, index) => (
               <CurrencyCard key={index} item={item} />
             ))}

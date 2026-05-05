@@ -149,30 +149,33 @@ const LayoutHeader = ({ collapsed, setCollapsed }) => {
                     />
                   )} */}
                 </div>
-
                 {/* Avatar */}
-                <div className="group/profile relative border p-2 rounded-lg border-black/10 dark:border-white/10">
-                  <Image
-                    onClick={() => setShowProfileDropdown(!showProfileDropdown)}
-                    src={profileImageUrl}
-                    alt="User"
-                    height={100}
-                    width={100}
-                    className="h-[35px] w-[35px] rounded-full object-cover"
-                  />
-                  <div className="translate-y-10  opacity-0 group-hover/profile:lg:translate-y-0 group-hover/profile:lg:opacity-100 group-hover/profile:lg:visible invisible duration-300 absolute top-8 ltr:right-0 rtl:left-0 z-30 py-4">
-                    <ProfileDropdown
-                      userInfo={{ ...userInfo, image: profileImageUrl }}
+                {profileImageUrl && (
+                  <div className="group/profile relative border p-2 rounded-lg border-black/10 dark:border-white/10">
+                    <Image
+                      onClick={() =>
+                        setShowProfileDropdown(!showProfileDropdown)
+                      }
+                      src={profileImageUrl}
+                      alt="User"
+                      height={100}
+                      width={100}
+                      className="h-[35px] w-[35px] rounded-full object-cover"
                     />
-                  </div>
-                  {showProfileDropdown && (
-                    <div className="lg:hidden absolute top-8 ltr:right-0 rtl:left-0 z-30 py-4">
+                    <div className="translate-y-10  opacity-0 group-hover/profile:lg:translate-y-0 group-hover/profile:lg:opacity-100 group-hover/profile:lg:visible invisible duration-300 absolute top-8 ltr:right-0 rtl:left-0 z-30 py-4">
                       <ProfileDropdown
                         userInfo={{ ...userInfo, image: profileImageUrl }}
                       />
                     </div>
-                  )}
-                </div>
+                    {showProfileDropdown && (
+                      <div className="lg:hidden absolute top-8 ltr:right-0 rtl:left-0 z-30 py-4">
+                        <ProfileDropdown
+                          userInfo={{ ...userInfo, image: profileImageUrl }}
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>

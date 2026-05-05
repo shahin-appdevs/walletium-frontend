@@ -11,7 +11,8 @@
 
 .ant-layout-sider,
 .ant-menu {
-  transition: none !important;
+  /* transition: none !important; */
+  transition: all 0.3s ease !important;
 }
 
 .ant-menu-item,

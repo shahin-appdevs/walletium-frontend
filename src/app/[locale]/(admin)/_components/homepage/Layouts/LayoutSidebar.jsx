@@ -25,7 +25,7 @@ const LayoutSidebar = ({ collapsed }) => {
         theme={mode}
         collapsedWidth="0"
         // style={{ background: background }}
-        className="sticky! top-0! h-screen! overflow-y-auto overflow-x-hidden!  sidebar-main transition-none!"
+        className="sticky! top-0! h-screen! overflow-y-auto overflow-x-hidden!  sidebar-main"
       >
         <div className="p-2 lg:px-4  lg:py-8">
           <Link href={"/dashboard"} className="cursor-pointer">
@@ -54,7 +54,7 @@ const LayoutSidebar = ({ collapsed }) => {
           openKeys={["2", "3", "5", "4"]}
           theme={mode}
           mode="inline"
-          className="font-medium text-lg overflow-hidden! pb-4! transition-none!"
+          className="font-medium text-lg overflow-hidden! pb-4!"
           defaultSelectedKeys={["1"]}
           selectedKeys={[activeKey]}
           items={items}
