@@ -444,6 +444,28 @@
                 "close": "Close",
                 "viewMore": "View More"
             }
+        },
+        "transactions": {
+            "allTransactions": {
+                "title": "All Transactions",
+                "type": "Type",
+                "trxId": "Transaction ID",
+                "date": "Date",
+                "amount": "Amount",
+                "currency": "Currency",
+                "totalPage": "Total {total} Items",
+                "perPage": "Per Page",
+                "transaction": {
+                    "searchPlaceholder": "Search Transactions..."
+                },
+                "status": {
+                    "title": "Status",
+                    "success": "Success",
+                    "pending": "Pending",
+                    "hold": "Hold",
+                    "rejected": "Rejected"
+                }
+            }
         }
     },
     "Login": {

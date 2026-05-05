@@ -104,6 +104,13 @@ const useSidebar = () => {
       ),
       children: [
         {
+          key: "/dashboard/transactions/all-transactions",
+          label: (
+            <span className="text-sm font-semibold">All Transactions</span>
+          ),
+          icon: <LucideIcon name={"ListFilter"} size={14} />,
+        },
+        {
           key: "/dashboard/transactions/add-money-log",
           label: <span className="text-sm font-semibold">Add Money Log</span>,
           icon: <LucideIcon name={"CirclePlus"} size={14} />,

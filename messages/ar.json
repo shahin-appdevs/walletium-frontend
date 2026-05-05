@@ -417,6 +417,28 @@
                 "close": "إغلاق",
                 "viewMore": "عرض المزيد"
             }
+        },
+        "transactions": {
+            "allTransactions": {
+                "title": "جميع المعاملات",
+                "type": "النوع",
+                "trxId": "رقم العملية",
+                "date": "التاريخ",
+                "amount": "المبلغ",
+                "currency": "العملة",
+                "totalPage": "إجمالي {total} عنصر",
+                "perPage": "لكل صف",
+                "transaction": {
+                    "searchPlaceholder": "البحث في المعاملات..."
+                },
+                "status": {
+                    "title": "الحالة",
+                    "success": "ناجحة",
+                    "pending": "قيد الانتظار",
+                    "hold": "معلقة",
+                    "rejected": "مرفوضة"
+                }
+            }
         }
     },
     "Login": {

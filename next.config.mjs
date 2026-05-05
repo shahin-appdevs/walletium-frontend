@@ -12,6 +12,7 @@ const nextConfig = {
       { protocol: "https", hostname: "*" },
     ],
   },
+  allowedDevOrigins: ["*"],
 };
 
 export default withNextIntl(nextConfig);

@@ -1,40 +1,46 @@
 "use client";
-import { Card, Modal } from "antd";
-import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
+import { Card, Input, Modal } from "antd";
+import {
+  ArrowDownOutlined,
+  ArrowUpOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
 import Table from "@/components/ui/Table";
 import useModal from "@/hooks/useModal";
 import { useState } from "react";
 import useViewport from "@/hooks/useViewport";
-import { useDashboardContext } from "@/contexts/DashboardProvider";
 import dayjs from "dayjs";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
-import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { useGetTransactionsQuery } from "@/redux/api/dashboardApi";
+import { statusMap } from "@/utils/statusMap";
 
 export default function TransactionHistory() {
-  const t = useTranslations("Dashboard.home");
+  const t = useTranslations("Dashboard.transactions.allTransactions");
   const tc = useTranslations("common");
-  const router = useRouter();
   const { isModalOpen, handleShowModal, handleCancelModal } = useModal();
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
   const [singleTable, setSingleTable] = useState([]);
-  const { smallScreen, mediumScreen } = useViewport();
-  const { dashboardData, dashboardLoading } = useDashboardContext();
+  const { smallScreen } = useViewport();
+  const { data: transactionsData, isLoading } = useGetTransactionsQuery({
+    type: "",
+    page: currentPage,
+    per_page: pageSize,
+  });
 
-  if (dashboardLoading) return null;
-
-  const data = dashboardData?.recent_transactions?.map((item, idx) => ({
-    ...item,
-    key: idx,
-  }));
+  const transactions = transactionsData?.data?.transactions?.data;
+  const paginationInfo = transactionsData?.data?.transactions;
 
   const handleOnRowClick = (record) => {
     const labels = [
-      t("transactions.type"),
-      t("transactions.trxId"),
-      t("transactions.date"),
-      t("transactions.amount"),
-      t("transactions.currency"),
+      t("type"),
+      t("trxId"),
+      t("date"),
+      t("amount"),
+      t("currency"),
       t("status.title"),
     ];
     const values = [
@@ -101,7 +107,7 @@ export default function TransactionHistory() {
 
   const columns = [
     {
-      title: t("transactions.type"),
+      title: t("type"),
       dataIndex: "type",
       width: 250,
       render: (type) => {
@@ -128,7 +134,7 @@ export default function TransactionHistory() {
     },
 
     {
-      title: t("transactions.trxId"),
+      title: t("trxId"),
       dataIndex: "trx_id",
       render: (id) => (
         <span
@@ -138,7 +144,7 @@ export default function TransactionHistory() {
       ),
     },
     {
-      title: t("transactions.date"),
+      title: t("date"),
       dataIndex: "created_at",
       render: (date) => (
         <span className="text-gray-600 dark:text-neutral-300">
@@ -147,7 +153,7 @@ export default function TransactionHistory() {
       ),
     },
     {
-      title: t("transactions.amount"),
+      title: t("amount"),
       dataIndex: "receive_amount",
       render: (amount, record) => {
         return (
@@ -158,7 +164,7 @@ export default function TransactionHistory() {
       },
     },
     {
-      title: t("transactions.currency"),
+      title: t("currency"),
       dataIndex: "request_currency",
       render: (currency) => (
         <span className="text-gray-600 dark:text-neutral-300">{currency}</span>
@@ -168,29 +174,6 @@ export default function TransactionHistory() {
       title: t("status.title"),
       dataIndex: "status",
       render: (status) => {
-        const statusMap = {
-          1: {
-            label: t("status.success"),
-            className:
-              "bg-green-100 text-green-700 dark:bg-green-700 dark:text-green-100",
-          },
-          2: {
-            label: t("status.pending"),
-            className:
-              "bg-yellow-100 text-yellow-700 dark:bg-yellow-700 dark:text-yellow-100",
-          },
-          3: {
-            label: t("status.hold"),
-            className:
-              "bg-yellow-100 text-yellow-700 dark:bg-yellow-700 dark:text-yellow-100",
-          },
-          4: {
-            label: t("status.rejected"),
-            className:
-              "bg-red-100 text-red-700 dark:bg-red-700 dark:text-red-100",
-          },
-        };
-
         const current = statusMap[status];
 
         return (
@@ -208,21 +191,27 @@ export default function TransactionHistory() {
   // const mediumScreenColumn = mediumScreen ? [...columns.slice(0, 4)] : columns;
 
   const TableExtra = (
-    <PrimaryButton
-      icon="ArrowUpRight"
-      className={"text-sm w-full"}
-      iconClassName={
-        "group-hover/primary-btn:translate-1/6 group-hover/primary-btn:-translate-y-1 duration-300 rtl:-rotate-90 rtl:group-hover/primary-btn:-translate-x-1"
-      }
-      onClick={() => router.push(`/dashboard/transactions/money-request-log`)}
-    >
-      {t("transactions.viewMore")}
-    </PrimaryButton>
+    <div className="flex items-center gap-2! md:gap-0 ">
+      <div className="hidden md:block">
+        <Input
+          placeholder={t("transaction.searchPlaceholder")}
+          size="large"
+          prefix={<SearchOutlined className="text-gray-400" />}
+          className=" rounded-lg"
+        />
+      </div>
+      <div className="md:hidden">
+        <PrimaryButton
+          icon={"Search"}
+          iconClassName={"group-hover/primary-btn:rotate-90 duration-200"}
+        ></PrimaryButton>
+      </div>
+    </div>
   );
 
   return (
     <Card
-      title={<h5>{t("transactions.title")}</h5>}
+      title={<h5>{t("title")}</h5>}
       extra={TableExtra}
       className=" overflow-x-auto! dark:border-neutral-900! shadow-xs border-0!"
     >
@@ -235,7 +224,7 @@ export default function TransactionHistory() {
         closeIcon={false}
       >
         <h4 className=" font-semibold text-gray-900 dark:text-gray-100 mb-4">
-          {t("transactions.title")}
+          {t("title")}
         </h4>
         <div className="w-full max-w-2xl mx-auto px-4 rounded-xl bg-white dark:bg-[#111] shadow-xs border border-gray-200 dark:border-gray-800">
           <div className="divide-y divide-gray-200 dark:divide-gray-800">
@@ -270,8 +259,24 @@ export default function TransactionHistory() {
       {/* Styled Table */}
       <Table
         columns={smallScreenColumn}
-        dataSource={data}
-        pagination={false}
+        dataSource={transactions}
+        loading={isLoading}
+        pagination={{
+          current: paginationInfo?.current_page || 1,
+          pageSize: paginationInfo?.per_page || 10,
+          total: paginationInfo?.total || 0,
+          onChange: (page, pageSize) => {
+            setCurrentPage(page);
+            setPageSize(pageSize);
+          },
+          showTotal: (total) => t(`totalPage`, { total }),
+          showSizeChanger: true,
+          pageSizeOptions: ["10", "20", "30", "50", "100"],
+          locale: {
+            items_per_page: `/ ${t("perPage")}`,
+          },
+        }}
+        rowKey="id"
         onRowClick={handleOnRowClick}
         className="rounded-xl  border! border-gray-200! dark:border-neutral-950! md:min-w-[820px]! "
         rowClassName={() =>
