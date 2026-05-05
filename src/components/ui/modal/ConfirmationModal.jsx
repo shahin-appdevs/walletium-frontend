@@ -11,6 +11,7 @@ const ConfirmationModal = ({
   onCancel,
   onConfirm,
   loading,
+  title = "Are you sure?",
   ...props
 }) => {
   return (
@@ -28,7 +29,7 @@ const ConfirmationModal = ({
         </div>
 
         <h2 className="text-center text-lg font-semibold text-neutral-900 ">
-          Are you sure?
+          {title}
         </h2>
 
         <p className="mt-2 text-center text-sm text-gray-500">{message}</p>

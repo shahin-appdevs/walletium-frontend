@@ -2,7 +2,17 @@
     "Dashboard": {
         "dashboard": "لوحة القيادة",
         "header": {
-            "welcomeText": "مرحبا"
+            "welcomeText": "مرحبا",
+            "dropdownProfile": {
+                "sendMoney": "إرسال أموال",
+                "addFund": "إضافة رصيد",
+                "withdraw": "سحب",
+                "kycVerification": "التحقق من الهوية",
+                "twoFactorSecurity": "أمان 2FA",
+                "logout": "تسجيل الخروج",
+                "logoutConfirmation": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+                "confirmationTitle": "تأكيد"
+            }
         },
         "home": {
             "totalWalletBalance": "إجمالي رصيد المحفظة",

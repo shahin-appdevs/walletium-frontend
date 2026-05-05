@@ -9,10 +9,16 @@
   display: none !important;
 }
 
-.ant-layout-sider,
+
+.ant-layout-sider {
+  transition: none !important;
+  
+}
+
+
+
 .ant-menu {
-  /* transition: none !important; */
-  transition: all 0.3s ease !important;
+  transition: none !important;
 }
 
 .ant-menu-item,

@@ -53,7 +53,7 @@ export default function LanguageSwitcher() {
       {/* Custom Trigger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 text-xs md:text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-all  active:scale-95"
+        className="flex items-center gap-2 px-3 py-2 text-xs md:text-sm font-medium text-gray-700 dark:text-white bg-white dark:bg-transparent  border border-gray-200 dark:border-gray-200/10 dark:hover:bg-transparent rounded-lg hover:bg-gray-50 transition-all  active:scale-95"
       >
         {/* <span className="text-base">{currentLang.flag}</span> */}
         <span className="hidden sm:inline">{currentLang.name}</span>
@@ -65,22 +65,22 @@ export default function LanguageSwitcher() {
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute ltr:right-0 rtl:left-0 mt-2 w-40 origin-top-right bg-white rounded-xl shadow-xl ring-1 ring-black/5 ring-opacity-5 z-[100] overflow-hidden animate-in fade-in zoom-in duration-150">
+        <div className="absolute ltr:right-0 rtl:left-0 mt-2 w-40 origin-top-right bg-white dark:bg-gray-900  rounded-xl shadow-xl ring-1 ring-black/5 ring-opacity-5 z-[100] overflow-hidden animate-in fade-in zoom-in duration-150">
           <div className="py-1">
             {languages.map((lang) => (
               <button
                 key={lang.code}
                 onClick={() => handleLanguageChange(lang.code)}
-                className={`flex items-center gap-3 w-full px-4 py-2.5 ltr:text-left rtl:text-right text-sm transition-colors
+                className={`flex items-center gap-3 w-full px-4 py-2.5 ltr:text-left rtl:text-right text-sm transition-colors 
                                     ${
                                       currentLocale === lang.code
-                                        ? "bg-blue-50 text-blue-600 font-semibold"
-                                        : "text-gray-700 hover:bg-gray-50"
+                                        ? " bg-primary-500/10 text-primary font-semibold"
+                                        : "text-gray-700 dark:text-white hover:text-primary hover:bg-primary-500/10 "
                                     }`}
               >
                 <span className="flex-1">{lang.name}</span>
                 {currentLocale === lang.code && (
-                  <div className="w-1.5 h-1.5 rounded-full bg-blue-600"></div>
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary"></div>
                 )}
               </button>
             ))}

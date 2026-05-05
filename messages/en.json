@@ -2,7 +2,17 @@
     "Dashboard": {
         "dashboard": "Dashboard",
         "header": {
-            "welcomeText": "Welcome Back"
+            "welcomeText": "Welcome Back",
+            "dropdownProfile": {
+                "sendMoney": "Send Money",
+                "addFund": "Add Fund",
+                "withdraw": "Withdraw",
+                "kycVerification": "KYC Verification",
+                "twoFactorSecurity": "2FA Security",
+                "logout": "Logout",
+                "logoutConfirmation": "Are you sure you want to logout?",
+                "confirmationTitle": "Confirmation"
+            }
         },
         "home": {
             "totalWalletBalance": "Total Wallet Balance",

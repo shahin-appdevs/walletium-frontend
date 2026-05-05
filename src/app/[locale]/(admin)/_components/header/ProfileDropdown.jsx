@@ -17,11 +17,13 @@ import ConfirmationModal from "@/components/ui/modal/ConfirmationModal";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 import { getSuccessMessage } from "@/utils/getSuccessMessage";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 export default function ProfileDropdown({ userInfo: userProfileInfo }) {
   const router = useRouter();
   const [logout, { isLoading }] = useLogoutMutation();
   const { isModalOpen, handleCancelModal, handleShowModal } = useModal();
+  const t = useTranslations("Dashboard.header.dropdownProfile");
 
   const handleLogout = async () => {
     try {
@@ -76,17 +78,21 @@ export default function ProfileDropdown({ userInfo: userProfileInfo }) {
         <MenuItem
           href={"/dashboard/send-money"}
           icon={<SendOutlined className="dark:text-neutral-300!" />}
-          label={<span className="dark:text-neutral-300!">Send Money</span>}
+          label={
+            <span className="dark:text-neutral-300!">{t("sendMoney")}</span>
+          }
         />
         <MenuItem
           href={"/dashboard/add-money"}
           icon={<PlusCircleOutlined className="dark:text-neutral-300!" />}
-          label={<span className="dark:text-neutral-300!">Add Fund</span>}
+          label={<span className="dark:text-neutral-300!">{t("addFund")}</span>}
         />
         <MenuItem
           href={"/dashboard/withdraw-money"}
           icon={<ArrowDownOutlined className="dark:text-neutral-300!" />}
-          label={<span className="dark:text-neutral-300!">Withdraw</span>}
+          label={
+            <span className="dark:text-neutral-300!">{t("withdraw")}</span>
+          }
         />
 
         <Divider />
@@ -95,12 +101,18 @@ export default function ProfileDropdown({ userInfo: userProfileInfo }) {
           href={"/dashboard/security/kyc-verification"}
           icon={<UserOutlined className="dark:text-neutral-300!" />}
           label={
-            <span className="dark:text-neutral-300!">KYC Verification</span>
+            <span className="dark:text-neutral-300!">
+              {t("kycVerification")}
+            </span>
           }
         />
         <MenuItem
           href={"/dashboard/security/2fa"}
-          label={<span className="dark:text-neutral-300!">2FA Security</span>}
+          label={
+            <span className="dark:text-neutral-300!">
+              {t("twoFactorSecurity")}
+            </span>
+          }
           icon={<SafetyOutlined className="dark:text-neutral-300!" />}
         />
 
@@ -115,7 +127,7 @@ export default function ProfileDropdown({ userInfo: userProfileInfo }) {
           <span className="text-xl">
             <LogoutOutlined />
           </span>
-          <span className="text-sm">Logout</span>
+          <span className="text-sm">{t("logout")}</span>
         </button>
       </div>
       <ConfirmationModal
@@ -123,6 +135,8 @@ export default function ProfileDropdown({ userInfo: userProfileInfo }) {
         onCancel={handleCancelModal}
         onConfirm={handleLogout}
         loading={isLoading}
+        message={t("logoutConfirmation")}
+        confirmBtn={t("logout")}
       />
     </Card>
   );

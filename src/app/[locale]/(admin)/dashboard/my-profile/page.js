@@ -49,15 +49,20 @@ const ProfilePage = () => {
         className="min-h-[17rem] lg:h-[20rem] bg-linear-30 from-[#0EBE98] via-[#50C631] to-[#0EBE98] w-full rounded-lg shadow-lg! flex items-end "
       >
         <div className="relative min-h-[10rem] lg:min-h-[120px] bg-white dark:bg-slate-900 w-full rounded-b-lg">
-          <div className=" flex flex-col justify-center  items-center lg:items-end lg:flex-row gap-2 -translate-x-1/2 absolute -top-12 left-1/2 lg:left-0 lg:-translate-x-0 p-4">
+          <div className="flex flex-col justify-center items-center lg:items-end lg:flex-row gap-2 absolute -top-12 left-1/2 rtl:lg:left-auto  -translate-x-1/2 lg:ltr:left-0 lg:rtl:right-0 lg:translate-x-0! p-4">
             <div className="w-[110px] ">
-              <Image
-                src={profileImageUrl}
-                alt="User"
-                height={110}
-                width={110}
-                className="rounded-xl bg-white dark:bg-slate-900 p-1 max-w-[100px] h-[100px] aspect-square object-contain"
-              />
+              {profileImageUrl && (
+                <Image
+                  src={profileImageUrl}
+                  alt="User"
+                  height={100}
+                  width={100}
+                  className="rounded-xl bg-white dark:bg-slate-900 p-1 max-w-[100px] h-[100px] aspect-square object-contain"
+                  onError={(e) => {
+                    e.currentTarget.src = "/images/partials/user.png";
+                  }}
+                />
+              )}
             </div>
             <div className="flex flex-col items-center lg:items-start">
               <h3 className="text-lg lg:text-xl font-semibold">{fullName} </h3>
@@ -73,7 +78,7 @@ const ProfilePage = () => {
               </div>
             </div>
           </div>
-          <div className="absolute right-3 top-2 lg:top-1/2 lg:-translate-y-1/2">
+          <div className="absolute ltr:right-3 rtl:left-3 top-2 lg:top-1/2 lg:-translate-y-1/2">
             <PrimaryButton onClick={handleShowModal} icon="Edit" iconSize={16}>
               <span className="hidden md:flex">{t("editProfile")}</span>
             </PrimaryButton>

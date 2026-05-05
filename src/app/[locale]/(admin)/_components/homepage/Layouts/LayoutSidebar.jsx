@@ -14,7 +14,7 @@ const LayoutSidebar = ({ collapsed }) => {
   const { mode, handleNavigateRoutes, items, activeKey } = useSidebar();
 
   return (
-    <div className="hidden sidebar lg:block ">
+    <div className="hidden sidebar lg:block transition-none!">
       {/* Desktop Sidebar */}
       <Sider
         collapsible
@@ -25,9 +25,9 @@ const LayoutSidebar = ({ collapsed }) => {
         theme={mode}
         collapsedWidth="0"
         // style={{ background: background }}
-        className="sticky! top-0! h-screen! overflow-y-auto overflow-x-hidden!  sidebar-main"
+        className="sticky! top-0! h-screen! overflow-y-auto overflow-x-hidden!  sidebar-main "
       >
-        <div className="p-2 lg:px-4  lg:py-8">
+        <div className="p-2 lg:px-4  lg:py-8 ">
           <Link href={"/dashboard"} className="cursor-pointer">
             <Image
               src={
@@ -54,7 +54,7 @@ const LayoutSidebar = ({ collapsed }) => {
           openKeys={["2", "3", "5", "4"]}
           theme={mode}
           mode="inline"
-          className="font-medium text-lg overflow-hidden! pb-4!"
+          className="font-medium text-lg overflow-hidden! pb-4! "
           defaultSelectedKeys={["1"]}
           selectedKeys={[activeKey]}
           items={items}
