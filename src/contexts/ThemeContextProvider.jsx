@@ -50,6 +50,9 @@ export function ThemeProvider({ children }) {
               subMenuItemBg: "#fff",
               darkSubMenuItemBg: "oklch(20.8% 0.042 265.755)",
             },
+            Form: {
+              fontSize: "clamp(14px, 1.2vw, 16px)",
+            },
           },
         }}
       >

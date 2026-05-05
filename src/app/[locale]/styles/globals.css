@@ -56,6 +56,10 @@ p {
   font-weight: 400;
 }
 
+span{
+  font-size: clamp(14px, 1.2vw, 16px);
+}
+
 @theme {
   /* breakpoints */
   --breakpoint-2xl: 100rem;

@@ -113,7 +113,7 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
           dir="ltr"
           className="font-semibold text-green-600 whitespace-nowrap"
         >
-          + {Number(amount).toFixed(2)} {record.request_currency}
+          +{Number(amount).toFixed(2)} {record.request_currency}
         </span>
       ),
     },
@@ -132,9 +132,9 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
       render: (amount, record) => (
         <span
           dir="ltr"
-          className="font-semibold text-gray-800 dark:text-neutral-300"
+          className="font-semibold text-red-500 dark:text-neutral-300"
         >
-          {Number(amount).toFixed(2)} {record.request_currency}
+          -{Number(amount).toFixed(2)} {record.request_currency}
         </span>
       ),
     },
@@ -161,7 +161,8 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
           dir="ltr"
           className="text-gray-600 dark:text-neutral-300 whitespace-nowrap"
         >
-          1 {record.request_currency} = {rate} {record.payment_currency}
+          1 {record.request_currency} = {Number(rate || 0).toFixed(2)}{" "}
+          {record.payment_currency}
         </span>
       ),
     },
@@ -170,7 +171,7 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
       dataIndex: "total_charge",
       render: (charge, record) => (
         <span dir="ltr" className="text-red-500">
-          {Number(charge || 0).toFixed(4)} {record.request_currency}
+          -{Number(charge || 0).toFixed(2)} {record.request_currency}
         </span>
       ),
     },

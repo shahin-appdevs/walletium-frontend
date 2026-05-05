@@ -11,16 +11,16 @@ const DashboardHome = () => {
   const t = useTranslations("Dashboard.home");
   return (
     <div className="space-y-4 lg:space-y-6">
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 lg:grid-6">
-        <div className="col-span-1 xl:col-span-2">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 ">
+        <div className="col-span-1 xl:col-span-3">
           <Stats t={t} />
         </div>
-        <div className="col-span-1 xl:col-span-1">
+        {/* <div className="col-span-1 xl:col-span-1">
           <div className="space-y-4 lg:space-y-4">
             <AdSliders />
             <VirtualCardSlider />
           </div>
-        </div>
+        </div> */}
       </div>
       <TransactionOverview />
       <TransactionHistory />

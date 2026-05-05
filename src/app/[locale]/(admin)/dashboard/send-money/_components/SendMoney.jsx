@@ -451,7 +451,7 @@ const SendMoney = () => {
                       key={idx}
                       className="flex justify-between items-center py-3 text-sm last:border-t"
                     >
-                      <span className="text-gray-600 font-medium dark:text-gray-400">
+                      <span className="text-gray-600  dark:text-gray-400">
                         {row.label}
                       </span>
                       <span

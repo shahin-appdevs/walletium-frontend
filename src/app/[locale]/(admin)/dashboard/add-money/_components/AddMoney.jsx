@@ -277,19 +277,21 @@ const AddMoney = () => {
           <div className="md:col-span-3">
             <Card title={t("title")} className="h-full">
               {/* Exchange Rate & Balance */}
-              <div className="bg-neutral-50 dark:bg-slate-900 mb-6 rounded-2xl p-5 shadow-xs">
+              <div className="bg-neutral-50 dark:bg-slate-950 mb-6 rounded-2xl p-5 shadow-xs">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="w-8 h-8 rounded-full bg-primary-50 flex items-center justify-center border border-primary/30">
-                    <DollarSign className="w-5 h-5 text-primary" />
+                  <div className="w-8 h-8 rounded-full bg-primary-50 dark:bg-primary-500 flex items-center justify-center border border-primary/30">
+                    <DollarSign className="w-5 h-5 text-primary dark:text-white" />
                   </div>
-                  <div className="w-8 h-8 rounded-full bg-primary-50 flex items-center justify-center border border-primary/30">
-                    <ArrowUpRight className="w-5 h-5 text-primary rtl:-rotate-90" />
+                  <div className="w-8 h-8 rounded-full bg-primary-50 dark:bg-primary-500 flex items-center justify-center border border-primary/30">
+                    <ArrowUpRight className="w-5 h-5 text-primary rtl:-rotate-90 dark:text-white" />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 ">
-                    <p className="text-gray-500">{t("exchangeRate")}</p>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      {t("exchangeRate")}
+                    </p>
                     <p
                       dir="ltr"
                       className="text-xl font-semibold! rtl:text-right"
@@ -298,7 +300,7 @@ const AddMoney = () => {
                     </p>
                   </div>
                   <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 ">
-                    <p className="text-sm text-gray-500">
+                    <p className="text-gray-600 dark:text-gray-400">
                       {t("availableBalance")}
                     </p>
                     <p
@@ -313,7 +315,7 @@ const AddMoney = () => {
               </div>
 
               {/* Form */}
-              <div className="bg-neutral-50 dark:bg-slate-900 rounded-2xl p-6">
+              <div className="bg-neutral-50 dark:bg-slate-950 rounded-2xl p-6">
                 <form
                   onSubmit={handleSubmit(onSubmit)}
                   className="md:space-y-6"
@@ -402,10 +404,10 @@ const AddMoney = () => {
                             }}
                             options={allGatewayCurrencies.map((gateway) => ({
                               label: (
-                                <div className="flex justify-between items-center">
+                                <div className="flex justify-between items-center gap-2">
                                   <span>{gateway.name}</span>
                                   <span
-                                    className={`text-xs px-2 py-0.5 rounded-full ${
+                                    className={`text-[10px]! px-2 py-0.5 rounded-full ${
                                       gateway.gateway.type === "AUTOMATIC"
                                         ? "bg-green-100 text-green-700"
                                         : "bg-amber-100 text-amber-700"
@@ -426,14 +428,14 @@ const AddMoney = () => {
                   {/* Limit & Charge */}
                   {selectedGateway && (
                     <div className="flex flex-wrap justify-between gap-3">
-                      <div className="px-4 py-2 text-sm font-medium bg-primary-50 dark:bg-blue-950 text-primary-600 dark:text-primary-400 rounded-lg">
+                      <div className="px-4 py-2 text-sm font-medium bg-primary-50 dark:bg-primary-500 text-primary-600 dark:text-white rounded-lg">
                         {t("limit")}:{" "}
                         <span dir="ltr">
                           {minLimit} {selectedCurrencyCode} - {maxLimit}{" "}
                           {selectedCurrencyCode}
                         </span>
                       </div>
-                      <div className="px-4 py-2 text-sm font-medium bg-primary-50 dark:bg-blue-950 text-primary-600 dark:text-primary-400 rounded-lg">
+                      <div className="px-4 py-2 text-sm font-medium bg-primary-50 dark:bg-primary-500 text-primary-600 dark:text-white rounded-lg">
                         {t("charge")}:{" "}
                         <span dir="ltr">
                           {Number(selectedGateway?.fixed_charge ?? 0)?.toFixed(
