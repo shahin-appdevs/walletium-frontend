@@ -1,6 +1,6 @@
 "use client";
 
-import { Input, Card, Modal, Space, Skeleton } from "antd";
+import { Input, Card, Modal, Space } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import Table from "@/components/ui/Table";
 import useModal from "@/hooks/useModal";
@@ -13,7 +13,7 @@ import {
   useDeleteRecipientMutation,
   useGetMyRecipientsQuery,
 } from "@/redux/api/myRecipientsApi";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import RecipientListSkeleton from "./myRecipientSkeleton/RecipientListSkeleton";
 import Image from "next/image";
 import { getImageUrl } from "@/utils/getImageUrl";
@@ -29,6 +29,7 @@ export default function RecipientList() {
   const locale = useLocale();
   const [deleteTarget, setDeleteTarget] = useState(null);
   const router = useRouter();
+  const t = useTranslations("Dashboard.myRecipientList");
 
   // ==================== API DATA ====================
   const {
@@ -69,11 +70,14 @@ export default function RecipientList() {
     }));
   }, [apiData]);
 
-  console.log(tableData);
-
   // ==================== Handlers (UNCHANGED) ====================
   const handleOnRowClick = (record) => {
-    const labels = ["Name", "Country", "Zip Code", "Email"];
+    const labels = [
+      t("table.name"),
+      t("table.country"),
+      t("table.zipCode"),
+      t("table.email"),
+    ];
     const values = ["name", "country", "zip_code", "email"];
 
     const arr = labels.map((item, idx) => {
@@ -109,7 +113,7 @@ export default function RecipientList() {
   // ==================== Columns (UNCHANGED) ====================
   const columns = [
     {
-      title: "Name",
+      title: t("table.name"),
       dataIndex: "name",
       render: (name, record) => (
         <div className="flex items-center gap-3">
@@ -131,28 +135,28 @@ export default function RecipientList() {
       ),
     },
     {
-      title: "Country",
+      title: t("table.country"),
       dataIndex: "country",
       render: (country) => (
         <span className="text-gray-600 dark:text-neutral-300">{country}</span>
       ),
     },
     {
-      title: "Zip Code",
+      title: t("table.zipCode"),
       dataIndex: "zip_code",
       render: (zip_code) => (
         <span className="text-gray-600 dark:text-neutral-300">{zip_code}</span>
       ),
     },
     {
-      title: "Email",
+      title: t("table.email"),
       dataIndex: "email",
       render: (email) => (
         <span className="px-3 py-1 rounded-full text-sm ">{email}</span>
       ),
     },
     {
-      title: "Action",
+      title: t("table.action"),
       key: "action",
       render: (_, record) => (
         <Space size="middle">
@@ -184,7 +188,7 @@ export default function RecipientList() {
     <div className="flex items-center gap-2 md:gap-0 ">
       <div className="md:w-full hidden md:block">
         <Input
-          placeholder="Search"
+          placeholder={t("searchPlaceholder")}
           size="large"
           prefix={<SearchOutlined className="text-gray-400" />}
           className="w-48 rounded-lg"
@@ -195,7 +199,7 @@ export default function RecipientList() {
           icon={"Search"}
           iconClassName={"group-hover/primary-btn:rotate-90 duration-200"}
         >
-          <span className="hidden md:block"> Add New Recipient</span>
+          <span className="hidden md:block"> {t("addNewRecipient")}</span>
         </PrimaryButton>
       </div>
       <div className="md:w-full md:flex justify-end">
@@ -204,7 +208,7 @@ export default function RecipientList() {
             icon={"Plus"}
             iconClassName={"group-hover/primary-btn:rotate-90 duration-200"}
           >
-            <span className="hidden md:block"> Add New Recipient</span>
+            <span className="hidden md:block"> {t("addNewRecipient")}</span>
           </PrimaryButton>
         </Link>
       </div>
@@ -213,7 +217,7 @@ export default function RecipientList() {
 
   return (
     <Card
-      title="Recipient List"
+      title={t("title")}
       extra={TableExtra}
       className="overflow-x-auto!"
     >
@@ -223,11 +227,11 @@ export default function RecipientList() {
         onCancel={handleCancelModal}
         closable={false}
         okButtonProps={{ style: { display: "none" } }}
-        cancelText="Close"
+        cancelText={t("close")}
       >
         <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-white dark:bg-[#111] shadow-xs border border-gray-200 dark:border-gray-800">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-            Latest Transaction
+            {t("latestTransaction")}
           </h2>
 
           <div className="divide-y divide-gray-200 dark:divide-gray-800">
@@ -264,7 +268,7 @@ export default function RecipientList() {
           pagination={{
             pageSize: 10,
             total: tableData.length,
-            showTotal: (total) => `Total ${total} items`,
+            showTotal: (total) => t("table.totalItems", { total }),
           }}
           rowKey="key"
           onRowClick={handleOnRowClick}
@@ -279,8 +283,8 @@ export default function RecipientList() {
         onCancel={() => setIsDeleteModalOpen(false)}
         onConfirm={() => handleDelete(deleteTarget)}
         loading={isDeleting}
-        title="Delete Recipient"
-        description="Are you sure you want to delete this recipient?"
+        title={t("deleteRecipient")}
+        description={t("deleteDescription")}
       />
     </Card>
   );

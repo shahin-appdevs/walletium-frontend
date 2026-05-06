@@ -8,8 +8,8 @@ import * as yup from "yup";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import { useRouter } from "next/navigation";
 import LucideIcon from "@/components/LucideIcon";
-import { useState, useEffect, useRef } from "react";
-import { useLocale } from "next-intl";
+import { useState, useEffect, useRef, useMemo } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import {
   useLazyGetSearchRecipientsQuery,
   useAddNewRecipientMutation,
@@ -20,21 +20,27 @@ import { useDashboardContext } from "@/contexts/DashboardProvider";
 import AddNewRecipientSkeleton from "./myRecipientSkeleton/AddRecipientSkeleton";
 
 // ... recipientSchema and countryOptions remain the same ...
-export const recipientSchema = yup.object({
-  email: yup
-    .string()
-    .email("Invalid email address")
-    .required("Email is required"),
-  firstname: yup.string().required("First name is required"),
-  lastname: yup.string().required("Last name is required"),
-  country: yup.string().required("Country is required"),
-  city: yup.string().required("City is required"),
-  state: yup.string().required("State is required"),
-  zip: yup.string().required("Zip code is required"),
-  address: yup.string().required("Address is required"),
-});
+// schema moved inside component to use translations
 
 export default function AddNewRecipient({ searchParams }) {
+  const t = useTranslations("Dashboard.addNewRecipient");
+
+  const recipientSchema = useMemo(() => {
+    return yup.object({
+      email: yup
+        .string()
+        .email(t("validation.emailInvalid"))
+        .required(t("validation.emailRequired")),
+      firstname: yup.string().required(t("validation.firstNameRequired")),
+      lastname: yup.string().required(t("validation.lastNameRequired")),
+      country: yup.string().required(t("validation.countryRequired")),
+      city: yup.string().required(t("validation.cityRequired")),
+      state: yup.string().required(t("validation.stateRequired")),
+      zip: yup.string().required(t("validation.zipRequired")),
+      address: yup.string().required(t("validation.addressRequired")),
+    });
+  }, [t]);
+
   const updateUser = searchParams?.update_user; // This is the ID or Email to update
   const isUpdateMode = !!updateUser;
 
@@ -167,37 +173,43 @@ export default function AddNewRecipient({ searchParams }) {
   return (
     <>
       <Card
-        title={isUpdateMode ? "Update Recipient" : "Add New Recipient"}
+        title={isUpdateMode ? t("updateTitle") : t("addTitle")}
         extra={
           <button
             onClick={() => router.back()}
-            className="text-primary cursor-pointer flex items-center gap-1 bg-primary-50 rounded-2xl border duration-200 hover:text-primary-600 hover:bg-primary-100 border-primary px-3 py-1"
+            className="text-primary cursor-pointer flex  items-center gap-1 bg-primary-50 dark:bg-primary-500 dark:text-white rounded-2xl border duration-200 hover:text-primary-600 hover:bg-primary-100 border-primary px-3 py-1"
           >
-            <LucideIcon name={"ArrowLeft"} size={18} />
-            <span className="hidden md:block">Back</span>
+            <LucideIcon
+              name={"ArrowLeft"}
+              size={18}
+              className="rtl:rotate-180"
+            />
+            <span className="hidden md:block">{t("back")}</span>
           </button>
         }
       >
         {/* Hide search bar if in update mode to prevent confusion, or keep it enabled */}
         {!isUpdateMode && (
-          <div className="bg-white dark:bg-neutral-900 rounded-xl mb-4 ">
+          <div className="rounded-xl bg-gray-50 dark:bg-neutral-900   mb-3 p-6!">
             <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Search by username or email
+              {t("searchLabel")}
             </label>
             <div className="flex items-center gap-3 mt-2">
               <Input
                 size="large"
-                placeholder="Search by username or email..."
+                placeholder={t("searchPlaceholder")}
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
                 prefix={
-                  isSearching && (
-                    <LucideIcon
-                      name="LoaderCircle"
-                      size={18}
-                      className="animate-spin text-primary"
-                    />
-                  )
+                  <span>
+                    {isSearching && (
+                      <LucideIcon
+                        name="LoaderCircle"
+                        size={18}
+                        className="animate-spin text-primary"
+                      />
+                    )}
+                  </span>
                 }
                 className="flex-1"
               />
@@ -208,11 +220,11 @@ export default function AddNewRecipient({ searchParams }) {
         <Form
           layout="vertical"
           onFinish={handleSubmit(onSubmit)}
-          className="bg-white dark:bg-neutral-900 p-6 rounded-xl"
+          className="bg-gray-50 dark:bg-neutral-900 p-6! rounded-xl"
         >
           <div className="grid grid-cols-1 md:grid-cols-2 md:gap-6">
             <FormItem
-              label="First Name"
+              label={t("firstName")}
               name="firstname"
               required
               errors={errors}
@@ -221,12 +233,12 @@ export default function AddNewRecipient({ searchParams }) {
                 name="firstname"
                 control={control}
                 render={({ field }) => (
-                  <Input {...field} size="large" placeholder="First Name" />
+                  <Input {...field} size="large" placeholder={t("firstName")} />
                 )}
               />
             </FormItem>
             <FormItem
-              label="Last Name"
+              label={t("lastName")}
               name="lastname"
               required
               errors={errors}
@@ -235,14 +247,14 @@ export default function AddNewRecipient({ searchParams }) {
                 name="lastname"
                 control={control}
                 render={({ field }) => (
-                  <Input {...field} size="large" placeholder="Last Name" />
+                  <Input {...field} size="large" placeholder={t("lastName")} />
                 )}
               />
             </FormItem>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 md:gap-6">
-            <FormItem label="Email" name="email" required errors={errors}>
+            <FormItem label={t("email")} name="email" required errors={errors}>
               <Controller
                 name="email"
                 control={control}
@@ -250,50 +262,56 @@ export default function AddNewRecipient({ searchParams }) {
                   <Input
                     {...field}
                     size="large"
-                    placeholder="Enter Email..."
+                    placeholder={t("email")}
                     disabled={isUpdateMode}
                   />
                 )}
               />
             </FormItem>
-            <FormItem label="Address" name="address" required errors={errors}>
+            <FormItem
+              label={t("address")}
+              name="address"
+              required
+              errors={errors}
+            >
               <Controller
                 name="address"
                 control={control}
                 render={({ field }) => (
-                  <Input
-                    {...field}
-                    size="large"
-                    placeholder="Enter Address..."
-                  />
+                  <Input {...field} size="large" placeholder={t("address")} />
                 )}
               />
             </FormItem>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 md:gap-6">
-            <FormItem label="City" name="city" required errors={errors}>
+            <FormItem label={t("city")} name="city" required errors={errors}>
               <Controller
                 name="city"
                 control={control}
                 render={({ field }) => (
-                  <Input {...field} size="large" placeholder="City Name" />
+                  <Input {...field} size="large" placeholder={t("city")} />
                 )}
               />
             </FormItem>
-            <FormItem label="State" name="state" required errors={errors}>
+            <FormItem label={t("state")} name="state" required errors={errors}>
               <Controller
                 name="state"
                 control={control}
                 render={({ field }) => (
-                  <Input {...field} size="large" placeholder="Enter State..." />
+                  <Input {...field} size="large" placeholder={t("state")} />
                 )}
               />
             </FormItem>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 md:gap-6">
-            <FormItem label="Country" name="country" required errors={errors}>
+            <FormItem
+              label={t("country")}
+              name="country"
+              required
+              errors={errors}
+            >
               <Controller
                 name="country"
                 control={control}
@@ -301,18 +319,18 @@ export default function AddNewRecipient({ searchParams }) {
                   <Select
                     {...field}
                     size="large"
-                    placeholder="Select Country"
+                    placeholder={t("selectCountry")}
                     options={countries}
                   />
                 )}
               />
             </FormItem>
-            <FormItem label="Zip Code" name="zip" required errors={errors}>
+            <FormItem label={t("zipCode")} name="zip" required errors={errors}>
               <Controller
                 name="zip"
                 control={control}
                 render={({ field }) => (
-                  <Input {...field} size="large" placeholder="Enter Zip..." />
+                  <Input {...field} size="large" placeholder={t("zipCode")} />
                 )}
               />
             </FormItem>
@@ -324,7 +342,7 @@ export default function AddNewRecipient({ searchParams }) {
             loading={isSubmitting}
             className={"w-full"}
           >
-            {isUpdateMode ? "Update Recipient" : "Add Now"}
+            {isUpdateMode ? t("updateRecipient") : t("addNow")}
           </PrimaryButton>
         </Form>
       </Card>

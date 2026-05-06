@@ -428,6 +428,52 @@
                 "viewMore": "عرض المزيد"
             }
         },
+        "myRecipientList": {
+            "title": "قائمة المستلمين",
+            "searchPlaceholder": "بحث",
+            "addNewRecipient": "إضافة مستلم جديد",
+            "latestTransaction": "أحدث المعاملات",
+            "close": "إغلاق",
+            "deleteRecipient": "حذف المستلم",
+            "deleteDescription": "هل أنت متأكد أنك تريد حذف هذا المستلم؟",
+            "table": {
+                "name": "الاسم",
+                "country": "البلد",
+                "zipCode": "الرمز البريدي",
+                "email": "البريد الإلكتروني",
+                "action": "الإجراء",
+                "totalItems": "إجمالي {total} عنصر"
+            }
+        },
+        "addNewRecipient": {
+            "addTitle": "إضافة مستلم جديد",
+            "updateTitle": "تحديث المستلم",
+            "searchLabel": "بحث باسم المستخدم أو البريد الإلكتروني",
+            "searchPlaceholder": "بحث باسم المستخدم أو البريد الإلكتروني...",
+            "back": "رجوع",
+            "firstName": "الاسم الأول",
+            "lastName": "اسم العائلة",
+            "email": "البريد الإلكتروني",
+            "address": "العنوان",
+            "city": "المدينة",
+            "state": "الولاية",
+            "country": "البلد",
+            "zipCode": "الرمز البريدي",
+            "selectCountry": "اختر البلد",
+            "addNow": "إضافة الآن",
+            "updateRecipient": "تحديث المستلم",
+            "validation": {
+                "emailInvalid": "بريد إلكتروني غير صالح",
+                "emailRequired": "البريد الإلكتروني مطلوب",
+                "firstNameRequired": "الاسم الأول مطلوب",
+                "lastNameRequired": "اسم العائلة مطلوب",
+                "countryRequired": "البلد مطلوب",
+                "cityRequired": "المدينة مطلوبة",
+                "stateRequired": "الولاية مطلوبة",
+                "zipRequired": "الرمز البريدي مطلوب",
+                "addressRequired": "العنوان مطلوب"
+            }
+        },
         "myProfile": {
             "title": "ملفي الشخصي",
             "editProfile": "تعديل الملف الشخصي",
