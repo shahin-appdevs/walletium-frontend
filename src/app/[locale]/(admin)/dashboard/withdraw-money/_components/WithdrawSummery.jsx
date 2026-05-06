@@ -18,8 +18,8 @@ function WithdrawSummery({
   return (
     <Card title={t("title")} className="h-full">
       {manualSubmitInfo ? (
-        <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-neutral-50 dark:bg-slate-900 dark-border shadow-xs border border-gray-200 dark:border-gray-800 mb-6">
-          <div className="divide-y divide-gray-200 dark:divide-gray-800">
+        <div className="w-full p-4 rounded-xl bg-neutral-50 dark:bg-slate-950 shadow-xs  mb-6">
+          <div className="space-y-4">
             {[
               {
                 label: t("gatewayName"),
@@ -59,10 +59,10 @@ function WithdrawSummery({
             ].map((row, idx) => (
               <div
                 key={idx}
-                className="flex justify-between items-center py-3 text-sm"
+                className="flex justify-between items-center  text-sm last:border-t border-gray-300 dark:border-gray-800  last:py-3"
               >
                 <span
-                  className={`text-gray-600 font-medium dark:text-gray-400 ${
+                  className={`text-gray-600  dark:text-gray-400 ${
                     row.bold ? "font-bold text-base lg:text-lg" : ""
                   }`}
                 >
@@ -70,9 +70,7 @@ function WithdrawSummery({
                 </span>
                 <span
                   className={`text-gray-900 dark:text-gray-100 ${
-                    row.bold
-                      ? "font-bold text-base lg:text-lg text-primary!"
-                      : "font-medium"
+                    row.bold ? "font-bold text-base lg:text-lg " : "font-medium"
                   }`}
                   dir={row.dir}
                 >
@@ -83,9 +81,9 @@ function WithdrawSummery({
           </div>
         </div>
       ) : (
-        <div className="bg-neutral-50 dark:bg-slate-900 rounded-2xl p-6">
-          <div className="divide-y divide-gray-200 dark:divide-gray-700 text-sm">
-            <div className="flex justify-between py-3">
+        <div className="bg-neutral-50 dark:bg-slate-950 rounded-2xl p-6">
+          <div className="space-y-4">
+            <div className="flex justify-between ">
               <span className="text-gray-600 dark:text-gray-400">
                 {t("gatewayName")}
               </span>
@@ -93,7 +91,7 @@ function WithdrawSummery({
                 {selectedGateway?.name} ({selectedGateway?.currency_code})
               </span>
             </div>
-            <div className="flex justify-between py-3">
+            <div className="flex justify-between ">
               <span className="text-gray-600 dark:text-gray-400">
                 {t("enteredAmount")}
               </span>
@@ -101,7 +99,7 @@ function WithdrawSummery({
                 {Number(amount || 0).toFixed(2)} {selectedCurrencyCode}
               </span>
             </div>
-            <div className="flex justify-between py-3">
+            <div className="flex justify-between ">
               <span className="text-gray-600 dark:text-gray-400">
                 {t("conversionAmount")}
               </span>
@@ -110,7 +108,7 @@ function WithdrawSummery({
                 {selectedGateway?.currency_code}
               </span>
             </div>
-            <div className="flex justify-between py-3">
+            <div className="flex justify-between ">
               <span className="text-gray-600 dark:text-gray-400">
                 {t("totalFees")}
               </span>
@@ -119,7 +117,7 @@ function WithdrawSummery({
               </span>
             </div>
 
-            <div className="flex justify-between py-3">
+            <div className="flex justify-between ">
               <span className="text-gray-600 dark:text-gray-400">
                 {t("youWillGet")}
               </span>
@@ -128,7 +126,7 @@ function WithdrawSummery({
               </span>
             </div>
 
-            <div className="flex justify-between py-4 font-semibold text-base border-t">
+            <div className="flex justify-between py-4 font-semibold text-base border-t border-gray-300 dark:border-gray-800 ">
               <span>{t("totalPayable")}</span>
               <span dir="ltr" className="font-bold! ">
                 {(totalPayable ?? 0)?.toFixed(2)} {selectedCurrencyCode}

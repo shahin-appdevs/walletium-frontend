@@ -105,12 +105,12 @@ export default function WithdrawTransaction({ transactionsData, isLoading }) {
       width: 250,
       render: (type, record) => (
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-300">
-            <ArrowUpOutlined className="text-gray-500 text-lg rotate-45" />
+          <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-500">
+            <ArrowUpOutlined className="text-gray-500 rotate-45" />
           </div>
 
           <div>
-            <p className="font-medium text-sm! text-gray-800 dark:text-neutral-300">
+            <p className="font-medium text-gray-800 dark:text-neutral-300">
               {type} ({record.gateway_currency})
             </p>
           </div>
@@ -121,7 +121,10 @@ export default function WithdrawTransaction({ transactionsData, isLoading }) {
       title: t("receivedAmount"),
       dataIndex: "receive_amount",
       render: (amount, record) => (
-        <span className="font-semibold text-green-500" dir="ltr">
+        <span
+          className="font-semibold text-green-500 whitespace-nowrap"
+          dir="ltr"
+        >
           +{Number(amount || 0)?.toFixed(2)} {record?.payment_currency}
         </span>
       ),
@@ -139,7 +142,10 @@ export default function WithdrawTransaction({ transactionsData, isLoading }) {
       title: t("requestAmount"),
       dataIndex: "request_amount",
       render: (amount, record) => (
-        <span className="font-semibold text-red-500" dir="ltr">
+        <span
+          className="font-semibold text-red-500 whitespace-nowrap"
+          dir="ltr"
+        >
           -{Number(amount || 0)?.toFixed(2)} {record?.request_currency}
         </span>
       ),
@@ -148,8 +154,11 @@ export default function WithdrawTransaction({ transactionsData, isLoading }) {
       title: t("totalCharge"),
       dataIndex: "total_charge",
       render: (amount, record) => (
-        <span className="font-semibold text-red-500" dir="ltr">
-          {Number(amount || 0)?.toFixed(2)} {record?.payment_currency}
+        <span
+          className="font-semibold text-red-500 whitespace-nowrap"
+          dir="ltr"
+        >
+          -{Number(amount || 0)?.toFixed(2)} {record?.payment_currency}
         </span>
       ),
     },

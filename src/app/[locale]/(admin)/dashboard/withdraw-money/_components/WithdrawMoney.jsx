@@ -238,23 +238,25 @@ const WithdrawMoney = () => {
   return (
     <section>
       <div className="space-y-6">
-        <div className="grid md:grid-cols-5 gap-6">
+        <div className="grid xl:grid-cols-5 gap-6">
           {/* Left Column - Form */}
-          <div className="md:col-span-3">
+          <div className="col-span-1 xl:col-span-3">
             <Card title={t("title")} className="h-full">
-              <div className="bg-neutral-50 dark:bg-slate-900 mb-6 rounded-2xl p-5 shadow-xs">
+              <div className="bg-neutral-50 dark:bg-slate-950 mb-6 rounded-2xl p-5 shadow-xs">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="w-8 h-8 rounded-full bg-primary-50 flex items-center justify-center border border-primary/30">
-                    <DollarSign className="w-5 h-5 text-primary" />
+                  <div className="w-8 h-8 rounded-full bg-primary-50 dark:bg-primary  flex items-center justify-center border border-primary/30">
+                    <DollarSign className="w-5 h-5 text-primary dark:text-white" />
                   </div>
-                  <div className="w-8 h-8 rounded-full bg-primary-50 flex items-center justify-center border border-primary/30 rtl:-rotate-90">
-                    <ArrowUpRight className="w-5 h-5 text-primary" />
+                  <div className="w-8 h-8 rounded-full bg-primary-50 dark:bg-primary  flex items-center justify-center border border-primary/30 rtl:-rotate-90">
+                    <ArrowUpRight className="w-5 h-5 text-primary dark:text-white" />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 ">
-                    <p className="text-gray-500">{t("exchangeRate")}</p>
+                    <p className="text-gray-500 dark:text-gray-400">
+                      {t("exchangeRate")}
+                    </p>
                     <p
                       className="text-xl font-semibold! rtl:text-right"
                       dir="ltr"
@@ -263,7 +265,7 @@ const WithdrawMoney = () => {
                     </p>
                   </div>
                   <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 ">
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
                       {t("availableBalance")}
                     </p>
                     <p
@@ -280,14 +282,14 @@ const WithdrawMoney = () => {
               {/* {console.log("selectedGateway", selectedGateway)} */}
 
               {/* Form */}
-              <div className="bg-neutral-50 dark:bg-slate-900 rounded-2xl p-6">
+              <div className="bg-neutral-50 dark:bg-slate-950 rounded-2xl p-6">
                 <form
                   onSubmit={handleSubmit(
                     manualGatewayInputs ? onManualConfirm : onSubmit,
                   )}
                   className="md:space-y-6"
                 >
-                  <div className="grid grid-cols-1 xl:grid-cols-2 xl:gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Amount + Currency */}
                     <FormItem
                       label={t("amount")}
@@ -369,10 +371,10 @@ const WithdrawMoney = () => {
                             }}
                             options={gateways.map((gateway) => ({
                               label: (
-                                <div className="flex justify-between items-center">
+                                <div className="flex justify-between items-center gap-2">
                                   <span>{gateway.name}</span>
                                   <span
-                                    className={`text-xs px-2 py-0.5 rounded-full ${
+                                    className={`text-xs! px-2 py-0.5 rounded-full ${
                                       gateway.type === "AUTOMATIC"
                                         ? "bg-green-100 text-green-700"
                                         : "bg-amber-100 text-amber-700"
@@ -393,14 +395,14 @@ const WithdrawMoney = () => {
                   {/* Limit & Charge */}
                   {selectedGateway && (
                     <div className="flex flex-wrap justify-between gap-3">
-                      <div className="px-4 py-2 text-sm font-medium bg-primary-50 dark:bg-blue-950 text-primary-600 dark:text-primary-400 rounded-lg">
+                      <div className="px-4 py-2 text-sm font-medium bg-primary-50 dark:bg-primary text-primary-600 dark:text-white rounded-lg">
                         {t("limit")}:{" "}
                         <span dir="ltr">
                           {minLimit} {selectedCurrencyCode} - {maxLimit}{" "}
                           {selectedCurrencyCode}{" "}
                         </span>
                       </div>
-                      <div className="px-4 py-2 text-sm font-medium bg-primary-50 dark:bg-blue-950 text-primary-600 dark:text-primary-400 rounded-lg">
+                      <div className="px-4 py-2 text-sm font-medium bg-primary-50 dark:bg-primary text-primary-600 dark:text-white rounded-lg">
                         {t("charge")}:{" "}
                         <span dir="ltr">
                           {Number(selectedGateway?.fixed_charge || 0).toFixed(
@@ -427,7 +429,7 @@ const WithdrawMoney = () => {
 
                       {manualSubmitInfo?.details && (
                         <div
-                          className="mt-2 mb-4 p-4  bg-amber-50/50 dark:bg-amber-500/10 text-amber-800 dark:text-amber-600 rounded-2xl border border-amber-200 dark:border-amber-900/30"
+                          className="mt-2 mb-4 p-4  bg-amber-50/50 dark:bg-amber-100/80 text-amber-800 dark:text-amber-600 rounded-2xl border border-amber-200 dark:border-amber-500/50"
                           dangerouslySetInnerHTML={{
                             __html: manualSubmitInfo?.details,
                           }}
@@ -517,7 +519,7 @@ const WithdrawMoney = () => {
           </div>
 
           {/* Summary Column */}
-          <div className="md:col-span-2">
+          <div className="col-span-1 xl:col-span-2">
             <WithdrawSummery
               amount={amount}
               selectedGateway={selectedGateway}
