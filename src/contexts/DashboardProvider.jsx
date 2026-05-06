@@ -1,3 +1,4 @@
+import useScrollToTop from "@/hooks/useScrollToTop";
 import { useGetDashboardQuery } from "@/redux/api/dashboardApi";
 import { useGetProfileQuery } from "@/redux/api/profileApi";
 import { useRouter } from "next/navigation";
@@ -9,6 +10,7 @@ const DashboardContext = createContext(null);
 export const useDashboardContext = () => useContext(DashboardContext);
 
 const DashboardProvider = ({ children }) => {
+  useScrollToTop();
   const router = useRouter();
 
   const {

@@ -92,10 +92,10 @@ export default function RequestMoneyTransaction({
           </div>
 
           <div>
-            <p className="font-medium text-gray-800 dark:text-neutral-300">
+            <p className="font-medium text-gray-800 dark:text-neutral-300 whitespace-nowrap">
               {t("requestMoneyTitle") || "Request Money"}
             </p>
-            <p className="text-gray-400  text-sm!">
+            <p className="text-gray-400  text-sm! whitespace-nowrap">
               {t("receiveMoney") || "Receive Money"}
             </p>
           </div>
@@ -142,19 +142,6 @@ export default function RequestMoneyTransaction({
     },
 
     {
-      title: t("totalPayable"),
-      dataIndex: "total_payable",
-      render: (amount, record) => (
-        <span
-          dir="ltr"
-          className="font-semibold text-red-500 whitespace-nowrap"
-        >
-          -{Number(amount || 0).toFixed(2)} {record.request_currency}
-        </span>
-      ),
-    },
-
-    {
       title: t("createdBy"),
       dataIndex: "created_by",
       render: (createdBy) => (
@@ -180,8 +167,20 @@ export default function RequestMoneyTransaction({
       title: t("feeCharge"),
       dataIndex: "total_charge",
       render: (total_charge, record) => (
-        <span dir="ltr" className="text-red-500 ">
-          {Number(total_charge).toFixed(2)} {record.request_currency}
+        <span dir="ltr" className="text-red-500 whitespace-nowrap">
+          -{Number(total_charge).toFixed(2)} {record.request_currency}
+        </span>
+      ),
+    },
+    {
+      title: t("totalPayable"),
+      dataIndex: "total_payable",
+      render: (amount, record) => (
+        <span
+          dir="ltr"
+          className="font-semibold text-red-500 whitespace-nowrap"
+        >
+          -{Number(amount || 0).toFixed(2)} {record.request_currency}
         </span>
       ),
     },
@@ -190,7 +189,7 @@ export default function RequestMoneyTransaction({
       dataIndex: "status",
       render: (status) => (
         <span
-          className={`px-3 py-1 rounded-full text-xs font-medium ${
+          className={`px-3 py-1 rounded-full text-xs! font-medium ${
             statusMap[status]?.className || "bg-gray-100 text-gray-700"
           }`}
         >

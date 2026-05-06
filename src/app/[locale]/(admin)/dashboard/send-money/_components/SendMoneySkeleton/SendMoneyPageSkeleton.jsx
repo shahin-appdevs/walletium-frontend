@@ -5,9 +5,9 @@ export default function SendMoneyPageSkeleton() {
   return (
     <section>
       <div className="space-y-6">
-        <div className="grid md:grid-cols-5 gap-6">
+        <div className="grid xl:grid-cols-5 gap-6">
           {/* Left Column - Form Skeleton */}
-          <div className="md:col-span-3">
+          <div className="xl:col-span-3">
             <Card
               title={<Skeleton.Input active size="small" />}
               className="h-full"
@@ -70,7 +70,7 @@ export default function SendMoneyPageSkeleton() {
           </div>
 
           {/* Summary Column Skeleton */}
-          <div className="md:col-span-2">
+          <div className="xl:col-span-2">
             <Card
               title={<Skeleton.Input active size="small" />}
               className="h-full"

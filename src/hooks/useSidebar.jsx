@@ -77,11 +77,11 @@ const useSidebar = () => {
         </span>
       ),
       children: [
-        {
-          key: "/dashboard/my-card",
-          label: <span className="text-sm font-semibold">{t("myCard")}</span>,
-          icon: <LucideIcon name={"Crown"} size={14} />,
-        },
+        // {
+        //   key: "/dashboard/my-card",
+        //   label: <span className="text-sm font-semibold">{t("myCard")}</span>,
+        //   icon: <LucideIcon name={"Crown"} size={14} />,
+        // },
         {
           key: "/dashboard/my-recipient",
           label: (

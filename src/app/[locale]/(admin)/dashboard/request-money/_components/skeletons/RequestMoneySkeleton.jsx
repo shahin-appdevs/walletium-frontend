@@ -5,9 +5,9 @@ const RequestMoneySkeleton = () => {
   return (
     <section className="animate-pulse">
       <div className="space-y-4 lg:space-y-6">
-        <div className="grid md:grid-cols-5 gap-4 lg:gap-6">
+        <div className="grid xl:grid-cols-5 gap-4 lg:gap-6">
           {/* Left Column: Form (Span 3) */}
-          <div className="col-span-1 md:col-span-3">
+          <div className="col-span-1 xl:col-span-3">
             <Card
               title={
                 <Skeleton.Input active size="small" style={{ width: 150 }} />
@@ -73,7 +73,7 @@ const RequestMoneySkeleton = () => {
           </div>
 
           {/* Right Column: Summary (Span 2) */}
-          <div className="col-span-1 md:col-span-2">
+          <div className="col-span-1 xl:col-span-2">
             <Card
               title={
                 <Skeleton.Input active size="small" style={{ width: 100 }} />
