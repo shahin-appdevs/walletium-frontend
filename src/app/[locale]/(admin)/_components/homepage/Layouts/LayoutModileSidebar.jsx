@@ -8,7 +8,7 @@ import Image from "next/image";
 import useSidebar from "@/hooks/useSidebar";
 
 const LayoutMobileSidebar = ({ isDrawerOpen, handleDrawerClose }) => {
-  const { mode, handleNavigateRoutes, items } = useSidebar();
+  const { mode, handleNavigateRoutes, items, activeKey } = useSidebar();
 
   return (
     <Drawer
@@ -20,7 +20,7 @@ const LayoutMobileSidebar = ({ isDrawerOpen, handleDrawerClose }) => {
       open={isDrawerOpen}
       key={"left"}
     >
-      <div className="sidebar lg:hidden">
+      <div className="sidebar lg:hidden ">
         {/* Desktop Sidebar */}
         <div
           //   collapsible
@@ -31,7 +31,7 @@ const LayoutMobileSidebar = ({ isDrawerOpen, handleDrawerClose }) => {
           //   theme={mode}
           //   collapsedWidth="0"
           // style={{ background: background }}
-          className=" overflow-y-auto overflow-x-hidden! sidebar-main"
+          className=" overflow-y-auto overflow-x-hidden! sidebar-main "
         >
           <div className="p-2 lg:px-4  lg:py-8">
             <Image
@@ -58,8 +58,9 @@ const LayoutMobileSidebar = ({ isDrawerOpen, handleDrawerClose }) => {
             openKeys={["2", "3", "5", "4"]}
             theme={mode}
             mode="inline"
-            className="font-medium text-lg overflow-hidden! pb-4!"
+            className="font-medium text-lg overflow-hidden! pb-4! border-0!"
             defaultSelectedKeys={["1"]}
+            selectedKeys={[activeKey]}
             items={items}
             expandIcon={null}
           />

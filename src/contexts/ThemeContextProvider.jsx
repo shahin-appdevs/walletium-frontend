@@ -53,6 +53,9 @@ export function ThemeProvider({ children }) {
             Form: {
               fontSize: "clamp(14px, 1.2vw, 16px)",
             },
+            Drawer: {
+              colorBgElevated: "oklch(20.8% 0.042 265.755)",
+            },
           },
         }}
       >
