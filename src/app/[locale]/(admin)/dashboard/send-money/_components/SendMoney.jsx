@@ -279,8 +279,8 @@ const SendMoney = () => {
   return (
     <section>
       <div className="space-y-4 lg:space-y-6">
-        <div className="grid md:grid-cols-5 gap-4 lg:gap-6">
-          <div className="col-span-1 md:col-span-3 ">
+        <div className="grid xl:grid-cols-5 gap-4 lg:gap-6">
+          <div className="col-span-1 xl:col-span-3 ">
             <Card title={t("title")} className="h-full!">
               <div className="bg-neutral-50 dark:bg-slate-950 mb-4  rounded-2xl shadow-xs p-4 flex flex-col gap-3 overflow-hidden">
                 <div className="flex items-center justify-between">
@@ -307,7 +307,7 @@ const SendMoney = () => {
                   </div>
                   <div className="bg-white dark:bg-slate-800 rounded-2xl p-4">
                     <p className="text-gray-600 dark:text-gray-400 ">
-                      {t("availableBalance")}:
+                      {t("availableBalance")}
                     </p>
                     <p
                       dir="ltr"
@@ -364,7 +364,6 @@ const SendMoney = () => {
                             ),
                             value: w.currency_code,
                           }))}
-                          className="w-36!"
                         />
                       </Space.Compact>
                     </FormItem>
@@ -406,7 +405,6 @@ const SendMoney = () => {
                             ),
                             value: w.currency_code,
                           }))}
-                          className="w-36!"
                         />
                       </Space.Compact>
                     </FormItem>
@@ -444,9 +442,9 @@ const SendMoney = () => {
               </div>
             </Card>
           </div>
-          <div className="col-span-1 md:col-span-2">
+          <div className="col-span-1  xl:col-span-2">
             <Card title={t("summary.title")} className="h-full! ">
-              <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-neutral-50 dark:bg-slate-950  shadow-xs   ">
+              <div className="w-full p-4 rounded-xl bg-neutral-50 dark:bg-slate-950  shadow-xs   ">
                 <div className="space-y-4">
                   {singleTable?.map((row, idx) => (
                     <div

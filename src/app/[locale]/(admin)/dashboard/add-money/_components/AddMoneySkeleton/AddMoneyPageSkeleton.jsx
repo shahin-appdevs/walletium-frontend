@@ -5,7 +5,7 @@ export default function AddMoneyPageSkeleton() {
   return (
     <section>
       <div className="space-y-6">
-        <div className="grid md:grid-cols-5 gap-6">
+        <div className="grid xl:grid-cols-5 gap-6">
           {/* Left Column - Form Skeleton */}
           <div className="md:col-span-3">
             <Card

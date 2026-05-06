@@ -95,10 +95,10 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
           </div>
 
           <div>
-            <p className="font-medium text-gray-800 dark:text-neutral-300 text-sm!">
+            <p className="font-medium text-gray-800 dark:text-neutral-300 ">
               {record?.type}
             </p>
-            <p className="text-gray-400 text-sm! whitespace-nowrap">
+            <p className="text-gray-400 whitespace-nowrap">
               {record?.gateway_currency}
             </p>
           </div>
@@ -132,7 +132,7 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
       render: (amount, record) => (
         <span
           dir="ltr"
-          className="font-semibold text-red-500 dark:text-neutral-300"
+          className="font-semibold text-red-500 dark:text-neutral-300 whitespace-nowrap"
         >
           -{Number(amount).toFixed(2)} {record.request_currency}
         </span>
@@ -200,7 +200,7 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
         <Link href={`/dashboard/transactions/add-money-log`}>
           <PrimaryButton
             icon="ArrowUpRight"
-            className={"text-sm w-full"}
+            className={" w-full"}
             iconClassName={
               "group-hover/primary-btn:translate-1/6 group-hover/primary-btn:-translate-y-1 duration-300 rtl:-rotate-90 rtl:group-hover/primary-btn:-translate-x-1"
             }

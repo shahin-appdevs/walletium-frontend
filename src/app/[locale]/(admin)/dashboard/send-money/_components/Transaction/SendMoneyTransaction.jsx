@@ -101,7 +101,16 @@ const SendMoneyTransaction = memo(function SendMoneyTransaction({
         </div>
       ),
     },
-
+    {
+      title: t("trxId"),
+      dataIndex: "trx_id",
+      align: "center",
+      render: (id) => (
+        <span className="text-gray-600 dark:text-neutral-300" dir="ltr">
+          #{id}
+        </span>
+      ),
+    },
     {
       title: t("amount"),
       dataIndex: "request_amount",
@@ -112,49 +121,6 @@ const SendMoneyTransaction = memo(function SendMoneyTransaction({
           dir="ltr"
         >
           + {Number(amount).toFixed(2)} {record.request_currency}
-        </span>
-      ),
-    },
-
-    {
-      title: t("trxId"),
-      dataIndex: "trx_id",
-      align: "center",
-      render: (id) => (
-        <span className="text-gray-600 dark:text-neutral-300" dir="ltr">
-          {id}
-        </span>
-      ),
-    },
-
-    {
-      title: t("totalPayable"),
-      dataIndex: "total_payable",
-      align: "right",
-      render: (amount, record) => (
-        <span
-          className="font-semibold text-gray-800 dark:text-neutral-300"
-          dir="ltr"
-        >
-          {Number(amount).toFixed(2)} {record.request_currency}
-        </span>
-      ),
-    },
-
-    {
-      title: t("date"),
-      dataIndex: "created_at",
-      align: "center",
-      render: (date) => (
-        <span
-          className="text-gray-600 dark:text-neutral-300 whitespace-nowrap"
-          dir="ltr"
-        >
-          {new Date(date).toLocaleDateString("en-US", {
-            day: "2-digit",
-            month: "short",
-            year: "numeric",
-          })}
         </span>
       ),
     },
@@ -180,7 +146,37 @@ const SendMoneyTransaction = memo(function SendMoneyTransaction({
       align: "right",
       render: (charge, record) => (
         <span className="text-red-500 whitespace-nowrap" dir="ltr">
-          {charge} {record.request_currency}
+          -{Number(charge || 0).toFixed(2)} {record.request_currency}
+        </span>
+      ),
+    },
+    {
+      title: t("totalPayable"),
+      dataIndex: "total_payable",
+      align: "right",
+      render: (amount, record) => (
+        <span
+          className="font-semibold text-red-500 dark:text-neutral-300 whitespace-nowrap"
+          dir="ltr"
+        >
+          -{Number(amount || 0).toFixed(2)} {record.request_currency}
+        </span>
+      ),
+    },
+    {
+      title: t("date"),
+      dataIndex: "created_at",
+      align: "center",
+      render: (date) => (
+        <span
+          className="text-gray-600 dark:text-neutral-300 whitespace-nowrap"
+          dir="ltr"
+        >
+          {new Date(date).toLocaleDateString("en-US", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          })}
         </span>
       ),
     },
@@ -197,7 +193,7 @@ const SendMoneyTransaction = memo(function SendMoneyTransaction({
 
         return (
           <span
-            className={`px-3 py-1 rounded-full text-xs font-medium ${mapped.className}`}
+            className={`px-3 py-1 rounded-full text-xs! font-medium ${mapped.className}`}
           >
             {mapped.label}
           </span>
@@ -213,11 +209,14 @@ const SendMoneyTransaction = memo(function SendMoneyTransaction({
     <div className="flex items-center gap-2! md:gap-0 ">
       <div className=" md:flex justify-end ">
         <Link href={"/dashboard/transactions/send-money-log"}>
-          <PrimaryButton>
+          <PrimaryButton
+            icon="ArrowUpRight"
+            className={"text-sm w-full"}
+            iconClassName={
+              "group-hover/primary-btn:translate-1/6 group-hover/primary-btn:-translate-y-1 duration-300 rtl:-rotate-90 rtl:group-hover/primary-btn:-translate-x-1"
+            }
+          >
             <span className="hidden md:block">{t("viewMore")}</span>
-            <span>
-              <LucideIcon name={"Eye"} size={20} />
-            </span>
           </PrimaryButton>
         </Link>
       </div>

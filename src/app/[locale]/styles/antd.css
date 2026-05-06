@@ -9,13 +9,9 @@
   display: none !important;
 }
 
-
 .ant-layout-sider {
   transition: none !important;
-  
 }
-
-
 
 .ant-menu {
   transition: none !important;
@@ -40,4 +36,18 @@
 .ant-picker,
 .ant-select {
   transition: none !important;
+}
+
+/* hide number input spinner */
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }

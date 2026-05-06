@@ -272,9 +272,9 @@ const AddMoney = () => {
   return (
     <section>
       <div className="space-y-6">
-        <div className="grid md:grid-cols-5 gap-6">
+        <div className="grid xl:grid-cols-5 gap-6">
           {/* Left Column - Form */}
-          <div className="md:col-span-3">
+          <div className="xl:col-span-3">
             <Card title={t("title")} className="h-full">
               {/* Exchange Rate & Balance */}
               <div className="bg-neutral-50 dark:bg-slate-950 mb-6 rounded-2xl p-5 shadow-xs">
@@ -320,7 +320,7 @@ const AddMoney = () => {
                   onSubmit={handleSubmit(onSubmit)}
                   className="md:space-y-6"
                 >
-                  <div className="grid grid-cols-1 xl:grid-cols-2 xl:gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                     {/* Amount + Currency */}
                     <FormItem
                       label={t("amount")}
@@ -550,7 +550,7 @@ const AddMoney = () => {
           </div>
 
           {/* Summary Column */}
-          <div className="md:col-span-2">
+          <div className="xl:col-span-2">
             <AddMoneySummery
               amount={amount}
               selectedCurrencyCode={selectedCurrencyCode}
