@@ -1,10 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DashboardOutlined } from "@ant-design/icons";
 import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "@/contexts/ThemeContextProvider";
 import LucideIcon from "@/components/LucideIcon";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 
 const useSidebar = () => {
   const router = useRouter();
@@ -17,6 +17,12 @@ const useSidebar = () => {
     router.push(e.key || "/");
     setActiveKey(e.key);
   };
+
+  useEffect(() => {
+    (() => {
+      setActiveKey(activePath);
+    })();
+  }, [activePath, pathname]);
 
   const t = useTranslations("Dashboard.sidebar");
 
