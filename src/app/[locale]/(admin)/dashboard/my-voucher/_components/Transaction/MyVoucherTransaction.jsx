@@ -214,6 +214,16 @@ export default function MyVoucherTransaction() {
         </span>
       ),
     },
+
+    {
+      title: t("feeCharge"),
+      dataIndex: "total_charge",
+      render: (charge, record) => (
+        <span className="text-red-500 text-nowrap" dir="ltr">
+          -{charge?.toFixed(2)} {record?.request_currency}
+        </span>
+      ),
+    },
     {
       title: t("totalPayable"),
       dataIndex: "total_payable",
@@ -227,20 +237,11 @@ export default function MyVoucherTransaction() {
       ),
     },
     {
-      title: t("feeCharge"),
-      dataIndex: "total_charge",
-      render: (charge, record) => (
-        <span className="text-red-500 text-nowrap" dir="ltr">
-          -{charge?.toFixed(2)} {record?.request_currency}
-        </span>
-      ),
-    },
-    {
       title: t("date"),
       dataIndex: "created_at",
       render: (date) => (
-        <span className="text-gray-600 dark:text-neutral-300">
-          {dayjs(date).format("DD MMM YYYY, hh:mm A")}
+        <span className="text-gray-600 dark:text-neutral-300 text-nowrap">
+          {dayjs(date).format("DD MMM YYYY")}
         </span>
       ),
     },
@@ -250,11 +251,11 @@ export default function MyVoucherTransaction() {
       render: (status) => {
         const current = statusMap[status] || {
           label: "Unknown",
-          className: "bg-gray-100 text-gray-700",
+          className: "bg-gray-100  text-gray-700",
         };
         return (
           <span
-            className={`px-3 py-1 rounded-full text-sm ${current.className}`}
+            className={`px-3 py-1 rounded-full text-xs! ${current.className}`}
           >
             {current.label === "Rejected" ? t("canceled") : current.label}
           </span>
