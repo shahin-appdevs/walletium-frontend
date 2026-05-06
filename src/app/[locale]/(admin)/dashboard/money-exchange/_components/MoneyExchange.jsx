@@ -271,9 +271,9 @@ const ExchangeMoney = () => {
     <section>
       <div className="space-y-4 lg:space-y-6">
         <div className="grid md:grid-cols-12 gap-4 xl:gap-6">
-          <div className="col-span-12 md:col-span-12 lg:col-span-7 ">
+          <div className="col-span-12 md:col-span-12 xl:col-span-7 ">
             <Card title={t("title")} className="h-full!">
-              <div className="mb-4 bg-neutral-50 dark:bg-slate-900 dark-border rounded-2xl shadow-xs p-4 flex flex-col gap-3 overflow-hidden">
+              <div className="mb-4 bg-neutral-50 dark:bg-slate-950 rounded-2xl shadow-xs p-4 flex flex-col gap-3 overflow-hidden">
                 <div className="flex items-center justify-between">
                   <div className="w-7 h-7 rounded-full flex items-center justify-center bg-primary-50! dark:bg-primary-500! border border-primary/50">
                     <DollarSign className="w-4 h-4 text-primary dark:text-primary-50! " />
@@ -284,8 +284,10 @@ const ExchangeMoney = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                  <div className="bg-white dark:bg-slate-900 dark-border rounded-2xl p-4">
-                    <p className="text-gray-500 text-sm">{t("exchangeRate")}</p>
+                  <div className="bg-white dark:bg-slate-800 rounded-2xl p-4">
+                    <p className="text-gray-600 dark:text-gray-400">
+                      {t("exchangeRate")}
+                    </p>
                     <p
                       dir="ltr"
                       className="text-base! lg:text-lg! text-neutral-800 dark:text-neutral-300 font-semibold! rtl:text-right"
@@ -294,8 +296,8 @@ const ExchangeMoney = () => {
                       {selectedToCurrency}
                     </p>
                   </div>
-                  <div className="bg-white dark:bg-slate-900 dark-border rounded-2xl p-4">
-                    <p className="text-gray-500 text-sm">
+                  <div className="bg-white dark:bg-slate-800 rounded-2xl p-4">
+                    <p className="text-gray-600 dark:text-gray-400">
                       {t("availableBalance")}
                     </p>
                     <p
@@ -309,12 +311,12 @@ const ExchangeMoney = () => {
                 </div>
               </div>
 
-              <div className="rounded-2xl shadow-xs p-4 bg-neutral-50 dark:bg-slate-900 dark-border">
+              <div className="rounded-2xl shadow-xs p-4 bg-neutral-50 dark:bg-slate-950">
                 <Form
                   onFinish={handleSubmit(onSubmit)}
                   layout="vertical space-y-4!"
                 >
-                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                     <FormItem
                       label={t("exchangeFrom")}
                       required={true}
@@ -403,7 +405,7 @@ const ExchangeMoney = () => {
                     </FormItem>
                   </div>
 
-                  <div className="flex flex-col xl:flex-row rtl:md:flex-row-reverse gap-2 justify-between items-center text-left rtl:text-right">
+                  <div className="flex flex-col md:flex-row rtl:md:flex-row-reverse gap-2 justify-between items-center text-left rtl:text-right">
                     <p className="p-2 px-4 text-xs lg:text-base rounded-2xl bg-primary-50 dark:bg-primary-500! dark:text-primary-50! font-medium text-primary-600">
                       {t("limit")}{" "}
                       <span dir="ltr">
@@ -436,14 +438,14 @@ const ExchangeMoney = () => {
               </div>
             </Card>
           </div>
-          <div className="col-span-12 md:col-span-12 lg:col-span-5">
+          <div className="col-span-12 md:col-span-12 xl:col-span-5">
             <Card title={t("summary.title")} className="h-full!">
-              <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-neutral-50 dark:bg-slate-900 dark-border shadow-xs">
-                <div className="divide-y divide-gray-200 dark:divide-gray-800">
+              <div className="w-full p-4 rounded-xl bg-neutral-50 dark:bg-slate-950 shadow-xs">
+                <div className="space-y-4">
                   {singleTable?.map((row, idx) => (
                     <div
                       key={idx}
-                      className="flex justify-between items-center py-3 text-sm gap-2"
+                      className="flex justify-between items-center text-sm last:border-t border-gray-300 dark:border-gray-800 last:py-3"
                     >
                       <span className="text-gray-600  dark:text-gray-400">
                         {row.label}

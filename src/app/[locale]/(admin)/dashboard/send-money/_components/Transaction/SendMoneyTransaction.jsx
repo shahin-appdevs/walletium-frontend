@@ -156,7 +156,7 @@ const SendMoneyTransaction = memo(function SendMoneyTransaction({
       align: "right",
       render: (amount, record) => (
         <span
-          className="font-semibold text-red-500 dark:text-neutral-300 whitespace-nowrap"
+          className="font-semibold text-red-500! dark:text-neutral-300 whitespace-nowrap"
           dir="ltr"
         >
           -{Number(amount || 0).toFixed(2)} {record.request_currency}

@@ -216,11 +216,7 @@ export default function RecipientList() {
   );
 
   return (
-    <Card
-      title={t("title")}
-      extra={TableExtra}
-      className="overflow-x-auto!"
-    >
+    <Card title={t("title")} extra={TableExtra} className="overflow-x-auto!">
       {/* Modal (UNCHANGED) */}
       <Modal
         open={isModalOpen}
@@ -284,7 +280,7 @@ export default function RecipientList() {
         onConfirm={() => handleDelete(deleteTarget)}
         loading={isDeleting}
         title={t("deleteRecipient")}
-        description={t("deleteDescription")}
+        message={t("deleteDescription")}
       />
     </Card>
   );

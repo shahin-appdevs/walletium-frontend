@@ -24,11 +24,11 @@ const ConfirmationModal = ({
       centered
     >
       <div>
-        <div className="mx-auto mb-4 flex h-20 w-20 border-red-500/50 border items-center justify-center rounded-full bg-red-100">
+        <div className="mx-auto mb-4 flex h-20 w-20   items-center justify-center rounded-full bg-red-100 dark:bg-red-500/20">
           <AlertTriangle className="text-red-500" size={50} />
         </div>
 
-        <h2 className="text-center text-lg font-semibold text-neutral-900 ">
+        <h2 className="text-center text-lg font-semibold text-neutral-900 dark:text-white">
           {title}
         </h2>
 
@@ -53,7 +53,7 @@ const ConfirmationModal = ({
 
           <button
             onClick={onCancel}
-            className="w-full rounded-lg border border-gray-200 py-2  duration-300 text-sm font-medium text-gray-600 hover:bg-gray-50 cursor-pointer"
+            className="w-full rounded-lg border border-gray-200 py-2  duration-300 text-sm font-medium text-gray-600 dark:text-gray-200 dark:hover:text-gray-600 hover:bg-gray-50 cursor-pointer"
           >
             {cancelBtn}
           </button>

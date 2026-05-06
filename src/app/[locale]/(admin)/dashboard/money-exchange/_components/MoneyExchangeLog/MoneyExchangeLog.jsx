@@ -115,24 +115,15 @@ export default function MoneyExchangeLog({ transactionsData, isLoading }) {
       width: 200,
       render: (type) => (
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-300">
+          <div className="w-10 h-10 shrink-0 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-500">
             <ArrowUpOutlined className="text-gray-500 text-lg rotate-45 rtl:-rotate-45" />
           </div>
           <div>
-            <p className="font-medium text-sm! text-gray-800 dark:text-neutral-300">
+            <p className="font-medium  text-gray-800 dark:text-neutral-300">
               {type}
             </p>
           </div>
         </div>
-      ),
-    },
-    {
-      title: t("transaction.exchangeAmount"),
-      dataIndex: "request_amount",
-      render: (amount, record) => (
-        <span className={`font-semibold  text-red-500 text-nowrap`} dir="ltr">
-          -{amount?.toFixed(2)} {record?.request_currency}
-        </span>
       ),
     },
     {
@@ -145,6 +136,16 @@ export default function MoneyExchangeLog({ transactionsData, isLoading }) {
       ),
     },
     {
+      title: t("transaction.exchangeAmount"),
+      dataIndex: "request_amount",
+      render: (amount, record) => (
+        <span className={`font-semibold  text-green-500 text-nowrap`} dir="ltr">
+          +{amount?.toFixed(2)} {record?.request_currency}
+        </span>
+      ),
+    },
+
+    {
       title: t("transaction.convertedAmount"),
       dataIndex: "receive_amount",
       render: (amount, record) => (
@@ -153,27 +154,7 @@ export default function MoneyExchangeLog({ transactionsData, isLoading }) {
         </span>
       ),
     },
-    {
-      title: t("summary.totalPayable"),
-      dataIndex: "total_payable",
-      render: (amount, record) => (
-        <span
-          className="font-semibold text-red-500 dark:text-neutral-300 text-nowrap"
-          dir="ltr"
-        >
-          -{amount?.toFixed(2)} {record?.request_currency}
-        </span>
-      ),
-    },
-    {
-      title: t("transaction.date"),
-      dataIndex: "created_at",
-      render: (date) => (
-        <span className="text-gray-600 dark:text-neutral-300">
-          {dayjs(date).format("DD MMM YYYY, hh:mm A")}
-        </span>
-      ),
-    },
+
     {
       title: t("transaction.exchangeRate"),
       dataIndex: "exchange_rate",
@@ -193,6 +174,27 @@ export default function MoneyExchangeLog({ transactionsData, isLoading }) {
       render: (charge, record) => (
         <span className="text-red-500 text-nowrap" dir="ltr">
           -{charge?.toFixed(2)} {record?.request_currency}
+        </span>
+      ),
+    },
+    {
+      title: t("summary.totalPayable"),
+      dataIndex: "total_payable",
+      render: (amount, record) => (
+        <span
+          className="font-semibold text-red-500! dark:text-neutral-300 text-nowrap"
+          dir="ltr"
+        >
+          -{amount?.toFixed(2)} {record?.request_currency}
+        </span>
+      ),
+    },
+    {
+      title: t("transaction.date"),
+      dataIndex: "created_at",
+      render: (date) => (
+        <span className="text-gray-600 dark:text-neutral-300 whitespace-nowrap">
+          {dayjs(date).format("DD MMM YYYY")}
         </span>
       ),
     },
