@@ -84,7 +84,7 @@ const AddMoneyLog = () => {
 
   const columns = [
     {
-      title: t("type"),
+      title: <span className="whitespace-nowrap">{t("type")}</span>,
       dataIndex: "type",
       width: 250,
       render: (_, record) => (
@@ -107,14 +107,14 @@ const AddMoneyLog = () => {
       ),
     },
     {
-      title: t("trxId"),
+      title: <span className="whitespace-nowrap">{t("trxId")}</span>,
       dataIndex: "trx_id",
       render: (id) => (
         <span className="text-gray-600 dark:text-neutral-300">#{id}</span>
       ),
     },
     {
-      title: t("amount"),
+      title: <span className="whitespace-nowrap">{t("amount")}</span>,
       dataIndex: "request_amount",
       render: (amount, record) => (
         <span className="font-semibold text-green-600 whitespace-nowrap">
@@ -123,7 +123,7 @@ const AddMoneyLog = () => {
       ),
     },
     {
-      title: t("exchangeRate"),
+      title: <span className="whitespace-nowrap">{t("exchangeRate")}</span>,
       dataIndex: "exchange_rate",
       render: (rate, record) => (
         <span className="text-gray-600 dark:text-neutral-300 whitespace-nowrap">
@@ -132,7 +132,7 @@ const AddMoneyLog = () => {
       ),
     },
     {
-      title: t("feeCharge"),
+      title: <span className="whitespace-nowrap">{t("feeCharge")}</span>,
       dataIndex: "total_charge",
       render: (charge, record) => (
         <span className="text-red-500">
@@ -142,7 +142,7 @@ const AddMoneyLog = () => {
     },
 
     {
-      title: t("totalPayable"),
+      title: <span className="whitespace-nowrap">{t("totalPayable")}</span>,
       dataIndex: "total_payable",
       render: (amount, record) => (
         <span className="font-semibold text-red-500 dark:text-red-800">
@@ -152,7 +152,7 @@ const AddMoneyLog = () => {
     },
 
     {
-      title: t("date"),
+      title: <span className="whitespace-nowrap">{t("date")}</span>,
       dataIndex: "created_at",
       render: (date) => (
         <span className="text-gray-600 dark:text-neutral-300 whitespace-nowrap">
@@ -166,7 +166,7 @@ const AddMoneyLog = () => {
     },
 
     {
-      title: t("status.title"),
+      title: <span className="whitespace-nowrap">{t("status.title")}</span>,
       dataIndex: "status",
       render: (status) => {
         const mapped = statusMap[status] || { label: "Unknown", className: "" };

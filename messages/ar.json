@@ -190,7 +190,7 @@
             "transactions": {
                 "title": "أحدث المعاملات",
                 "type": "النوع",
-                "amount": "المبلغ",
+                "amount": "مبلغ الطلب",
                 "trxId": "رقم العملية",
                 "totalPayable": "إجمالي المبلغ المستحق",
                 "date": "التاريخ",
@@ -203,6 +203,7 @@
                 "sendTo": "إرسال الأموال إلى",
                 "totalPage": "إجمالي {total} عنصر",
                 "perPage": "لكل صف",
+                "receivedAmount": "المبلغ المستلم",
                 "status": {
                     "title": "الحالة",
                     "success": "ناجحة",

@@ -87,7 +87,7 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
 
   const columns = [
     {
-      title: t("type"),
+      title: <span className="whitespace-nowrap">{t("type")}</span>,
       dataIndex: "type",
       width: 250,
       render: (_, record) => (
@@ -113,7 +113,7 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
       ),
     },
     {
-      title: t("amount"),
+      title: <span className="whitespace-nowrap">{t("amount")}</span>,
       dataIndex: "request_amount",
       render: (amount, record) => (
         <span
@@ -125,7 +125,7 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
       ),
     },
     {
-      title: t("trxId"),
+      title: <span className="whitespace-nowrap">{t("trxId")}</span>,
       dataIndex: "trx_id",
       render: (id) => (
         <span dir="ltr" className="text-gray-600 dark:text-neutral-300">
@@ -134,7 +134,7 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
       ),
     },
     {
-      title: t("totalPayable"),
+      title: <span className="whitespace-nowrap">{t("totalPayable")}</span>,
       dataIndex: "total_payable",
       render: (amount, record) => (
         <span
@@ -147,7 +147,7 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
     },
 
     {
-      title: t("date"),
+      title: <span className="whitespace-nowrap">{t("date")}</span>,
       dataIndex: "created_at",
       render: (date) => (
         <span className="text-gray-600 dark:text-neutral-300 whitespace-nowrap">
@@ -161,7 +161,7 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
     },
 
     {
-      title: t("exchangeRate"),
+      title: <span className="whitespace-nowrap">{t("exchangeRate")}</span>,
       dataIndex: "exchange_rate",
       render: (rate, record) => (
         <span
@@ -174,7 +174,7 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
       ),
     },
     {
-      title: t("feeCharge"),
+      title: <span className="whitespace-nowrap">{t("feeCharge")}</span>,
       dataIndex: "total_charge",
       render: (charge, record) => (
         <span dir="ltr" className="text-red-500">
@@ -183,7 +183,7 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
       ),
     },
     {
-      title: t("status.title"),
+      title: <span className="whitespace-nowrap">{t("status.title")}</span>,
       dataIndex: "status",
       render: (status) => {
         const mapped = statusMap[status] || { text: "Unknown", className: "" };
@@ -258,7 +258,7 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
       </Modal>
 
       {/* Styled Table */}
-      <div className="overflow-x-auto!">
+      <div className="overflow-x-auto! overflow-y-hidden">
         <Table
           columns={smallScreenColumn}
           dataSource={transactions}

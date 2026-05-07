@@ -7,7 +7,6 @@ import { memo, useState } from "react";
 import useViewport from "@/hooks/useViewport";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import Link from "next/link";
-import LucideIcon from "@/components/LucideIcon";
 import { statusMap } from "@/utils/statusMap";
 
 const SendMoneyTransaction = memo(function SendMoneyTransaction({
@@ -30,6 +29,12 @@ const SendMoneyTransaction = memo(function SendMoneyTransaction({
         label: t("amount"),
         value: `${Number(record.request_amount || 0).toFixed(2)} ${
           record.request_currency
+        }`,
+      },
+      {
+        label: t("receivedAmount"),
+        value: `${Number(record.receive_amount || 0).toFixed(2)} ${
+          record.payment_currency
         }`,
       },
       {
@@ -81,7 +86,7 @@ const SendMoneyTransaction = memo(function SendMoneyTransaction({
 
   const columns = [
     {
-      title: t("type"),
+      title: <span className="whitespace-nowrap">{t("type")}</span>,
       dataIndex: "type",
       width: 250,
       render: (_, record) => (
@@ -102,7 +107,7 @@ const SendMoneyTransaction = memo(function SendMoneyTransaction({
       ),
     },
     {
-      title: t("trxId"),
+      title: <span className="whitespace-nowrap">{t("trxId")}</span>,
       dataIndex: "trx_id",
       align: "center",
       render: (id) => (
@@ -112,36 +117,31 @@ const SendMoneyTransaction = memo(function SendMoneyTransaction({
       ),
     },
     {
-      title: t("amount"),
+      title: <span className="whitespace-nowrap">{t("amount")}</span>,
       dataIndex: "request_amount",
+      align: "right",
+      render: (amount, record) => (
+        <span className="  text-red-500 whitespace-nowrap" dir="ltr">
+          -{Number(amount).toFixed(2)} {record.request_currency}
+        </span>
+      ),
+    },
+    {
+      title: <span className="whitespace-nowrap">{t("receivedAmount")}</span>,
+      dataIndex: "receive_amount",
       align: "right",
       render: (amount, record) => (
         <span
           className="font-semibold text-green-600 whitespace-nowrap"
           dir="ltr"
         >
-          + {Number(amount).toFixed(2)} {record.request_currency}
+          + {Number(amount).toFixed(2)} {record.payment_currency}
         </span>
       ),
     },
 
     {
-      title: t("exchangeRate"),
-      dataIndex: "exchange_rate",
-      align: "center",
-      render: (rate, record) => (
-        <span
-          className="text-gray-600 dark:text-neutral-300 whitespace-nowrap"
-          dir="ltr"
-        >
-          1 {record.request_currency} = {Number(rate || 0).toFixed(4)}{" "}
-          {record.payment_currency}
-        </span>
-      ),
-    },
-
-    {
-      title: t("feeCharge"),
+      title: <span className="whitespace-nowrap">{t("feeCharge")}</span>,
       dataIndex: "total_charge",
       align: "right",
       render: (charge, record) => (
@@ -151,12 +151,12 @@ const SendMoneyTransaction = memo(function SendMoneyTransaction({
       ),
     },
     {
-      title: t("totalPayable"),
+      title: <span className="whitespace-nowrap">{t("totalPayable")}</span>,
       dataIndex: "total_payable",
       align: "right",
       render: (amount, record) => (
         <span
-          className="font-semibold text-red-500! dark:text-neutral-300 whitespace-nowrap"
+          className="font-semibold text-red-500! dark:text-neutral-300 whitespace-nowrap "
           dir="ltr"
         >
           -{Number(amount || 0).toFixed(2)} {record.request_currency}
@@ -164,7 +164,7 @@ const SendMoneyTransaction = memo(function SendMoneyTransaction({
       ),
     },
     {
-      title: t("date"),
+      title: <span className="whitespace-nowrap">{t("date")}</span>,
       dataIndex: "created_at",
       align: "center",
       render: (date) => (
@@ -182,7 +182,7 @@ const SendMoneyTransaction = memo(function SendMoneyTransaction({
     },
 
     {
-      title: t("status.title"),
+      title: <span className="whitespace-nowrap">{t("status.title")}</span>,
       dataIndex: "status",
       align: "center",
       render: (status) => {
@@ -265,7 +265,7 @@ const SendMoneyTransaction = memo(function SendMoneyTransaction({
       </Modal>
 
       {/* Styled Table */}
-      <div className="overflow-x-auto!">
+      <div className="overflow-x-auto! overflow-y-hidden">
         <Table
           columns={smallScreenColumn}
           dataSource={transactions}

@@ -216,7 +216,7 @@
             "transactions": {
                 "title": "Latest Transactions",
                 "type": "Type",
-                "amount": "Amount",
+                "amount": "Request Amount",
                 "trxId": "Transaction ID",
                 "totalPayable": "Total Payable",
                 "date": "Date",
@@ -229,6 +229,7 @@
                 "sendTo": "Send Money to",
                 "totalPage": "Total {total} Items",
                 "perPage": "Per Page",
+                "receivedAmount": "Received Amount",
                 "status": {
                     "title": "Status",
                     "success": "Success",

@@ -37,19 +37,33 @@ const SendMoneyLog = () => {
       { label: t("trxId"), value: `#${record.trx_id}` },
       {
         label: t("amount"),
-        value: `${record.request_amount} ${record.request_currency}`,
+        value: `${Number(record.request_amount || 0).toFixed(2)} ${
+          record.request_currency
+        }`,
+      },
+      {
+        label: t("receivedAmount"),
+        value: `${Number(record.receive_amount || 0).toFixed(2)} ${
+          record.payment_currency
+        }`,
       },
       {
         label: t("feeCharge"),
-        value: `${record.total_charge} ${record.request_currency}`,
+        value: `${Number(record.total_charge || 0).toFixed(2)} ${
+          record.request_currency
+        }`,
       },
       {
         label: t("totalPayable"),
-        value: `${record.total_payable} ${record.request_currency}`,
+        value: `${Number(record.total_payable || 0).toFixed(2)} ${
+          record.request_currency
+        }`,
       },
       {
         label: t("exchangeRate"),
-        value: `1 ${record.request_currency} = ${record.exchange_rate} ${record.payment_currency}`,
+        value: `1 ${record.request_currency} = ${Number(record.exchange_rate || 0).toFixed(4)} ${
+          record.payment_currency
+        }`,
       },
       {
         label: t("date"),
@@ -66,11 +80,12 @@ const SendMoneyLog = () => {
         label: t("status.title"),
         value: (
           <span
-            className={`${statusMap[record.status]?.className} px-3 py-1 text-sm rounded-full font-normal!`}
+            className={`${statusMap[record.status]?.className} px-3 py-1 text-sm rounded-full`}
           >
             {statusMap[record.status]?.label || "Unknown"}
           </span>
         ),
+
         bold: true,
       },
     ];
@@ -81,7 +96,7 @@ const SendMoneyLog = () => {
 
   const columns = [
     {
-      title: t("type"),
+      title: <span className="whitespace-nowrap">{t("type")}</span>,
       dataIndex: "type",
       width: 250,
       render: (_, record) => (
@@ -101,23 +116,8 @@ const SendMoneyLog = () => {
         </div>
       ),
     },
-
     {
-      title: t("amount"),
-      dataIndex: "request_amount",
-      align: "right",
-      render: (amount, record) => (
-        <span
-          className="font-semibold text-green-600 whitespace-nowrap"
-          dir="ltr"
-        >
-          + {Number(amount).toFixed(2)} {record.request_currency}
-        </span>
-      ),
-    },
-
-    {
-      title: t("trxId"),
+      title: <span className="whitespace-nowrap">{t("trxId")}</span>,
       dataIndex: "trx_id",
       align: "center",
       render: (id) => (
@@ -128,21 +128,45 @@ const SendMoneyLog = () => {
     },
 
     {
-      title: t("totalPayable"),
-      dataIndex: "total_payable",
+      title: <span className="whitespace-nowrap">{t("amount")}</span>,
+      dataIndex: "request_amount",
+      align: "right",
+      render: (amount, record) => (
+        <span className=" text-red-500 whitespace-nowrap" dir="ltr">
+          -{Number(amount).toFixed(2)} {record.request_currency}
+        </span>
+      ),
+    },
+    {
+      title: <span className="whitespace-nowrap">{t("receivedAmount")}</span>,
+      dataIndex: "receive_amount",
       align: "right",
       render: (amount, record) => (
         <span
-          className="font-semibold text-gray-800 dark:text-neutral-300"
+          className="font-semibold text-green-600 whitespace-nowrap"
           dir="ltr"
         >
-          {Number(amount).toFixed(2)} {record.request_currency}
+          + {Number(amount).toFixed(2)} {record.payment_currency}
         </span>
       ),
     },
 
     {
-      title: t("date"),
+      title: <span className="whitespace-nowrap">{t("totalPayable")}</span>,
+      dataIndex: "total_payable",
+      align: "right",
+      render: (amount, record) => (
+        <span
+          className="font-semibold text-red-500 dark:text-neutral-300"
+          dir="ltr"
+        >
+          -{Number(amount).toFixed(2)} {record.request_currency}
+        </span>
+      ),
+    },
+
+    {
+      title: <span className="whitespace-nowrap">{t("date")}</span>,
       dataIndex: "created_at",
       align: "center",
       render: (date) => (
@@ -160,22 +184,7 @@ const SendMoneyLog = () => {
     },
 
     {
-      title: t("exchangeRate"),
-      dataIndex: "exchange_rate",
-      align: "center",
-      render: (rate, record) => (
-        <span
-          className="text-gray-600 dark:text-neutral-300 whitespace-nowrap"
-          dir="ltr"
-        >
-          1 {record.request_currency} = {Number(rate || 0).toFixed(4)}{" "}
-          {record.payment_currency}
-        </span>
-      ),
-    },
-
-    {
-      title: t("feeCharge"),
+      title: <span className="whitespace-nowrap">{t("feeCharge")}</span>,
       dataIndex: "total_charge",
       align: "right",
       render: (charge, record) => (
@@ -186,7 +195,7 @@ const SendMoneyLog = () => {
     },
 
     {
-      title: t("status.title"),
+      title: <span className="whitespace-nowrap">{t("status.title")}</span>,
       dataIndex: "status",
       align: "center",
       render: (status) => {
