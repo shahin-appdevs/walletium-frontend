@@ -132,7 +132,7 @@ export default function MoneyExchangeLog() {
 
       render: (type) => (
         <div className="flex items-center gap-3">
-          <div className="w-10 shrink-0 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-300">
+          <div className="w-10 shrink-0 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-500">
             <ArrowUpOutlined className="text-gray-500 text-lg rotate-45 rtl:-rotate-45" />
           </div>
 

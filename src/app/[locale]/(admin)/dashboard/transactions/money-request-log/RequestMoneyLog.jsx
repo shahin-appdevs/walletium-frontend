@@ -1,19 +1,16 @@
 "use client";
 import { Card, Modal, Tooltip, Button, Input } from "antd";
-import {
-  ArrowDownOutlined,
-  CopyOutlined,
-  SearchOutlined,
-} from "@ant-design/icons";
+import { ArrowDownOutlined, CopyOutlined } from "@ant-design/icons";
 import Table from "@/components/ui/Table";
 import useModal from "@/hooks/useModal";
 import { useState } from "react";
 import useViewport from "@/hooks/useViewport";
-import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import { useLocale, useTranslations } from "next-intl";
 import showToast from "@/lib/toast";
 import { statusMap } from "@/utils/statusMap";
 import { useGetRequestMoneyTrxQuery } from "@/redux/api/transactionsApi";
+import SearchInput from "@/components/ui/SearchInput";
+import useDebounceSearch from "@/hooks/useDebounceSearch";
 
 export default function RequestMoneyLog({}) {
   const { isModalOpen, handleShowModal, handleCancelModal } = useModal();
@@ -25,10 +22,18 @@ export default function RequestMoneyLog({}) {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
+  const { debouncedSearchTerm, handleSearch, searchTerm } =
+    useDebounceSearch(1000);
+
   // trx api
-  const { data: transactionsData, isLoading } = useGetRequestMoneyTrxQuery({
+  const {
+    data: transactionsData,
+    isLoading,
+    isFetching,
+  } = useGetRequestMoneyTrxQuery({
     page: currentPage,
     per_page: pageSize,
+    trx_id: debouncedSearchTerm,
   });
 
   const paginationInfo = transactionsData?.transactions;
@@ -64,12 +69,12 @@ export default function RequestMoneyLog({}) {
         </Tooltip>
       </div>,
       record.created_by,
-      record.identifier,
+      record?.transaction?.trx_id ?? "--",
       `${record.request_amount} ${record.request_currency}`,
       `${record.total_charge} ${record.request_currency}`,
       `${record.total_payable} ${record.request_currency}`,
       `1 ${record.request_currency} = 1 ${record.request_currency}`,
-      record.remark || "N/A",
+      record.remark || "--",
       (
         <div
           className={`px-3 py-1 rounded-full text-xs font-medium ${
@@ -91,18 +96,18 @@ export default function RequestMoneyLog({}) {
 
   const columns = [
     {
-      title: t("type"),
+      title: <span className="whitespace-nowrap">{t("type")}</span>,
       dataIndex: "transaction_type",
       width: 250,
       render: (_, record) => (
         <div className="flex items-center gap-3">
           <div
-            className={`w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-300 dark:text-neutral-800`}
+            className={`w-10 h-10 flex shrink-0 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-300 dark:text-neutral-800`}
           >
             <ArrowDownOutlined className="text-gray-500 rotate-45 text-lg" />
           </div>
 
-          <div>
+          <div className="whitespace-nowrap">
             <p className="font-medium text-gray-800 dark:text-neutral-300">
               {t("requestMoneyTitle") || "Request Money"}
             </p>
@@ -114,7 +119,7 @@ export default function RequestMoneyLog({}) {
       ),
     },
     {
-      title: t("link"),
+      title: <span className="whitespace-nowrap">{t("link")}</span>,
       dataIndex: "identifier",
       render: (identifier) => {
         const shareLink = `${window.location.origin}/${locale}/dashboard/request-money/share?token=${identifier}`;
@@ -140,7 +145,7 @@ export default function RequestMoneyLog({}) {
       },
     },
     {
-      title: t("amount"),
+      title: <span className="whitespace-nowrap">{t("amount")}</span>,
       dataIndex: "request_amount",
       render: (amount, record) => (
         <span
@@ -151,9 +156,21 @@ export default function RequestMoneyLog({}) {
         </span>
       ),
     },
+    {
+      title: <span className="whitespace-nowrap">{t("trxId")}</span>,
+      dataIndex: "transaction.trx_id",
+      render: (trx_id, record) => (
+        <span
+          dir="ltr"
+          className="font-semibold text-green-600 whitespace-nowrap block text-center"
+        >
+          {record?.transaction?.trx_id || "--"}
+        </span>
+      ),
+    },
 
     {
-      title: t("totalPayable"),
+      title: <span className="whitespace-nowrap">{t("totalPayable")}</span>,
       dataIndex: "total_payable",
       render: (amount, record) => (
         <span
@@ -166,29 +183,29 @@ export default function RequestMoneyLog({}) {
     },
 
     {
-      title: t("createdBy"),
+      title: <span className="whitespace-nowrap">{t("createdBy")}</span>,
       dataIndex: "created_by",
       render: (createdBy) => (
         <span className="text-gray-600 dark:text-neutral-300">{createdBy}</span>
       ),
     },
 
+    // {
+    //   title: <span className="whitespace-nowrap">{t("exchangeRate")}</span>,
+    //   dataIndex: "exchange_rate",
+    //   render: (exchange_rate, record) => {
+    //     return (
+    //       <span
+    //         dir="ltr"
+    //         className="text-gray-600 dark:text-neutral-300 whitespace-nowrap"
+    //       >
+    //         1 {record.request_currency} = 1 {record.request_currency}
+    //       </span>
+    //     );
+    //   },
+    // },
     {
-      title: t("exchangeRate"),
-      dataIndex: "exchange_rate",
-      render: (exchange_rate, record) => {
-        return (
-          <span
-            dir="ltr"
-            className="text-gray-600 dark:text-neutral-300 whitespace-nowrap"
-          >
-            1 {record.request_currency} = 1 {record.request_currency}
-          </span>
-        );
-      },
-    },
-    {
-      title: t("feeCharge"),
+      title: <span className="whitespace-nowrap">{t("feeCharge")}</span>,
       dataIndex: "total_charge",
       render: (total_charge, record) => (
         <span dir="ltr" className="text-red-500 dark:text-neutral-300">
@@ -197,7 +214,7 @@ export default function RequestMoneyLog({}) {
       ),
     },
     {
-      title: t("status.title"),
+      title: <span className="whitespace-nowrap">{t("status.title")}</span>,
       dataIndex: "status",
       render: (status) => (
         <span
@@ -214,22 +231,15 @@ export default function RequestMoneyLog({}) {
   const smallScreenColumn = smallScreen ? [...columns.slice(0, 2)] : columns;
 
   const TableExtra = (
-    <div className="flex items-center gap-2! md:gap-0 ">
-      <div className="hidden md:block">
-        <Input
-          placeholder={t("searchPlaceholder")}
-          size="large"
-          prefix={<SearchOutlined className="text-gray-400" />}
-          className=" rounded-lg"
-        />
-      </div>
-      <div className="md:hidden">
-        <PrimaryButton
-          icon={"Search"}
-          iconClassName={"group-hover/primary-btn:rotate-90 duration-200"}
-        ></PrimaryButton>
-      </div>
-    </div>
+    <SearchInput
+      placeholder={t("searchPlaceholder")}
+      isFetching={isFetching}
+      value={searchTerm}
+      onChange={(val) => {
+        handleSearch(val);
+        setCurrentPage(1);
+      }}
+    />
   );
   return (
     <Card title={t("title")} extra={TableExtra}>
