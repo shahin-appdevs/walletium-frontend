@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { routing } from "@/i18n/routing";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Globe } from "lucide-react";
 
 const languages = [
   { code: "en", name: "English", flag: "🇺🇸" },
@@ -53,11 +53,10 @@ export default function LanguageSwitcher() {
       {/* Custom Trigger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 text-xs md:text-sm font-medium text-gray-700 dark:text-white bg-white dark:bg-transparent  border border-gray-200 dark:border-gray-200/10 dark:hover:bg-transparent rounded-lg hover:bg-gray-50 transition-all  active:scale-95"
+        className="flex items-center gap-2 px-3 py-2 text-xs md:text-sm font-medium text-gray-700 dark:text-white bg-white dark:bg-transparent   border-gray-200 dark:border-gray-200/10 dark:hover:bg-transparent rounded-lg hover:bg-gray-50 transition-all  active:scale-95"
       >
-        {/* <span className="text-base">{currentLang.flag}</span> */}
-        <span className="hidden sm:inline">{currentLang.name}</span>
-        <span className="inline sm:hidden uppercase">{currentLang.code}</span>
+        <Globe className="w-4 h-4" />
+        <span className="uppercase">{currentLang.code}</span>
         <ChevronDown
           className={`w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
         />

@@ -151,7 +151,7 @@ const LayoutHeader = ({ collapsed, setCollapsed }) => {
                 </div>
                 {/* Avatar */}
                 {profileImageUrl && (
-                  <div className="group/profile relative border p-2 rounded-lg border-black/10 dark:border-white/10">
+                  <div className="group/profile relative  p-2 rounded-lg border-black/10 dark:border-white/10">
                     <Image
                       onClick={() =>
                         setShowProfileDropdown(!showProfileDropdown)
