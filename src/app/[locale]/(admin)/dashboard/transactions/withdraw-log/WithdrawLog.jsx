@@ -1,16 +1,17 @@
 "use client";
-import { Card, Input, Modal } from "antd";
-import { ArrowUpOutlined, SearchOutlined } from "@ant-design/icons";
+import { Card, Modal } from "antd";
+import { ArrowUpOutlined } from "@ant-design/icons";
 import Table from "@/components/ui/Table";
 import useModal from "@/hooks/useModal";
 import { useState } from "react";
 import useViewport from "@/hooks/useViewport";
-import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import { useTranslations } from "next-intl";
 
 import dayjs from "dayjs";
 import { statusMap } from "@/utils/statusMap";
 import { useGetTransactionsQuery } from "@/redux/api/dashboardApi";
+import SearchInput from "@/components/ui/SearchInput";
+import useDebounceSearch from "@/hooks/useDebounceSearch";
 
 export default function WithdrawTransaction() {
   const t = useTranslations("Dashboard.withdrawMoney.transaction");
@@ -19,11 +20,18 @@ export default function WithdrawTransaction() {
   const { smallScreen } = useViewport();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const { debouncedSearchTerm, handleSearch, searchTerm } =
+    useDebounceSearch(1000);
 
-  const { data: transactionsData, isLoading } = useGetTransactionsQuery({
+  const {
+    data: transactionsData,
+    isLoading,
+    isFetching,
+  } = useGetTransactionsQuery({
     type: "withdraw",
     page: currentPage,
     per_page: pageSize,
+    trx_id: debouncedSearchTerm,
   });
 
   const paginationInfo = transactionsData?.data?.transactions;
@@ -92,25 +100,35 @@ export default function WithdrawTransaction() {
 
   const columns = [
     {
-      title: t("type"),
+      title: <span className="whitespace-nowrap">{t("type")}</span>,
       dataIndex: "type",
-      width: 250,
       render: (type, record) => (
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-300">
+          <div className="w-10 shrink-0 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-300">
             <ArrowUpOutlined className="text-gray-500 text-lg rotate-45" />
           </div>
 
           <div>
-            <p className="font-medium text-gray-800 dark:text-neutral-300">
-              {type} ({record.gateway_currency})
+            <p className="font-medium text-sm! text-gray-800 dark:text-neutral-300 ">
+              {type}
             </p>
+            <span className="text-gray-500 text-xs!">
+              ({record.gateway_currency})
+            </span>
           </div>
         </div>
       ),
     },
+
     {
-      title: t("receivedAmount"),
+      title: <span className="whitespace-nowrap">{t("trxId")}</span>,
+      dataIndex: "trx_id",
+      render: (id) => (
+        <span className="text-gray-600 dark:text-neutral-300">#{id}</span>
+      ),
+    },
+    {
+      title: <span className="whitespace-nowrap">{t("receivedAmount")}</span>,
       dataIndex: "receive_amount",
       render: (amount, record) => (
         <span className="font-semibold text-green-500" dir="ltr">
@@ -119,14 +137,7 @@ export default function WithdrawTransaction() {
       ),
     },
     {
-      title: t("trxId"),
-      dataIndex: "trx_id",
-      render: (id) => (
-        <span className="text-gray-600 dark:text-neutral-300">#{id}</span>
-      ),
-    },
-    {
-      title: t("requestAmount"),
+      title: <span className="whitespace-nowrap">{t("requestAmount")}</span>,
       dataIndex: "request_amount",
       render: (amount, record) => (
         <span className="font-semibold text-red-500" dir="ltr">
@@ -135,7 +146,7 @@ export default function WithdrawTransaction() {
       ),
     },
     {
-      title: t("totalCharge"),
+      title: <span className="whitespace-nowrap">{t("totalCharge")}</span>,
       dataIndex: "total_charge",
       render: (amount, record) => (
         <span className="font-semibold text-red-500" dir="ltr">
@@ -144,16 +155,16 @@ export default function WithdrawTransaction() {
       ),
     },
     {
-      title: t("date"),
+      title: <span className="whitespace-nowrap">{t("date")}</span>,
       dataIndex: "created_at",
       render: (date) => (
         <span className="text-gray-600 dark:text-neutral-300">
-          {dayjs(date).format("DD MMM YYYY, hh:mm A")}
+          {dayjs(date).format("DD MMM YYYY")}
         </span>
       ),
     },
     {
-      title: t("status"),
+      title: <span className="whitespace-nowrap">{t("status")}</span>,
       dataIndex: "status",
       render: (status) => {
         const statusMap = {
@@ -168,7 +179,7 @@ export default function WithdrawTransaction() {
         };
         return (
           <span
-            className={`px-3 py-1 rounded-full text-sm ${current.className}`}
+            className={`px-3 py-1 text-xs! rounded-full ${current.className}`}
           >
             {current.label}
           </span>
@@ -185,22 +196,15 @@ export default function WithdrawTransaction() {
   );
 
   const TableExtra = (
-    <div className="flex items-center gap-2! md:gap-0 ">
-      <div className="hidden md:block">
-        <Input
-          placeholder={t("searchPlaceholder")}
-          size="large"
-          prefix={<SearchOutlined className="text-gray-400" />}
-          className=" rounded-lg"
-        />
-      </div>
-      <div className="md:hidden">
-        <PrimaryButton
-          icon={"Search"}
-          iconClassName={"group-hover/primary-btn:rotate-90 duration-200"}
-        ></PrimaryButton>
-      </div>
-    </div>
+    <SearchInput
+      placeholder={t("searchPlaceholder")}
+      isFetching={isFetching}
+      value={searchTerm}
+      onChange={(val) => {
+        handleSearch(val);
+        setCurrentPage(1);
+      }}
+    />
   );
 
   return (

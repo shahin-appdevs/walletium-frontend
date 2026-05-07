@@ -1,16 +1,16 @@
 "use client";
-import { Card, Input, Modal } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { Card, Modal } from "antd";
+
 import Table from "@/components/ui/Table";
 import useModal from "@/hooks/useModal";
 import { useState } from "react";
 import useViewport from "@/hooks/useViewport";
-import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
-
 import { statusMap } from "@/utils/statusMap";
 import { useGetTransactionsQuery } from "@/redux/api/dashboardApi";
 import { useTranslations } from "next-intl";
 import { ArrowUp } from "lucide-react";
+import SearchInput from "@/components/ui/SearchInput";
+import useDebounceSearch from "@/hooks/useDebounceSearch";
 
 const SendMoneyLog = () => {
   const { isModalOpen, handleShowModal, handleCancelModal } = useModal();
@@ -21,10 +21,18 @@ const SendMoneyLog = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
-  const { data: transactionsData, isLoading } = useGetTransactionsQuery({
+  const { debouncedSearchTerm, handleSearch, searchTerm } =
+    useDebounceSearch(1000);
+
+  const {
+    data: transactionsData,
+    isLoading,
+    isFetching,
+  } = useGetTransactionsQuery({
     type: "money-transfer",
     page: currentPage,
     per_page: pageSize,
+    trx_id: debouncedSearchTerm,
   });
 
   const transactions = transactionsData?.data?.transactions?.data;
@@ -219,22 +227,15 @@ const SendMoneyLog = () => {
   // const mediumScreenColumn = mediumScreen ? [...columns.slice(0, 4)] : columns;
 
   const TableExtra = (
-    <div className="flex items-center gap-2! md:gap-0 ">
-      <div className="hidden md:block">
-        <Input
-          placeholder={t("searchPlaceholder")}
-          size="large"
-          prefix={<SearchOutlined className="text-gray-400" />}
-          className=" rounded-lg"
-        />
-      </div>
-      <div className="md:hidden">
-        <PrimaryButton
-          icon={"Search"}
-          iconClassName={"group-hover/primary-btn:rotate-90 duration-200"}
-        ></PrimaryButton>
-      </div>
-    </div>
+    <SearchInput
+      placeholder={t("searchPlaceholder")}
+      isFetching={isFetching}
+      value={searchTerm}
+      onChange={(val) => {
+        handleSearch(val);
+        setCurrentPage(1);
+      }}
+    />
   );
   return (
     <Card title={t("title")} extra={TableExtra}>

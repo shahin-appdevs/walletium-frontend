@@ -10,10 +10,10 @@ const dashboardApi = baseApi.injectEndpoints({
       transformResponse: (response) => response.data,
     }),
     getTransactions: builder.query({
-      query: ({ type, page, per_page, lang }) => ({
+      query: ({ type, page, per_page, lang, trx_id }) => ({
         url: "/user/transaction/log",
         method: "GET",
-        params: { slug: type, page, per_page, lang },
+        params: { slug: type, page, per_page, lang, trx_id },
       }),
       providesTags: ["transaction"],
     }),

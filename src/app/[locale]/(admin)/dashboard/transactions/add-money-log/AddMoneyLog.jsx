@@ -1,14 +1,15 @@
 "use client";
-import { Input, Card, Modal } from "antd";
-import { ArrowDownOutlined, SearchOutlined } from "@ant-design/icons";
+import { Card, Modal } from "antd";
+import { ArrowDownOutlined } from "@ant-design/icons";
 import Table from "@/components/ui/Table";
 import useModal from "@/hooks/useModal";
 import { useState } from "react";
 import useViewport from "@/hooks/useViewport";
-import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import { statusMap } from "@/utils/statusMap";
 import { useTranslations } from "next-intl";
 import { useGetTransactionsQuery } from "@/redux/api/dashboardApi";
+import SearchInput from "@/components/ui/SearchInput";
+import useDebounceSearch from "@/hooks/useDebounceSearch";
 
 const AddMoneyLog = () => {
   const { isModalOpen, handleShowModal, handleCancelModal } = useModal();
@@ -17,11 +18,18 @@ const AddMoneyLog = () => {
   const t = useTranslations("Dashboard.addMoney.transaction");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const { debouncedSearchTerm, handleSearch, searchTerm } =
+    useDebounceSearch(1000);
 
-  const { data: transactionsData, isLoading } = useGetTransactionsQuery({
+  const {
+    data: transactionsData,
+    isLoading,
+    isFetching,
+  } = useGetTransactionsQuery({
     type: "add-money",
     page: currentPage,
     per_page: pageSize,
+    trx_id: debouncedSearchTerm,
   });
 
   const transactions = transactionsData?.data?.transactions?.data;
@@ -185,22 +193,15 @@ const AddMoneyLog = () => {
   // const mediumScreenColumn = mediumScreen ? [...columns.slice(0, 4)] : columns;
 
   const TableExtra = (
-    <div className="flex items-center gap-2! md:gap-0 ">
-      <div className="hidden md:block">
-        <Input
-          placeholder={t("searchPlaceholder")}
-          size="large"
-          prefix={<SearchOutlined className="text-gray-400" />}
-          className=" rounded-lg"
-        />
-      </div>
-      <div className="md:hidden">
-        <PrimaryButton
-          icon={"Search"}
-          iconClassName={"group-hover/primary-btn:rotate-90 duration-200"}
-        ></PrimaryButton>
-      </div>
-    </div>
+    <SearchInput
+      placeholder={t("searchPlaceholder")}
+      isFetching={isFetching}
+      value={searchTerm}
+      onChange={(val) => {
+        handleSearch(val);
+        setCurrentPage(1);
+      }}
+    />
   );
 
   return (
