@@ -1,6 +1,6 @@
 "use client";
-import { Card, Input, Modal } from "antd";
-import { ArrowUpOutlined, SearchOutlined } from "@ant-design/icons";
+import { Card, Modal } from "antd";
+import { ArrowUpOutlined } from "@ant-design/icons";
 import Table from "@/components/ui/Table";
 import useModal from "@/hooks/useModal";
 import { useState } from "react";
@@ -9,7 +9,8 @@ import dayjs from "dayjs";
 import { statusMap } from "@/utils/statusMap";
 import { useTranslations } from "next-intl";
 import { useGetTransactionsQuery } from "@/redux/api/dashboardApi";
-import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
+import SearchInput from "@/components/ui/SearchInput";
+import useDebounceSearch from "@/hooks/useDebounceSearch";
 
 export default function MoneyExchangeLog() {
   const t = useTranslations("Dashboard.exchangeMoney");
@@ -19,11 +20,18 @@ export default function MoneyExchangeLog() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const { debouncedSearchTerm, handleSearch, searchTerm } =
+    useDebounceSearch(1000);
 
-  const { data: transactionsData, isLoading } = useGetTransactionsQuery({
+  const {
+    data: transactionsData,
+    isLoading,
+    isFetching,
+  } = useGetTransactionsQuery({
     type: "money-exchange",
     page: currentPage,
     per_page: pageSize,
+    trx_id: debouncedSearchTerm,
   });
 
   const paginationInfo = transactionsData?.data?.transactions;
@@ -119,17 +127,17 @@ export default function MoneyExchangeLog() {
 
   const columns = [
     {
-      title: t("transaction.type"),
+      title: <span className="whitespace-nowrap">{t("transaction.type")}</span>,
       dataIndex: "type",
-      width: 200,
+
       render: (type) => (
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-300">
+          <div className="w-10 shrink-0 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-300">
             <ArrowUpOutlined className="text-gray-500 text-lg rotate-45 rtl:-rotate-45" />
           </div>
 
           <div>
-            <p className="font-medium text-gray-800 dark:text-neutral-300">
+            <p className="font-medium text-sm! text-gray-800 dark:text-neutral-300">
               {type}
             </p>
           </div>
@@ -137,7 +145,11 @@ export default function MoneyExchangeLog() {
       ),
     },
     {
-      title: t("transaction.exchangeAmount"),
+      title: (
+        <span className="whitespace-nowrap">
+          {t("transaction.exchangeAmount")}
+        </span>
+      ),
       dataIndex: "request_amount",
       render: (amount, record) => (
         <span className={`font-semibold  text-red-500 text-nowrap`} dir="ltr">
@@ -146,14 +158,20 @@ export default function MoneyExchangeLog() {
       ),
     },
     {
-      title: t("transaction.trxId"),
+      title: (
+        <span className="whitespace-nowrap">{t("transaction.trxId")}</span>
+      ),
       dataIndex: "trx_id",
       render: (id) => (
         <span className="text-gray-600 dark:text-neutral-300">#{id}</span>
       ),
     },
     {
-      title: t("transaction.convertedAmount"),
+      title: (
+        <span className="whitespace-nowrap">
+          {t("transaction.convertedAmount")}
+        </span>
+      ),
       dataIndex: "receive_amount",
       render: (amount, record) => (
         <span className="font-semibold text-green-500 text-nowrap" dir="ltr">
@@ -162,7 +180,9 @@ export default function MoneyExchangeLog() {
       ),
     },
     {
-      title: t("summary.totalPayable"),
+      title: (
+        <span className="whitespace-nowrap">{t("summary.totalPayable")}</span>
+      ),
       dataIndex: "total_payable",
       render: (amount, record) => (
         <span
@@ -174,29 +194,18 @@ export default function MoneyExchangeLog() {
       ),
     },
     {
-      title: t("transaction.date"),
+      title: <span className="whitespace-nowrap">{t("transaction.date")}</span>,
       dataIndex: "created_at",
       render: (date) => (
         <span className="text-gray-600 dark:text-neutral-300">
-          {dayjs(date).format("DD MMM YYYY, hh:mm A")}
+          {dayjs(date).format("DD MMM YYYY")}
         </span>
       ),
     },
-    // {
-    //   title: t("transaction.exchangeRate"),
-    //   dataIndex: "exchange_rate",
-    //   render: (rate, record) => (
-    //     <span
-    //       className="text-gray-600 dark:text-neutral-300 text-nowrap"
-    //       dir="ltr"
-    //     >
-    //       1 {record?.request_currency} = {rate?.toFixed(2)}{" "}
-    //       {record?.payment_currency}
-    //     </span>
-    //   ),
-    // },
     {
-      title: t("transaction.feeCharge"),
+      title: (
+        <span className="whitespace-nowrap">{t("transaction.feeCharge")}</span>
+      ),
       dataIndex: "total_charge",
       render: (charge, record) => (
         <span className="text-red-500 text-nowrap" dir="ltr">
@@ -205,7 +214,9 @@ export default function MoneyExchangeLog() {
       ),
     },
     {
-      title: t("transaction.status"),
+      title: (
+        <span className="whitespace-nowrap">{t("transaction.status")}</span>
+      ),
       dataIndex: "status",
       render: (status) => {
         const current = statusMap[status] || {
@@ -214,7 +225,7 @@ export default function MoneyExchangeLog() {
         };
         return (
           <span
-            className={`px-3 py-1 rounded-full text-sm ${current.className}`}
+            className={`px-3 py-1 rounded-full text-sm! ${current.className}`}
           >
             {current.label}
           </span>
@@ -231,22 +242,15 @@ export default function MoneyExchangeLog() {
   const smallScreenColumn = smallScreen ? columns.slice(0, 2) : columns;
 
   const TableExtra = (
-    <div className="flex items-center gap-2! md:gap-0 ">
-      <div className="hidden md:block">
-        <Input
-          placeholder={t("transaction.searchPlaceholder")}
-          size="large"
-          prefix={<SearchOutlined className="text-gray-400" />}
-          className=" rounded-lg"
-        />
-      </div>
-      <div className="md:hidden">
-        <PrimaryButton
-          icon={"Search"}
-          iconClassName={"group-hover/primary-btn:rotate-90 duration-200"}
-        ></PrimaryButton>
-      </div>
-    </div>
+    <SearchInput
+      placeholder={t("transaction.searchPlaceholder")}
+      isFetching={isFetching}
+      value={searchTerm}
+      onChange={(val) => {
+        handleSearch(val);
+        setCurrentPage(1);
+      }}
+    />
   );
 
   return (
