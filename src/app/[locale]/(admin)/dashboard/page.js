@@ -3,9 +3,9 @@ import React from "react";
 import Stats from "../_components/homepage/Stats";
 import TransactionOverview from "../_components/homepage/TransactionOverview/TransactionOverview";
 import TransactionHistory from "../_components/homepage/TransactionHistory/TransactionHistory";
-import VirtualCardSlider from "../_components/homepage/VirtualCardSlider/VirtualCardSlider";
+// import VirtualCardSlider from "../_components/homepage/VirtualCardSlider/VirtualCardSlider";
 import { useTranslations } from "next-intl";
-import AdSliders from "../_components/homepage/AdSliders/AdSliders";
+// import AdSliders from "../_components/homepage/AdSliders/AdSliders";
 
 const DashboardHome = () => {
   const t = useTranslations("Dashboard.home");

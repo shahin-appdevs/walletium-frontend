@@ -114,6 +114,17 @@
             "proceedToPay": "المتابعة للدفع",
             "loadingTransactions": "جاري تحميل المعاملات الأخيرة...",
             "errorLoadingGateways": "فشل تحميل بوابات الدفع",
+            "successPage": {
+                "title": "تم إضافة الأموال بنجاح",
+                "subTitle": "تمت معالجة طلبك. قد يستغرق الأمر بضع دقائق حتى يظهر في رصيدك.",
+                "primaryText": "العودة إلى إضافة الأموال",
+                "secondaryText": "عرض السجل"
+            },
+            "failedPage": {
+                "title": "فشل إضافة الأموال",
+                "errorMessage": "تعذر علينا إضافة الأموال إلى محفظتك.",
+                "retryText": "حاول مرة أخرى إضافة الأموال"
+            },
             "validation": {
                 "amountNumber": "يجب أن يكون المبلغ رقماً",
                 "amountPositive": "يجب أن يكون المبلغ أكبر من 0",

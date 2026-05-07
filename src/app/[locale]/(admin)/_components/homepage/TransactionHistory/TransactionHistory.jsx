@@ -195,7 +195,7 @@ export default function TransactionHistory() {
 
         return (
           <span
-            className={`px-3 py-1 rounded-full text-sm ${current?.className}`}
+            className={`px-3 py-1 rounded-full text-xs! ${current?.className}`}
           >
             {current?.label}
           </span>

@@ -114,6 +114,17 @@
             "proceedToPay": "Proceed to Pay",
             "loadingTransactions": "Loading recent transactions...",
             "errorLoadingGateways": "Failed to load payment gateways",
+            "successPage": {
+                "title": "Money Added Successfully",
+                "subTitle": "Your request has been processed. It may take a few minutes to reflect in your balance.",
+                "primaryText": "Back to Add Money",
+                "secondaryText": "View History"
+            },
+            "failedPage": {
+                "title": "Add Money Failed",
+                "errorMessage": "We were unable to add funds to your wallet.",
+                "retryText": "Try again Add Money"
+            },
             "validation": {
                 "amountNumber": "Amount must be a number",
                 "amountPositive": "Amount must be greater than 0",

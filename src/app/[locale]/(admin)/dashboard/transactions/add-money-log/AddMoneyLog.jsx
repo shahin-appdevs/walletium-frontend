@@ -99,11 +99,18 @@ const AddMoneyLog = () => {
             <p className="font-medium text-gray-800 dark:text-neutral-300">
               {record.type}
             </p>
-            <p className="text-gray-400 text-sm whitespace-nowrap">
+            <p className="text-gray-400 text-xs! whitespace-nowrap">
               {record.gateway_currency}
             </p>
           </div>
         </div>
+      ),
+    },
+    {
+      title: t("trxId"),
+      dataIndex: "trx_id",
+      render: (id) => (
+        <span className="text-gray-600 dark:text-neutral-300">#{id}</span>
       ),
     },
     {
@@ -116,18 +123,30 @@ const AddMoneyLog = () => {
       ),
     },
     {
-      title: t("trxId"),
-      dataIndex: "trx_id",
-      render: (id) => (
-        <span className="text-gray-600 dark:text-neutral-300">#{id}</span>
+      title: t("exchangeRate"),
+      dataIndex: "exchange_rate",
+      render: (rate, record) => (
+        <span className="text-gray-600 dark:text-neutral-300 whitespace-nowrap">
+          1 {record.request_currency} = {rate} {record.payment_currency}
+        </span>
       ),
     },
+    {
+      title: t("feeCharge"),
+      dataIndex: "total_charge",
+      render: (charge, record) => (
+        <span className="text-red-500">
+          -{Number(charge || 0).toFixed(2)} {record.payment_currency}
+        </span>
+      ),
+    },
+
     {
       title: t("totalPayable"),
       dataIndex: "total_payable",
       render: (amount, record) => (
         <span className="font-semibold text-red-500 dark:text-red-800">
-          {Number(amount).toFixed(2)} {record.request_currency}
+          -{Number(amount).toFixed(2)} {record.payment_currency}
         </span>
       ),
     },
@@ -147,31 +166,13 @@ const AddMoneyLog = () => {
     },
 
     {
-      title: t("exchangeRate"),
-      dataIndex: "exchange_rate",
-      render: (rate, record) => (
-        <span className="text-gray-600 dark:text-neutral-300 whitespace-nowrap">
-          1 {record.request_currency} = {rate} {record.payment_currency}
-        </span>
-      ),
-    },
-    {
-      title: t("feeCharge"),
-      dataIndex: "total_charge",
-      render: (charge, record) => (
-        <span className="text-red-500">
-          {Number(charge || 0).toFixed(2)} {record.request_currency}
-        </span>
-      ),
-    },
-    {
       title: t("status.title"),
       dataIndex: "status",
       render: (status) => {
         const mapped = statusMap[status] || { label: "Unknown", className: "" };
         return (
           <span
-            className={`px-3 py-1 rounded-full text-xs font-medium ${mapped.className}`}
+            className={`px-3 py-1 rounded-full text-xs! font-medium ${mapped.className}`}
           >
             {mapped.label}
           </span>

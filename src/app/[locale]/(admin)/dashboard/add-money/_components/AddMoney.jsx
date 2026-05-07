@@ -183,6 +183,9 @@ const AddMoney = () => {
           amount: data.amount,
           gateway_currency: selectedGateway.alias,
           request_currency: selectedCurrencyCode,
+          success_url: `${window.location.origin}/dashboard/add-money/success`,
+          cancel_url: `${window.location.origin}/dashboard/add-money/failed`,
+          source: "WEB",
         };
 
         const res = await addMoneyAutomaticSubmit({

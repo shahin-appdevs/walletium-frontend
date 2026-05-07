@@ -1,13 +1,12 @@
 "use client";
-import { Input, Card, Modal } from "antd";
-import { ArrowDownOutlined, SearchOutlined } from "@ant-design/icons";
+import { Card, Modal } from "antd";
+import { ArrowDownOutlined } from "@ant-design/icons";
 import Table from "@/components/ui/Table";
 import useModal from "@/hooks/useModal";
 import { memo, useState } from "react";
 import useViewport from "@/hooks/useViewport";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import Link from "next/link";
-import LucideIcon from "@/components/LucideIcon";
 
 const AddMoneyTransaction = memo(function AddMoneyTransaction({
   transactionsData,
@@ -23,16 +22,21 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
       text: t("status.success"),
       className:
         "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border border-green-200 dark:border-green-800",
+      iconClass:
+        "bg-green-100 text-green-600 dark:bg-green-500/20 dark:text-green-400",
     },
     2: {
       text: t("status.pending"),
       className:
         "bg-yellow-100/50 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-800",
+      iconClass:
+        "bg-yellow-100 text-yellow-600 dark:bg-yellow-500/20 dark:text-yellow-400",
     },
     3: {
       text: t("status.rejected"),
       className:
         "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 border border-red-200 dark:border-red-800",
+      iconClass: "bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-400",
     },
   };
 
@@ -89,16 +93,19 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
       render: (_, record) => (
         <div className="flex items-center gap-3">
           <div
-            className={`w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-300 dark:text-neutral-800`}
+            className={`w-10 h-10 flex items-center justify-center rounded-full ${
+              statusMap[record.status]?.iconClass ||
+              "bg-gray-100 dark:bg-gray-300 dark:text-neutral-800"
+            }`}
           >
-            <ArrowDownOutlined className="text-gray-500 rotate-45 text-lg" />
+            <ArrowDownOutlined className="rotate-45 text-lg" />
           </div>
 
           <div>
             <p className="font-medium text-gray-800 dark:text-neutral-300 ">
               {record?.type}
             </p>
-            <p className="text-gray-400 whitespace-nowrap">
+            <p className="text-gray-400 whitespace-nowrap text-xs!">
               {record?.gateway_currency}
             </p>
           </div>
@@ -134,7 +141,7 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
           dir="ltr"
           className="font-semibold text-red-500 dark:text-neutral-300 whitespace-nowrap"
         >
-          -{Number(amount).toFixed(2)} {record.request_currency}
+          -{Number(amount).toFixed(2)} {record.payment_currency}
         </span>
       ),
     },
@@ -171,7 +178,7 @@ const AddMoneyTransaction = memo(function AddMoneyTransaction({
       dataIndex: "total_charge",
       render: (charge, record) => (
         <span dir="ltr" className="text-red-500">
-          -{Number(charge || 0).toFixed(2)} {record.request_currency}
+          -{Number(charge || 0).toFixed(2)} {record.payment_currency}
         </span>
       ),
     },
