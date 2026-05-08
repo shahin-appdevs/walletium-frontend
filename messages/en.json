@@ -681,6 +681,40 @@
                 "passwordMin": "Password must be at least 6 characters"
             },
             "logoAlt": "Walletium Logo"
+        },
+        "register": {
+            "title": "Register for an Account Today",
+            "description": "Become a part of our community by registering for an account today. Enjoy a range of benefits and features tailored to meet your needs. Our registration page makes it easy to create your account, providing a seamless and user-friendly experience.",
+            "firstNameLabel": "First Name",
+            "firstNamePlaceholder": "Enter first name",
+            "lastNameLabel": "Last Name",
+            "lastNamePlaceholder": "Enter last name",
+            "emailLabel": "Email",
+            "emailPlaceholder": "Enter email",
+            "passwordLabel": "Password",
+            "passwordPlaceholder": "Enter password",
+            "countryLabel": "Country",
+            "countryPlaceholder": "Select country",
+            "typeLabel": "Account Type",
+            "typePlaceholder": "Select type",
+            "personalAccount": "Personal Account",
+            "businessAccount": "Business Account",
+            "selectOne": "Select One",
+            "registerButton": "Register",
+            "alreadyHaveAccount": "Already have an account?",
+            "login": "Log in",
+            "recaptchaVerify": "Please verify reCAPTCHA",
+            "logoAlt": "Walletium Logo",
+            "validation": {
+                "firstNameRequired": "First name is required",
+                "lastNameRequired": "Last name is required",
+                "emailInvalid": "Invalid email",
+                "emailRequired": "Email is required",
+                "passwordMin": "Password must be at least 6 characters",
+                "passwordRequired": "Password is required",
+                "countryRequired": "Country is required",
+                "typeRequired": "Account type is required"
+            }
         }
     }
 }

@@ -654,6 +654,40 @@
                 "passwordMin": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل"
             },
             "logoAlt": "شعار Walletium"
+        },
+        "register": {
+            "title": "سجل للحصول على حساب اليوم",
+            "description": "كن جزءًا من مجتمعنا بالتسجيل للحصول على حساب اليوم. استمتع بمجموعة من المزايا والميزات المصممة لتلبية احتياجاتك. صفحة التسجيل لدينا تجعل من السهل إنشاء حسابك، مما يوفر تجربة سلسة وسهلة الاستخدام.",
+            "firstNameLabel": "الاسم الأول",
+            "firstNamePlaceholder": "أدخل الاسم الأول",
+            "lastNameLabel": "اسم العائلة",
+            "lastNamePlaceholder": "أدخل اسم العائلة",
+            "emailLabel": "البريد الإلكتروني",
+            "emailPlaceholder": "أدخل البريد الإلكتروني",
+            "passwordLabel": "كلمة المرور",
+            "passwordPlaceholder": "أدخل كلمة المرور",
+            "countryLabel": "البلد",
+            "countryPlaceholder": "اختر البلد",
+            "typeLabel": "نوع الحساب",
+            "typePlaceholder": "اختر النوع",
+            "personalAccount": "حساب شخصي",
+            "businessAccount": "حساب تجاري",
+            "selectOne": "اختر واحداً",
+            "registerButton": "تسجيل",
+            "alreadyHaveAccount": "هل لديك حساب بالفعل؟",
+            "login": "تسجيل الدخول",
+            "recaptchaVerify": "يرجى التحقق من ريكابتشا",
+            "logoAlt": "شعار Walletium",
+            "validation": {
+                "firstNameRequired": "الاسم الأول مطلوب",
+                "lastNameRequired": "اسم العائلة مطلوب",
+                "emailInvalid": "البريد الإلكتروني غير صالح",
+                "emailRequired": "البريد الإلكتروني مطلوب",
+                "passwordMin": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل",
+                "passwordRequired": "كلمة المرور مطلوبة",
+                "countryRequired": "البلد مطلوب",
+                "typeRequired": "نوع الحساب مطلوب"
+            }
         }
     }
 }
