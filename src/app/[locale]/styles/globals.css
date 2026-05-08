@@ -78,7 +78,73 @@ span{
   --color-primary-900: #045749;
 
   --color-primary: var(--color-primary-500);
+
+  
+/* ── Neutral/Gray Scale ── */
+  --color-neutral-50:  #f9fafb;
+  --color-neutral-100: #f3f4f6;
+  --color-neutral-200: #e5e7eb;
+  --color-neutral-300: #d1d5db;
+  --color-neutral-400: #9ca3af;
+  --color-neutral-500: #6b7280;
+  --color-neutral-600: #4b5563;
+  --color-neutral-700: #374151;
+  --color-neutral-800: #1f2937;
+  --color-neutral-900: #111827;
+
+   /* ── Danger Scale ── */
+  --color-danger-50:  #fef2f2;
+  --color-danger-100: #fee2e2;
+  --color-danger-500: #ef4444;
+  --color-danger-600: #dc2626;
+  --color-danger-900: #7f1d1d;
+
+   /* ── Warning Scale ── */
+  --color-warning-50:  #fffbeb;
+  --color-warning-100: #fef3c7;
+  --color-warning-500: #f59e0b;
+  --color-warning-600: #d97706;
+  --color-warning-900: #78350f;
+
+    /* ── Success Scale ── */
+  --color-success-50:  #f0fdf4;
+  --color-success-100: #dcfce7;
+  --color-success-500: #22c55e;
+  --color-success-600: #16a34a;
+  --color-success-900: #14532d;
+ /* ── Semantic Aliases → point to scale ── */
+  --color-primary:        var(--color-primary-500);
+  --color-primary-hover:  var(--color-primary-600);
+  --color-primary-subtle: var(--color-primary-50);
+  --color-primary-text:   var(--color-primary-700);
+
+   --color-bg-base:        var(--color-neutral-50);
+  --color-bg-subtle:      var(--color-neutral-100);
+  --color-bg-muted:       var(--color-neutral-200);
+  --color-text-base:      var(--color-neutral-900);
+  --color-text-muted:     var(--color-neutral-500);
+  --color-text-subtle:    var(--color-neutral-400);
+  --color-border-base:    var(--color-neutral-200);
+  --color-border-strong:  var(--color-neutral-300);
+
+  
+
+  
 }
+
+/* @variant dark {
+  --color-primary-subtle: var(--color-primary-900);
+  --color-primary-text:   var(--color-primary-300);
+
+  --color-bg-base:        #0f172a;
+  --color-bg-subtle:      #1e293b;
+  --color-bg-muted:       #334155;
+  --color-text-base:      var(--color-neutral-50);
+  --color-text-muted:     var(--color-neutral-400);
+  --color-text-subtle:    var(--color-neutral-600);
+  --color-border-base:    #334155;
+  --color-border-strong:  #475569;
+} */
 
 ::selection {
   background-color: #0ebe98; /* selection bg */
