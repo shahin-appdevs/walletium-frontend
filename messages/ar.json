@@ -587,7 +587,9 @@
             "cancel": "إلغاء",
             "close": "إغلاق",
             "save": "حفظ",
-            "confirm": "تأكيد"
+            "confirm": "تأكيد",
+            "submitKyc": "تقديم KYC",
+            "goToDashboard": "الانتقال إلى لوحة التحكم"
         },
         "success": {
             "default": "تمت العملية بنجاح",

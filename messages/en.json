@@ -614,7 +614,9 @@
             "cancel": "Cancel",
             "close": "Close",
             "save": "Save",
-            "confirm": "Confirm"
+            "confirm": "Confirm",
+            "submitKyc": "Submit KYC",
+            "goToDashboard": "Go to Dashboard"
         },
         "success": {
             "default": "Operation completed successfully",

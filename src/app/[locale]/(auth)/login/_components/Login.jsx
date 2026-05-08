@@ -71,7 +71,7 @@ export default function Login() {
   const onSubmit = async (data) => {
     // console.log("Form Data:", data);
 
-    if (!recaptcha) {
+    if (recaptchaStatus && !recaptcha) {
       showToast.warning(t("recaptchaVerify"));
       return;
     }

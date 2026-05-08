@@ -29,6 +29,7 @@ import AddMoneySummery from "./AddMoneySummery";
 import { useGetTransactionsQuery } from "@/redux/api/dashboardApi";
 import useGatewayLimits from "@/hooks/useGatewayLimits";
 import { getExchangeRate, formatExchangeRate } from "@/utils/exchangeRate";
+import FailedToLoad from "@/components/partials/FailedToLoad";
 
 // dynamic imports
 const AddMoneyTransaction = dynamic(
@@ -46,6 +47,7 @@ const AddMoney = () => {
   const locale = useLocale();
   const t = useTranslations("Dashboard.addMoney");
   const tTrx = useTranslations("Dashboard.addMoney.transaction");
+  const tc = useTranslations("common");
 
   const addMoneySchema = useMemo(() => {
     return yup.object({
@@ -265,10 +267,21 @@ const AddMoney = () => {
   }
 
   if (error) {
+    const checkKyc = error?.data?.message?.error?.includes(
+      "Please! submit your KYC information first",
+    );
+
     return (
-      <div className="text-center py-20 text-red-500">
-        {t("errorLoadingGateways")}
-      </div>
+      <FailedToLoad
+        title={t("errorLoadingGateways")}
+        message={error?.data?.message?.error[0]}
+        redirectTo={() =>
+          router.push(
+            checkKyc ? "/dashboard/security/kyc-verification" : "/dashboard",
+          )
+        }
+        btnText={checkKyc ? tc("action.submitKyc") : tc("action.goToDashboard")}
+      />
     );
   }
 

@@ -24,6 +24,8 @@ import useGatewayLimits from "@/hooks/useGatewayLimits";
 import showToast from "@/lib/toast";
 import RecipientsModal from "./RecipientsModal";
 import { useGetTransactionsQuery } from "@/redux/api/dashboardApi";
+import FailedToLoad from "@/components/partials/FailedToLoad";
+import { useRouter } from "next/navigation";
 
 const sendMoneySchema = yup.object({
   sender_amount: yup.string().required("Sender amount is required"),
@@ -45,6 +47,9 @@ const SendMoney = () => {
   const [confirmDetails, setConfirmDetails] = useState(null);
   const t = useTranslations("Dashboard.sendMoney");
   const tTrx = useTranslations("Dashboard.sendMoney.transactions");
+  const tc = useTranslations("common");
+
+  const router = useRouter();
 
   // api hooks
   const {
@@ -232,10 +237,25 @@ const SendMoney = () => {
   };
 
   if (isLoading) return <SendMoneyPageSkeleton />;
-  if (error)
-    return (
-      <div className="p-10 text-center text-red-500">{t("errorLoading")}</div>
+
+  if (error) {
+    const checkKyc = error?.data?.message?.error?.includes(
+      "Please! submit your KYC information first",
     );
+
+    return (
+      <FailedToLoad
+        title={t("errorLoading")}
+        message={error?.data?.message?.error[0]}
+        redirectTo={() =>
+          router.push(
+            checkKyc ? "/dashboard/security/kyc-verification" : "/dashboard",
+          )
+        }
+        btnText={checkKyc ? tc("action.submitKyc") : tc("action.goToDashboard")}
+      />
+    );
+  }
 
   const singleTable = [
     {

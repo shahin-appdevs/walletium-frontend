@@ -28,6 +28,7 @@ import WithdrawTransaction from "./Transaction/WithdrawTransaction";
 import useGatewayLimits from "@/hooks/useGatewayLimits";
 import { getExchangeRate, formatExchangeRate } from "@/utils/exchangeRate";
 import { useGetTransactionsQuery } from "@/redux/api/dashboardApi";
+import FailedToLoad from "@/components/partials/FailedToLoad";
 
 const WithdrawMoney = () => {
   const router = useRouter();
@@ -227,11 +228,30 @@ const WithdrawMoney = () => {
     return <AddMoneyPageSkeleton />;
   }
 
+  // if (error) {
+  //   return (
+  //     <div className="text-center py-20 text-red-500">
+  //       {t("errorLoadingGateways")}
+  //     </div>
+  //   );
+  // }
+
   if (error) {
+    const checkKyc = error?.data?.message?.error?.includes(
+      "Please! submit your KYC information first",
+    );
+
     return (
-      <div className="text-center py-20 text-red-500">
-        {t("errorLoadingGateways")}
-      </div>
+      <FailedToLoad
+        title={t("errorLoadingGateways")}
+        message={error?.data?.message?.error[0]}
+        redirectTo={() =>
+          router.push(
+            checkKyc ? "/dashboard/security/kyc-verification" : "/dashboard",
+          )
+        }
+        btnText={checkKyc ? tc("action.submitKyc") : tc("action.goToDashboard")}
+      />
     );
   }
 

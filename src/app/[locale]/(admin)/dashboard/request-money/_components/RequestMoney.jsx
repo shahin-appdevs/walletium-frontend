@@ -23,6 +23,8 @@ import { getExchangeRate } from "@/utils/exchangeRate";
 import { useGetRequestMoneyTrxQuery } from "@/redux/api/transactionsApi";
 import dynamic from "next/dynamic";
 import TransactionTableSkeleton from "../../../_components/Skeleton/TransactionTableSkeleton";
+import FailedToLoad from "@/components/partials/FailedToLoad";
+import { useRouter } from "next/navigation";
 
 const RequestMoneyTransaction = dynamic(
   () => import("./RequestMoneyTransaction"),
@@ -44,6 +46,7 @@ const RequestMoney = () => {
   const t = useTranslations("Dashboard.requestMoney");
   const tTrx = useTranslations("Dashboard.requestMoney.transactions");
   const tc = useTranslations("common");
+  const router = useRouter();
 
   // api hooks
   const {
@@ -170,12 +173,25 @@ const RequestMoney = () => {
   };
 
   if (isLoading) return <RequestMoneySkeleton />;
-  if (error)
-    return (
-      <div className="p-10 text-center text-red-500">
-        {t("errorLoading") || "Failed to load Request Money information."}
-      </div>
+
+  if (error) {
+    const checkKyc = error?.data?.message?.error?.includes(
+      "Please! submit your KYC information first",
     );
+
+    return (
+      <FailedToLoad
+        title={t("errorLoading") || "Failed to load Request Money information."}
+        message={error?.data?.message?.error[0]}
+        redirectTo={() =>
+          router.push(
+            checkKyc ? "/dashboard/security/kyc-verification" : "/dashboard",
+          )
+        }
+        btnText={checkKyc ? tc("action.submitKyc") : tc("action.goToDashboard")}
+      />
+    );
+  }
 
   const singleTable = [
     {
