@@ -29,6 +29,8 @@ import { useLocale, useTranslations } from "next-intl";
 
 import { useGetTransactionsQuery } from "@/redux/api/dashboardApi";
 import SendMoneyPageSkeleton from "../../send-money/_components/SendMoneySkeleton/SendMoneyPageSkeleton";
+import FailedToLoad from "@/components/partials/FailedToLoad";
+import { useRouter } from "next/navigation";
 
 const exchangeMoneySchema = (t) =>
   yup.object({
@@ -90,6 +92,9 @@ const ExchangeMoney = () => {
   });
 
   const exchangeFromAmount = watch("exchange_from_amount");
+
+  const router = useRouter();
+  const tc = useTranslations("common");
 
   useEffect(() => {
     if (userWallets.length > 0) {
@@ -198,11 +203,29 @@ const ExchangeMoney = () => {
   };
 
   if (isLoading) return <SendMoneyPageSkeleton />;
-  if (error)
-    return (
-      <div className="p-10 text-center text-red-500">{t("errorLoading")}</div>
+  // if (error)
+  //   return (
+  //     <div className="p-10 text-center text-red-500">{t("errorLoading")}</div>
+  //   );
+
+  if (error) {
+    const checkKyc = error?.data?.message?.error?.includes(
+      "Please! submit your KYC information first",
     );
 
+    return (
+      <FailedToLoad
+        title={t("errorLoading") || "Failed to load Request Money information."}
+        message={error?.data?.message?.error[0]}
+        redirectTo={() =>
+          router.push(
+            checkKyc ? "/dashboard/security/kyc-verification" : "/dashboard",
+          )
+        }
+        btnText={checkKyc ? tc("action.submitKyc") : tc("action.goToDashboard")}
+      />
+    );
+  }
   const singleTable = [
     {
       label: t("summary.exchangeFromWallet"),

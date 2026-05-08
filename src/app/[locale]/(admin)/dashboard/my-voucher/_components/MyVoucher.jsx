@@ -30,6 +30,8 @@ import { useLocale, useTranslations } from "next-intl";
 import useModal from "@/hooks/useModal";
 import SendMoneyPageSkeleton from "../../send-money/_components/SendMoneySkeleton/SendMoneyPageSkeleton";
 import CreateRedeemCode from "./CreateRedeemCode";
+import FailedToLoad from "@/components/partials/FailedToLoad";
+import { useRouter } from "next/navigation";
 
 const voucherCreateSchema = yup.object({
   amount: yup.string().required("Amount is required"),
@@ -42,6 +44,8 @@ const voucherRedeemSchema = yup.object({
 const MyVoucher = () => {
   const locale = useLocale();
   const t = useTranslations("Dashboard.myVoucher");
+  const router = useRouter();
+  const tc = useTranslations("common");
   const {
     data: voucherIndexData,
     isLoading,
@@ -193,10 +197,25 @@ const MyVoucher = () => {
   };
 
   if (isLoading) return <SendMoneyPageSkeleton />;
-  if (error)
-    return (
-      <div className="p-10 text-center text-red-500">{t("errorLoading")}</div>
+
+  if (error) {
+    const checkKyc = error?.data?.message?.error?.includes(
+      "Please! submit your KYC information first",
     );
+
+    return (
+      <FailedToLoad
+        title={t("errorLoading") || "Failed to load Request Money information."}
+        message={error?.data?.message?.error[0]}
+        redirectTo={() =>
+          router.push(
+            checkKyc ? "/dashboard/security/kyc-verification" : "/dashboard",
+          )
+        }
+        btnText={checkKyc ? tc("action.submitKyc") : tc("action.goToDashboard")}
+      />
+    );
+  }
 
   const singleTable = [
     {
