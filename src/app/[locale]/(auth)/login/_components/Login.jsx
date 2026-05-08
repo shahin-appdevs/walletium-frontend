@@ -20,28 +20,39 @@ import {
   setEmailVerifyToken,
   setTwoFactorStatus,
 } from "@/redux/features/authSlice";
+import useBasicSettings from "@/hooks/useBasicSettings";
+import { useTranslations } from "next-intl";
 
-const loginSchema = yup.object({
-  credentials: yup.string().required("Email or username is required"),
-  password: yup
-    .string()
-    .required("Password is required")
-    .min(6, "Password must be at least 6 characters"),
-});
+const loginSchema = (t) =>
+  yup.object({
+    credentials: yup.string().required(t("validation.credentialsRequired")),
+    password: yup
+      .string()
+      .required(t("validation.passwordRequired"))
+      .min(6, t("validation.passwordMin")),
+  });
 
 export default function Login() {
+  const { settings } = useBasicSettings();
+  const t = useTranslations("Auth.login");
+
+  const basicSettingData = settings || {};
+  const recaptchaKey = basicSettingData?.google_recaptcha_site_key;
+  const recaptchaStatus = basicSettingData?.google_recaptcha_status;
+
   const [login, { isLoading }] = useLoginMutation();
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect");
 
   const [recaptcha, setRecaptcha] = useState(null);
+
   const dispatch = useDispatch();
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(loginSchema),
+    resolver: yupResolver(loginSchema(t)),
     defaultValues: {
       credentials: "",
       password: "",
@@ -60,7 +71,7 @@ export default function Login() {
     // console.log("Form Data:", data);
 
     if (!recaptcha) {
-      showToast.warning("Please verify reCAPTCHA");
+      showToast.warning(t("recaptchaVerify"));
       return;
     }
 
@@ -123,24 +134,20 @@ export default function Login() {
             src="/images/logo/web_logo.webp"
             height={50}
             width={200}
-            alt="Walletium Logo"
+            alt={t("logoAlt")}
           />
         </div>
 
         <Typography.Title level={3} className="text-center mb-6">
-          Log in and Stay Connected
+          {t("title")}
         </Typography.Title>
 
-        <p className="text-center! text-sm!">
-          Our secure login process ensures the confidentiality of your
-          information. Log in today and stay connected to your finances, anytime
-          and anywhere.
-        </p>
+        <p className="text-center! text-sm!">{t("description")}</p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Email / Username */}
           <div>
-            <label className="block mb-1 font-medium">Email</label>
+            <label className="block mb-1 font-medium">{t("emailLabel")}</label>
 
             <Controller
               name="credentials"
@@ -148,7 +155,7 @@ export default function Login() {
               render={({ field }) => (
                 <Input
                   {...field}
-                  placeholder="Enter email or username"
+                  placeholder={t("emailPlaceholder")}
                   size="large"
                   status={errors.credentials ? "error" : ""}
                 />
@@ -164,7 +171,9 @@ export default function Login() {
 
           {/* Password */}
           <div>
-            <label className="block mb-1 font-medium">Password</label>
+            <label className="block mb-1 font-medium">
+              {t("passwordLabel")}
+            </label>
 
             <Controller
               name="password"
@@ -172,7 +181,7 @@ export default function Login() {
               render={({ field }) => (
                 <Input.Password
                   {...field}
-                  placeholder="Enter password"
+                  placeholder={t("passwordPlaceholder")}
                   size="large"
                   status={errors.password ? "error" : ""}
                 />
@@ -193,32 +202,35 @@ export default function Login() {
               control={control}
               render={({ field }) => (
                 <Checkbox {...field} checked={field.value}>
-                  Remember Me
+                  {t("rememberMe")}
                 </Checkbox>
               )}
             />
 
             <Link href="/forget-password" className="text-primary text-sm">
-              Forget Password?
+              {t("forgetPassword")}
             </Link>
           </div>
-
-          <ReCAPTCHA
-            ref={recaptchaRef}
-            sitekey={`6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI`}
-            onChange={recaptchaChange}
-          />
+          {recaptchaStatus && recaptchaKey && (
+            <div className="flex-center">
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey={recaptchaKey}
+                onChange={recaptchaChange}
+              />
+            </div>
+          )}
 
           {/* Submit */}
           <PrimaryButton type="submit" className="w-full" loading={isLoading}>
-            Login
+            {t("loginButton")}
           </PrimaryButton>
         </form>
 
         <p className="text-center text-gray-500 text-sm mt-4">
-          Don’t have an account?{" "}
+          {t("dontHaveAccount")}{" "}
           <Link href="/register" className="text-primary-500 hover:underline">
-            Register
+            {t("register")}
           </Link>
         </p>
       </div>

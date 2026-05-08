@@ -634,6 +634,26 @@
             "verify_button": "تحقق",
             "already_have_account": "هل لديك حساب بالفعل؟",
             "login_now": "سجل الدخول الآن"
+        },
+        "login": {
+            "title": "سجل دخولك وابق على اتصال",
+            "description": "تضمن عملية تسجيل الدخول الآمنة لدينا سرية معلوماتك. سجل دخولك اليوم وابق على اتصال بأموالك، في أي وقت وفي أي مكان.",
+            "emailLabel": "البريد الإلكتروني",
+            "emailPlaceholder": "أدخل البريد الإلكتروني أو اسم المستخدم",
+            "passwordLabel": "كلمة المرور",
+            "passwordPlaceholder": "أدخل كلمة المرور",
+            "rememberMe": "تذكرني",
+            "forgetPassword": "هل نسيت كلمة المرور؟",
+            "loginButton": "تسجيل الدخول",
+            "dontHaveAccount": "ليس لديك حساب؟",
+            "register": "تسجيل",
+            "recaptchaVerify": "يرجى التحقق من ريكابتشا",
+            "validation": {
+                "credentialsRequired": "البريد الإلكتروني أو اسم المستخدم مطلوب",
+                "passwordRequired": "كلمة المرور مطلوبة",
+                "passwordMin": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل"
+            },
+            "logoAlt": "شعار Walletium"
         }
     }
 }

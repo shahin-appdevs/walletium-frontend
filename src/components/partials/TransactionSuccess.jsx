@@ -19,7 +19,7 @@ const TransactionSuccess = ({
 
   return (
     <div className="flex items-center justify-center min-h-[60vh] p-4">
-      <Card className="w-full max-w-2xl shadow-sm border-none bg-white dark:bg-slate-900 rounded-2xl!">
+      <Card className="w-full max-w-2xl shadow-lg border-none bg-white dark:bg-slate-900 rounded-2xl!">
         <Result
           status="success"
           icon={<CheckCircleFilled className="text-green-500 text-6xl" />}

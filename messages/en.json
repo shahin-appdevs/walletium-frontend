@@ -661,6 +661,26 @@
             "verify_button": "Verify",
             "already_have_account": "Already have an account?",
             "login_now": "Login Now"
+        },
+        "login": {
+            "title": "Log in and Stay Connected",
+            "description": "Our secure login process ensures the confidentiality of your information. Log in today and stay connected to your finances, anytime and anywhere.",
+            "emailLabel": "Email",
+            "emailPlaceholder": "Enter email or username",
+            "passwordLabel": "Password",
+            "passwordPlaceholder": "Enter password",
+            "rememberMe": "Remember Me",
+            "forgetPassword": "Forget Password?",
+            "loginButton": "Login",
+            "dontHaveAccount": "Don’t have an account?",
+            "register": "Register",
+            "recaptchaVerify": "Please verify reCAPTCHA",
+            "validation": {
+                "credentialsRequired": "Email or username is required",
+                "passwordRequired": "Password is required",
+                "passwordMin": "Password must be at least 6 characters"
+            },
+            "logoAlt": "Walletium Logo"
         }
     }
 }
