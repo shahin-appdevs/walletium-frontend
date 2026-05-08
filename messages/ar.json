@@ -417,6 +417,7 @@
             },
             "transactions": {
                 "title": "سجل معاملات القسائم",
+                "trxId": "رقم العملية",
                 "transactionDetails": "تفاصيل المعاملة",
                 "redeemCode": "رمز الاسترداد",
                 "paidBy": "الدافع",
@@ -437,7 +438,10 @@
                 "copyCode": "نسخ الرمز",
                 "codeCopied": "تم نسخ الرمز!",
                 "close": "إغلاق",
-                "viewMore": "عرض المزيد"
+                "viewMore": "عرض المزيد",
+                "searchPlaceholder": "بحث في المعاملات...",
+                "totalPage": "إجمالي {total} عنصر",
+                "perPage": "لكل صف"
             }
         },
         "myRecipientList": {

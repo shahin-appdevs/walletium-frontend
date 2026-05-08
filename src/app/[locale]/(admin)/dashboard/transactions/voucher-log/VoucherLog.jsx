@@ -12,6 +12,8 @@ import { useMyVoucherCancelMutation } from "@/redux/api/myVoucherApi";
 import showToast from "@/lib/toast";
 import ConfirmationModal from "@/components/ui/modal/ConfirmationModal";
 import { useTranslations } from "next-intl";
+import SearchInput from "@/components/ui/SearchInput";
+import useDebounceSearch from "@/hooks/useDebounceSearch";
 
 export default function VoucherLog() {
   const { isModalOpen, handleShowModal, handleCancelModal } = useModal();
@@ -22,9 +24,17 @@ export default function VoucherLog() {
   const { smallScreen } = useViewport();
   const t = useTranslations("Dashboard.myVoucher.transactions");
 
-  const { data: transactionsData, isLoading } = useGetVoucherMoneyTrxQuery({
+  const { debouncedSearchTerm, handleSearch, searchTerm } =
+    useDebounceSearch(1000);
+
+  const {
+    data: transactionsData,
+    isLoading,
+    isFetching,
+  } = useGetVoucherMoneyTrxQuery({
     page: currentPage,
     per_page: pageSize,
+    trx_id: debouncedSearchTerm,
   });
 
   const [myVoucherCancel, { isLoading: isCancelling }] =
@@ -46,6 +56,7 @@ export default function VoucherLog() {
   const handleOnRowClick = (record) => {
     const labels = [
       t("redeemCode"),
+      t("trxId"),
       t("paidBy"),
       t("requestAmount"),
       t("feeCharge"),
@@ -55,6 +66,7 @@ export default function VoucherLog() {
     ];
     const values = [
       "code",
+      "transaction",
       "paid_by",
       "request_amount",
       "total_charge",
@@ -65,6 +77,11 @@ export default function VoucherLog() {
 
     const arr = labels.map((item, idx) => {
       let value = record[values[idx]];
+
+      if (values[idx] === "transaction") {
+        value = record?.transaction?.trx_id || "--";
+      }
+
       if (values[idx] === "code") {
         value = (
           <div className="flex items-center gap-2">
@@ -235,11 +252,11 @@ export default function VoucherLog() {
       ),
     },
     {
-      title: t("date"),
-      dataIndex: "created_at",
-      render: (date) => (
-        <span className="text-gray-600 dark:text-neutral-300">
-          {dayjs(date).format("DD MMM YYYY, hh:mm A")}
+      title: t("trxId"),
+      dataIndex: "trx_id",
+      render: (trxId, record) => (
+        <span className="font-semibold text-gray-600 dark:text-neutral-300 block! text-center!">
+          {record?.transaction?.trx_id || "--"}
         </span>
       ),
     },
@@ -253,7 +270,7 @@ export default function VoucherLog() {
         };
         return (
           <span
-            className={`px-3 py-1 rounded-full text-sm ${current.className}`}
+            className={`px-3 py-1 rounded-full text-sm! ${current.className}`}
           >
             {current.label === "Rejected" ? t("canceled") : current.label}
           </span>
@@ -300,8 +317,20 @@ export default function VoucherLog() {
     ? columns.slice(0, 2).concat(columns.slice(-1))
     : columns;
 
+  const TableExtra = (
+    <SearchInput
+      placeholder={t("searchPlaceholder")}
+      isFetching={isFetching}
+      value={searchTerm}
+      onChange={(val) => {
+        handleSearch(val);
+        setCurrentPage(1);
+      }}
+    />
+  );
+
   return (
-    <Card title={t("title")}>
+    <Card title={t("title")} extra={TableExtra}>
       <Modal
         open={isModalOpen}
         onOk={handleCancelModal}
@@ -359,9 +388,12 @@ export default function VoucherLog() {
               setCurrentPage(page);
               setPageSize(pageSize);
             },
-            showTotal: (t) => `Total ${t} Items`,
+            showTotal: (total) => t(`totalPage`, { total }),
             showSizeChanger: true,
             pageSizeOptions: ["10", "20", "30", "50", "100"],
+            locale: {
+              items_per_page: `/ ${t("perPage")}`,
+            },
           }}
           onRowClick={handleOnRowClick}
           className="rounded-xl border border-gray-200/50 dark:border-neutral-950 md:min-w-[820px]"

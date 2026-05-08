@@ -444,6 +444,7 @@
             },
             "transactions": {
                 "title": "Voucher Transaction Log",
+                "trxId": "Trx ID",
                 "transactionDetails": "Transaction Details",
                 "redeemCode": "Redeem Code",
                 "paidBy": "Paid By",
@@ -464,7 +465,10 @@
                 "copyCode": "Copy Code",
                 "codeCopied": "Code copied!",
                 "close": "Close",
-                "viewMore": "View More"
+                "viewMore": "View More",
+                "searchPlaceholder": "Search transactions...",
+                "totalPage": "Total {total} Items",
+                "perPage": "Per Page"
             }
         },
         "myRecipientList": {
