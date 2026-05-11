@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem -Path \"d:\\\\shahin-hossain\\\\projects\\\\walletium-project\\\\walletium-frontend\" -Force | Select-Object Name, @{Name=\"Type\";Expression={if\\($_.PSIsContainer\\){\"Dir\"}else{\"File\"}}} | Sort-Object Name)",
+      "Bash(grep -E \"\\\\.\\(jsx|js\\)$\")",
+      "Bash(dir /s /b \"d:\\\\shahin-hossain\\\\projects\\\\walletium-project\\\\walletium-frontend\\\\src\\\\app\")"
+    ]
+  }
+}

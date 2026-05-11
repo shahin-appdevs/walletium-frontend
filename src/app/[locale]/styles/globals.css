@@ -127,9 +127,18 @@ span{
   --color-border-base:    var(--color-neutral-200);
   --color-border-strong:  var(--color-neutral-300);
 
-  
+  /* ── Walletium Dark Hero Theme ── */
+  --color-walletium-teal:      #00C9A7;
+  --color-walletium-cyan:      #00E5FF;
+  --color-walletium-dark:      #0A0F1E;
+  --color-walletium-dark-mid:  #0D2137;
+  --color-walletium-muted:     #94A3B8;
 
-  
+  /* ── Glow shadows ── */
+  --shadow-teal-sm:   0 0 16px rgba(0, 201, 167, 0.3);
+  --shadow-teal-md:   0 0 28px rgba(0, 201, 167, 0.4);
+  --shadow-teal-lg:   0 0 48px rgba(0, 201, 167, 0.5);
+  --shadow-card-hero: 0 0 60px rgba(0, 180, 160, 0.12), 0 30px 60px rgba(0, 0, 0, 0.45);
 }
 
 /* @variant dark {

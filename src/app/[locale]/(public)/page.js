@@ -1,17 +1,11 @@
-import { Button } from "antd";
-import Link from "next/link";
+import { Navbar } from "@/components/layout/Navbar";
+import { HeroSection } from "@/components/sections/HeroSection";
 
 export default function Home() {
   return (
-    <div>
-      <div className="flex justify-center items-center h-screen">
-        <div>
-          <h2>Welcome to Walletium</h2>
-          <Link href={"/dashboard"} className="text-">
-            <Button type="primary">Go to Dashboard</Button>
-          </Link>
-        </div>
-      </div>
-    </div>
+    <main>
+      <Navbar />
+      <HeroSection />
+    </main>
   );
 }

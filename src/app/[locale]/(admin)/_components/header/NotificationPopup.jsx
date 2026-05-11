@@ -1,117 +1,120 @@
 "use client";
 import { CloseOutlined, RightOutlined } from "@ant-design/icons";
-import LucideIcon from "@/components/LucideIcon";
+import { CheckCheck } from "lucide-react";
 import Link from "next/link";
+import { Skeleton } from "antd";
+import NotificationItem from "@/app/[locale]/(admin)/dashboard/notification/_components/NotificationItem";
+import {
+  useGetNotificationsQuery,
+  useMarkAsReadMutation,
+  useMarkAllAsReadMutation,
+} from "@/redux/api/notificationApi";
 
-// Define a type-to-color map to handle dynamic data logic
-const typeStyles = {
-  mention: "bg-blue-500",
-  goal: "bg-indigo-500",
-  reject: "bg-red-500",
-  default: "bg-slate-500",
-};
+export default function NotificationPopup({ onClose }) {
+  const { data: notificationsData, isLoading } = useGetNotificationsQuery({
+    page: 1,
+    per_page: 5,
+    status: "",
+  });
 
-export const DUMMY_NOTIFICATIONS = [
-  {
-    id: 1,
-    name: "Zayan Ahmed",
-    action: "requested a withdrawal of $500",
-    time: "2 mins ago",
-    type: "mention", // Matches "bg-blue-500"
-  },
-  {
-    id: 2,
-    name: "System Bot",
-    action: "successfully updated the Arabic translation files",
-    time: "1h ago",
-    type: "goal", // Matches "bg-indigo-500"
-  },
-  {
-    id: 3,
-    name: "Elena Rodriguez",
-    action: "rejected the recipient request for eBuy project",
-    time: "3h ago",
-    type: "reject", // Matches "bg-red-500"
-  },
-  {
-    id: 4,
-    name: "Omar Al-Farsi",
-    action: "shared a new document in the Finance thread",
-    time: "Yesterday at 10:45 PM",
-    type: "mention",
-  },
-  {
-    id: 5,
-    name: "Admin Support",
-    action: "Your KYC verification is currently on hold",
-    time: "May 7, 2026",
-    type: "default", // Matches "bg-slate-500"
-  },
-];
+  const [markAsRead]                        = useMarkAsReadMutation();
+  const [markAllAsRead, { isLoading: isMarkingAll }] = useMarkAllAsReadMutation();
 
-export default function NotificationPopup({ notifications = [], onClose }) {
+  const notifications = notificationsData?.notifications?.data || [];
+  const unreadCount   = notificationsData?.unread_count || 0;
+
+  const handleMarkAsRead = async (id) => {
+    try {
+      await markAsRead(id).unwrap();
+    } catch {}
+  };
+
+  const handleMarkAllAsRead = async () => {
+    try {
+      await markAllAsRead().unwrap();
+    } catch {}
+  };
+
   return (
     <div className="z-50 w-[340px] rounded-xl bg-white dark:bg-slate-900 shadow-2xl border border-neutral-100 dark:border-slate-800 overflow-hidden">
-      {/* Header - Tightened height */}
+      {/* Header */}
       <div className="flex h-11 items-center justify-between px-4 border-b border-neutral-50 dark:border-slate-800">
-        <span className="font-bold text-gray-800 dark:text-slate-200 text-sm">
-          Notifications
-        </span>
-        <CloseOutlined
-          onClick={onClose}
-          className="cursor-pointer text-gray-400 hover:text-gray-700 dark:hover:text-white transition-colors text-[10px]"
-        />
+        <div className="flex items-center gap-2">
+          <span className="font-bold text-gray-800 dark:text-slate-200 text-sm">
+            Notifications
+          </span>
+          {unreadCount > 0 && (
+            <span className="px-1.5 min-w-[18px] py-0.5 text-[10px] font-bold rounded-full bg-primary text-white text-center leading-none">
+              {unreadCount > 99 ? "99+" : unreadCount}
+            </span>
+          )}
+        </div>
+
+        <div className="flex items-center gap-2.5">
+          {unreadCount > 0 && (
+            <button
+              onClick={handleMarkAllAsRead}
+              disabled={isMarkingAll}
+              className="flex items-center gap-0.5 text-[11px] text-primary hover:opacity-70 transition-opacity disabled:opacity-40"
+              title="Mark all as read"
+            >
+              <CheckCheck size={11} />
+              All read
+            </button>
+          )}
+          <CloseOutlined
+            onClick={onClose}
+            className="cursor-pointer text-gray-400 hover:text-gray-700 dark:hover:text-white transition-colors text-[10px]"
+          />
+        </div>
       </div>
 
-      {/* List - Minimal vertical padding */}
+      {/* Notification list */}
       <div className="max-h-[320px] overflow-y-auto">
-        {DUMMY_NOTIFICATIONS.length > 0 ? (
-          DUMMY_NOTIFICATIONS.map((item) => {
-            // Dynamically select color based on item type
-            const bgColor = typeStyles[item.type] || typeStyles.default;
-
-            return (
-              <div
-                key={item.id}
-                className="flex items-start gap-3 p-3 hover:bg-slate-50 dark:hover:bg-slate-800/40 cursor-pointer border-b border-neutral-50 dark:border-slate-800 last:border-0"
-              >
-                {/* Dynamic Avatar */}
-                <div
-                  className={`w-8 h-8 rounded-full ${bgColor} shrink-0 flex items-center justify-center`}
-                >
-                  <span className="text-white text-[10px] font-bold uppercase">
-                    {item.name?.charAt(0) || "N"}
-                  </span>
-                </div>
-
-                <div className="flex flex-col">
-                  <span className="text-[13px] text-gray-700 dark:text-slate-300 leading-tight">
-                    <span className="font-semibold text-gray-900 dark:text-white">
-                      {item.name}
-                    </span>{" "}
-                    {item.action}
-                  </span>
-                  {/* Reduced time padding */}
-                  <p className="text-[10px] text-gray-400 dark:text-slate-500 ">
-                    {item.time}
-                  </p>
+        {isLoading ? (
+          <div className="p-3 space-y-3">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="flex items-start gap-3">
+                <Skeleton.Avatar active size="small" />
+                <div className="flex-1 space-y-1.5">
+                  <Skeleton.Input
+                    active
+                    size="small"
+                    style={{ width: "80%", height: 13 }}
+                  />
+                  <Skeleton.Input
+                    active
+                    size="small"
+                    style={{ width: "55%", height: 10 }}
+                  />
                 </div>
               </div>
-            );
-          })
+            ))}
+          </div>
+        ) : notifications.length > 0 ? (
+          notifications.map((item) => (
+            <NotificationItem
+              key={item.id}
+              notification={item}
+              onMarkAsRead={handleMarkAsRead}
+            />
+          ))
         ) : (
-          <div className="py-8 text-center text-xs text-gray-400">
-            No new notifications
+          <div className="py-8 text-center">
+            <span className="text-2xl block mb-2">🔔</span>
+            <p className="text-xs text-gray-400 dark:text-slate-500">
+              No new notifications
+            </p>
           </div>
         )}
       </div>
 
-      {/* Footer Button */}
+      {/* Footer link */}
       <div className="border-t border-neutral-50 dark:border-slate-800">
         <Link
-          href="/dashboard/notifications"
+          href="/dashboard/notification"
           onClick={onClose}
-          className="flex items-center justify-center gap-1.5 w-full py-2  font-bold text-primary-500! dark:text-primary-400 hover:bg-primary-100  transition-all"
+          className="flex items-center justify-center gap-1.5 w-full py-2 font-bold text-primary-500! dark:text-primary-400 hover:bg-primary-100 transition-all"
         >
           See All Notifications
           <RightOutlined className="text-[9px]" />
