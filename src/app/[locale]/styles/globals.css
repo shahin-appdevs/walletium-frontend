@@ -186,6 +186,24 @@ span{
   animation: slideUp 0.35s ease-out;
 }
 
+@keyframes marquee-x {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee-x {
+  animation: marquee-x 35s linear infinite;
+  will-change: transform;
+}
+
+.marquee-pause:hover .animate-marquee-x {
+  animation-play-state: paused;
+}
+
 /* Chrome, Edge, Safari */
 .sidebar-main::-webkit-scrollbar {
   width: 5px;

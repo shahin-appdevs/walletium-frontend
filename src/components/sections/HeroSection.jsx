@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { ExchangeCard } from "@/components/ui/ExchangeCard";
+import { useTheme } from "@/contexts/ThemeContextProvider";
 
 const stagger = {
   hidden: {},
@@ -20,17 +21,27 @@ const fadeUp = {
 const TRUST_POINTS = ["No hidden fees", "Instant transfers", "Bank-grade security"];
 
 export function HeroSection() {
+  const { mode } = useTheme();
+  const isDark = mode === "dark";
+
   return (
     <section
       className="relative min-h-screen flex items-center overflow-hidden"
-      style={{ background: "linear-gradient(140deg, #0A0F1E 0%, #0D2137 60%, #091829 100%)" }}
+      style={{
+        background: isDark
+          ? "linear-gradient(140deg, #0A0F1E 0%, #0D2137 60%, #091829 100%)"
+          : "linear-gradient(140deg, #F8FAFC 0%, #E2E8F0 60%, #F1F5F9 100%)",
+      }}
     >
       {/* Subtle grid overlay */}
       <div
-        className="absolute inset-0 opacity-[0.025] pointer-events-none"
+        className={`absolute inset-0 pointer-events-none ${
+          isDark ? "opacity-[0.025]" : "opacity-[0.06]"
+        }`}
         style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)",
+          backgroundImage: isDark
+            ? "linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)"
+            : "linear-gradient(rgba(15,23,42,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(15,23,42,0.4) 1px, transparent 1px)",
           backgroundSize: "48px 48px",
         }}
       />
@@ -42,8 +53,9 @@ export function HeroSection() {
           transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
           className="absolute top-[20%] left-[10%] w-[520px] h-[520px] rounded-full"
           style={{
-            background:
-              "radial-gradient(circle, rgba(0,201,167,0.13) 0%, transparent 65%)",
+            background: isDark
+              ? "radial-gradient(circle, rgba(0,201,167,0.13) 0%, transparent 65%)"
+              : "radial-gradient(circle, rgba(0,201,167,0.07) 0%, transparent 65%)",
             filter: "blur(80px)",
           }}
         />
@@ -52,8 +64,9 @@ export function HeroSection() {
           transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 3 }}
           className="absolute bottom-[5%] right-[5%] w-[420px] h-[420px] rounded-full"
           style={{
-            background:
-              "radial-gradient(circle, rgba(0,229,255,0.08) 0%, transparent 65%)",
+            background: isDark
+              ? "radial-gradient(circle, rgba(0,229,255,0.08) 0%, transparent 65%)"
+              : "radial-gradient(circle, rgba(0,229,255,0.04) 0%, transparent 65%)",
             filter: "blur(70px)",
           }}
         />
@@ -62,8 +75,9 @@ export function HeroSection() {
           transition={{ duration: 22, repeat: Infinity, ease: "easeInOut", delay: 7 }}
           className="absolute top-[55%] left-[45%] w-[300px] h-[300px] rounded-full"
           style={{
-            background:
-              "radial-gradient(circle, rgba(0,201,167,0.06) 0%, transparent 65%)",
+            background: isDark
+              ? "radial-gradient(circle, rgba(0,201,167,0.06) 0%, transparent 65%)"
+              : "radial-gradient(circle, rgba(0,201,167,0.04) 0%, transparent 65%)",
             filter: "blur(60px)",
           }}
         />
@@ -113,7 +127,9 @@ export function HeroSection() {
             {/* Main headline */}
             <motion.h1
               variants={fadeUp}
-              className="font-black leading-[1.12] text-white"
+              className={`font-black leading-[1.12] ${
+                isDark ? "text-white" : "text-slate-900"
+              }`}
               style={{ fontSize: "clamp(2rem, 4.5vw, 3.5rem)" }}
             >
               <span
@@ -134,7 +150,7 @@ export function HeroSection() {
               variants={fadeUp}
               className="leading-relaxed max-w-xl"
               style={{
-                color: "#94A3B8",
+                color: isDark ? "#94A3B8" : "#475569",
                 fontSize: "clamp(0.95rem, 1.15vw, 1.08rem)",
               }}
             >
@@ -148,7 +164,14 @@ export function HeroSection() {
               {TRUST_POINTS.map((point) => (
                 <li key={point} className="flex items-center gap-2">
                   <CheckCircle2 size={15} style={{ color: "#00C9A7" }} />
-                  <span className="text-sm font-medium" style={{ color: "rgba(148,163,184,0.9)" }}>
+                  <span
+                    className="text-sm font-medium"
+                    style={{
+                      color: isDark
+                        ? "rgba(148,163,184,0.9)"
+                        : "rgba(71,85,105,0.9)",
+                    }}
+                  >
                     {point}
                   </span>
                 </li>
@@ -196,7 +219,11 @@ export function HeroSection() {
             <motion.div
               variants={fadeUp}
               className="flex flex-wrap gap-8 pt-6 mt-2"
-              style={{ borderTop: "1px solid rgba(255,255,255,0.07)" }}
+              style={{
+                borderTop: isDark
+                  ? "1px solid rgba(255,255,255,0.07)"
+                  : "1px solid rgba(15,23,42,0.08)",
+              }}
             >
               {[
                 { value: "50K+", label: "Active Users" },
@@ -210,7 +237,10 @@ export function HeroSection() {
                   >
                     {stat.value}
                   </p>
-                  <p className="text-sm mt-0.5" style={{ color: "#94A3B8" }}>
+                  <p
+                    className="text-sm mt-0.5"
+                    style={{ color: isDark ? "#94A3B8" : "#64748B" }}
+                  >
                     {stat.label}
                   </p>
                 </div>

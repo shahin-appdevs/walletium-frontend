@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import { useTheme } from "@/contexts/ThemeContextProvider";
 
 const CURRENCIES = [
   { code: "USD", flag: "🇺🇸", name: "US Dollar" },
@@ -16,6 +17,11 @@ export function CurrencyInput({
   defaultCurrency = "USD",
   readOnly = false,
 }) {
+  const { mode } = useTheme();
+  const isDark = mode === "dark";
+  const defaultBorder = isDark
+    ? "1px solid rgba(255,255,255,0.1)"
+    : "1px solid rgba(15,23,42,0.1)";
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState(
     CURRENCIES.find((c) => c.code === defaultCurrency) || CURRENCIES[0]
@@ -25,8 +31,8 @@ export function CurrencyInput({
     <div
       className="flex items-center rounded-xl relative transition-all duration-200"
       style={{
-        background: "rgba(255,255,255,0.04)",
-        border: "1px solid rgba(255,255,255,0.1)",
+        background: isDark ? "rgba(255,255,255,0.04)" : "rgba(15,23,42,0.03)",
+        border: defaultBorder,
       }}
     >
       <input
@@ -35,7 +41,11 @@ export function CurrencyInput({
         onChange={onChange ? (e) => onChange(e.target.value) : undefined}
         readOnly={readOnly}
         placeholder="0.00"
-        className="flex-1 bg-transparent text-white text-lg font-medium px-4 py-3.5 outline-none placeholder:text-white/20 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+        className={`flex-1 bg-transparent text-lg font-medium px-4 py-3.5 outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
+          isDark
+            ? "text-white placeholder:text-white/20"
+            : "text-slate-900 placeholder:text-slate-900/25"
+        }`}
         style={{ caretColor: "#00C9A7" }}
         onFocus={(e) => {
           e.currentTarget.parentElement.style.border =
@@ -44,8 +54,7 @@ export function CurrencyInput({
             "0 0 0 3px rgba(0,201,167,0.1)";
         }}
         onBlur={(e) => {
-          e.currentTarget.parentElement.style.border =
-            "1px solid rgba(255,255,255,0.1)";
+          e.currentTarget.parentElement.style.border = defaultBorder;
           e.currentTarget.parentElement.style.boxShadow = "none";
         }}
       />
@@ -54,8 +63,16 @@ export function CurrencyInput({
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center gap-2 px-4 py-3.5 text-white hover:bg-white/5 transition-colors rounded-r-xl"
-          style={{ borderLeft: "1px solid rgba(255,255,255,0.08)" }}
+          className={`flex items-center gap-2 px-4 py-3.5 transition-colors rounded-r-xl ${
+            isDark
+              ? "text-white hover:bg-white/5"
+              : "text-slate-900 hover:bg-slate-900/5"
+          }`}
+          style={{
+            borderLeft: isDark
+              ? "1px solid rgba(255,255,255,0.08)"
+              : "1px solid rgba(15,23,42,0.08)",
+          }}
         >
           <span className="text-xl leading-none">{selected.flag}</span>
           <span className="text-sm font-bold min-w-[2rem]">{selected.code}</span>
@@ -64,7 +81,10 @@ export function CurrencyInput({
             transition={{ duration: 0.2 }}
             className="flex"
           >
-            <ChevronDown size={13} className="text-white/50" />
+            <ChevronDown
+              size={13}
+              className={isDark ? "text-white/50" : "text-slate-600"}
+            />
           </motion.span>
         </button>
 
@@ -77,11 +97,17 @@ export function CurrencyInput({
               transition={{ duration: 0.15, ease: "easeOut" }}
               className="absolute right-0 top-full mt-2 z-50 w-48 rounded-2xl overflow-hidden"
               style={{
-                background: "rgba(8, 18, 38, 0.98)",
+                background: isDark
+                  ? "rgba(8, 18, 38, 0.98)"
+                  : "rgba(255, 255, 255, 0.98)",
                 backdropFilter: "blur(24px)",
                 WebkitBackdropFilter: "blur(24px)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                boxShadow: "0 20px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,201,167,0.05)",
+                border: isDark
+                  ? "1px solid rgba(255,255,255,0.1)"
+                  : "1px solid rgba(15,23,42,0.08)",
+                boxShadow: isDark
+                  ? "0 20px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,201,167,0.05)"
+                  : "0 20px 40px rgba(15,23,42,0.12), 0 0 0 1px rgba(0,201,167,0.05)",
               }}
             >
               {CURRENCIES.map((currency) => (
@@ -101,18 +127,26 @@ export function CurrencyInput({
                     color:
                       selected.code === currency.code
                         ? "#00C9A7"
-                        : "rgba(255,255,255,0.75)",
+                        : isDark
+                          ? "rgba(255,255,255,0.75)"
+                          : "rgba(71,85,105,0.95)",
                   }}
                   onMouseEnter={(e) => {
                     if (selected.code !== currency.code) {
-                      e.currentTarget.style.background = "rgba(255,255,255,0.05)";
-                      e.currentTarget.style.color = "#ffffff";
+                      e.currentTarget.style.background = isDark
+                        ? "rgba(255,255,255,0.05)"
+                        : "rgba(15,23,42,0.04)";
+                      e.currentTarget.style.color = isDark
+                        ? "#ffffff"
+                        : "#0F172A";
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (selected.code !== currency.code) {
                       e.currentTarget.style.background = "transparent";
-                      e.currentTarget.style.color = "rgba(255,255,255,0.75)";
+                      e.currentTarget.style.color = isDark
+                        ? "rgba(255,255,255,0.75)"
+                        : "rgba(71,85,105,0.95)";
                     }
                   }}
                 >

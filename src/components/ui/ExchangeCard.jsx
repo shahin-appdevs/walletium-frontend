@@ -3,8 +3,11 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpDown, ShieldCheck, Zap } from "lucide-react";
 import { CurrencyInput } from "./CurrencyInput";
+import { useTheme } from "@/contexts/ThemeContextProvider";
 
 export function ExchangeCard() {
+  const { mode } = useTheme();
+  const isDark = mode === "dark";
   const [senderAmount, setSenderAmount] = useState("1000");
 
   return (
@@ -14,12 +17,15 @@ export function ExchangeCard() {
       transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.35 }}
       className="w-full max-w-[420px]"
       style={{
-        background: "rgba(255,255,255,0.04)",
+        background: isDark ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.85)",
         backdropFilter: "blur(24px)",
         WebkitBackdropFilter: "blur(24px)",
-        border: "1px solid rgba(255,255,255,0.08)",
-        boxShadow:
-          "0 0 60px rgba(0,180,160,0.12), 0 30px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06)",
+        border: isDark
+          ? "1px solid rgba(255,255,255,0.08)"
+          : "1px solid rgba(15,23,42,0.08)",
+        boxShadow: isDark
+          ? "0 0 60px rgba(0,180,160,0.12), 0 30px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06)"
+          : "0 0 60px rgba(0,180,160,0.10), 0 30px 60px rgba(15,23,42,0.10), inset 0 1px 0 rgba(255,255,255,0.6)",
         borderRadius: "1.5rem",
         padding: "1.75rem",
       }}
@@ -33,8 +39,17 @@ export function ExchangeCard() {
           <ArrowUpDown size={19} className="text-white" strokeWidth={2.5} />
         </div>
         <div>
-          <h3 className="text-white font-bold text-lg leading-tight">Money Exchange</h3>
-          <p className="text-xs" style={{ color: "#94A3B8" }}>
+          <h3
+            className={`font-bold text-lg leading-tight ${
+              isDark ? "text-white" : "text-slate-900"
+            }`}
+          >
+            Money Exchange
+          </h3>
+          <p
+            className="text-xs"
+            style={{ color: isDark ? "#94A3B8" : "#64748B" }}
+          >
             Fast &amp; Secure Transfers
           </p>
         </div>
@@ -68,7 +83,13 @@ export function ExchangeCard() {
               Exchange Rate
             </p>
           </div>
-          <p className="text-white text-sm font-bold">1 USD = 1.0000 USD</p>
+          <p
+            className={`text-sm font-bold ${
+              isDark ? "text-white" : "text-slate-900"
+            }`}
+          >
+            1 USD = 1.0000 USD
+          </p>
         </div>
         <div
           className="w-10 h-10 rounded-xl flex items-center justify-center"
@@ -85,7 +106,9 @@ export function ExchangeCard() {
       <div className="mb-4">
         <label
           className="block text-sm font-semibold mb-2.5"
-          style={{ color: "rgba(148,163,184,0.9)" }}
+          style={{
+            color: isDark ? "rgba(148,163,184,0.9)" : "rgba(71,85,105,0.95)",
+          }}
         >
           Sender Amount
           <span style={{ color: "#00C9A7" }}>*</span>
@@ -101,7 +124,11 @@ export function ExchangeCard() {
       <div className="flex items-center gap-3 my-3">
         <div
           className="flex-1 h-px"
-          style={{ background: "rgba(255,255,255,0.06)" }}
+          style={{
+            background: isDark
+              ? "rgba(255,255,255,0.06)"
+              : "rgba(15,23,42,0.08)",
+          }}
         />
         <motion.button
           type="button"
@@ -118,7 +145,11 @@ export function ExchangeCard() {
         </motion.button>
         <div
           className="flex-1 h-px"
-          style={{ background: "rgba(255,255,255,0.06)" }}
+          style={{
+            background: isDark
+              ? "rgba(255,255,255,0.06)"
+              : "rgba(15,23,42,0.08)",
+          }}
         />
       </div>
 
@@ -126,7 +157,9 @@ export function ExchangeCard() {
       <div className="mb-6">
         <label
           className="block text-sm font-semibold mb-2.5"
-          style={{ color: "rgba(148,163,184,0.9)" }}
+          style={{
+            color: isDark ? "rgba(148,163,184,0.9)" : "rgba(71,85,105,0.95)",
+          }}
         >
           Recipients Amount
           <span style={{ color: "#00C9A7" }}>*</span>
@@ -156,7 +189,12 @@ export function ExchangeCard() {
       {/* Security note */}
       <div className="flex items-center justify-center gap-2 mt-4">
         <ShieldCheck size={13} style={{ color: "#00C9A7" }} />
-        <p className="text-xs" style={{ color: "rgba(148,163,184,0.55)" }}>
+        <p
+          className="text-xs"
+          style={{
+            color: isDark ? "rgba(148,163,184,0.55)" : "rgba(71,85,105,0.7)",
+          }}
+        >
           256-bit encrypted &amp; secure transfers
         </p>
       </div>
