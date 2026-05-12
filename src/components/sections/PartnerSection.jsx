@@ -25,18 +25,9 @@ export function PartnerSection() {
   const loop = [...PARTNERS, ...PARTNERS];
 
   return (
-    <section
-      className="relative overflow-hidden"
-      style={{
-        background: "linear-gradient(180deg, #091829 0%, #0A1A2E 100%)",
-        borderTop: "1px solid rgba(255,255,255,0.04)",
-      }}
-    >
+    <section className="relative overflow-hidden bg-linear-to-b from-neutral-50 to-white dark:from-[#091829] dark:to-[#0A1A2E] border-t border-neutral-200/70 dark:border-white/4">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <p
-          className="text-center text-xs font-semibold tracking-[0.2em] uppercase mb-8"
-          style={{ color: "rgba(148,163,184,0.55)" }}
-        >
+        <p className="text-center text-xs font-semibold tracking-[0.2em] uppercase mb-8 text-neutral-500 dark:text-slate-400/60">
           Trusted by industry leaders
         </p>
 
@@ -53,11 +44,7 @@ export function PartnerSection() {
             {loop.map(({ name, Icon }, i) => (
               <div
                 key={`${name}-${i}`}
-                className="flex items-center gap-2.5 shrink-0 transition-all duration-300 hover:opacity-100"
-                style={{
-                  color: "rgba(203,213,225,0.55)",
-                  opacity: 0.7,
-                }}
+                className="flex items-center gap-2.5 shrink-0 transition-opacity duration-300 opacity-60 hover:opacity-100 text-neutral-700 dark:text-slate-300"
               >
                 <Icon size={22} strokeWidth={1.8} />
                 <span className="text-lg font-semibold tracking-tight whitespace-nowrap">

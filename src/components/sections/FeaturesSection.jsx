@@ -87,32 +87,26 @@ const cardReveal = {
 
 export function FeaturesSection() {
   return (
-    <section
-      className="relative overflow-hidden"
-      style={{
-        background:
-          "linear-gradient(180deg, #F8FBFA 0%, #EAFBF5 50%, #FDF4F0 100%)",
-      }}
-    >
-      {/* Soft radial glow blobs */}
+    <section className="relative overflow-hidden bg-linear-to-b from-slate-50 via-emerald-50/60 to-rose-50/40 dark:from-[#0A0F1E] dark:via-[#0D2137] dark:to-[#091829]">
+      {/* Soft radial glow blobs (kept inline — radial gradients aren't first-class in Tailwind) */}
       <div
-        className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
+        className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none opacity-100 dark:opacity-40"
         style={{
           background:
-            "radial-gradient(circle, rgba(14,190,152,0.18) 0%, transparent 65%)",
+            "radial-gradient(circle, rgba(14,190,152,0.22) 0%, transparent 65%)",
           filter: "blur(60px)",
         }}
       />
       <div
-        className="absolute top-1/3 right-0 translate-x-1/4 w-[500px] h-[500px] rounded-full pointer-events-none"
+        className="absolute top-1/3 right-0 translate-x-1/4 w-[500px] h-[500px] rounded-full pointer-events-none opacity-100 dark:opacity-30"
         style={{
           background:
-            "radial-gradient(circle, rgba(244,114,182,0.12) 0%, transparent 65%)",
+            "radial-gradient(circle, rgba(244,114,182,0.14) 0%, transparent 65%)",
           filter: "blur(70px)",
         }}
       />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-28">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -121,26 +115,13 @@ export function FeaturesSection() {
           transition={{ duration: 0.6 }}
           className="text-center max-w-2xl mx-auto mb-14 lg:mb-20"
         >
-          <span
-            className="inline-block text-sm font-bold tracking-widest uppercase mb-4"
-            style={{ color: "#0ebe98" }}
-          >
+          <span className="inline-block text-xs sm:text-sm font-bold tracking-widest uppercase mb-3 sm:mb-4 text-primary-600 dark:text-primary-400">
             Our Features
           </span>
-          <h2
-            className="font-serif font-black leading-tight mb-5"
-            style={{
-              fontSize: "clamp(2rem, 4vw, 3rem)",
-              color: "#0A0F1E",
-              letterSpacing: "-0.02em",
-            }}
-          >
+          <h2 className="font-serif font-black leading-tight mb-4 sm:mb-5 text-2xl sm:text-3xl lg:text-4xl xl:text-5xl tracking-tight text-neutral-900 dark:text-white">
             With Walletium, managing your finances has never been easier.
           </h2>
-          <p
-            className="text-base lg:text-lg leading-relaxed"
-            style={{ color: "#64748B" }}
-          >
+          <p className="text-sm sm:text-base lg:text-lg leading-relaxed text-neutral-600 dark:text-neutral-400">
             Everything you need to send, receive, exchange, and manage your
             money — built into one seamless platform.
           </p>
@@ -160,15 +141,9 @@ export function FeaturesSection() {
               variants={cardReveal}
               whileHover={{ y: -8 }}
               transition={{ duration: 0.3 }}
-              className="group relative p-7 rounded-3xl backdrop-blur-sm transition-shadow duration-300"
-              style={{
-                background: "rgba(255,255,255,0.7)",
-                border: "1px solid rgba(255,255,255,0.9)",
-                boxShadow:
-                  "0 4px 16px -4px rgba(15,23,42,0.06), 0 1px 3px rgba(15,23,42,0.04)",
-              }}
+              className="group relative p-7 rounded-3xl backdrop-blur-sm transition-shadow duration-300 bg-white/70 dark:bg-neutral-800/50 border border-white/90 dark:border-neutral-700/60 shadow-[0_4px_16px_-4px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.04)] dark:shadow-[0_4px_16px_-4px_rgba(0,0,0,0.4),0_1px_3px_rgba(0,0,0,0.3)] hover:border-primary-200 dark:hover:border-primary-500/40"
             >
-              {/* Icon squircle */}
+              {/* Icon squircle — gradient stays inline (per-card unique colors) */}
               <div
                 className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[-4deg]"
                 style={{ background: gradient, boxShadow: shadow }}
@@ -177,26 +152,19 @@ export function FeaturesSection() {
               </div>
 
               {/* Title */}
-              <h3
-                className="font-serif font-bold text-xl mb-2.5"
-                style={{ color: "#0A0F1E", letterSpacing: "-0.01em" }}
-              >
+              <h3 className="font-serif font-bold text-xl mb-2.5 tracking-tight text-neutral-900 dark:text-white">
                 {title}
               </h3>
 
               {/* Description */}
-              <p
-                className="text-sm leading-relaxed mb-5"
-                style={{ color: "#64748B" }}
-              >
+              <p className="text-sm leading-relaxed mb-5 text-neutral-600 dark:text-neutral-400">
                 {description}
               </p>
 
               {/* Learn more link */}
               <a
                 href="#"
-                className="inline-flex items-center gap-1.5 text-sm font-bold transition-all duration-300 group-hover:gap-2.5"
-                style={{ color: "#0ebe98" }}
+                className="inline-flex items-center gap-1.5 text-sm font-bold transition-all duration-300 group-hover:gap-2.5 text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300"
               >
                 Learn more
                 <ArrowRight size={14} strokeWidth={2.5} />
