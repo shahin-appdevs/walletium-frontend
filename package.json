@@ -1,11 +1,14 @@
 {
-  "name": "walletium-frontend",
+  "name": "walletium-next",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build --webpack",
     "start": "next start",
+    "preview": "npx opennextjs-cloudflare build && npx wrangler dev",
+    "deploy": "npx opennextjs-cloudflare build && npx wrangler deploy --minify",
+    "cf-typegen": "npx wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
     "lint": "eslint"
   },
   "dependencies": {
@@ -17,7 +20,7 @@
     "countries-list": "^3.2.2",
     "framer-motion": "^12.38.0",
     "lucide-react": "^0.556.0",
-    "next": "16.0.7",
+    "next": "^16.2.6",
     "next-intl": "^4.9.1",
     "react": "19.2.0",
     "react-dom": "19.2.0",
@@ -31,6 +34,7 @@
     "yup": "^1.7.1"
   },
   "devDependencies": {
+    "@opennextjs/cloudflare": "^1.19.10",
     "@tailwindcss/postcss": "^4",
     "baseline-browser-mapping": "^2.10.19",
     "eslint": "^9",
