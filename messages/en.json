@@ -722,5 +722,35 @@
                 "typeRequired": "Account type is required"
             }
         }
+    },
+    "Testimonials": {
+        "kicker": "What people say",
+        "title": "Testimonials",
+        "subtitle": "Real stories from teams and individuals using Walletium every day.",
+        "prevLabel": "Previous testimonial",
+        "nextLabel": "Next testimonial",
+        "ratingLabel": "Rated {rating} out of 5 stars"
+    },
+    "WhyChooseUs": {
+        "eyebrow": "Why Choose Us",
+        "heading": "Top Reasons to Choose Walletium for Your Digital Wallet Needs.",
+        "stat": {
+            "value": "10+",
+            "label": "Years of business excellence"
+        },
+        "features": {
+            "trusted": {
+                "title": "Trusted Platform",
+                "description": "Rely on our proven track record and trusted platform for all your financial needs."
+            },
+            "userFriendly": {
+                "title": "User-Friendly Interface",
+                "description": "Enjoy a seamless user experience with our intuitive and easy-to-navigate interface."
+            },
+            "support": {
+                "title": "Exceptional Support",
+                "description": "Benefit from our dedicated customer support team, ready to assist you every step of the way."
+            }
+        }
     }
 }

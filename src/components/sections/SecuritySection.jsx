@@ -80,7 +80,7 @@ export function SecuritySection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
-          className="text-center max-w-2xl mx-auto mb-14 sm:mb-16 lg:mb-24"
+          className="text-center max-w-2xl mx-auto mb-12 sm:mb-16 lg:mb-20"
         >
           <span className="inline-block text-xs sm:text-sm font-bold tracking-[0.2em] uppercase mb-3 sm:mb-4 text-primary-600 dark:text-primary-400">
             Security System
@@ -94,30 +94,30 @@ export function SecuritySection() {
           </p>
         </motion.div>
 
-        {/* Steps */}
-        <div className="relative">
-          {/* Horizontal dashed connector (xl only) */}
-          <div className="hidden xl:block absolute top-7 left-[8%] right-[8%] border-t-2 border-dashed border-primary-300/70 dark:border-primary-500/25 pointer-events-none" />
+        {/* Zigzag steps */}
+        <div className="relative max-w-5xl mx-auto">
+          {STEPS.map((step, i) => {
+            const Icon = step.Icon;
+            const isRight = i % 2 === 1;
+            const isLast = i === STEPS.length - 1;
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-y-10 sm:gap-y-12 gap-x-5 sm:gap-x-6 lg:gap-x-6 xl:gap-x-4">
-            {STEPS.map((step, i) => {
-              const Icon = step.Icon;
-              const offset = i % 2 === 1 ? "xl:mt-28" : "";
-              return (
+            return (
+              <div key={step.title} className="relative">
+                {/* Step row */}
                 <motion.div
-                  key={step.title}
                   variants={cardReveal}
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true, margin: "-60px" }}
-                  transition={{ delay: i * 0.07 }}
-                  className={`relative flex flex-col items-center text-center ${offset}`}
+                  transition={{ delay: i * 0.08 }}
+                  className={`relative flex w-full ${
+                    isRight ? "md:justify-end" : "md:justify-start"
+                  }`}
                 >
-                  {/* Card */}
-                  <div className="group w-full rounded-2xl p-5 lg:p-4 xl:p-5 bg-white dark:bg-neutral-800/50 backdrop-blur-sm border border-neutral-200/80 dark:border-neutral-700/60 shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-neutral-300 dark:hover:border-neutral-600 transition-all duration-300">
-                    {/* Icon squircle with same gradient */}
+                  <div className="relative w-full md:w-[46%] max-w-md">
+                    {/* Icon (top-left, partially outside card) */}
                     <div
-                      className="w-12 h-12 mx-auto mb-3 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[-4deg]"
+                      className="absolute -top-3 left-2 w-12 h-12 rounded-xl flex items-center justify-center z-20"
                       style={{
                         background: step.gradient,
                         boxShadow: step.shadow,
@@ -125,17 +125,69 @@ export function SecuritySection() {
                     >
                       <Icon className="w-6 h-6 text-white" strokeWidth={2} />
                     </div>
-                    <h3 className="font-serif font-bold text-base lg:text-base xl:text-lg mb-2 text-neutral-900 dark:text-white tracking-tight">
-                      {step.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
-                      {step.description}
-                    </p>
+
+                    {/* Card */}
+                    <div className="ml-8 mt-2 p-5 sm:p-6 rounded-2xl bg-white dark:bg-neutral-800/50 backdrop-blur-sm border border-neutral-200/80 dark:border-neutral-700/60 shadow-sm hover:shadow-xl hover:border-neutral-300 dark:hover:border-neutral-600 transition-all duration-300">
+                      <h3 className="font-serif font-bold text-base sm:text-lg mb-2 text-neutral-900 dark:text-white tracking-tight">
+                        {step.title}
+                      </h3>
+                      <p className="text-xs sm:text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+                        {step.description}
+                      </p>
+                    </div>
                   </div>
                 </motion.div>
-              );
-            })}
-          </div>
+
+                {/* Animated dashed connector (skipped on last) */}
+                {!isLast && (
+                  <div className="relative h-12 sm:h-14 md:h-16 w-full pointer-events-none text-primary-400 dark:text-primary-500/70">
+                    {/* Mobile: vertical line under the icon column */}
+                    <div className="md:hidden absolute top-0 bottom-0 left-8 w-[2px] overflow-hidden">
+                      <motion.div
+                        className="absolute inset-x-0 -top-3 h-[calc(100%+12px)]"
+                        style={{
+                          backgroundImage:
+                            "repeating-linear-gradient(to bottom, currentColor 0 6px, transparent 6px 12px)",
+                        }}
+                        animate={{ y: [0, 12] }}
+                        transition={{
+                          duration: 1,
+                          repeat: Infinity,
+                          ease: "linear",
+                        }}
+                      />
+                    </div>
+
+                    {/* Desktop: zigzag SVG path connecting cards */}
+                    <svg
+                      viewBox="0 0 1000 80"
+                      preserveAspectRatio="none"
+                      className="hidden md:block w-full h-full"
+                    >
+                      <motion.path
+                        d={
+                          isRight
+                            ? "M 600 0 C 600 40, 60 40, 60 80"
+                            : "M 60 0 C 60 40, 600 40, 600 80"
+                        }
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeDasharray="6 6"
+                        strokeLinecap="round"
+                        animate={{ strokeDashoffset: [0, -12] }}
+                        transition={{
+                          duration: 1,
+                          repeat: Infinity,
+                          ease: "linear",
+                        }}
+                      />
+                    </svg>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

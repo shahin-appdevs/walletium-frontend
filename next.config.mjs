@@ -20,10 +20,10 @@ const nextConfig = {
   },
   images: {
     unoptimized: true,
-    // remotePatterns: [
-    //   { protocol: "https", hostname: "**" },
-    //   { protocol: "https", hostname: "*" },
-    // ],
+    remotePatterns: [
+      { protocol: "https", hostname: "i.pravatar.cc" },
+      { protocol: "https", hostname: "images.unsplash.com" },
+    ],
   },
   allowedDevOrigins: ["192.168.68.*"],
 };
