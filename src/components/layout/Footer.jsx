@@ -1,6 +1,15 @@
 "use client";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Facebook, Github, Heart, Linkedin, Mail, Twitter } from "lucide-react";
+import {
+  ArrowUpRight,
+  Facebook,
+  Github,
+  Heart,
+  Linkedin,
+  Mail,
+  Twitter,
+} from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 const POLICY_LINKS = [
@@ -41,24 +50,38 @@ export function Footer() {
         }}
       />
 
+      {/* Decorative oversized shadow wordmark */}
+      <div
+        aria-hidden
+        className="pointer-events-none select-none absolute inset-x-0 -bottom-2 sm:-bottom-4 md:-bottom-6 lg:-bottom-8 xl:-bottom-10 flex justify-center overflow-hidden z-0"
+      >
+        <div
+          className="font-black tracking-[-0.04em] leading-none whitespace-nowrap text-transparent"
+          style={{
+            fontSize: "clamp(48px, 14vw, 280px)",
+            backgroundImage:
+              "linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(14,190,152,0.06) 60%, rgba(14,190,152,0.02) 100%)",
+            WebkitBackgroundClip: "text",
+            backgroundClip: "text",
+          }}
+        >
+          WALLETIUM
+        </div>
+      </div>
+
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 lg:pt-24 pb-8">
         {/* Top: brand + columns */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-12 mb-12 lg:mb-16">
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-5">
-            <Link href="/" className="inline-flex items-center gap-3 mb-5 group">
-              <div
-                className="w-10 h-10 flex items-center justify-center text-white font-black text-base transition-transform duration-300 group-hover:scale-105"
-                style={{
-                  background: "linear-gradient(135deg, #00C9A7, #00E5FF)",
-                  clipPath: "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)",
-                }}
-              >
-                W
-              </div>
-              <span className="font-black tracking-[0.2em] text-lg text-white">
-                WALLETIUM
-              </span>
+            <Link href="/" className="inline-flex items-center mb-5 group">
+              <Image
+                src="/images/logo/web_logo.webp"
+                alt="Walletium"
+                width={180}
+                height={40}
+                className="h-7 sm:h-8 w-auto brightness-0 invert transition-transform duration-300 group-hover:scale-105"
+              />
             </Link>
             <p className="text-sm leading-relaxed text-neutral-400 max-w-md mb-7">
               Walletium is the ultimate digital wallet solution, offering
@@ -145,8 +168,7 @@ export function Footer() {
               className="inline-block mx-0.5 -mt-0.5 text-primary-400 fill-primary-400/50"
               strokeWidth={2.2}
             />{" "}
-            by{" "}
-            <span className="text-neutral-300 font-semibold">Walletium</span>
+            by <span className="text-neutral-300 font-semibold">Walletium</span>
           </p>
           <p className="text-xs text-neutral-500 tracking-wider">
             Available worldwide ·{" "}

@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 import { Menu, X, ChevronDown, Globe, Moon, Sun } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContextProvider";
@@ -66,23 +67,15 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 flex-shrink-0">
-            <div
-              className="w-9 h-9 flex items-center justify-center text-white font-black text-base"
-              style={{
-                background: "linear-gradient(135deg, #00C9A7, #00E5FF)",
-                clipPath: "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)",
-              }}
-            >
-              W
-            </div>
-            <span
-              className={`font-black tracking-[0.2em] text-lg hidden sm:block ${
-                isDark ? "text-white" : "text-slate-900"
-              }`}
-            >
-              WALLETIUM
-            </span>
+          <Link href="/" className="flex items-center flex-shrink-0">
+            <Image
+              src="/images/logo/web_logo.webp"
+              alt="Walletium"
+              width={180}
+              height={40}
+              priority
+              className="h-6 sm:h-7 w-auto"
+            />
           </Link>
 
           {/* Desktop Nav */}

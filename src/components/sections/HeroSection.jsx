@@ -134,6 +134,9 @@ export function HeroSection() {
             >
               <span
                 style={{
+                  fontSize: "inherit",
+                  fontWeight: "inherit",
+                  lineHeight: "inherit",
                   background: "linear-gradient(135deg, #00C9A7 0%, #00E5FF 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
@@ -208,7 +211,9 @@ export function HeroSection() {
                 }}
                 whileTap={{ scale: 0.97 }}
                 transition={{ duration: 0.2 }}
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-bold text-base text-white"
+                className={`inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-bold text-base ${
+                  isDark ? "text-white" : "text-slate-900"
+                }`}
                 style={{ border: "1px solid rgba(0,201,167,0.4)" }}
               >
                 Developer API <ArrowRight size={16} />
