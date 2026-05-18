@@ -1,20 +1,73 @@
 "use client";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpDown, ShieldCheck, Zap } from "lucide-react";
 import { CurrencyInput } from "./CurrencyInput";
 import { useTheme } from "@/contexts/ThemeContextProvider";
 import { useBannerSendMoneyInfoQuery } from "@/redux/api/publicApi/homepageApi";
+import Link from "next/link";
+
+// Build a flag image URL from API fields. Trims stray slashes between parts.
+const buildFlagUrl = (baseUrl, imagePath, flag) => {
+  if (!baseUrl || !imagePath || !flag) return null;
+  const root = baseUrl.replace(/\/+$/, "");
+  const dir = imagePath.replace(/^\/+|\/+$/g, "");
+  const file = flag.replace(/^\/+/, "");
+  return `${root}/${dir}/${file}`;
+};
+
+// Map an API currency object to the CurrencyInput view-model shape.
+const toOption = (c, baseUrl) => ({
+  code: c.currency_code,
+  name: c.name,
+  symbol: c.currency_symbol,
+  rate: c.rate,
+  flagUrl: buildFlagUrl(baseUrl, c.image_path, c.flag),
+});
 
 export function ExchangeCard() {
   const { mode } = useTheme();
   const isDark = mode === "dark";
-  const [senderAmount, setSenderAmount] = useState("1000");
+  const [senderAmount, setSenderAmount] = useState("1");
+  const [senderCode, setSenderCode] = useState("USD");
+  const [receiverCode, setReceiverCode] = useState("USD");
 
   const { data, isLoading, isError } = useBannerSendMoneyInfoQuery();
-  const sender = data?.sender_currencies?.[0];
-  const receiver = data?.receiver_currencies?.[0];
-  const rate = sender?.rate ?? 1;
+
+  // View-model lists driven entirely by the API response.
+
+  const senderOptions = useMemo(
+    () =>
+      (data?.sender_currencies ?? []).map((c) => toOption(c, data?.base_url)),
+    [data],
+  );
+  const receiverOptions = useMemo(
+    () =>
+      (data?.receiver_currencies ?? []).map((c) => toOption(c, data?.base_url)),
+    [data],
+  );
+
+  console.log("data", senderOptions);
+
+  // Resolve currently-selected options (with fallback to first if missing).
+  const sender =
+    senderOptions.find((c) => c.code === senderCode) ?? senderOptions[0];
+  const receiver =
+    receiverOptions.find((c) => c.code === receiverCode) ?? receiverOptions[0];
+
+  // Cross-rate: rates are quoted against USD = 1, so
+  // sender → receiver = receiver.rate / sender.rate.
+  const rate = sender?.rate && receiver?.rate ? receiver.rate / sender.rate : 1;
+
+  const recipientAmount = (Number(senderAmount) * rate || 0).toFixed(2);
+
+  if (isLoading) {
+    return <div></div>;
+  }
+
+  if (isError) {
+    return <div>Error...</div>;
+  }
 
   return (
     <motion.div
@@ -98,8 +151,8 @@ export function ExchangeCard() {
               isDark ? "text-white" : "text-slate-900"
             }`}
           >
-            1 {sender?.currency_code ?? "USD"} = {Number(rate).toFixed(4)}{" "}
-            {receiver?.currency_code ?? "USD"}
+            1 {sender?.code ?? "USD"} = {Number(rate).toFixed(4)}{" "}
+            {receiver?.code ?? "USD"}
           </p>
         </div>
         <div
@@ -128,6 +181,9 @@ export function ExchangeCard() {
           value={senderAmount}
           onChange={setSenderAmount}
           defaultCurrency="USD"
+          currencies={senderOptions}
+          selectedCode={senderCode}
+          onCurrencyChange={(c) => setSenderCode(c.code)}
         />
       </div>
 
@@ -176,30 +232,36 @@ export function ExchangeCard() {
           <span style={{ color: "#00C9A7" }}>*</span>
         </label>
         <CurrencyInput
-          value={(Number(senderAmount) * rate).toFixed(2)}
+          value={recipientAmount}
           defaultCurrency="USD"
           readOnly
+          currencies={receiverOptions}
+          selectedCode={receiverCode}
+          onCurrencyChange={(c) => setReceiverCode(c.code)}
         />
       </div>
 
       {/* Send Button */}
-      <motion.button
-        type="button"
-        whileHover={{
-          scale: 1.02,
-          y: -2,
-          boxShadow: "0 0 40px rgba(0,201,167,0.5)",
-        }}
-        whileTap={{ scale: 0.98 }}
-        transition={{ duration: 0.2 }}
-        className="w-full py-4 rounded-xl text-white font-bold text-base tracking-wide"
-        style={{
-          background: "linear-gradient(135deg, #00C9A7 0%, #00E5FF 100%)",
-          boxShadow: "0 0 24px rgba(0,201,167,0.28)",
-        }}
-      >
-        Send Money →
-      </motion.button>
+
+      <Link href={`/dashboard/send-money`}>
+        <motion.button
+          type="button"
+          whileHover={{
+            scale: 1.02,
+            y: -2,
+            boxShadow: "0 0 40px rgba(0,201,167,0.5)",
+          }}
+          whileTap={{ scale: 0.98 }}
+          transition={{ duration: 0.2 }}
+          className="w-full py-4 rounded-xl text-white font-bold text-base tracking-wide"
+          style={{
+            background: "linear-gradient(135deg, #00C9A7 0%, #00E5FF 100%)",
+            boxShadow: "0 0 24px rgba(0,201,167,0.28)",
+          }}
+        >
+          Send Money →
+        </motion.button>
+      </Link>
 
       {/* Security note */}
       <div className="flex items-center justify-center gap-2 mt-4">

@@ -14,7 +14,16 @@ export const homepageApi = baseApi.injectEndpoints({
         return response?.data || response;
       },
     }),
+    subscriberSubmit: builder.mutation({
+      query: (payload) => ({
+        url: "/frontend/subscriber/submit",
+        method: "POST",
+        data: payload,
+        axiosInstance: axiosPublic,
+      }),
+    }),
   }),
 });
 
-export const { useBannerSendMoneyInfoQuery } = homepageApi;
+export const { useBannerSendMoneyInfoQuery, useSubscriberSubmitMutation } =
+  homepageApi;

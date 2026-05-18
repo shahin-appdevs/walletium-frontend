@@ -1,7 +1,16 @@
 "use client";
+import useBasicSettings from "@/hooks/useBasicSettings";
+import showToast from "@/lib/toast";
+import { useSubscriberSubmitMutation } from "@/redux/api/publicApi/subscriberApi";
+import { getErrorMessage } from "@/utils/getErrorMessage";
+import { getSuccessMessage } from "@/utils/getSuccessMessage";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Mail, Send, Shield, Sparkles } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import ReCAPTCHA from "react-google-recaptcha";
+import * as yup from "yup";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 24 },
@@ -12,16 +21,63 @@ const fadeIn = {
   },
 };
 
-export function NewsletterSection() {
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+const schema = yup.object({
+  email: yup
+    .string()
+    .trim()
+    .required("Email is required")
+    .email("Please enter a valid email address"),
+});
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!email) return;
-    setSubmitted(true);
-    setEmail("");
-    setTimeout(() => setSubmitted(false), 4000);
+export function NewsletterSection() {
+  const { settings } = useBasicSettings();
+  const recaptchaKey = settings?.google_recaptcha_site_key;
+  const recaptchaStatus = settings?.google_recaptcha_status;
+
+  const [submitted, setSubmitted] = useState(false);
+  const [recaptcha, setRecaptcha] = useState(null);
+  const recaptchaRef = useRef(null);
+
+  const [subscriberSubmit, { isLoading }] = useSubscriberSubmitMutation();
+
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: { email: "" },
+  });
+
+  const onSubmit = async (data) => {
+    if (recaptchaStatus && recaptchaKey && !recaptcha) {
+      showToast.warning("Please verify the reCAPTCHA");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("email", data.email);
+    if (recaptcha) {
+      formData.append("g-recaptcha-response", recaptcha);
+    }
+
+    try {
+      const result = await subscriberSubmit(formData).unwrap();
+      const successMessages = getSuccessMessage(result);
+      successMessages.forEach((message) => showToast.success(message));
+
+      setSubmitted(true);
+      reset();
+      setRecaptcha(null);
+      recaptchaRef.current?.reset();
+      setTimeout(() => setSubmitted(false), 4000);
+    } catch (error) {
+      const errMessages = getErrorMessage(error);
+      errMessages.forEach((err) => showToast.error(err));
+      setRecaptcha(null);
+      recaptchaRef.current?.reset();
+    }
   };
 
   return (
@@ -140,38 +196,70 @@ export function NewsletterSection() {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      onSubmit={handleSubmit}
+                      // onSubmit={handleSubmit(onSubmit)}
+                      noValidate
                     >
-                      <div className="relative flex flex-col sm:flex-row gap-2 sm:gap-0 p-1.5 rounded-2xl bg-white dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700 shadow-sm focus-within:border-primary-400 dark:focus-within:border-primary-500 focus-within:shadow-lg focus-within:shadow-primary-500/10 transition-all duration-300">
-                        <div className="relative flex-1 flex items-center min-w-0">
-                          <Mail
-                            size={18}
-                            className="absolute left-4 text-neutral-400 dark:text-neutral-500 pointer-events-none"
-                          />
-                          <input
-                            type="email"
-                            required
-                            aria-label="Email address"
-                            placeholder="Enter your email address"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="w-full pl-11 pr-3 py-3 bg-transparent text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:outline-none"
+                      <form onSubmit={handleSubmit(onSubmit)}>
+                        <div
+                          className={`relative flex flex-col sm:flex-row gap-2 sm:gap-0 p-1.5 rounded-2xl bg-white dark:bg-neutral-800/80 border shadow-sm focus-within:shadow-lg focus-within:shadow-primary-500/10 transition-all duration-300 ${
+                            errors.email
+                              ? "border-red-400 dark:border-red-500/70"
+                              : "border-neutral-200 dark:border-neutral-700 focus-within:border-primary-400 dark:focus-within:border-primary-500"
+                          }`}
+                        >
+                          <div className="relative flex-1 flex items-center min-w-0">
+                            <Mail
+                              size={18}
+                              className="absolute left-4 text-neutral-400 dark:text-neutral-500 pointer-events-none"
+                            />
+                            <Controller
+                              name="email"
+                              control={control}
+                              render={({ field }) => (
+                                <input
+                                  {...field}
+                                  type="email"
+                                  aria-label="Email address"
+                                  aria-invalid={!!errors.email}
+                                  placeholder="Enter your email address"
+                                  className="w-full pl-11 pr-3 py-3 bg-transparent text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:outline-none"
+                                />
+                              )}
+                            />
+                          </div>
+                          <motion.button
+                            type="submit"
+                            disabled={isLoading}
+                            whileHover={{ scale: isLoading ? 1 : 1.02 }}
+                            whileTap={{ scale: isLoading ? 1 : 0.98 }}
+                            className="flex sm:inline-flex w-full sm:w-auto items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-bold text-white shadow-lg shadow-primary-500/30 hover:shadow-xl hover:shadow-primary-500/40 transition-shadow duration-300 whitespace-nowrap disabled:opacity-70 disabled:cursor-not-allowed"
+                            style={{
+                              background:
+                                "linear-gradient(135deg, #0ebe98 0%, #00E5FF 100%)",
+                            }}
+                          >
+                            {isLoading ? "Subscribing..." : "Subscribe"}
+                            <Send size={16} strokeWidth={2.5} />
+                          </motion.button>
+                        </div>
+                      </form>
+
+                      {errors.email && (
+                        <p className="mt-2 ml-1 text-xs font-medium text-red-500 dark:text-red-400">
+                          {errors.email.message}
+                        </p>
+                      )}
+
+                      {recaptchaStatus && recaptchaKey && (
+                        <div className="mt-5 flex justify-center">
+                          <ReCAPTCHA
+                            ref={recaptchaRef}
+                            sitekey={recaptchaKey}
+                            onChange={(value) => setRecaptcha(value)}
+                            onExpired={() => setRecaptcha(null)}
                           />
                         </div>
-                        <motion.button
-                          type="submit"
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                          className="flex sm:inline-flex w-full sm:w-auto items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-bold text-white shadow-lg shadow-primary-500/30 hover:shadow-xl hover:shadow-primary-500/40 transition-shadow duration-300 whitespace-nowrap"
-                          style={{
-                            background:
-                              "linear-gradient(135deg, #0ebe98 0%, #00E5FF 100%)",
-                          }}
-                        >
-                          Subscribe
-                          <Send size={16} strokeWidth={2.5} />
-                        </motion.button>
-                      </div>
+                      )}
                     </motion.form>
                   )}
                 </AnimatePresence>

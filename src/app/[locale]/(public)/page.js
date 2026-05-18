@@ -8,6 +8,7 @@ import { PartnerSection } from "@/components/sections/PartnerSection";
 import { SecuritySection } from "@/components/sections/SecuritySection";
 import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import { WhyChooseUsSection } from "@/components/sections/WhyChooseUsSection";
+import ReduxStoreProvider from "@/redux/provider/ReduxStoreProvider";
 
 // Pre-render and cache at the edge — no server execution per request.
 export const dynamic = "force-static";
@@ -24,7 +25,9 @@ export default function Home() {
       <SecuritySection />
       <TestimonialsSection />
       <AppDownloadSection />
-      <NewsletterSection />
+      {/* <ReduxStoreProvider>
+        <NewsletterSection />
+      </ReduxStoreProvider> */}
       <Footer />
     </main>
   );
