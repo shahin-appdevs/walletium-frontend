@@ -2,6 +2,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight, BookOpen, Calendar, Loader2 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
 const CATEGORY_GRADIENTS = {
@@ -141,13 +142,13 @@ export function JournalGrid({ initialArticles, initialHasMore, initialPage }) {
                         <Calendar size={11} /> {date}
                       </span>
                     </div>
-                    <a
-                      href="#"
+                    <Link
+                      href={`/journal/${article.id}/${article.slug}`}
                       className="inline-flex items-center gap-1 text-xs font-bold text-primary-600 dark:text-primary-400 hover:gap-2 transition-all"
                       aria-label={`Read ${article.title}`}
                     >
                       Read <ArrowUpRight size={13} strokeWidth={2.5} />
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </motion.article>

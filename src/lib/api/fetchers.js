@@ -93,10 +93,10 @@ export const fetchers = {
         revalidate: 600, // 10 min — list changes more often than detail
       }),
 
-    /** Single article by slug. */
-    detail: (slug) =>
-      getJson(endpoints.journal.detail(slug), {
-        tags: ["journal", `journal:${slug}`],
+    /** Single article by id + slug. Returns details, categories, recent posts. */
+    detail: (id, slug, { lang = "en" } = {}) =>
+      getJson(endpoints.journal.detail(id, slug, { lang }), {
+        tags: ["journal", `journal:${id}`],
         revalidate: 1800, // 30 min
       }),
   },

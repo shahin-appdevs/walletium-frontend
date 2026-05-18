@@ -34,8 +34,11 @@ export const endpoints = {
       return path(`/frontend/web-journal?${params.toString()}`);
     },
     category: (id, { lang = "en" } = {}) =>
-      path(`/frontend/web-journal/category/${encodeURIComponent(id)}?lang=${encodeURIComponent(lang)}`),
-    detail: (slug) => path(`/journal/articles/${encodeURIComponent(slug)}`),
+      path(
+        `/frontend/web-journal/category/${encodeURIComponent(id)}?lang=${encodeURIComponent(lang)}`,
+      ),
+    detail: (id, slug, { lang = "en" } = {}) =>
+      path(`/frontend/web-journal/details/${id}/${slug}?lang=${lang}`),
   },
 
   // ── Auth (public) ─────────────────────────────────────────────────────
