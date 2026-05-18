@@ -1,4 +1,10 @@
 "use client";
+import useBasicSettings from "@/hooks/useBasicSettings";
+import showToast from "@/lib/toast";
+import { useContactSubmitMutation } from "@/redux/api/publicApi/homepageApi";
+import { getErrorMessage } from "@/utils/getErrorMessage";
+import { getSuccessMessage } from "@/utils/getSuccessMessage";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   AtSign,
@@ -11,7 +17,10 @@ import {
   Sparkles,
   User,
 } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useRef, useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
 
 const PROMISES = [
   {
@@ -31,20 +40,91 @@ const PROMISES = [
   },
 ];
 
+const schema = yup.object({
+  name: yup.string().trim().required("Name is required"),
+  email: yup
+    .string()
+    .trim()
+    .required("Email is required")
+    .email("Please enter a valid email address"),
+  message: yup
+    .string()
+    .trim()
+    .required("Message is required")
+    .min(10, "Message must be at least 10 characters"),
+});
+
 export function ContactForm() {
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const { settings } = useBasicSettings();
+  const recaptchaKey = settings?.google_recaptcha_site_key;
+  const recaptchaStatus = settings?.google_recaptcha_status;
+
   const [submitted, setSubmitted] = useState(false);
+  const [recaptcha, setRecaptcha] = useState(null);
+  const recaptchaRef = useRef(null);
 
-  const handleChange = (e) =>
-    setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+  const [contactSubmit, { isLoading }] = useContactSubmitMutation();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!form.name || !form.email || !form.message) return;
-    setSubmitted(true);
-    setForm({ name: "", email: "", message: "" });
-    setTimeout(() => setSubmitted(false), 5000);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: { name: "", email: "", message: "" },
+  });
+
+  const onSubmit = async (data) => {
+    if (recaptchaStatus && recaptchaKey && !recaptcha) {
+      showToast.warning("Please verify the reCAPTCHA");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("email", data.email);
+    formData.append("message", data.message);
+    if (recaptcha) {
+      formData.append("g-recaptcha-response", recaptcha);
+    }
+
+    try {
+      const result = await contactSubmit(formData).unwrap();
+      const successMessages = getSuccessMessage(result);
+      showToast.success(successMessages.success[0]);
+
+      setSubmitted(true);
+      reset();
+      setRecaptcha(null);
+      recaptchaRef.current?.reset();
+      setTimeout(() => setSubmitted(false), 5000);
+    } catch (error) {
+      const errMessages = getErrorMessage(error);
+
+      // Laravel-style field errors: { errors: { name: [...], email: [...], message: [...] } }
+      if (errMessages?.errors) {
+        Object.values(errMessages.errors)
+          .flat()
+          .forEach((m) => showToast.error(m));
+      } else if (errMessages?.message) {
+        showToast.error(errMessages.message);
+      } else {
+        showToast.error("Failed to send message. Please try again.");
+      }
+
+      setRecaptcha(null);
+      recaptchaRef.current?.reset();
+    }
   };
+
+  // Memoize the bound submit handler — avoids invoking `handleSubmit`
+  // during render and silences the React 19 "ref read in render" warning.
+  const submit = useMemo(
+    () => handleSubmit(onSubmit),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [handleSubmit, recaptcha, recaptchaStatus, recaptchaKey],
+  );
 
   return (
     <section className="relative overflow-hidden py-16 sm:py-20 lg:py-28 bg-linear-to-b from-white via-emerald-50/30 to-slate-50 dark:from-walletium-dark dark:via-walletium-dark-mid dark:to-[#091829]">
@@ -83,8 +163,8 @@ export function ContactForm() {
                 Feel free to get in touch with us
               </h2>
               <p className="text-sm sm:text-base text-neutral-600 dark:text-neutral-400 mb-8 max-w-md">
-                Have a question, feedback, or partnership idea? Drop us a note
-                — we read every message.
+                Have a question, feedback, or partnership idea? Drop us a note —
+                we read every message.
               </p>
 
               <AnimatePresence mode="wait">
@@ -122,7 +202,8 @@ export function ContactForm() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    onSubmit={handleSubmit}
+                    onSubmit={submit}
+                    noValidate
                     className="space-y-5"
                   >
                     {/* Name + Email row */}
@@ -142,15 +223,18 @@ export function ContactForm() {
                           />
                           <input
                             id="name"
-                            name="name"
                             type="text"
-                            required
                             placeholder="Enter Name..."
-                            value={form.name}
-                            onChange={handleChange}
+                            aria-invalid={!!errors.name}
+                            {...register("name")}
                             className="w-full pl-10 pr-4 py-3 rounded-xl bg-white dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-primary-400 dark:focus:border-primary-500 focus:shadow-lg focus:shadow-primary-500/10 focus:outline-none transition-all"
                           />
                         </div>
+                        {errors.name && (
+                          <p className="text-xs text-red-500 mt-1.5">
+                            {errors.name.message}
+                          </p>
+                        )}
                       </div>
 
                       {/* Email */}
@@ -168,15 +252,18 @@ export function ContactForm() {
                           />
                           <input
                             id="email"
-                            name="email"
                             type="email"
-                            required
                             placeholder="Enter Email..."
-                            value={form.email}
-                            onChange={handleChange}
+                            aria-invalid={!!errors.email}
+                            {...register("email")}
                             className="w-full pl-10 pr-4 py-3 rounded-xl bg-white dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-primary-400 dark:focus:border-primary-500 focus:shadow-lg focus:shadow-primary-500/10 focus:outline-none transition-all"
                           />
                         </div>
+                        {errors.email && (
+                          <p className="text-xs text-red-500 mt-1.5">
+                            {errors.email.message}
+                          </p>
+                        )}
                       </div>
                     </div>
 
@@ -195,28 +282,47 @@ export function ContactForm() {
                         />
                         <textarea
                           id="message"
-                          name="message"
-                          required
                           rows={6}
                           placeholder="Write Here..."
-                          value={form.message}
-                          onChange={handleChange}
+                          aria-invalid={!!errors.message}
+                          {...register("message")}
                           className="w-full pl-10 pr-4 py-3 rounded-xl bg-white dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-primary-400 dark:focus:border-primary-500 focus:shadow-lg focus:shadow-primary-500/10 focus:outline-none transition-all resize-none"
                         />
                       </div>
+                      {errors.message && (
+                        <p className="text-xs text-red-500 mt-1.5">
+                          {errors.message.message}
+                        </p>
+                      )}
                     </div>
+
+                    {/* reCAPTCHA */}
+                    {recaptchaStatus && recaptchaKey && (
+                      <div className="flex justify-center sm:justify-start">
+                        <ReCAPTCHA
+                          ref={recaptchaRef}
+                          sitekey={recaptchaKey}
+                          onChange={setRecaptcha}
+                          onExpired={() => setRecaptcha(null)}
+                        />
+                      </div>
+                    )}
 
                     <motion.button
                       type="submit"
-                      whileHover={{ scale: 1.02, y: -2 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl text-white font-bold text-sm shadow-lg shadow-primary-500/30 hover:shadow-xl hover:shadow-primary-500/40 transition-shadow"
+                      disabled={isLoading}
+                      whileHover={{
+                        scale: isLoading ? 1 : 1.02,
+                        y: isLoading ? 0 : -2,
+                      }}
+                      whileTap={{ scale: isLoading ? 1 : 0.98 }}
+                      className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl text-white font-bold text-sm shadow-lg shadow-primary-500/30 hover:shadow-xl hover:shadow-primary-500/40 transition-shadow disabled:opacity-70 disabled:cursor-not-allowed"
                       style={{
                         background:
                           "linear-gradient(135deg, #0ebe98 0%, #00E5FF 100%)",
                       }}
                     >
-                      Send Message
+                      {isLoading ? "Sending…" : "Send Message"}
                       <Send size={16} strokeWidth={2.5} />
                     </motion.button>
                   </motion.form>

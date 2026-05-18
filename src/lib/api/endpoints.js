@@ -31,8 +31,10 @@ export const endpoints = {
       if (search) params.set("q", search);
       params.set("page", String(page));
       params.set("per_page", String(perPage));
-      return path(`/journal/articles?${params.toString()}`);
+      return path(`/frontend/web-journal?${params.toString()}`);
     },
+    category: (id, { lang = "en" } = {}) =>
+      path(`/frontend/web-journal/category/${encodeURIComponent(id)}?lang=${encodeURIComponent(lang)}`),
     detail: (slug) => path(`/journal/articles/${encodeURIComponent(slug)}`),
   },
 

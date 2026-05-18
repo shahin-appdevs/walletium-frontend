@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/contexts/ThemeContextProvider";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { ToastContainer } from "react-toastify";
+import ReduxStoreProvider from "@/redux/provider/ReduxStoreProvider";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -46,7 +47,9 @@ export default async function RootLayout({ children, params }) {
         className={`${inter.variable} font-sans antialiased max-w-[1920px] mx-auto w-full shadow`}
       >
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <ThemeProvider>{children}</ThemeProvider>
+          <ThemeProvider>
+            <ReduxStoreProvider>{children}</ReduxStoreProvider>
+          </ThemeProvider>
           <ToastContainer />
         </NextIntlClientProvider>
       </body>
