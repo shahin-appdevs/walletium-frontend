@@ -13,6 +13,7 @@ import { Protected } from "../(auth)/_components/Protected";
 import LayoutSidebarSkeleton from "./_components/homepage/Layouts/LayoutSidebarSkeleton";
 import LayoutHeaderSkeleton from "./_components/homepage/Layouts/LayoutHeaderSkeleton";
 import DashboardProvider from "@/contexts/DashboardProvider";
+import { AppProviders } from "@/components/providers/AppProviders";
 
 const LayoutSidebar = dynamic(
   () => import("./_components/homepage/Layouts/LayoutSidebar"),
@@ -43,27 +44,29 @@ export default function DashboardLayout({ children }) {
   }, []);
 
   return (
-    <Protected>
-      <DashboardProvider>
-        <Layout style={{ minHeight: "100vh" }}>
-          <LayoutSidebar collapsed={collapsed} setCollapsed={setCollapsed} />
-          <Layout>
-            <LayoutHeader collapsed={collapsed} setCollapsed={setCollapsed} />
+    <AppProviders>
+      <Protected>
+        <DashboardProvider>
+          <Layout style={{ minHeight: "100vh" }}>
+            <LayoutSidebar collapsed={collapsed} setCollapsed={setCollapsed} />
+            <Layout>
+              <LayoutHeader collapsed={collapsed} setCollapsed={setCollapsed} />
 
-            {/* Main content */}
-            <Content
-              style={{
-                margin: "24px 16px",
-                // padding: 24,
-                // background: "#fff",
-                overflow: "hidden",
-              }}
-            >
-              {children}
-            </Content>
+              {/* Main content */}
+              <Content
+                style={{
+                  margin: "24px 16px",
+                  // padding: 24,
+                  // background: "#fff",
+                  overflow: "hidden",
+                }}
+              >
+                {children}
+              </Content>
+            </Layout>
           </Layout>
-        </Layout>
-      </DashboardProvider>
-    </Protected>
+        </DashboardProvider>
+      </Protected>
+    </AppProviders>
   );
 }

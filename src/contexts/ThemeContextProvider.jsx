@@ -1,23 +1,47 @@
 "use client";
 
-import { createContext, useEffect, useState, useContext } from "react";
-import { ConfigProvider, theme } from "antd";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useSyncExternalStore,
+} from "react";
 
-const ThemeContext = createContext();
+const ThemeContext = createContext({ mode: "light", toggleTheme: () => {} });
+
+const THEME_CHANGE_EVENT = "walletium-theme-change";
+
+function getClientSnapshot() {
+  const stored = localStorage.getItem("theme");
+  return stored === "dark" ? "dark" : "light";
+}
+
+function getServerSnapshot() {
+  return "light";
+}
+
+function subscribe(callback) {
+  window.addEventListener("storage", callback);
+  window.addEventListener(THEME_CHANGE_EVENT, callback);
+  return () => {
+    window.removeEventListener("storage", callback);
+    window.removeEventListener(THEME_CHANGE_EVENT, callback);
+  };
+}
 
 export function ThemeProvider({ children }) {
-  const [mode, setMode] = useState(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("theme") || "light";
-    }
-    return "light";
-  });
+  // useSyncExternalStore returns the server snapshot during SSR + first client
+  // render, so server HTML and the first client render match — no hydration
+  // mismatch. After hydration React re-renders with the real localStorage value.
+  const mode = useSyncExternalStore(
+    subscribe,
+    getClientSnapshot,
+    getServerSnapshot
+  );
 
-  // Sync Tailwind + Ant + LocalStorage
+  // Mirror the current mode onto <html> so Tailwind's `dark:` variants apply.
   useEffect(() => {
-    localStorage.setItem("theme", mode);
-
-    // Tailwind
     if (mode === "dark") {
       document.documentElement.classList.add("dark");
     } else {
@@ -25,42 +49,15 @@ export function ThemeProvider({ children }) {
     }
   }, [mode]);
 
-  const toggleTheme = () => setMode(mode === "dark" ? "light" : "dark");
-
-  const darkMode = mode === "dark";
+  const toggleTheme = useCallback(() => {
+    const next = getClientSnapshot() === "dark" ? "light" : "dark";
+    localStorage.setItem("theme", next);
+    window.dispatchEvent(new Event(THEME_CHANGE_EVENT));
+  }, []);
 
   return (
     <ThemeContext.Provider value={{ mode, toggleTheme }}>
-      <ConfigProvider
-        theme={{
-          algorithm: darkMode ? theme.darkAlgorithm : theme.defaultAlgorithm,
-          token: darkMode
-            ? {
-                colorPrimary: "#0ebe98",
-                colorBgContainer: "oklch(20.8% 0.042 265.755)",
-              }
-            : { colorPrimary: "#0ebe98" },
-          components: {
-            Menu: {
-              itemSelectedBg: "#ffffff",
-              darkItemSelectedBg: "oklch(20.8% 0.042 265.755)",
-              itemSelectedColor: "#0ebe98",
-              darkItemSelectedColor: "#0ebe98",
-              fontSize: 16,
-              subMenuItemBg: "#fff",
-              darkSubMenuItemBg: "oklch(20.8% 0.042 265.755)",
-            },
-            Form: {
-              fontSize: "clamp(14px, 1.2vw, 16px)",
-            },
-            Drawer: {
-              colorBgElevated: "oklch(20.8% 0.042 265.755)",
-            },
-          },
-        }}
-      >
-        {children}
-      </ConfigProvider>
+      {children}
     </ThemeContext.Provider>
   );
 }

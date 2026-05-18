@@ -1,23 +1,13 @@
-import { AntdRegistry } from "@ant-design/nextjs-registry";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 
 import "./styles/globals.css";
-import "./styles/antd.css";
 
 import { ThemeProvider } from "@/contexts/ThemeContextProvider";
-import { ToastContainer } from "react-toastify";
-import ReduxStoreProvider from "@/redux/provider/ReduxStoreProvider";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 
 const inter = Inter({
   variable: "--font-sans",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-mono",
   subsets: ["latin"],
   display: "swap",
 });
@@ -41,18 +31,21 @@ export default async function RootLayout({ children, params }) {
   const isRTL = locale === "ar";
 
   return (
-    <html lang={locale} dir={isRTL ? "rtl" : "ltr"}>
+    <html lang={locale} dir={isRTL ? "rtl" : "ltr"} suppressHydrationWarning>
+      <head>
+        {/* Apply the dark class before React paints, preventing FOUC for
+            dark-mode users. Runs synchronously before hydration. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(localStorage.getItem('theme')==='dark')document.documentElement.classList.add('dark');}catch(e){}`,
+          }}
+        />
+      </head>
       <body
-        className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased max-w-[1920px] mx-auto w-full shadow`}
+        className={`${inter.variable} font-sans antialiased max-w-[1920px] mx-auto w-full shadow`}
       >
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <ReduxStoreProvider>
-            <AntdRegistry>
-              <ThemeProvider>{children}</ThemeProvider>
-              {/* React Toast Container */}
-              <ToastContainer />
-            </AntdRegistry>
-          </ReduxStoreProvider>
+          <ThemeProvider>{children}</ThemeProvider>
         </NextIntlClientProvider>
       </body>
     </html>

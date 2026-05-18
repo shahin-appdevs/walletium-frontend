@@ -26,6 +26,14 @@ const nextConfig = {
     ],
   },
   allowedDevOrigins: ["192.168.68.*"],
+  experimental: {
+    // Inline critical CSS into <head> and defer the rest.
+    // Removes render-blocking CSS for the initial paint.
+    // Requires `critters` (auto-installed by Next.js on first build).
+    optimizeCss: true,
+    // Tree-shake icon libraries — only bundles icons actually used per page.
+    optimizePackageImports: ["lucide-react", "framer-motion", "antd"],
+  },
 };
 
 export default withNextIntl(nextConfig);

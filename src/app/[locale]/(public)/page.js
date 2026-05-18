@@ -9,6 +9,10 @@ import { SecuritySection } from "@/components/sections/SecuritySection";
 import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import { WhyChooseUsSection } from "@/components/sections/WhyChooseUsSection";
 
+// Pre-render and cache at the edge — no server execution per request.
+export const dynamic = "force-static";
+export const revalidate = 3600; // 1 hour cache
+
 export default function Home() {
   return (
     <main>

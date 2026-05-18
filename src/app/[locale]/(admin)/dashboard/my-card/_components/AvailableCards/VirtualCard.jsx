@@ -17,7 +17,7 @@ export default function VirtualCard() {
         {/* Decorative gradient circle */}
         {/* <div className="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-green-100 opacity-40" /> */}
         <div className="absolute top-0 left-0 h-full w-full rounded-2xl bg-primary-800 opacity-5" />
-        <div className="absolute top-0 left-0 scale-120 bg-[url('/images/partials/card-bg.png')] bg-cover bg-center opacity-30 h-full w-full"></div>
+        <div className="absolute top-0 left-0 scale-120 bg-[url('/images/partials/card-bg.webp')] bg-cover bg-center opacity-30 h-full w-full"></div>
 
         {/* Content */}
         <div className="relative z-10 space-y-2 md:space-y-4 ">

@@ -98,20 +98,20 @@ export function HeroSection() {
       />
 
       {/* Main content */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20">
-        <div className="grid lg:grid-cols-2 gap-12 xl:gap-20 items-center">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 lg:pt-32 pb-12 sm:pb-16 lg:pb-20">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-12 xl:gap-20 items-center">
 
           {/* Left content */}
           <motion.div
             variants={stagger}
             initial="hidden"
             animate="visible"
-            className="flex flex-col gap-6"
+            className="flex flex-col gap-5 sm:gap-6 text-center lg:text-left items-center lg:items-start"
           >
             {/* Trust badge */}
             <motion.div variants={fadeUp}>
               <span
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold"
+                className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold"
                 style={{
                   background: "rgba(0,201,167,0.08)",
                   border: "1px solid rgba(0,201,167,0.28)",
@@ -119,7 +119,7 @@ export function HeroSection() {
                   boxShadow: "0 0 24px rgba(0,201,167,0.1)",
                 }}
               >
-                <span className="text-xs">✦</span>
+                <span className="text-[10px] sm:text-xs">✦</span>
                 Trusted by 50,000+ users worldwide
               </span>
             </motion.div>
@@ -127,10 +127,10 @@ export function HeroSection() {
             {/* Main headline */}
             <motion.h1
               variants={fadeUp}
-              className={`font-black leading-[1.12] ${
+              className={`font-black leading-[1.12] break-words max-w-full ${
                 isDark ? "text-white" : "text-slate-900"
               }`}
-              style={{ fontSize: "clamp(2rem, 4.5vw, 3.5rem)" }}
+              style={{ fontSize: "clamp(1.5rem, 7vw, 3.5rem)" }}
             >
               <span
                 style={{
@@ -163,12 +163,19 @@ export function HeroSection() {
             </motion.p>
 
             {/* Trust checklist */}
-            <motion.ul variants={fadeUp} className="flex flex-wrap gap-x-6 gap-y-2">
+            <motion.ul
+              variants={fadeUp}
+              className="flex flex-wrap justify-center lg:justify-start gap-x-4 sm:gap-x-6 gap-y-2"
+            >
               {TRUST_POINTS.map((point) => (
                 <li key={point} className="flex items-center gap-2">
-                  <CheckCircle2 size={15} style={{ color: "#00C9A7" }} />
+                  <CheckCircle2
+                    size={14}
+                    style={{ color: "#00C9A7" }}
+                    className="sm:size-[15px]"
+                  />
                   <span
-                    className="text-sm font-medium"
+                    className="text-xs sm:text-sm font-medium"
                     style={{
                       color: isDark
                         ? "rgba(148,163,184,0.9)"
@@ -182,7 +189,10 @@ export function HeroSection() {
             </motion.ul>
 
             {/* CTA buttons */}
-            <motion.div variants={fadeUp} className="flex flex-wrap gap-4 mt-2">
+            <motion.div
+              variants={fadeUp}
+              className="flex flex-col sm:flex-row flex-wrap justify-center lg:justify-start gap-3 sm:gap-4 mt-2 w-full sm:w-auto"
+            >
               <motion.a
                 href="#"
                 whileHover={{
@@ -192,7 +202,7 @@ export function HeroSection() {
                 }}
                 whileTap={{ scale: 0.97 }}
                 transition={{ duration: 0.2 }}
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-white font-bold text-base"
+                className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 rounded-full text-white font-bold text-sm sm:text-base"
                 style={{
                   background: "linear-gradient(135deg, #00C9A7, #00E5FF)",
                   boxShadow: "0 0 22px rgba(0,201,167,0.32)",
@@ -211,7 +221,7 @@ export function HeroSection() {
                 }}
                 whileTap={{ scale: 0.97 }}
                 transition={{ duration: 0.2 }}
-                className={`inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-bold text-base ${
+                className={`inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 rounded-full font-bold text-sm sm:text-base ${
                   isDark ? "text-white" : "text-slate-900"
                 }`}
                 style={{ border: "1px solid rgba(0,201,167,0.4)" }}
@@ -223,7 +233,7 @@ export function HeroSection() {
             {/* Stats row */}
             <motion.div
               variants={fadeUp}
-              className="flex flex-wrap gap-8 pt-6 mt-2"
+              className="flex flex-wrap justify-center lg:justify-start gap-6 sm:gap-8 lg:gap-10 pt-5 sm:pt-6 mt-2 w-full"
               style={{
                 borderTop: isDark
                   ? "1px solid rgba(255,255,255,0.07)"
@@ -237,13 +247,13 @@ export function HeroSection() {
               ].map((stat) => (
                 <div key={stat.label}>
                   <p
-                    className="text-2xl font-black"
+                    className="text-xl sm:text-2xl font-black"
                     style={{ color: "#00C9A7" }}
                   >
                     {stat.value}
                   </p>
                   <p
-                    className="text-sm mt-0.5"
+                    className="text-xs sm:text-sm mt-0.5"
                     style={{ color: isDark ? "#94A3B8" : "#64748B" }}
                   >
                     {stat.label}
@@ -254,8 +264,10 @@ export function HeroSection() {
           </motion.div>
 
           {/* Right: Exchange Card */}
-          <div className="flex justify-center lg:justify-end">
-            <ExchangeCard />
+          <div className="flex justify-center lg:justify-end w-full">
+            <div className="w-full max-w-md lg:max-w-none">
+              <ExchangeCard />
+            </div>
           </div>
         </div>
       </div>

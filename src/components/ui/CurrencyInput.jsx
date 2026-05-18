@@ -29,7 +29,7 @@ export function CurrencyInput({
 
   return (
     <div
-      className="flex items-center rounded-xl relative transition-all duration-200"
+      className="flex items-center rounded-xl relative transition-all duration-200 w-full min-w-0"
       style={{
         background: isDark ? "rgba(255,255,255,0.04)" : "rgba(15,23,42,0.03)",
         border: defaultBorder,
@@ -41,7 +41,7 @@ export function CurrencyInput({
         onChange={onChange ? (e) => onChange(e.target.value) : undefined}
         readOnly={readOnly}
         placeholder="0.00"
-        className={`flex-1 bg-transparent text-lg font-medium px-4 py-3.5 outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
+        className={`flex-1 min-w-0 w-full bg-transparent text-lg font-medium px-4 py-3.5 outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
           isDark
             ? "text-white placeholder:text-white/20"
             : "text-slate-900 placeholder:text-slate-900/25"

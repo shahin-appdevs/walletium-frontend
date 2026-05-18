@@ -1,7 +1,7 @@
-import React from "react";
+import { AppProviders } from "@/components/providers/AppProviders";
 
 const AuthLayout = ({ children }) => {
-  return <>{children}</>;
+  return <AppProviders>{children}</AppProviders>;
 };
 
 export default AuthLayout;
