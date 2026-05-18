@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { ExchangeCard } from "@/components/ui/ExchangeCard";
 import { useTheme } from "@/contexts/ThemeContextProvider";
+import ReduxStoreProvider from "@/redux/provider/ReduxStoreProvider";
 
 const stagger = {
   hidden: {},
@@ -18,7 +19,11 @@ const fadeUp = {
   },
 };
 
-const TRUST_POINTS = ["No hidden fees", "Instant transfers", "Bank-grade security"];
+const TRUST_POINTS = [
+  "No hidden fees",
+  "Instant transfers",
+  "Bank-grade security",
+];
 
 export function HeroSection() {
   const { mode } = useTheme();
@@ -61,7 +66,12 @@ export function HeroSection() {
         />
         <motion.div
           animate={{ x: [0, -30, 0], y: [0, 40, 0], scale: [1, 1.2, 1] }}
-          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+          transition={{
+            duration: 18,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 3,
+          }}
           className="absolute bottom-[5%] right-[5%] w-[420px] h-[420px] rounded-full"
           style={{
             background: isDark
@@ -72,7 +82,12 @@ export function HeroSection() {
         />
         <motion.div
           animate={{ x: [0, 25, 0], y: [0, -45, 0] }}
-          transition={{ duration: 22, repeat: Infinity, ease: "easeInOut", delay: 7 }}
+          transition={{
+            duration: 22,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 7,
+          }}
           className="absolute top-[55%] left-[45%] w-[300px] h-[300px] rounded-full"
           style={{
             background: isDark
@@ -88,19 +103,29 @@ export function HeroSection() {
         animate={{ y: [0, -12, 0], opacity: [0.4, 0.7, 0.4] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
         className="absolute top-32 right-12 w-3 h-3 rounded-full hidden lg:block"
-        style={{ background: "#00C9A7", boxShadow: "0 0 20px rgba(0,201,167,0.8)" }}
+        style={{
+          background: "#00C9A7",
+          boxShadow: "0 0 20px rgba(0,201,167,0.8)",
+        }}
       />
       <motion.div
         animate={{ y: [0, 14, 0], opacity: [0.3, 0.6, 0.3] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 2,
+        }}
         className="absolute bottom-40 left-16 w-2 h-2 rounded-full hidden lg:block"
-        style={{ background: "#00E5FF", boxShadow: "0 0 15px rgba(0,229,255,0.8)" }}
+        style={{
+          background: "#00E5FF",
+          boxShadow: "0 0 15px rgba(0,229,255,0.8)",
+        }}
       />
 
       {/* Main content */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 lg:pt-32 pb-12 sm:pb-16 lg:pb-20">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-12 xl:gap-20 items-center">
-
           {/* Left content */}
           <motion.div
             variants={stagger}
@@ -137,7 +162,8 @@ export function HeroSection() {
                   fontSize: "inherit",
                   fontWeight: "inherit",
                   lineHeight: "inherit",
-                  background: "linear-gradient(135deg, #00C9A7 0%, #00E5FF 100%)",
+                  background:
+                    "linear-gradient(135deg, #00C9A7 0%, #00E5FF 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
@@ -157,9 +183,9 @@ export function HeroSection() {
                 fontSize: "clamp(0.95rem, 1.15vw, 1.08rem)",
               }}
             >
-              Experience seamless money transfers, real-time currency exchange, and
-              secure digital payments — all in one powerful wallet platform built
-              for the modern world.
+              Experience seamless money transfers, real-time currency exchange,
+              and secure digital payments — all in one powerful wallet platform
+              built for the modern world.
             </motion.p>
 
             {/* Trust checklist */}
@@ -266,7 +292,9 @@ export function HeroSection() {
           {/* Right: Exchange Card */}
           <div className="flex justify-center lg:justify-end w-full">
             <div className="w-full max-w-md lg:max-w-none">
-              <ExchangeCard />
+              <ReduxStoreProvider>
+                <ExchangeCard />
+              </ReduxStoreProvider>
             </div>
           </div>
         </div>

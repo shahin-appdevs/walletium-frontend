@@ -4,20 +4,32 @@ import { motion } from "framer-motion";
 import { ArrowUpDown, ShieldCheck, Zap } from "lucide-react";
 import { CurrencyInput } from "./CurrencyInput";
 import { useTheme } from "@/contexts/ThemeContextProvider";
+import { useBannerSendMoneyInfoQuery } from "@/redux/api/publicApi/homepageApi";
 
 export function ExchangeCard() {
   const { mode } = useTheme();
   const isDark = mode === "dark";
   const [senderAmount, setSenderAmount] = useState("1000");
 
+  const { data, isLoading, isError } = useBannerSendMoneyInfoQuery();
+  const sender = data?.sender_currencies?.[0];
+  const receiver = data?.receiver_currencies?.[0];
+  const rate = sender?.rate ?? 1;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30, scale: 0.96 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.35 }}
+      transition={{
+        duration: 0.8,
+        ease: [0.25, 0.46, 0.45, 0.94],
+        delay: 0.35,
+      }}
       className="w-full max-w-[420px] min-w-0 p-4 sm:p-6 lg:p-7 rounded-3xl"
       style={{
-        background: isDark ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.85)",
+        background: isDark
+          ? "rgba(255,255,255,0.04)"
+          : "rgba(255,255,255,0.85)",
         backdropFilter: "blur(24px)",
         WebkitBackdropFilter: "blur(24px)",
         border: isDark
@@ -86,7 +98,8 @@ export function ExchangeCard() {
               isDark ? "text-white" : "text-slate-900"
             }`}
           >
-            1 USD = 1.0000 USD
+            1 {sender?.currency_code ?? "USD"} = {Number(rate).toFixed(4)}{" "}
+            {receiver?.currency_code ?? "USD"}
           </p>
         </div>
         <div
@@ -162,7 +175,11 @@ export function ExchangeCard() {
           Recipients Amount
           <span style={{ color: "#00C9A7" }}>*</span>
         </label>
-        <CurrencyInput value="0.00" defaultCurrency="USD" readOnly />
+        <CurrencyInput
+          value={(Number(senderAmount) * rate).toFixed(2)}
+          defaultCurrency="USD"
+          readOnly
+        />
       </div>
 
       {/* Send Button */}
