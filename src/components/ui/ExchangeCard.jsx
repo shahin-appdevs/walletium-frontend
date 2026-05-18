@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import { ArrowUpDown, ShieldCheck, Zap } from "lucide-react";
 import { CurrencyInput } from "./CurrencyInput";
 import { useTheme } from "@/contexts/ThemeContextProvider";
-import { useBannerSendMoneyInfoQuery } from "@/redux/api/publicApi/homepageApi";
 import Link from "next/link";
+import { useBannerSendMoneyInfoQuery } from "@/redux/api/publicApi/homepageApi";
 
 // Build a flag image URL from API fields. Trims stray slashes between parts.
 const buildFlagUrl = (baseUrl, imagePath, flag) => {
@@ -47,7 +47,6 @@ export function ExchangeCard() {
     [data],
   );
 
-  console.log("data", senderOptions);
 
   // Resolve currently-selected options (with fallback to first if missing).
   const sender =

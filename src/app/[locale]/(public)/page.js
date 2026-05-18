@@ -25,9 +25,9 @@ export default function Home() {
       <SecuritySection />
       <TestimonialsSection />
       <AppDownloadSection />
-      {/* <ReduxStoreProvider>
+      <ReduxStoreProvider>
         <NewsletterSection />
-      </ReduxStoreProvider> */}
+      </ReduxStoreProvider>
       <Footer />
     </main>
   );

@@ -5,6 +5,7 @@ import "./styles/globals.css";
 import { ThemeProvider } from "@/contexts/ThemeContextProvider";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
+import { ToastContainer } from "react-toastify";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -46,6 +47,7 @@ export default async function RootLayout({ children, params }) {
       >
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ThemeProvider>{children}</ThemeProvider>
+          <ToastContainer />
         </NextIntlClientProvider>
       </body>
     </html>

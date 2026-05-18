@@ -9,15 +9,17 @@ const baseConfig = {
   pauseOnHover: true,
   draggable: false,
   transition: Bounce,
-  closeButton: ({ closeToast }) => (
-    <button
-      onClick={closeToast}
-      className={`absolute top-3 text-lg! text-gray-400! dark:text-gray-600! hover:text-gray-600! transition-colors p-1 rounded-full rtl:left-3 ltr:right-3`}
-      aria-label="Close"
-    >
-      ×
-    </button>
-  ),
+  // closeButton: ({ closeToast }) => (
+  //   <>
+  //     <button
+  //       onClick={closeToast}
+  //       className={`absolute top-3 text-lg! text-gray-400! dark:text-gray-600! hover:text-gray-600! transition-colors p-1 rounded-full rtl:left-3 ltr:right-3`}
+  //       aria-label="Close"
+  //     >
+  //       ×
+  //     </button>
+  //   </>
+  // ),
   // Important: Make toast body relative so absolute positioning works
   style: {
     borderRadius: "12px",
