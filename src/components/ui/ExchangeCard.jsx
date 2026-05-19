@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpDown, ShieldCheck, Zap } from "lucide-react";
 import { CurrencyInput } from "./CurrencyInput";
+import { ExchangeCardSkeleton } from "./ExchangeCardSkeleton";
 import { useTheme } from "@/contexts/ThemeContextProvider";
 import Link from "next/link";
 import { useBannerSendMoneyInfoQuery } from "@/redux/api/publicApi/homepageApi";
@@ -47,7 +48,6 @@ export function ExchangeCard() {
     [data],
   );
 
-
   // Resolve currently-selected options (with fallback to first if missing).
   const sender =
     senderOptions.find((c) => c.code === senderCode) ?? senderOptions[0];
@@ -61,11 +61,11 @@ export function ExchangeCard() {
   const recipientAmount = (Number(senderAmount) * rate || 0).toFixed(2);
 
   if (isLoading) {
-    return <div></div>;
+    return <ExchangeCardSkeleton />;
   }
 
   if (isError) {
-    return <div>Error...</div>;
+    return <ExchangeCardSkeleton />;
   }
 
   return (
