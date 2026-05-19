@@ -1,39 +1,27 @@
 "use client";
 import { CloseOutlined, RightOutlined } from "@ant-design/icons";
-import { CheckCheck } from "lucide-react";
 import Link from "next/link";
 import { Skeleton } from "antd";
 import NotificationItem from "@/app/[locale]/(admin)/dashboard/notification/_components/NotificationItem";
-import {
-  useGetNotificationsQuery,
-  useMarkAsReadMutation,
-  useMarkAllAsReadMutation,
-} from "@/redux/api/notificationApi";
+import { useGetNotificationsQuery } from "@/redux/api/notificationApi";
 
 export default function NotificationPopup({ onClose }) {
-  const { data: notificationsData, isLoading } = useGetNotificationsQuery({
+  const {
+    data: notificationsData,
+    isLoading,
+    isError,
+    refetch,
+  } = useGetNotificationsQuery({
     page: 1,
     per_page: 5,
     status: "",
   });
 
-  const [markAsRead]                        = useMarkAsReadMutation();
-  const [markAllAsRead, { isLoading: isMarkingAll }] = useMarkAllAsReadMutation();
-
-  const notifications = notificationsData?.notifications?.data || [];
-  const unreadCount   = notificationsData?.unread_count || 0;
-
-  const handleMarkAsRead = async (id) => {
-    try {
-      await markAsRead(id).unwrap();
-    } catch {}
-  };
-
-  const handleMarkAllAsRead = async () => {
-    try {
-      await markAllAsRead().unwrap();
-    } catch {}
-  };
+  // API returns `notifications` as a flat array (not paginated).
+  // Show the first 5 in the popup; the full list lives on /dashboard/notification.
+  const notifications = (notificationsData?.notifications || []).slice(0, 5);
+  // `unread_count` isn't on this endpoint — derive from `seen === "0"`.
+  const unreadCount = notifications.filter((n) => n.seen === "0").length;
 
   return (
     <div className="z-50 w-[340px] rounded-xl bg-white dark:bg-slate-900 shadow-2xl border border-neutral-100 dark:border-slate-800 overflow-hidden">
@@ -50,23 +38,10 @@ export default function NotificationPopup({ onClose }) {
           )}
         </div>
 
-        <div className="flex items-center gap-2.5">
-          {unreadCount > 0 && (
-            <button
-              onClick={handleMarkAllAsRead}
-              disabled={isMarkingAll}
-              className="flex items-center gap-0.5 text-[11px] text-primary hover:opacity-70 transition-opacity disabled:opacity-40"
-              title="Mark all as read"
-            >
-              <CheckCheck size={11} />
-              All read
-            </button>
-          )}
-          <CloseOutlined
-            onClick={onClose}
-            className="cursor-pointer text-gray-400 hover:text-gray-700 dark:hover:text-white transition-colors text-[10px]"
-          />
-        </div>
+        <CloseOutlined
+          onClick={onClose}
+          className="cursor-pointer text-gray-400 hover:text-gray-700 dark:hover:text-white transition-colors text-[10px]"
+        />
       </div>
 
       {/* Notification list */}
@@ -91,13 +66,21 @@ export default function NotificationPopup({ onClose }) {
               </div>
             ))}
           </div>
+        ) : isError ? (
+          <div className="py-6 text-center px-4">
+            <p className="text-xs text-gray-500 dark:text-slate-400 mb-2">
+              Couldn&apos;t load notifications
+            </p>
+            <button
+              onClick={() => refetch()}
+              className="text-[11px] text-primary hover:opacity-70 transition-opacity"
+            >
+              Retry
+            </button>
+          </div>
         ) : notifications.length > 0 ? (
           notifications.map((item) => (
-            <NotificationItem
-              key={item.id}
-              notification={item}
-              onMarkAsRead={handleMarkAsRead}
-            />
+            <NotificationItem key={item.id} notification={item} />
           ))
         ) : (
           <div className="py-8 text-center">

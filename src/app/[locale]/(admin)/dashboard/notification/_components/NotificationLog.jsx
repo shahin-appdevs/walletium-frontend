@@ -2,6 +2,7 @@
 import { Card, Modal, Badge, Tabs } from "antd";
 import { BellOutlined } from "@ant-design/icons";
 import { CheckCheck, Trash2 } from "lucide-react";
+import Image from "next/image";
 import Table from "@/components/ui/Table";
 import useModal from "@/hooks/useModal";
 import { useState } from "react";
@@ -23,25 +24,27 @@ dayjs.extend(relativeTime);
 
 const TYPE_STYLES = {
   mention: "bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400",
-  goal:    "bg-indigo-100 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-400",
-  reject:  "bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-400",
-  warning: "bg-amber-100 text-amber-600 dark:bg-amber-500/20 dark:text-amber-400",
-  success: "bg-green-100 text-green-600 dark:bg-green-500/20 dark:text-green-400",
+  goal: "bg-indigo-100 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-400",
+  reject: "bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-400",
+  warning:
+    "bg-amber-100 text-amber-600 dark:bg-amber-500/20 dark:text-amber-400",
+  success:
+    "bg-green-100 text-green-600 dark:bg-green-500/20 dark:text-green-400",
   default: "bg-gray-100 text-gray-600 dark:bg-gray-500/20 dark:text-gray-400",
 };
 
 const STATUS_FILTERS = [
-  { key: "",       label: "All"    },
+  { key: "", label: "All" },
   { key: "unread", label: "Unread" },
-  { key: "read",   label: "Read"   },
+  { key: "read", label: "Read" },
 ];
 
 export default function NotificationLog() {
   const { isModalOpen, handleShowModal, handleCancelModal } = useModal();
   const [singleItem, setSingleItem] = useState(null);
-  const [deleteId, setDeleteId]     = useState(null);
+  const [deleteId, setDeleteId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize]       = useState(10);
+  const [pageSize, setPageSize] = useState(10);
   const [activeStatus, setActiveStatus] = useState("");
   const { smallScreen } = useViewport();
 
@@ -59,12 +62,33 @@ export default function NotificationLog() {
     status: activeStatus,
   });
 
-  const [markAsRead,     { isLoading: isMarking    }] = useMarkAsReadMutation();
-  const [markAllAsRead,  { isLoading: isMarkingAll }] = useMarkAllAsReadMutation();
-  const [deleteNotification, { isLoading: isDeleting }] = useDeleteNotificationMutation();
+  const [markAsRead, { isLoading: isMarking }] = useMarkAsReadMutation();
+  const [markAllAsRead, { isLoading: isMarkingAll }] =
+    useMarkAllAsReadMutation();
+  const [deleteNotification, { isLoading: isDeleting }] =
+    useDeleteNotificationMutation();
 
-  const notifications = notificationsData?.notifications?.data || [];
-  const unreadCount   = notificationsData?.unread_count || 0;
+  // API returns `notifications` as a flat array (no pagination envelope).
+  const allNotifications = notificationsData?.notifications || [];
+  const unreadCount = allNotifications.filter((n) => n.seen === "0").length;
+
+  // Status tabs and search are filtered client-side since the API doesn't
+  // currently respect those query params for this endpoint.
+  const statusFiltered =
+    activeStatus === "unread"
+      ? allNotifications.filter((n) => n.seen === "0")
+      : activeStatus === "read"
+        ? allNotifications.filter((n) => n.seen === "1")
+        : allNotifications;
+
+  const notifications = debouncedSearchTerm
+    ? statusFiltered.filter((n) => {
+        const q = debouncedSearchTerm.toLowerCase();
+        const title = n.message?.title?.toLowerCase() ?? "";
+        const body = n.message?.message?.toLowerCase() ?? "";
+        return title.includes(q) || body.includes(q);
+      })
+    : statusFiltered;
 
   const handleMarkAsRead = async (id, e) => {
     if (e) e.stopPropagation();
@@ -99,7 +123,6 @@ export default function NotificationLog() {
   const handleOnRowClick = (record) => {
     setSingleItem(record);
     handleShowModal();
-    if (!record.is_read) handleMarkAsRead(record.id);
   };
 
   const getTypeClass = (type) => TYPE_STYLES[type] || TYPE_STYLES.default;
@@ -107,48 +130,65 @@ export default function NotificationLog() {
   const columns = [
     {
       title: "Notification",
-      dataIndex: "title",
-      render: (title, record) => (
-        <div className="flex items-center gap-3 py-0.5">
-          <div
-            className={`w-10 h-10 flex-shrink-0 rounded-full flex items-center justify-center text-sm font-bold ${getTypeClass(record.type)}`}
-          >
-            {title?.charAt(0)?.toUpperCase() || "N"}
-          </div>
-          <div className="flex flex-col gap-0.5 min-w-0">
-            <p
-              className={`text-sm font-medium truncate ${
-                record.is_read
-                  ? "text-gray-600 dark:text-neutral-400"
-                  : "text-gray-900 dark:text-white"
-              }`}
-            >
-              {title}
-            </p>
-            <p className="text-xs text-gray-500 dark:text-neutral-500 line-clamp-1">
-              {record.message}
-            </p>
-            {smallScreen && (
-              <p className="text-xs text-gray-400 dark:text-neutral-600 mt-0.5">
-                {dayjs(record.created_at).fromNow()}
+      dataIndex: "id",
+      render: (_id, record) => {
+        const title = record.message?.title;
+        const body = record.message?.message;
+        const image = record.message?.image;
+        const time = record.message?.time;
+        const isUnread = record.seen === "0";
+        return (
+          <div className="flex items-center gap-3 py-0.5">
+            <div className="w-10 h-10 flex-shrink-0 rounded-full overflow-hidden bg-slate-200 dark:bg-slate-700 flex items-center justify-center">
+              {image ? (
+                <Image
+                  src={image}
+                  alt=""
+                  width={40}
+                  height={40}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
+                  }}
+                />
+              ) : (
+                <span className="text-white text-sm font-bold uppercase">
+                  {title?.charAt(0) || "N"}
+                </span>
+              )}
+            </div>
+            <div className="flex flex-col gap-0.5 min-w-0">
+              <p
+                className={`text-sm! font-medium truncate ${
+                  isUnread
+                    ? "text-gray-900 dark:text-white"
+                    : "text-gray-600 dark:text-neutral-400"
+                }`}
+              >
+                {title}
               </p>
-            )}
+              <p className="text-xs! text-gray-500 dark:text-neutral-500 line-clamp-1">
+                {body}
+              </p>
+              {smallScreen && time && (
+                <p className="text-xs! text-gray-400 dark:text-neutral-600 mt-0.5">
+                  {time}
+                </p>
+              )}
+            </div>
           </div>
-          {!record.is_read && (
-            <span className="flex-shrink-0 w-2 h-2 rounded-full bg-primary self-start mt-2" />
-          )}
-        </div>
-      ),
+        );
+      },
     },
     ...(!smallScreen
       ? [
           {
             title: "Time",
-            dataIndex: "created_at",
+            dataIndex: "id",
             width: 150,
-            render: (date) => (
-              <span className="text-gray-500 dark:text-neutral-500 text-sm text-nowrap">
-                {dayjs(date).fromNow()}
+            render: (_id, record) => (
+              <span className="text-gray-500 dark:text-neutral-500 text-sm! text-nowrap">
+                {record.message?.time ?? "—"}
               </span>
             ),
           },
@@ -156,51 +196,54 @@ export default function NotificationLog() {
       : []),
     {
       title: "Status",
-      dataIndex: "is_read",
+      dataIndex: "seen",
       width: 110,
-      render: (isRead) => (
-        <span
-          className={`px-3 py-1 rounded-full text-xs! font-medium ${
-            isRead
-              ? "bg-gray-100 text-gray-600 dark:bg-neutral-800 dark:text-neutral-400"
-              : "bg-primary-50 text-primary dark:bg-primary/20 dark:text-primary"
-          }`}
-        >
-          {isRead ? "Read" : "Unread"}
-        </span>
-      ),
-    },
-    {
-      title: "Action",
-      dataIndex: "id",
-      width: 100,
-      render: (id, record) => (
-        <div
-          className="flex items-center gap-1"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {!record.is_read && (
-            <button
-              onClick={(e) => handleMarkAsRead(id, e)}
-              className="p-1.5 rounded-lg text-primary hover:bg-primary/10 transition-colors"
-              title="Mark as read"
-            >
-              <CheckCheck size={15} />
-            </button>
-          )}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setDeleteId(id);
-            }}
-            className="p-1.5 rounded-lg text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
-            title="Delete"
+      render: (seen) => {
+        const isRead = seen === "1";
+        return (
+          <span
+            className={`px-3 py-1 rounded-full text-xs! font-medium ${
+              isRead
+                ? "bg-gray-100 text-gray-600 dark:bg-neutral-800 dark:text-neutral-400"
+                : "bg-primary-50 text-primary dark:bg-primary/20 dark:text-primary"
+            }`}
           >
-            <Trash2 size={15} />
-          </button>
-        </div>
-      ),
+            {isRead ? "Read" : "Unread"}
+          </span>
+        );
+      },
     },
+    // {
+    //   title: "Action",
+    //   dataIndex: "id",
+    //   width: 100,
+    //   render: (id, record) => (
+    //     <div
+    //       className="flex items-center gap-1"
+    //       onClick={(e) => e.stopPropagation()}
+    //     >
+    //       {record.seen === "0" && (
+    //         <button
+    //           onClick={(e) => handleMarkAsRead(id, e)}
+    //           className="p-1.5 rounded-lg text-primary hover:bg-primary/10 transition-colors"
+    //           title="Mark as read"
+    //         >
+    //           <CheckCheck size={15} />
+    //         </button>
+    //       )}
+    //       <button
+    //         onClick={(e) => {
+    //           e.stopPropagation();
+    //           setDeleteId(id);
+    //         }}
+    //         className="p-1.5 rounded-lg text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
+    //         title="Delete"
+    //       >
+    //         <Trash2 size={15} />
+    //       </button>
+    //     </div>
+    //   ),
+    // },
   ];
 
   const tableData = notifications?.map((item, idx) => ({ ...item, key: idx }));
@@ -255,7 +298,7 @@ export default function NotificationLog() {
           {unreadCount > 0 && <Badge count={unreadCount} size="small" />}
         </div>
       }
-      extra={TableExtra}
+      // extra={TableExtra}
     >
       {/* Detail Modal */}
       <Modal
@@ -268,65 +311,63 @@ export default function NotificationLog() {
       >
         {singleItem && (
           <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-white dark:bg-[#111] shadow-xs border border-gray-200 dark:border-gray-800">
-            <div className="flex items-center gap-3 mb-4">
-              <div
-                className={`w-12 h-12 rounded-full flex items-center justify-center text-base font-bold ${getTypeClass(singleItem.type)}`}
-              >
-                {singleItem.title?.charAt(0)?.toUpperCase() || "N"}
+            <div className="flex items-start gap-3 mb-4">
+              <div className="w-12 h-12 rounded-full overflow-hidden bg-slate-200 dark:bg-slate-700 flex items-center justify-center shrink-0">
+                {singleItem.message?.image ? (
+                  <Image
+                    src={singleItem.message.image}
+                    alt=""
+                    width={48}
+                    height={48}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none";
+                    }}
+                  />
+                ) : (
+                  <span className="text-white text-base uppercase">
+                    {singleItem.message?.title?.charAt(0) || "N"}
+                  </span>
+                )}
               </div>
-              <div>
-                <h2 className="text-lg! font-semibold text-gray-900 dark:text-gray-100">
-                  {singleItem.title}
-                </h2>
-                <p className="text-xs text-gray-400 dark:text-slate-500">
-                  {dayjs(singleItem.created_at).format("DD MMM YYYY, hh:mm A")}
-                  {" · "}
-                  {dayjs(singleItem.created_at).fromNow()}
+              <div className="flex-1 min-w-0">
+                <p className="text-base! font-normal! text-gray-900 dark:text-gray-100">
+                  {singleItem.message?.title}
                 </p>
+                <p className="text-xs! text-gray-400 dark:text-slate-500 mb-2">
+                  {singleItem.created_at &&
+                    dayjs(singleItem.created_at).format("DD MMM YYYY, hh:mm A")}
+                  {singleItem.message?.time && (
+                    <>
+                      {" · "}
+                      {singleItem.message.time}
+                    </>
+                  )}
+                </p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span
+                    className={`px-2.5 py-0.5 rounded-full text-xs! font-medium ${
+                      singleItem.seen === "1"
+                        ? "bg-gray-100 text-gray-600 dark:bg-neutral-800 dark:text-neutral-400"
+                        : "bg-primary-50 text-primary dark:bg-primary/20 dark:text-primary"
+                    }`}
+                  >
+                    {singleItem.seen === "1" ? "Read" : "Unread"}
+                  </span>
+                  {singleItem.type && (
+                    <span
+                      className={`px-2.5 py-0.5 rounded-full text-xs! font-medium capitalize ${getTypeClass(singleItem.type)}`}
+                    >
+                      {singleItem.type}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
 
-            <div className="divide-y divide-gray-100 dark:divide-gray-800">
-              <div className="flex justify-between items-start py-3 text-sm">
-                <span className="text-gray-500 dark:text-gray-400">Message</span>
-                <span className="text-gray-900 dark:text-gray-100 font-medium text-right max-w-[60%]">
-                  {singleItem.message}
-                </span>
-              </div>
-              <div className="flex justify-between items-center py-3 text-sm">
-                <span className="text-gray-500 dark:text-gray-400">Status</span>
-                <span
-                  className={`px-3 py-1 rounded-full text-xs font-medium ${
-                    singleItem.is_read
-                      ? "bg-gray-100 text-gray-600 dark:bg-neutral-800 dark:text-neutral-400"
-                      : "bg-primary-50 text-primary dark:bg-primary/20 dark:text-primary"
-                  }`}
-                >
-                  {singleItem.is_read ? "Read" : "Unread"}
-                </span>
-              </div>
-              {singleItem.type && (
-                <div className="flex justify-between items-center py-3 text-sm">
-                  <span className="text-gray-500 dark:text-gray-400">Type</span>
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium capitalize ${getTypeClass(singleItem.type)}`}>
-                    {singleItem.type}
-                  </span>
-                </div>
-              )}
-              {singleItem.redirect_url && (
-                <div className="flex justify-between items-center py-3 text-sm">
-                  <span className="text-gray-500 dark:text-gray-400">Link</span>
-                  <a
-                    href={singleItem.redirect_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary font-medium hover:underline"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    View Details →
-                  </a>
-                </div>
-              )}
+            {/* Message body */}
+            <div className="p-3 rounded-lg bg-gray-50 dark:bg-slate-800/60 text-xs! leading-relaxed text-gray-700 dark:text-gray-200">
+              {singleItem.message?.message}
             </div>
           </div>
         )}
@@ -362,24 +403,12 @@ export default function NotificationLog() {
           columns={smallScreenColumns}
           dataSource={tableData}
           loading={isLoading}
-          pagination={{
-            current:  notificationsData?.notifications?.current_page || 1,
-            pageSize: notificationsData?.notifications?.per_page     || 10,
-            total:    notificationsData?.notifications?.total        || 0,
-            onChange: (page, size) => {
-              setCurrentPage(page);
-              setPageSize(size);
-            },
-            showTotal: (total) => `Total ${total} notifications`,
-            showSizeChanger: true,
-            pageSizeOptions: ["10", "20", "30", "50"],
-            locale: { items_per_page: "/ page" },
-          }}
+          pagination={false}
           onRowClick={handleOnRowClick}
           className="rounded-xl border border-gray-200/50 dark:border-neutral-950 md:min-w-[620px]"
           rowClassName={(record) =>
             `${
-              !record.is_read
+              record.seen === "0"
                 ? "bg-primary-50/40 dark:bg-primary/[0.04]"
                 : "even:bg-gray-50 dark:even:bg-slate-950"
             } rounded-xl cursor-pointer`
