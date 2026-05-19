@@ -14,8 +14,10 @@ const LayoutSidebar = ({ collapsed }) => {
   const { mode, handleNavigateRoutes, items, activeKey } = useSidebar();
 
   return (
-    <div className="hidden sidebar lg:block transition-none!">
-      {/* Desktop Sidebar */}
+    <div className="hidden sidebar lg:block lg:fixed lg:top-0 lg:left-0 lg:h-screen lg:z-30 transition-none!">
+      {/* Desktop Sidebar — fixed on lg+ so it stays put while only the
+          content column scrolls. AntD's outer Layout doesn't provide a
+          scroll container that `sticky` can latch onto. */}
       <Sider
         collapsible
         width={252}
@@ -24,10 +26,9 @@ const LayoutSidebar = ({ collapsed }) => {
         breakpoint="lg"
         theme={mode}
         collapsedWidth="0"
-        // style={{ background: background }}
-        className="sticky! top-0! h-screen! overflow-y-auto overflow-x-hidden!  sidebar-main "
+        className="h-screen! overflow-y-auto overflow-x-hidden! sidebar-main"
       >
-        <div className="p-2 lg:px-4  lg:py-8 ">
+        <div className="p-2 lg:px-4  lg:py-8 sticky top-0 bg-gray-50 dark:bg-walletium-dark  z-20">
           <Link href={"/dashboard"} className="cursor-pointer">
             <Image
               src={
@@ -50,7 +51,6 @@ const LayoutSidebar = ({ collapsed }) => {
           }}
         /> */}
 
-        
         <Menu
           onClick={handleNavigateRoutes}
           openKeys={["2", "3", "5", "4"]}

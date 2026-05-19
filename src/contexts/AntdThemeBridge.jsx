@@ -31,7 +31,11 @@ export function AntdThemeBridge({ children }) {
             fontSize: "clamp(14px, 1.2vw, 16px)",
           },
           Drawer: {
-            colorBgElevated: "oklch(20.8% 0.042 265.755)",
+            // Match the current theme so the mobile sidebar drawer doesn't
+            // mix dark surround with a light menu (or vice versa).
+            colorBgElevated: darkMode
+              ? "oklch(20.8% 0.042 265.755)"
+              : "#ffffff",
           },
         },
       }}

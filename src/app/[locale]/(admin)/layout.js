@@ -43,13 +43,25 @@ export default function DashboardLayout({ children }) {
       .finally(() => {});
   }, []);
 
+  // Sidebar is `position: fixed` on lg+ screens — push the content column
+  // right by the sidebar's width when it's expanded so they don't overlap.
+  // On mobile the sidebar is rendered as a drawer (no fixed column), so no
+  // offset is needed.
+  const sidebarOffset = collapsed ? 0 : 252;
+
   return (
     <AppProviders>
       <Protected>
         <DashboardProvider>
           <Layout style={{ minHeight: "100vh" }}>
             <LayoutSidebar collapsed={collapsed} setCollapsed={setCollapsed} />
-            <Layout>
+            <Layout
+              className="lg:ms-(--sidebar-offset)"
+              style={{
+                "--sidebar-offset": `${sidebarOffset}px`,
+                transition: "margin-inline-start 0.2s",
+              }}
+            >
               <LayoutHeader collapsed={collapsed} setCollapsed={setCollapsed} />
 
               {/* Main content */}
