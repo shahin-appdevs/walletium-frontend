@@ -7,6 +7,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { ToastContainer } from "react-toastify";
 import ReduxStoreProvider from "@/redux/provider/ReduxStoreProvider";
+import { TawkTo } from "@/components/integrations/TawkTo";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -48,7 +49,10 @@ export default async function RootLayout({ children, params }) {
       >
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ThemeProvider>
-            <ReduxStoreProvider>{children}</ReduxStoreProvider>
+            <ReduxStoreProvider>
+              {children}
+              <TawkTo />
+            </ReduxStoreProvider>
           </ThemeProvider>
           <ToastContainer />
         </NextIntlClientProvider>

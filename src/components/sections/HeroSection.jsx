@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { ExchangeCard } from "@/components/ui/ExchangeCard";
 import { useTheme } from "@/contexts/ThemeContextProvider";
-import ReduxStoreProvider from "@/redux/provider/ReduxStoreProvider";
 
 const stagger = {
   hidden: {},
@@ -292,9 +291,7 @@ export function HeroSection() {
           {/* Right: Exchange Card */}
           <div className="flex justify-center lg:justify-end w-full">
             <div className="w-full max-w-md lg:max-w-none">
-              <ReduxStoreProvider>
-                <ExchangeCard />
-              </ReduxStoreProvider>
+              <ExchangeCard />
             </div>
           </div>
         </div>

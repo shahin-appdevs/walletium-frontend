@@ -9,7 +9,6 @@ import {
   PRIVACY_LAST_UPDATED,
   PRIVACY_SECTIONS,
 } from "@/data/privacy";
-import ReduxStoreProvider from "@/redux/provider/ReduxStoreProvider";
 
 // Static — privacy policy rarely changes; revalidate once a day so an edit
 // shows up within the same business day without rebuilding.
@@ -24,30 +23,28 @@ export const metadata = {
 
 export default function PrivacyPage() {
   return (
-    <ReduxStoreProvider>
-      <main>
-        <Navbar />
-        <LegalHero
-          breadcrumb="Privacy Policy"
-          titleLead="Privacy"
-          titleAccent="Policy"
-          lead="Your privacy and data security matter to us. Learn how Walletium collects, uses, and protects your information."
-          lastUpdated={PRIVACY_LAST_UPDATED}
-        />
-        <LegalContent
-          intro={PRIVACY_INTRO}
-          sections={PRIVACY_SECTIONS}
-          closing={PRIVACY_CLOSING}
-          contactCta={{
-            heading: "Questions about your privacy?",
-            body: "Our team is one message away — we typically respond within 24 hours.",
-            href: "/contact",
-            buttonText: "Contact us",
-          }}
-        />
-        <NewsletterSection />
-        <Footer />
-      </main>
-    </ReduxStoreProvider>
+    <main>
+      <Navbar />
+      <LegalHero
+        breadcrumb="Privacy Policy"
+        titleLead="Privacy"
+        titleAccent="Policy"
+        lead="Your privacy and data security matter to us. Learn how Walletium collects, uses, and protects your information."
+        lastUpdated={PRIVACY_LAST_UPDATED}
+      />
+      <LegalContent
+        intro={PRIVACY_INTRO}
+        sections={PRIVACY_SECTIONS}
+        closing={PRIVACY_CLOSING}
+        contactCta={{
+          heading: "Questions about your privacy?",
+          body: "Our team is one message away — we typically respond within 24 hours.",
+          href: "/contact",
+          buttonText: "Contact us",
+        }}
+      />
+      <NewsletterSection />
+      <Footer />
+    </main>
   );
 }

@@ -9,7 +9,6 @@ import {
   REFUND_LAST_UPDATED,
   REFUND_SECTIONS,
 } from "@/data/refund";
-import ReduxStoreProvider from "@/redux/provider/ReduxStoreProvider";
 
 export const dynamic = "force-static";
 export const revalidate = 86400;
@@ -22,30 +21,28 @@ export const metadata = {
 
 export default function RefundPage() {
   return (
-    <ReduxStoreProvider>
-      <main>
-        <Navbar />
-        <LegalHero
-          breadcrumb="Refund Policy"
-          titleLead="Refund"
-          titleAccent="Policy"
-          lead="Transparent policies designed to protect and inform our users. Learn how Walletium handles refunds, privacy, and data protection."
-          lastUpdated={REFUND_LAST_UPDATED}
-        />
-        <LegalContent
-          intro={REFUND_INTRO}
-          sections={REFUND_SECTIONS}
-          closing={REFUND_CLOSING}
-          contactCta={{
-            heading: "Questions about a refund?",
-            body: "Our team is one message away — we typically respond within 24 hours.",
-            href: "/contact",
-            buttonText: "Contact us",
-          }}
-        />
-        <NewsletterSection />
-        <Footer />
-      </main>
-    </ReduxStoreProvider>
+    <main>
+      <Navbar />
+      <LegalHero
+        breadcrumb="Refund Policy"
+        titleLead="Refund"
+        titleAccent="Policy"
+        lead="Transparent policies designed to protect and inform our users. Learn how Walletium handles refunds, privacy, and data protection."
+        lastUpdated={REFUND_LAST_UPDATED}
+      />
+      <LegalContent
+        intro={REFUND_INTRO}
+        sections={REFUND_SECTIONS}
+        closing={REFUND_CLOSING}
+        contactCta={{
+          heading: "Questions about a refund?",
+          body: "Our team is one message away — we typically respond within 24 hours.",
+          href: "/contact",
+          buttonText: "Contact us",
+        }}
+      />
+      <NewsletterSection />
+      <Footer />
+    </main>
   );
 }
