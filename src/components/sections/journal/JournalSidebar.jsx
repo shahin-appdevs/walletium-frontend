@@ -19,13 +19,13 @@ function CategoriesWidget({ categories = [] }) {
       <ul className="divide-y divide-neutral-100 dark:divide-neutral-700/60">
         {categories.map((cat) => {
           const name = cat.name ?? cat.category ?? cat.title;
-          const id = cat.id ?? name;
-          const count = cat.journal_count ?? cat.count ?? cat.total ?? 0;
+          const id = cat.id;
+          const count = cat?.journals_count;
           if (!name) return null;
           return (
             <li key={id}>
               <Link
-                href={`/journal?category=${encodeURIComponent(name)}`}
+                href={`/journal?category=${id}`}
                 className="flex items-center justify-between gap-3 px-5 py-3 group hover:bg-primary-50/60 dark:hover:bg-primary-500/5 transition-colors"
               >
                 <span className="inline-flex items-center gap-2 text-sm font-medium text-neutral-700 dark:text-neutral-300 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">

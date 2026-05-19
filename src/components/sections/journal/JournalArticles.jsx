@@ -1,8 +1,28 @@
 import { fetchers } from "@/lib/api/fetchers";
 import { JournalGrid } from "./JournalGrid";
+import { getLocale } from "next-intl/server";
 
-export async function JournalArticles() {
-  const response = await fetchers.journal.list({ page: 1, perPage: 6 });
+/**
+ * Server Component. Reads the optional `?category=<id>` search param and
+ * branches the initial fetch between the generic list and the per-category
+ * endpoint. The active category id flows down to <JournalGrid> so its
+ * "Load more" path and "Clear filter" chip stay in sync with the URL.
+ */
+export async function JournalArticles({ searchParams }) {
+  const lang = await getLocale();
+  const resolved = (await searchParams) || {};
+  const rawCategory = resolved.category;
+  const categoryId =
+    rawCategory != null && rawCategory !== "" ? String(rawCategory) : null;
+
+  const response = categoryId
+    ? await fetchers.journal.category(categoryId, {
+        lang,
+        page: 1,
+        perPage: 6,
+      })
+    : await fetchers.journal.list({ lang, page: 1, perPage: 6 });
+
   const journals = response?.data?.journals;
   const articles = journals?.data ?? [];
   const hasMore = journals?.next_page_url !== null;
@@ -25,6 +45,7 @@ export async function JournalArticles() {
           initialArticles={articles}
           initialHasMore={hasMore}
           initialPage={currentPage}
+          activeCategoryId={categoryId}
         />
       </div>
     </section>

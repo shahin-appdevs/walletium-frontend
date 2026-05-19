@@ -1,4 +1,5 @@
 "use client";
+import useBasicSettings from "@/hooks/useBasicSettings";
 import { motion } from "framer-motion";
 import {
   ArrowUpRight,
@@ -7,10 +8,12 @@ import {
   Heart,
   Linkedin,
   Mail,
+  ShieldCheck,
   Twitter,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const POLICY_LINKS = [
   { label: "Privacy Policy", href: "/privacy" },
@@ -27,6 +30,10 @@ const SOCIAL_LINKS = [
 ];
 
 export function Footer() {
+  const { settings } = useBasicSettings();
+  const recaptchaKey = settings?.google_recaptcha_site_key;
+  const recaptchaStatus = settings?.google_recaptcha_status;
+
   return (
     <footer className="relative overflow-hidden bg-linear-to-b from-[#0A0F1E] via-[#091627] to-[#06101E] text-neutral-300">
       {/* Top gradient hairline */}
@@ -151,6 +158,43 @@ export function Footer() {
                 className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
               />
             </a>
+
+            {/* reCAPTCHA verification */}
+            {recaptchaStatus && recaptchaKey && (
+              <div className="mt-6">
+                <ReCAPTCHA sitekey={recaptchaKey} theme="dark" />
+              </div>
+            )}
+
+            {/* reCAPTCHA disclosure */}
+            <div className="mt-6 flex items-start gap-2.5 p-3 rounded-xl bg-white/3 border border-white/10 backdrop-blur-sm max-w-sm">
+              <ShieldCheck
+                size={16}
+                strokeWidth={2.2}
+                className="shrink-0 mt-0.5 text-primary-400"
+              />
+              <p className="text-[11px] leading-relaxed text-neutral-400">
+                This site is protected by reCAPTCHA and the Google{" "}
+                <a
+                  href="https://policies.google.com/privacy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary-400 hover:text-primary-300 underline underline-offset-2 transition-colors"
+                >
+                  Privacy Policy
+                </a>{" "}
+                and{" "}
+                <a
+                  href="https://policies.google.com/terms"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary-400 hover:text-primary-300 underline underline-offset-2 transition-colors"
+                >
+                  Terms of Service
+                </a>{" "}
+                apply.
+              </p>
+            </div>
           </div>
         </div>
 
@@ -172,7 +216,7 @@ export function Footer() {
           </p>
           <p className="text-xs text-neutral-500 tracking-wider">
             Available worldwide ·{" "}
-            <span className="text-primary-400 font-semibold">v1.0</span>
+            <span className="text-primary-400 font-semibold">v2.0</span>
           </p>
         </div>
       </div>

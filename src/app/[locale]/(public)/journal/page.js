@@ -10,12 +10,12 @@ export const metadata = {
     "Stories, deep-dives, and product news from the Walletium team — covering the future of digital finance, security, and developer tools.",
 };
 
-export default function JournalPage() {
+export default async function JournalPage({ searchParams }) {
   return (
     <main>
       <Navbar />
       <JournalHero />
-      <JournalArticles />
+      <JournalArticles searchParams={searchParams} />
       <NewsletterSection />
       <Footer />
     </main>

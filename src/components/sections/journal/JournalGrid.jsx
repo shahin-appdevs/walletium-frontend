@@ -1,6 +1,6 @@
 "use client";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowUpRight, BookOpen, Calendar, Loader2 } from "lucide-react";
+import { ArrowUpRight, BookOpen, Calendar, Loader2, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -37,7 +37,12 @@ const formatDate = (iso) => {
   });
 };
 
-export function JournalGrid({ initialArticles, initialHasMore, initialPage }) {
+export function JournalGrid({
+  initialArticles,
+  initialHasMore,
+  initialPage,
+  activeCategoryId = null,
+}) {
   const [articles, setArticles] = useState(initialArticles);
   const [page, setPage] = useState(initialPage);
   const [hasMore, setHasMore] = useState(initialHasMore);
@@ -49,9 +54,10 @@ export function JournalGrid({ initialArticles, initialHasMore, initialPage }) {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`/api/journal?page=${nextPage}&per_page=6`, {
-        method: "POST",
-      });
+      const url = activeCategoryId
+        ? `/api/journal/category?id=${encodeURIComponent(activeCategoryId)}&page=${nextPage}&per_page=6`
+        : `/api/journal?page=${nextPage}&per_page=6`;
+      const res = await fetch(url, { method: "POST" });
       if (!res.ok) throw new Error("Request failed");
       const body = await res.json();
       const journals = body?.data?.journals;
@@ -84,6 +90,20 @@ export function JournalGrid({ initialArticles, initialHasMore, initialPage }) {
 
   return (
     <>
+      {/* {activeCategoryId && (
+        <div className="flex items-center gap-2 mb-6">
+          <span className="text-sm text-neutral-500 dark:text-neutral-400">
+            Filtered by category
+          </span>
+          <Link
+            href="/journal"
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-primary-50 dark:bg-primary-500/10 text-primary-600 dark:text-primary-400 border border-primary-200 dark:border-primary-500/30 hover:bg-primary-100 dark:hover:bg-primary-500/20 transition-all"
+          >
+            <X size={11} strokeWidth={2.5} /> Clear filter
+          </Link>
+        </div>
+      )} */}
+
       <motion.div
         initial="hidden"
         animate="visible"
@@ -123,9 +143,19 @@ export function JournalGrid({ initialArticles, initialHasMore, initialPage }) {
                     className="absolute inset-0 opacity-30 mix-blend-multiply pointer-events-none"
                     style={{ background: gradient }}
                   />
-                  <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] bg-white/95 dark:bg-neutral-900/95 text-neutral-900 dark:text-white backdrop-blur-md">
-                    {article.category}
-                  </span>
+                  {article.category_id != null ? (
+                    <Link
+                      href={`/journal?category=${encodeURIComponent(article.category_id)}`}
+                      onClick={(e) => e.stopPropagation()}
+                      className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] bg-white/95 dark:bg-neutral-900/95 text-neutral-900 dark:text-white backdrop-blur-md hover:bg-primary-500 hover:text-white dark:hover:bg-primary-500 dark:hover:text-white transition-all"
+                    >
+                      {article.category}
+                    </Link>
+                  ) : (
+                    <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] bg-white/95 dark:bg-neutral-900/95 text-neutral-900 dark:text-white backdrop-blur-md">
+                      {article.category}
+                    </span>
+                  )}
                 </div>
 
                 {/* Content */}
@@ -159,9 +189,7 @@ export function JournalGrid({ initialArticles, initialHasMore, initialPage }) {
 
       {error && (
         <div className="mt-8 text-center">
-          <p className="text-sm text-red-500 dark:text-red-400 mb-3">
-            {error}
-          </p>
+          <p className="text-sm text-red-500 dark:text-red-400 mb-3">{error}</p>
           <button
             onClick={loadMore}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white dark:bg-neutral-800/80 text-neutral-900 dark:text-white font-bold text-sm border border-neutral-200 dark:border-neutral-700 hover:border-primary-300 dark:hover:border-primary-500/50 hover:text-primary-600 dark:hover:text-primary-400 transition-all"

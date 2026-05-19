@@ -99,9 +99,22 @@ export const fetchers = {
         tags: ["journal", `journal:${id}`],
         revalidate: 1800, // 30 min
       }),
-  },
 
-  
+    /**
+     * Articles filtered by category id. Same response shape as `list` so the
+     * grid can consume both the same way. Page/perPage are appended manually
+     * since the endpoint helper only accepts `lang`.
+     */
+    category: (id, { lang = "en", page, perPage } = {}) => {
+      let url = endpoints.journal.category(id, { lang });
+      if (page) url += `&page=${encodeURIComponent(page)}`;
+      if (perPage) url += `&per_page=${encodeURIComponent(perPage)}`;
+      return getJson(url, {
+        tags: ["journal", `journal:category:${id}`],
+        revalidate: 600,
+      });
+    },
+  },
 };
 
 export { getJson, FetchError };
