@@ -4,42 +4,40 @@ import { LegalContent } from "@/components/sections/legal/LegalContent";
 import { LegalHero } from "@/components/sections/legal/LegalHero";
 import { NewsletterSection } from "@/components/sections/NewsletterSection";
 import {
-  PRIVACY_CLOSING,
-  PRIVACY_INTRO,
-  PRIVACY_LAST_UPDATED,
-  PRIVACY_SECTIONS,
-} from "@/data/privacy";
+  REFUND_CLOSING,
+  REFUND_INTRO,
+  REFUND_LAST_UPDATED,
+  REFUND_SECTIONS,
+} from "@/data/refund";
 import ReduxStoreProvider from "@/redux/provider/ReduxStoreProvider";
 
-// Static — privacy policy rarely changes; revalidate once a day so an edit
-// shows up within the same business day without rebuilding.
 export const dynamic = "force-static";
 export const revalidate = 86400;
 
 export const metadata = {
-  title: "Privacy Policy — Walletium · Your Data, Protected",
+  title: "Refund Policy — Walletium · Transparent Practices",
   description:
-    "Learn how Walletium collects, uses, and protects your personal information. Transparent privacy practices for a fintech you can trust.",
+    "Read Walletium's Refund Policy. Learn how we handle payments, data, and refunds — clearly and transparently.",
 };
 
-export default function PrivacyPage() {
+export default function RefundPage() {
   return (
     <ReduxStoreProvider>
       <main>
         <Navbar />
         <LegalHero
-          breadcrumb="Privacy Policy"
-          titleLead="Privacy"
+          breadcrumb="Refund Policy"
+          titleLead="Refund"
           titleAccent="Policy"
-          lead="Your privacy and data security matter to us. Learn how Walletium collects, uses, and protects your information."
-          lastUpdated={PRIVACY_LAST_UPDATED}
+          lead="Transparent policies designed to protect and inform our users. Learn how Walletium handles refunds, privacy, and data protection."
+          lastUpdated={REFUND_LAST_UPDATED}
         />
         <LegalContent
-          intro={PRIVACY_INTRO}
-          sections={PRIVACY_SECTIONS}
-          closing={PRIVACY_CLOSING}
+          intro={REFUND_INTRO}
+          sections={REFUND_SECTIONS}
+          closing={REFUND_CLOSING}
           contactCta={{
-            heading: "Questions about your privacy?",
+            heading: "Questions about a refund?",
             body: "Our team is one message away — we typically respond within 24 hours.",
             href: "/contact",
             buttonText: "Contact us",

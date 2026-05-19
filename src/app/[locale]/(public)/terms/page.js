@@ -4,42 +4,40 @@ import { LegalContent } from "@/components/sections/legal/LegalContent";
 import { LegalHero } from "@/components/sections/legal/LegalHero";
 import { NewsletterSection } from "@/components/sections/NewsletterSection";
 import {
-  PRIVACY_CLOSING,
-  PRIVACY_INTRO,
-  PRIVACY_LAST_UPDATED,
-  PRIVACY_SECTIONS,
-} from "@/data/privacy";
+  TERMS_CLOSING,
+  TERMS_INTRO,
+  TERMS_LAST_UPDATED,
+  TERMS_SECTIONS,
+} from "@/data/terms";
 import ReduxStoreProvider from "@/redux/provider/ReduxStoreProvider";
 
-// Static — privacy policy rarely changes; revalidate once a day so an edit
-// shows up within the same business day without rebuilding.
 export const dynamic = "force-static";
 export const revalidate = 86400;
 
 export const metadata = {
-  title: "Privacy Policy — Walletium · Your Data, Protected",
+  title: "Terms & Conditions — Walletium · Clear, Fair, Transparent",
   description:
-    "Learn how Walletium collects, uses, and protects your personal information. Transparent privacy practices for a fintech you can trust.",
+    "Review the Terms & Conditions that govern your use of Walletium — transparent policies designed to protect both users and the platform.",
 };
 
-export default function PrivacyPage() {
+export default function TermsPage() {
   return (
     <ReduxStoreProvider>
       <main>
         <Navbar />
         <LegalHero
-          breadcrumb="Privacy Policy"
-          titleLead="Privacy"
-          titleAccent="Policy"
-          lead="Your privacy and data security matter to us. Learn how Walletium collects, uses, and protects your information."
-          lastUpdated={PRIVACY_LAST_UPDATED}
+          breadcrumb="Terms & Conditions"
+          titleLead="Terms &"
+          titleAccent="Conditions"
+          lead="Please review the terms governing the use of Walletium services. Transparent policies designed to protect both users and the platform."
+          lastUpdated={TERMS_LAST_UPDATED}
         />
         <LegalContent
-          intro={PRIVACY_INTRO}
-          sections={PRIVACY_SECTIONS}
-          closing={PRIVACY_CLOSING}
+          intro={TERMS_INTRO}
+          sections={TERMS_SECTIONS}
+          closing={TERMS_CLOSING}
           contactCta={{
-            heading: "Questions about your privacy?",
+            heading: "Questions about these terms?",
             body: "Our team is one message away — we typically respond within 24 hours.",
             href: "/contact",
             buttonText: "Contact us",

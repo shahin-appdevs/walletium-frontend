@@ -3,7 +3,30 @@ import { motion } from "framer-motion";
 import { ChevronRight, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 
-export function PrivacyHero({ lastUpdated = "October 2026" }) {
+/**
+ * Reusable hero for all legal/policy/help pages (Privacy, Refund, Terms, FAQ…).
+ *
+ * The title renders as `<titleLead> <titleAccent>` where the accent word is
+ * styled in the brand color — matches the rest of the site's heading rhythm.
+ *
+ * @param {object}   props
+ * @param {string}   props.breadcrumb    Last crumb after Home (e.g. "Privacy Policy")
+ * @param {string}   props.eyebrow       Small uppercase chip text (default "Legal")
+ * @param {Function} props.EyebrowIcon   Lucide icon shown next to the eyebrow (default ShieldCheck)
+ * @param {string}   props.titleLead     First half of the headline
+ * @param {string}   props.titleAccent   Second half, rendered in primary color
+ * @param {string}   props.lead          Supporting paragraph under the title
+ * @param {string}   props.lastUpdated   Optional human date string for the "Last updated" chip
+ */
+export function LegalHero({
+  breadcrumb,
+  eyebrow = "Legal",
+  EyebrowIcon = ShieldCheck,
+  titleLead,
+  titleAccent,
+  lead,
+  lastUpdated,
+}) {
   return (
     <section className="relative overflow-hidden pt-32 sm:pt-36 lg:pt-44 pb-10 sm:pb-12 lg:pb-14 bg-linear-to-b from-slate-50 via-emerald-50/40 to-white dark:from-walletium-dark dark:via-walletium-dark-mid dark:to-[#091829]">
       {/* Glow accents */}
@@ -40,7 +63,7 @@ export function PrivacyHero({ lastUpdated = "October 2026" }) {
           </Link>
           <ChevronRight size={13} className="text-neutral-400" />
           <span className="text-neutral-900 dark:text-white font-semibold">
-            Privacy Policy
+            {breadcrumb}
           </span>
         </motion.nav>
 
@@ -50,28 +73,31 @@ export function PrivacyHero({ lastUpdated = "October 2026" }) {
           transition={{ duration: 0.6 }}
         >
           <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold tracking-[0.2em] uppercase mb-5 bg-primary-50 dark:bg-primary-500/15 text-primary-600 dark:text-primary-400 ring-1 ring-primary-200/60 dark:ring-primary-500/30">
-            <ShieldCheck size={12} /> Legal
+            <EyebrowIcon size={12} /> {eyebrow}
           </span>
 
           <h1 className="font-serif font-black leading-[1.05] mb-5 text-4xl sm:text-5xl lg:text-6xl xl:text-[64px] tracking-tight text-neutral-900 dark:text-white">
-            Privacy{" "}
+            {titleLead}{" "}
             <span className="text-primary-600 dark:text-primary-400">
-              Policy
+              {titleAccent}
             </span>
           </h1>
 
-          <p className="text-base sm:text-lg leading-relaxed text-neutral-600 dark:text-neutral-400 max-w-2xl mb-6">
-            Your privacy and data security matter to us. Learn how Walletium
-            collects, uses, and protects your information.
-          </p>
+          {lead && (
+            <p className="text-base sm:text-lg leading-relaxed text-neutral-600 dark:text-neutral-400 max-w-2xl mb-6">
+              {lead}
+            </p>
+          )}
 
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium bg-white/80 dark:bg-neutral-900/40 border border-neutral-200/80 dark:border-neutral-700/60 text-neutral-600 dark:text-neutral-400 backdrop-blur-sm">
-            <span className="w-1.5 h-1.5 rounded-full bg-primary-500 dark:bg-primary-400" />
-            Last updated:{" "}
-            <span className="text-neutral-900 dark:text-white">
-              {lastUpdated}
-            </span>
-          </div>
+          {lastUpdated && (
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium bg-white/80 dark:bg-neutral-900/40 border border-neutral-200/80 dark:border-neutral-700/60 text-neutral-600 dark:text-neutral-400 backdrop-blur-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary-500 dark:bg-primary-400" />
+              Last updated:{" "}
+              <span className="text-neutral-900 dark:text-white">
+                {lastUpdated}
+              </span>
+            </div>
+          )}
         </motion.div>
       </div>
     </section>

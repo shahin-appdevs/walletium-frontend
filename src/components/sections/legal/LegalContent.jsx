@@ -1,37 +1,60 @@
 import {
-  PRIVACY_CLOSING,
-  PRIVACY_INTRO,
-  PRIVACY_SECTIONS,
-} from "@/data/privacy";
-import {
   ArrowUpRight,
+  Baby,
+  Clock,
   Database,
+  FileText,
+  Lock,
   RefreshCw,
   Settings2,
   Share2,
+  ShieldAlert,
   ShieldCheck,
   UserCheck,
+  Users,
 } from "lucide-react";
 import Link from "next/link";
 
 /**
- * Long-form privacy content. Server Component — no framer-motion, no
- * client state — so this route ships near-zero JS.
+ * Long-form legal content layout. Server Component — no client JS — so
+ * legal routes ship near-zero JavaScript.
  *
- * Content lives in `src/data/privacy.js`. Icons are resolved by string
- * key here so the data file stays pure (no React imports).
+ * Content is fully data-driven via props; icons are referenced by string
+ * keys so the data files (src/data/<policy>.js) stay pure.
+ *
+ * @param {object}    props
+ * @param {string}    props.intro
+ * @param {object[]}  props.sections     [{ id, number, title, icon, blocks: [{ heading?, body }] }]
+ * @param {string?}   props.closing      Optional closing statement
+ * @param {object}    props.contactCta   { heading, body, href, buttonText }
  */
 
 const ICON_MAP = {
+  baby: Baby,
+  clock: Clock,
   database: Database,
+  "file-text": FileText,
+  lock: Lock,
+  "refresh-cw": RefreshCw,
   "settings-2": Settings2,
   "share-2": Share2,
+  "shield-alert": ShieldAlert,
   "shield-check": ShieldCheck,
   "user-check": UserCheck,
-  "refresh-cw": RefreshCw,
+  users: Users,
 };
 
-export function PrivacyContent() {
+export function LegalContent({
+  intro,
+  sections = [],
+  closing,
+  contactCta = {
+    heading: "Need help?",
+    body: "Our team is one message away — we typically respond within 24 hours.",
+    href: "/contact",
+    buttonText: "Contact us",
+  },
+}) {
   return (
     <section className="relative overflow-hidden py-10 sm:py-14 lg:py-20 bg-white dark:bg-walletium-dark">
       {/* Subtle background glow */}
@@ -55,7 +78,7 @@ export function PrivacyContent() {
               <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-primary-600 dark:text-primary-400 mb-4">
                 On this page
               </p>
-              {PRIVACY_SECTIONS.map((s) => (
+              {sections.map((s) => (
                 <a
                   key={s.id}
                   href={`#${s.id}`}
@@ -73,15 +96,17 @@ export function PrivacyContent() {
           {/* Main content */}
           <article className="lg:col-span-9 space-y-10 sm:space-y-12">
             {/* Intro */}
-            <div className="relative p-6 sm:p-8 rounded-2xl bg-primary-50/60 dark:bg-primary-500/5 border border-primary-200/60 dark:border-primary-500/20">
-              <p className="text-base sm:text-lg leading-relaxed text-neutral-700 dark:text-neutral-200">
-                {PRIVACY_INTRO}
-              </p>
-            </div>
+            {intro && (
+              <div className="relative p-6 sm:p-8 rounded-2xl bg-primary-50/60 dark:bg-primary-500/5 border border-primary-200/60 dark:border-primary-500/20">
+                <p className="text-base sm:text-lg leading-relaxed text-neutral-700 dark:text-neutral-200">
+                  {intro}
+                </p>
+              </div>
+            )}
 
             {/* Sections */}
-            {PRIVACY_SECTIONS.map(({ id, number, title, icon, blocks }) => {
-              const Icon = ICON_MAP[icon] ?? Database;
+            {sections.map(({ id, number, title, icon, blocks }) => {
+              const Icon = ICON_MAP[icon] ?? FileText;
               return (
                 <section
                   key={id}
@@ -136,12 +161,14 @@ export function PrivacyContent() {
               );
             })}
 
-            {/* Closing */}
-            <div className="relative p-6 sm:p-8 rounded-2xl bg-neutral-50 dark:bg-neutral-800/40 border border-neutral-200/80 dark:border-neutral-700/60">
-              <p className="text-sm sm:text-base leading-relaxed text-neutral-700 dark:text-neutral-200">
-                {PRIVACY_CLOSING}
-              </p>
-            </div>
+            {/* Optional closing */}
+            {closing && (
+              <div className="relative p-6 sm:p-8 rounded-2xl bg-neutral-50 dark:bg-neutral-800/40 border border-neutral-200/80 dark:border-neutral-700/60">
+                <p className="text-sm sm:text-base leading-relaxed text-neutral-700 dark:text-neutral-200">
+                  {closing}
+                </p>
+              </div>
+            )}
 
             {/* Contact CTA */}
             <div className="relative rounded-3xl overflow-hidden">
@@ -155,22 +182,21 @@ export function PrivacyContent() {
               <div className="relative p-6 sm:p-8 lg:p-10 rounded-3xl bg-white dark:bg-neutral-900/60 backdrop-blur-xl border border-neutral-200/80 dark:border-neutral-700/60 shadow-[0_20px_60px_-20px_rgba(15,23,42,0.12)] dark:shadow-[0_20px_60px_-20px_rgba(0,0,0,0.45)] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
                 <div>
                   <h3 className="font-serif font-bold text-xl sm:text-2xl tracking-tight text-neutral-900 dark:text-white mb-1.5">
-                    Questions about your privacy?
+                    {contactCta.heading}
                   </h3>
                   <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                    Our team is one message away — we typically respond within
-                    24 hours.
+                    {contactCta.body}
                   </p>
                 </div>
                 <Link
-                  href="/contact"
+                  href={contactCta.href}
                   className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-white font-bold text-sm shadow-lg shadow-primary-500/30 hover:shadow-xl hover:shadow-primary-500/40 transition-shadow shrink-0"
                   style={{
                     background:
                       "linear-gradient(135deg, #0ebe98 0%, #00E5FF 100%)",
                   }}
                 >
-                  Contact us
+                  {contactCta.buttonText}
                   <ArrowUpRight size={15} strokeWidth={2.5} />
                 </Link>
               </div>
