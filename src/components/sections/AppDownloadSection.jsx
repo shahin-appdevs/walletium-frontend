@@ -8,6 +8,7 @@ import {
   Smartphone,
   Sparkles,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 const fadeIn = {
@@ -95,6 +96,8 @@ const FLOATING_ICONS = [
 ];
 
 export function AppDownloadSection() {
+  const t = useTranslations("Frontend.homepage.appDownload");
+
   return (
     <section className="relative overflow-hidden py-16 sm:py-20 lg:py-28 bg-linear-to-b from-slate-50 via-emerald-50/40 to-white dark:from-[#0A0F1E] dark:via-walletium-dark-mid dark:to-[#091829]">
       {/* radial glow */}
@@ -154,7 +157,7 @@ export function AppDownloadSection() {
             >
               <Image
                 src="/images/partials/mobile.webp"
-                alt="Walletium mobile app"
+                alt={t("imageAlt")}
                 width={500}
                 height={700}
                 className="w-auto h-[380px] sm:h-[460px] lg:h-[560px] object-contain drop-shadow-[0_25px_50px_rgba(14,190,152,0.25)] dark:drop-shadow-[0_25px_50px_rgba(14,190,152,0.15)]"
@@ -168,24 +171,23 @@ export function AppDownloadSection() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
-            className="text-center lg:text-left order-1 lg:order-2"
+            className="text-center lg:text-start order-1 lg:order-2"
           >
             <span className="inline-block text-xs sm:text-sm font-bold tracking-[0.2em] uppercase mb-3 sm:mb-4 text-primary-600 dark:text-primary-400">
-              Mobile App
+              {t("eyebrow")}
             </span>
             <h2 className="font-serif font-black leading-tight mb-4 sm:mb-5 text-2xl sm:text-3xl lg:text-4xl xl:text-5xl tracking-tight text-neutral-900 dark:text-white">
-              Download our{" "}
+              {t("headingPrefix")}{" "}
               <span className="text-primary-600 dark:text-primary-400">
-                mobile app
+                {t("headingHighlight")}
               </span>
             </h2>
             <p className="text-sm sm:text-base lg:text-lg leading-relaxed mb-8 sm:mb-10 text-neutral-600 dark:text-neutral-400 max-w-md mx-auto lg:mx-0">
-              Manage your finances with us — send, receive, and exchange money
-              in just a few taps. Available on Google Play and the App Store.
+              {t("subtext")}
             </p>
 
             {/* Download buttons */}
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
+            <div className="flex flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
               <motion.a
                 href="#"
                 whileHover={{ y: -3, scale: 1.02 }}
@@ -196,13 +198,19 @@ export function AppDownloadSection() {
                     "linear-gradient(135deg, #22C55E 0%, #0ebe98 100%)",
                 }}
               >
-                <PlayCircle size={30} strokeWidth={2} />
-                <div className="text-left">
+                <Image
+                  src="/icons/playstore.png"
+                  alt=""
+                  width={30}
+                  height={30}
+                  className="w-[30px] h-[30px] object-contain"
+                />
+                <div className="text-start">
                   <p className="text-[10px] uppercase tracking-widest opacity-90 leading-none">
-                    Download from
+                    {t("downloadFrom")}
                   </p>
                   <p className="text-sm font-bold leading-tight mt-1">
-                    Google Play
+                    {t("googlePlay")}
                   </p>
                 </div>
               </motion.a>
@@ -213,13 +221,19 @@ export function AppDownloadSection() {
                 whileTap={{ scale: 0.98 }}
                 className="inline-flex items-center gap-3 px-5 py-3 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 shadow-lg hover:shadow-xl transition-shadow duration-300"
               >
-                <AppWindow size={30} strokeWidth={2} />
-                <div className="text-left">
+                <Image
+                  src="/icons/app-store.png"
+                  alt=""
+                  width={30}
+                  height={30}
+                  className="w-[30px] h-[30px] object-contain dark:invert"
+                />
+                <div className="text-start">
                   <p className="text-[10px] uppercase tracking-widest opacity-80 leading-none">
-                    Download from
+                    {t("downloadFrom")}
                   </p>
                   <p className="text-sm font-bold leading-tight mt-1">
-                    App Store
+                    {t("appStore")}
                   </p>
                 </div>
               </motion.a>

@@ -199,13 +199,17 @@ span{
     transform: translateX(0);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translateX(-33.3333%);
   }
 }
 
 .animate-marquee-x {
   animation: marquee-x 35s linear infinite;
   will-change: transform;
+}
+
+[dir="rtl"] .animate-marquee-x {
+  animation-direction: reverse;
 }
 
 .marquee-pause:hover .animate-marquee-x {

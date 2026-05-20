@@ -11,60 +11,53 @@ import {
   Ticket,
   Zap,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const FEATURES = [
   {
-    title: "Instant Transactions",
-    description: "Send money instantly to friends and family across the globe.",
+    key: "instantTransactions",
     Icon: Zap,
     gradient: "linear-gradient(135deg, #0ebe98 0%, #00E5FF 100%)",
     shadow: "0 12px 28px -8px rgba(14,190,152,0.45)",
   },
   {
-    title: "Multi Currency Support",
-    description: "Manage funds in multiple currencies effortlessly.",
+    key: "multiCurrency",
     Icon: Globe,
     gradient: "linear-gradient(135deg, #3B82F6 0%, #06B6D4 100%)",
     shadow: "0 12px 28px -8px rgba(59,130,246,0.45)",
   },
   {
-    title: "Secure Vouchers",
-    description: "Add funds securely with our voucher and redeem system.",
+    key: "secureVouchers",
     Icon: Ticket,
     gradient: "linear-gradient(135deg, #F43F5E 0%, #F97316 100%)",
     shadow: "0 12px 28px -8px rgba(244,63,94,0.45)",
   },
   {
-    title: "Seamless Exchanges",
-    description: "Exchange money between balances with real-time rates.",
+    key: "seamlessExchanges",
     Icon: ArrowLeftRight,
     gradient: "linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%)",
     shadow: "0 12px 28px -8px rgba(139,92,246,0.45)",
   },
   {
-    title: "Hassle Free Withdrawals",
-    description: "Easily withdraw funds via manual and automated gateways.",
+    key: "hassleFreeWithdrawals",
     Icon: Banknote,
     gradient: "linear-gradient(135deg, #F59E0B 0%, #F43F5E 100%)",
     shadow: "0 12px 28px -8px rgba(245,158,11,0.45)",
   },
   {
-    title: "Payment Requests",
-    description: "Streamline payment collection with effortless requests.",
+    key: "paymentRequests",
     Icon: FileText,
     gradient: "linear-gradient(135deg, #22C55E 0%, #0ebe98 100%)",
     shadow: "0 12px 28px -8px rgba(34,197,94,0.45)",
   },
   {
-    title: "Developer API",
-    description: "Integrate Walletium with other applications seamlessly.",
+    key: "developerApi",
     Icon: Code2,
     gradient: "linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)",
     shadow: "0 12px 28px -8px rgba(99,102,241,0.45)",
   },
   {
-    title: "Admin Oversight",
-    description: "Ensure secure oversight with robust role management.",
+    key: "adminOversight",
     Icon: Shield,
     gradient: "linear-gradient(135deg, #EF4444 0%, #F97316 100%)",
     shadow: "0 12px 28px -8px rgba(239,68,68,0.45)",
@@ -86,6 +79,8 @@ const cardReveal = {
 };
 
 export function FeaturesSection() {
+  const t = useTranslations("Frontend.homepage.features");
+
   return (
     <section className="relative overflow-hidden bg-linear-to-b from-slate-50 via-emerald-50/60 to-rose-50/40 dark:from-[#0A0F1E] dark:via-[#0D2137] dark:to-[#091829]">
       {/* Soft radial glow blobs (kept inline — radial gradients aren't first-class in Tailwind) */}
@@ -116,32 +111,31 @@ export function FeaturesSection() {
           className="text-center max-w-2xl mx-auto mb-14 lg:mb-20"
         >
           <span className="inline-block text-xs sm:text-sm font-bold tracking-widest uppercase mb-3 sm:mb-4 text-primary-600 dark:text-primary-400">
-            Our Features
+            {t("eyebrow")}
           </span>
           <h2 className="font-serif font-black leading-tight mb-4 sm:mb-5 text-2xl sm:text-3xl lg:text-4xl xl:text-5xl tracking-tight text-neutral-900 dark:text-white">
-            With Walletium, managing your finances has never been easier.
+            {t("heading")}
           </h2>
           <p className="text-sm sm:text-base lg:text-lg leading-relaxed text-neutral-600 dark:text-neutral-400">
-            Everything you need to send, receive, exchange, and manage your
-            money — built into one seamless platform.
+            {t("subtext")}
           </p>
         </motion.div>
 
-        {/* Feature grid */}
+        {/* Feature grid — flex+wrap so the orphan last-row cards center */}
         <motion.div
           variants={stagger}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-7"
+          className="flex flex-wrap justify-center gap-6 lg:gap-7"
         >
-          {FEATURES.map(({ title, description, Icon, gradient, shadow }) => (
+          {FEATURES.map(({ key, Icon, gradient, shadow }) => (
             <motion.div
-              key={title}
+              key={key}
               variants={cardReveal}
               whileHover={{ y: -8 }}
               transition={{ duration: 0.3 }}
-              className="group relative p-7 rounded-3xl backdrop-blur-sm transition-shadow duration-300 bg-white/70 dark:bg-neutral-800/50 border border-white/90 dark:border-neutral-700/60 shadow-[0_4px_16px_-4px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.04)] dark:shadow-[0_4px_16px_-4px_rgba(0,0,0,0.4),0_1px_3px_rgba(0,0,0,0.3)] hover:border-primary-200 dark:hover:border-primary-500/40"
+              className="group relative w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-19px)] p-7 rounded-3xl backdrop-blur-sm transition-shadow duration-300 bg-white/70 dark:bg-neutral-800/50 border border-white/90 dark:border-neutral-700/60 shadow-[0_4px_16px_-4px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.04)] dark:shadow-[0_4px_16px_-4px_rgba(0,0,0,0.4),0_1px_3px_rgba(0,0,0,0.3)] hover:border-primary-200 dark:hover:border-primary-500/40"
             >
               {/* Icon squircle — gradient stays inline (per-card unique colors) */}
               <div
@@ -153,12 +147,12 @@ export function FeaturesSection() {
 
               {/* Title */}
               <h3 className="font-serif font-bold text-xl mb-2.5 tracking-tight text-neutral-900 dark:text-white">
-                {title}
+                {t(`items.${key}.title`)}
               </h3>
 
               {/* Description */}
               <p className="text-sm leading-relaxed mb-5 text-neutral-600 dark:text-neutral-400">
-                {description}
+                {t(`items.${key}.description`)}
               </p>
 
               {/* Learn more link */}
@@ -166,8 +160,12 @@ export function FeaturesSection() {
                 href="#"
                 className="inline-flex items-center gap-1.5 text-sm font-bold transition-all duration-300 group-hover:gap-2.5 text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300"
               >
-                Learn more
-                <ArrowRight size={14} strokeWidth={2.5} />
+                {t("learnMore")}
+                <ArrowRight
+                  size={14}
+                  strokeWidth={2.5}
+                  className="rtl:rotate-180"
+                />
               </a>
             </motion.div>
           ))}

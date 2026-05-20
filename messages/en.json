@@ -785,7 +785,124 @@
                     "sendMoney": "Send Money",
                     "securityNote": "256-bit encrypted & secure transfers"
                 }
+            },
+            "partners": {
+                "heading": "Trusted by industry leaders"
+            },
+            "features": {
+                "eyebrow": "Our Features",
+                "heading": "With Walletium, managing your finances has never been easier.",
+                "subtext": "Everything you need to send, receive, exchange, and manage your money — built into one seamless platform.",
+                "learnMore": "Learn more",
+                "items": {
+                    "instantTransactions": {
+                        "title": "Instant Transactions",
+                        "description": "Send money instantly to friends and family across the globe."
+                    },
+                    "multiCurrency": {
+                        "title": "Multi Currency Support",
+                        "description": "Manage funds in multiple currencies effortlessly."
+                    },
+                    "secureVouchers": {
+                        "title": "Secure Vouchers",
+                        "description": "Add funds securely with our voucher and redeem system."
+                    },
+                    "seamlessExchanges": {
+                        "title": "Seamless Exchanges",
+                        "description": "Exchange money between balances with real-time rates."
+                    },
+                    "hassleFreeWithdrawals": {
+                        "title": "Hassle Free Withdrawals",
+                        "description": "Easily withdraw funds via manual and automated gateways."
+                    },
+                    "paymentRequests": {
+                        "title": "Payment Requests",
+                        "description": "Streamline payment collection with effortless requests."
+                    },
+                    "developerApi": {
+                        "title": "Developer API",
+                        "description": "Integrate Walletium with other applications seamlessly."
+                    },
+                    "adminOversight": {
+                        "title": "Admin Oversight",
+                        "description": "Ensure secure oversight with robust role management."
+                    }
+                }
+            },
+            "security": {
+                "eyebrow": "Security System",
+                "heading": "Our security measures, including secure encryption.",
+                "subtext": "We treat your data and your money with the same level of care a bank would — wrapped in modern, transparent infrastructure.",
+                "steps": {
+                    "secureEncryption": {
+                        "title": "Secure Encryption",
+                        "description": "Protects your sensitive data with state-of-the-art encryption technology."
+                    },
+                    "fraudDetection": {
+                        "title": "Fraud Detection",
+                        "description": "Detects and prevents fraudulent activities in real-time."
+                    },
+                    "twoFactorAuth": {
+                        "title": "Two-Factor Auth",
+                        "description": "Adds an extra layer of security to every account."
+                    },
+                    "regularAudits": {
+                        "title": "Regular Audits",
+                        "description": "Keeps platform security measures up-to-date through regular audits."
+                    },
+                    "secureTransactions": {
+                        "title": "Secure Transactions",
+                        "description": "Safeguards your transactions with advanced security protocols."
+                    },
+                    "dataPrivacy": {
+                        "title": "Data Privacy",
+                        "description": "Ensures privacy of your personal information with strict protection."
+                    }
+                }
+            },
+            "appDownload": {
+                "eyebrow": "Mobile App",
+                "headingPrefix": "Download our",
+                "headingHighlight": "mobile app",
+                "subtext": "Manage your finances with us — send, receive, and exchange money in just a few taps. Available on Google Play and the App Store.",
+                "downloadFrom": "Download from",
+                "googlePlay": "Google Play",
+                "appStore": "App Store",
+                "imageAlt": "Walletium mobile app"
+            },
+            "newsletter": {
+                "eyebrow": "Newsletter",
+                "headingPrefix": "Get smarter about your",
+                "headingHighlight": "money",
+                "description": "Join thousands of Walletium users getting product updates, financial insights, and exclusive offers — straight to your inbox.",
+                "emailAriaLabel": "Email address",
+                "emailPlaceholder": "Enter your email address",
+                "subscribe": "Subscribe",
+                "subscribing": "Subscribing...",
+                "success": "Thanks for subscribing! Check your inbox.",
+                "recaptchaWarning": "Please verify the reCAPTCHA",
+                "trustNoSpam": "No spam, unsubscribe anytime",
+                "trustUsers": "Trusted by 50K+ Walletium users",
+                "validation": {
+                    "emailRequired": "Email is required",
+                    "emailInvalid": "Please enter a valid email address"
+                }
             }
+        },
+        "footer": {
+            "brandDescription": "Walletium is the ultimate digital wallet solution, offering seamless money management with features like instant transactions and multi-currency support.",
+            "resourcesHeading": "Resources",
+            "links": {
+                "privacy": "Privacy Policy",
+                "refund": "Refund Policy",
+                "terms": "Terms & Conditions",
+                "faq": "FAQ"
+            },
+            "getInTouchHeading": "Get in touch",
+            "getInTouchDescription": "Have a question or feedback? Our team is just an email away — we'll get back to you within one business day.",
+            "recaptchaDisclosure": "This site is protected by reCAPTCHA and the Google <privacyLink>Privacy Policy</privacyLink> and <termsLink>Terms of Service</termsLink> apply.",
+            "copyright": "Copyright ©2026. All Rights Reserved. — Designed with <icon></icon> by <brand>Walletium</brand>",
+            "availability": "Available worldwide"
         },
         "notFound": {
             "eyebrow": "404 Error",

@@ -9,6 +9,7 @@ import {
   Wallet,
   Zap,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const PARTNERS = [
   { name: "Finovate", Icon: Wallet },
@@ -22,16 +23,18 @@ const PARTNERS = [
 ];
 
 export function PartnerSection() {
-  const loop = [...PARTNERS, ...PARTNERS];
+  const t = useTranslations("Frontend.homepage.partners");
+  const loop = [...PARTNERS, ...PARTNERS, ...PARTNERS];
 
   return (
     <section className="relative overflow-hidden bg-linear-to-b from-neutral-50 to-white dark:from-[#091829] dark:to-[#0A1A2E] border-t border-neutral-200/70 dark:border-white/4">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <p className="text-center text-xs font-semibold tracking-[0.2em] uppercase mb-8 text-neutral-500 dark:text-slate-400/60">
-          Trusted by industry leaders
+          {t("heading")}
         </p>
 
         <div
+          dir="ltr"
           className="marquee-pause relative"
           style={{
             maskImage:

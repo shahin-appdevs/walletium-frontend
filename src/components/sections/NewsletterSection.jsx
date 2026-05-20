@@ -6,6 +6,7 @@ import { getSuccessMessage } from "@/utils/getSuccessMessage";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Mail, Send, Shield, Sparkles } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useMemo, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -21,18 +22,23 @@ const fadeIn = {
   },
 };
 
-const schema = yup.object({
-  email: yup
-    .string()
-    .trim()
-    .required("Email is required")
-    .email("Please enter a valid email address"),
-});
-
 export function NewsletterSection() {
+  const t = useTranslations("Frontend.homepage.newsletter");
   const { settings } = useBasicSettings();
   const recaptchaKey = settings?.google_recaptcha_site_key;
   const recaptchaStatus = settings?.google_recaptcha_status;
+
+  const schema = useMemo(
+    () =>
+      yup.object({
+        email: yup
+          .string()
+          .trim()
+          .required(t("validation.emailRequired"))
+          .email(t("validation.emailInvalid")),
+      }),
+    [t],
+  );
 
   const [submitted, setSubmitted] = useState(false);
   const [recaptcha, setRecaptcha] = useState(null);
@@ -54,7 +60,7 @@ export function NewsletterSection() {
     console.log(recaptchaStatus, recaptcha);
 
     if (recaptchaStatus === false || recaptcha === null) {
-      showToast.warning("Please verify the reCAPTCHA");
+      showToast.warning(t("recaptchaWarning"));
       return;
     }
 
@@ -160,22 +166,20 @@ export function NewsletterSection() {
 
               {/* Eyebrow */}
               <p className="text-center text-xs sm:text-sm font-bold uppercase tracking-[0.2em] text-primary-600 dark:text-primary-400 mb-3">
-                Newsletter
+                {t("eyebrow")}
               </p>
 
               {/* Heading */}
               <h2 className="text-center font-serif font-black leading-tight mb-4 sm:mb-5 text-2xl sm:text-3xl lg:text-4xl xl:text-5xl tracking-tight text-neutral-900 dark:text-white">
-                Get smarter about your{" "}
+                {t("headingPrefix")}{" "}
                 <span className="text-primary-600 dark:text-primary-400">
-                  money
+                  {t("headingHighlight")}
                 </span>
               </h2>
 
               {/* Description */}
               <p className="text-center text-sm sm:text-base lg:text-lg leading-relaxed text-neutral-600 dark:text-neutral-400 max-w-xl mx-auto mb-8 sm:mb-10">
-                Join thousands of Walletium users getting product updates,
-                financial insights, and exclusive offers — straight to your
-                inbox.
+                {t("description")}
               </p>
 
               {/* Form or success state */}
@@ -200,7 +204,7 @@ export function NewsletterSection() {
                         <Check size={16} color="white" strokeWidth={3} />
                       </div>
                       <span className="text-sm font-semibold text-primary-700 dark:text-primary-300">
-                        Thanks for subscribing! Check your inbox.
+                        {t("success")}
                       </span>
                     </motion.div>
                   ) : (
@@ -222,7 +226,7 @@ export function NewsletterSection() {
                         <div className="relative flex-1 flex items-center min-w-0">
                           <Mail
                             size={18}
-                            className="absolute left-4 text-neutral-400 dark:text-neutral-500 pointer-events-none"
+                            className="absolute start-4 text-neutral-400 dark:text-neutral-500 pointer-events-none"
                           />
                           <Controller
                             name="email"
@@ -231,10 +235,10 @@ export function NewsletterSection() {
                               <input
                                 {...field}
                                 type="email"
-                                aria-label="Email address"
+                                aria-label={t("emailAriaLabel")}
                                 aria-invalid={!!errors.email}
-                                placeholder="Enter your email address"
-                                className="w-full pl-11 pr-3 py-3 bg-transparent text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:outline-none"
+                                placeholder={t("emailPlaceholder")}
+                                className="w-full ps-11 pe-3 py-3 bg-transparent text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:outline-none"
                               />
                             )}
                           />
@@ -250,8 +254,12 @@ export function NewsletterSection() {
                               "linear-gradient(135deg, #0ebe98 0%, #00E5FF 100%)",
                           }}
                         >
-                          {isLoading ? "Subscribing..." : "Subscribe"}
-                          <Send size={16} strokeWidth={2.5} />
+                          {isLoading ? t("subscribing") : t("subscribe")}
+                          <Send
+                            size={16}
+                            strokeWidth={2.5}
+                            className="rtl:-scale-x-100"
+                          />
                         </motion.button>
                       </div>
 
@@ -283,7 +291,7 @@ export function NewsletterSection() {
                     size={14}
                     className="text-primary-500 dark:text-primary-400"
                   />
-                  No spam, unsubscribe anytime
+                  {t("trustNoSpam")}
                 </span>
                 <span className="hidden sm:inline-block w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-600" />
                 <span className="flex items-center gap-1.5">
@@ -291,7 +299,7 @@ export function NewsletterSection() {
                     size={14}
                     className="text-primary-500 dark:text-primary-400"
                   />
-                  Trusted by 50K+ Walletium users
+                  {t("trustUsers")}
                 </span>
               </div>
             </div>

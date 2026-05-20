@@ -11,15 +11,16 @@ import {
   ShieldCheck,
   Twitter,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import ReCAPTCHA from "react-google-recaptcha";
 
 const POLICY_LINKS = [
-  { label: "Privacy Policy", href: "/privacy" },
-  { label: "Refund Policy", href: "/refund" },
-  { label: "Terms & Conditions", href: "/terms" },
-  { label: "FAQ", href: "/faq" },
+  { key: "privacy", href: "/privacy" },
+  { key: "refund", href: "/refund" },
+  { key: "terms", href: "/terms" },
+  { key: "faq", href: "/faq" },
 ];
 
 const SOCIAL_LINKS = [
@@ -30,6 +31,7 @@ const SOCIAL_LINKS = [
 ];
 
 export function Footer() {
+  const t = useTranslations("Frontend.footer");
   const { settings } = useBasicSettings();
   const recaptchaKey = settings?.google_recaptcha_site_key;
   const recaptchaStatus = settings?.google_recaptcha_status;
@@ -91,9 +93,7 @@ export function Footer() {
               />
             </Link>
             <p className="text-sm leading-relaxed text-neutral-400 max-w-md mb-7">
-              Walletium is the ultimate digital wallet solution, offering
-              seamless money management with features like instant transactions
-              and multi-currency support.
+              {t("brandDescription")}
             </p>
 
             {/* Social icons */}
@@ -118,17 +118,17 @@ export function Footer() {
           {/* Resources */}
           <div className="lg:col-span-3">
             <h3 className="text-xs font-bold tracking-[0.2em] uppercase text-white mb-5">
-              Resources
+              {t("resourcesHeading")}
             </h3>
             <ul className="space-y-3.5">
               {POLICY_LINKS.map((link) => (
-                <li key={link.label}>
+                <li key={link.key}>
                   <Link
                     href={link.href}
                     className="group inline-flex items-center gap-1.5 text-sm text-neutral-400 hover:text-primary-400 transition-colors duration-200"
                   >
                     <span className="relative">
-                      {link.label}
+                      {t(`links.${link.key}`)}
                       <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-primary-400 group-hover:w-full transition-all duration-300" />
                     </span>
                   </Link>
@@ -140,11 +140,10 @@ export function Footer() {
           {/* Get in touch */}
           <div className="lg:col-span-4">
             <h3 className="text-xs font-bold tracking-[0.2em] uppercase text-white mb-5">
-              Get in touch
+              {t("getInTouchHeading")}
             </h3>
             <p className="text-sm text-neutral-400 leading-relaxed mb-4">
-              Have a question or feedback? Our team is just an email away —
-              we&apos;ll get back to you within one business day.
+              {t("getInTouchDescription")}
             </p>
             <a
               href="mailto:hello@walletium.com"
@@ -155,7 +154,7 @@ export function Footer() {
               <ArrowUpRight
                 size={14}
                 strokeWidth={2.5}
-                className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 rtl:-scale-x-100"
               />
             </a>
 
@@ -174,25 +173,28 @@ export function Footer() {
                 className="shrink-0 mt-0.5 text-primary-400"
               />
               <p className="text-[11px] leading-relaxed text-neutral-400">
-                This site is protected by reCAPTCHA and the Google{" "}
-                <a
-                  href="https://policies.google.com/privacy"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary-400 hover:text-primary-300 underline underline-offset-2 transition-colors"
-                >
-                  Privacy Policy
-                </a>{" "}
-                and{" "}
-                <a
-                  href="https://policies.google.com/terms"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary-400 hover:text-primary-300 underline underline-offset-2 transition-colors"
-                >
-                  Terms of Service
-                </a>{" "}
-                apply.
+                {t.rich("recaptchaDisclosure", {
+                  privacyLink: (chunks) => (
+                    <a
+                      href="https://policies.google.com/privacy"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-primary-400 hover:text-primary-300 underline underline-offset-2 transition-colors"
+                    >
+                      {chunks}
+                    </a>
+                  ),
+                  termsLink: (chunks) => (
+                    <a
+                      href="https://policies.google.com/terms"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-primary-400 hover:text-primary-300 underline underline-offset-2 transition-colors"
+                    >
+                      {chunks}
+                    </a>
+                  ),
+                })}
               </p>
             </div>
           </div>
@@ -206,16 +208,21 @@ export function Footer() {
         {/* Bottom strip */}
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 items-center justify-between">
           <p className="text-xs text-neutral-500 text-center sm:text-left">
-            Copyright ©2026. All Rights Reserved. — Designed with{" "}
-            <Heart
-              size={12}
-              className="inline-block mx-0.5 -mt-0.5 text-primary-400 fill-primary-400/50"
-              strokeWidth={2.2}
-            />{" "}
-            by <span className="text-neutral-300 font-semibold">Walletium</span>
+            {t.rich("copyright", {
+              icon: () => (
+                <Heart
+                  size={12}
+                  className="inline-block mx-0.5 -mt-0.5 text-primary-400 fill-primary-400/50"
+                  strokeWidth={2.2}
+                />
+              ),
+              brand: (chunks) => (
+                <span className="text-neutral-300 font-semibold">{chunks}</span>
+              ),
+            })}
           </p>
           <p className="text-xs text-neutral-500 tracking-wider">
-            Available worldwide ·{" "}
+            {t("availability")} ·{" "}
             <span className="text-primary-400 font-semibold">v2.0</span>
           </p>
         </div>
