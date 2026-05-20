@@ -88,7 +88,7 @@ export function AboutHero() {
             <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold tracking-[0.2em] uppercase mb-5 bg-primary-50 dark:bg-primary-500/15 text-primary-600 dark:text-primary-400 ring-1 ring-primary-200/60 dark:ring-primary-500/30">
               <Sparkles size={12} /> About Walletium
             </span>
-            <h1 className="font-serif font-black leading-[1.05] mb-5 text-4xl sm:text-5xl lg:text-6xl xl:text-[68px] tracking-tight text-neutral-900 dark:text-white">
+            <h1 className=" font-black leading-[1.05] mb-5 text-4xl sm:text-5xl lg:text-6xl xl:text-[68px] tracking-tight text-neutral-900 dark:text-white">
               Your gateway to{" "}
               <span className="text-primary-600 dark:text-primary-400">
                 smart & secure
@@ -113,15 +113,7 @@ export function AboutHero() {
               >
                 Get Started <ArrowRight size={16} strokeWidth={2.5} />
               </motion.a>
-              <motion.a
-                href="#"
-                whileHover={{ scale: 1.02, y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl border-2 border-neutral-200 dark:border-neutral-700 hover:border-primary-300 dark:hover:border-primary-500/50 bg-white/80 dark:bg-neutral-900/40 backdrop-blur-sm text-neutral-900 dark:text-white font-bold text-sm transition-colors"
-              >
-                <Play size={14} strokeWidth={2.5} fill="currentColor" /> Watch
-                Demo
-              </motion.a>
+              
             </div>
 
             {/* Trust badges */}
