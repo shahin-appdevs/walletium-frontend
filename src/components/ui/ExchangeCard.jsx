@@ -1,7 +1,6 @@
 "use client";
 import { useMemo, useState } from "react";
-import { motion } from "framer-motion";
-import { ArrowUpDown, ShieldCheck, Zap } from "lucide-react";
+import { ArrowUpDown, Send, ShieldCheck, Zap } from "lucide-react";
 import { CurrencyInput } from "./CurrencyInput";
 import { ExchangeCardSkeleton } from "./ExchangeCardSkeleton";
 import { useTheme } from "@/contexts/ThemeContextProvider";
@@ -69,14 +68,7 @@ export function ExchangeCard() {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30, scale: 0.96 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{
-        duration: 0.8,
-        ease: [0.25, 0.46, 0.45, 0.94],
-        delay: 0.35,
-      }}
+    <div
       className="w-full max-w-[420px] min-w-0 p-4 sm:p-6 lg:p-7 rounded-3xl"
       style={{
         background: isDark
@@ -196,11 +188,8 @@ export function ExchangeCard() {
               : "rgba(15,23,42,0.08)",
           }}
         />
-        <motion.button
+        <button
           type="button"
-          whileHover={{ rotate: 180, scale: 1.15 }}
-          whileTap={{ scale: 0.9 }}
-          transition={{ duration: 0.3 }}
           className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0"
           style={{
             background: "rgba(0,201,167,0.1)",
@@ -208,7 +197,7 @@ export function ExchangeCard() {
           }}
         >
           <ArrowUpDown size={15} style={{ color: "#00C9A7" }} />
-        </motion.button>
+        </button>
         <div
           className="flex-1 h-px"
           style={{
@@ -243,23 +232,17 @@ export function ExchangeCard() {
       {/* Send Button */}
 
       <Link href={`/dashboard/send-money`}>
-        <motion.button
+        <button
           type="button"
-          whileHover={{
-            scale: 1.02,
-            y: -2,
-            boxShadow: "0 0 40px rgba(0,201,167,0.5)",
-          }}
-          whileTap={{ scale: 0.98 }}
-          transition={{ duration: 0.2 }}
-          className="w-full py-4 rounded-xl text-white font-bold text-base tracking-wide"
+          className="w-full py-4 rounded-xl text-white font-bold text-base tracking-wide flex items-center justify-center gap-2"
           style={{
             background: "linear-gradient(135deg, #00C9A7 0%, #00E5FF 100%)",
             boxShadow: "0 0 24px rgba(0,201,167,0.28)",
           }}
         >
-          Send Money →
-        </motion.button>
+          Send Money
+          <Send size={18} strokeWidth={2.5} />
+        </button>
       </Link>
 
       {/* Security note */}
@@ -274,6 +257,6 @@ export function ExchangeCard() {
           256-bit encrypted &amp; secure transfers
         </p>
       </div>
-    </motion.div>
+    </div>
   );
 }
