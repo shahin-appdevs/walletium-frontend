@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Menu, X, ChevronDown, Globe, Moon, Sun } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContextProvider";
+import { token } from "@/lib/token";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -29,6 +30,16 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [selectedLang, setSelectedLang] = useState(LANGUAGES[0]);
+
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  useEffect(() => {
+    // One-time read of localStorage on mount — SSR-safe because we start
+    // with `false` so server and client first render agree.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsAuthenticated(!!token.get());
+  }, []);
+  const ctaHref = isAuthenticated ? "/dashboard" : "/login";
+  const ctaLabel = isAuthenticated ? "Dashboard" : "Login Now";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -57,11 +68,15 @@ export function Navbar() {
           : "transparent",
         backdropFilter: scrolled ? "blur(20px)" : "none",
         WebkitBackdropFilter: scrolled ? "blur(20px)" : "none",
-        borderBottom: scrolled
-          ? isDark
-            ? "1px solid rgba(255,255,255,0.06)"
-            : "1px solid rgba(15,23,42,0.08)"
-          : "none",
+        // Keep a 1px border slot always present so toggling visibility
+        // doesn't cause a layout shift / visible "flip" when scrolling starts.
+        borderBottom: `1px solid ${
+          scrolled
+            ? isDark
+              ? "rgba(255,255,255,0.06)"
+              : "rgba(15,23,42,0.08)"
+            : "transparent"
+        }`,
       }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -107,26 +122,30 @@ export function Navbar() {
             <button
               dir="ltr"
               onClick={toggleTheme}
-              className="relative flex items-center bg-white rounded-full p-1 border border-gray-200 w-[72px] shrink-0"
+              className="relative flex items-center bg-white dark:bg-neutral-800 rounded-full p-1 border border-gray-200 dark:border-neutral-700 w-[72px] shrink-0 transition-colors duration-300"
               title={
                 mode === "dark" ? "Switch to light mode" : "Switch to dark mode"
               }
             >
               <div
-                className={`absolute top-1 left-1 w-8 h-8 rounded-full bg-[#002d25] transition-all duration-300 ${
+                className={`absolute top-1 left-1 w-8 h-8 rounded-full bg-[#002d25] dark:bg-primary-500 transition-all duration-300 ${
                   mode === "dark" ? "translate-x-0" : "translate-x-8"
                 }`}
               />
               <div className="w-8 h-8 flex items-center justify-center z-10">
                 <Moon
                   size={16}
-                  className={mode === "dark" ? "text-white" : "text-[#002d25]"}
+                  className={`transition-colors duration-300 ${
+                    mode === "dark" ? "text-white" : "text-[#002d25]"
+                  }`}
                 />
               </div>
               <div className="w-8 h-8 flex items-center justify-center z-10">
                 <Sun
                   size={16}
-                  className={mode === "light" ? "text-white" : "text-[#002d25]"}
+                  className={`transition-colors duration-300 ${
+                    mode === "light" ? "text-white" : "text-neutral-400"
+                  }`}
                 />
               </div>
             </button>
@@ -227,9 +246,9 @@ export function Navbar() {
               </AnimatePresence>
             </div>
 
-            {/* Login button */}
+            {/* Login / Dashboard button */}
             <motion.a
-              href="/login"
+              href={ctaHref}
               whileHover={{
                 scale: 1.04,
                 boxShadow: "0 0 30px rgba(0,201,167,0.55)",
@@ -242,7 +261,7 @@ export function Navbar() {
                 boxShadow: "0 0 16px rgba(0,201,167,0.3)",
               }}
             >
-              Login Now
+              {ctaLabel}
             </motion.a>
           </div>
 
@@ -346,13 +365,13 @@ export function Navbar() {
                 </div>
 
                 <Link
-                  href="/login"
+                  href={ctaHref}
                   className="block py-3.5 rounded-xl text-white font-semibold text-center text-sm"
                   style={{
                     background: "linear-gradient(135deg, #00C9A7, #00E5FF)",
                   }}
                 >
-                  Login Now
+                  {ctaLabel}
                 </Link>
               </motion.div>
             </div>
