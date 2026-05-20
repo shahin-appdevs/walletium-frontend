@@ -3,9 +3,11 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Menu, X, ChevronDown, Globe, Moon, Sun } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContextProvider";
 import { token } from "@/lib/token";
+import { routing } from "@/i18n/routing";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -16,11 +18,14 @@ const NAV_LINKS = [
   { label: "Contact", href: "/contact" },
 ];
 
+// Mirror the list used by the dashboard <LanguageSwitcher /> so both surfaces
+// show the same set of supported locales.
 const LANGUAGES = [
   { code: "en", label: "English", flag: "🇺🇸" },
-  { code: "bn", label: "বাংলা", flag: "🇧🇩" },
-  { code: "fr", label: "Français", flag: "🇫🇷" },
+  { code: "ar", label: "العربية", flag: "🇸🇦" },
   { code: "es", label: "Español", flag: "🇪🇸" },
+  { code: "hi", label: "हिन्दी", flag: "🇮🇳" },
+  { code: "fr", label: "Français", flag: "🇫🇷" },
 ];
 
 export function Navbar() {
@@ -29,12 +34,27 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
-  const [selectedLang, setSelectedLang] = useState(LANGUAGES[0]);
+
+  // Locale comes from the URL — same pattern as the dashboard LanguageSwitcher.
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const currentLocale = pathname.split("/")[1] || routing.defaultLocale;
+  const currentLang =
+    LANGUAGES.find((l) => l.code === currentLocale) || LANGUAGES[0];
+
+  const handleLanguageChange = (code) => {
+    setLangOpen(false);
+    const pathSegments = pathname.split("/");
+    pathSegments[1] = code;
+    const search = searchParams.toString();
+    const newPath =
+      `${pathSegments.join("/")}${search ? `?${search}` : ""}` || "/";
+    router.push(newPath);
+  };
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   useEffect(() => {
-    // One-time read of localStorage on mount — SSR-safe because we start
-    // with `false` so server and client first render agree.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthenticated(!!token.get());
   }, []);
@@ -166,7 +186,7 @@ export function Navbar() {
                 }}
               >
                 <Globe size={14} />
-                <span>{selectedLang.label}</span>
+                <span>{currentLang.label}</span>
                 <motion.span
                   animate={{ rotate: langOpen ? 180 : 0 }}
                   transition={{ duration: 0.2 }}
@@ -201,25 +221,22 @@ export function Navbar() {
                     {LANGUAGES.map((lang) => (
                       <button
                         key={lang.code}
-                        onClick={() => {
-                          setSelectedLang(lang);
-                          setLangOpen(false);
-                        }}
+                        onClick={() => handleLanguageChange(lang.code)}
                         className="w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors text-left"
                         style={{
                           background:
-                            selectedLang.code === lang.code
+                            currentLang.code === lang.code
                               ? "rgba(0,201,167,0.1)"
                               : "transparent",
                           color:
-                            selectedLang.code === lang.code
+                            currentLang.code === lang.code
                               ? "#00C9A7"
                               : isDark
                                 ? "rgba(255,255,255,0.75)"
                                 : "rgba(71,85,105,0.9)",
                         }}
                         onMouseEnter={(e) => {
-                          if (selectedLang.code !== lang.code) {
+                          if (currentLang.code !== lang.code) {
                             e.currentTarget.style.background = isDark
                               ? "rgba(255,255,255,0.05)"
                               : "rgba(15,23,42,0.04)";
@@ -229,7 +246,7 @@ export function Navbar() {
                           }
                         }}
                         onMouseLeave={(e) => {
-                          if (selectedLang.code !== lang.code) {
+                          if (currentLang.code !== lang.code) {
                             e.currentTarget.style.background = "transparent";
                             e.currentTarget.style.color = isDark
                               ? "rgba(255,255,255,0.75)"
