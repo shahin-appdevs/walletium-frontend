@@ -8,52 +8,41 @@ import {
   Ticket,
   Wallet,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const FEATURES = [
   {
-    title: "Add Money Seamlessly",
-    description:
-      "Top up your wallet automatically or manually through multiple gateways and channels.",
+    key: "addMoney",
     Icon: Wallet,
     gradient: "linear-gradient(135deg, #0ebe98 0%, #00E5FF 100%)",
     shadow: "0 12px 28px -8px rgba(14,190,152,0.45)",
   },
   {
-    title: "Peer-to-Peer Transfers",
-    description:
-      "Send money to anyone, anywhere, in seconds — friends, family, or businesses.",
+    key: "p2p",
     Icon: Send,
     gradient: "linear-gradient(135deg, #3B82F6 0%, #06B6D4 100%)",
     shadow: "0 12px 28px -8px rgba(59,130,246,0.45)",
   },
   {
-    title: "Hassle-Free Payouts",
-    description:
-      "Withdraw to bank accounts or cards through automated or manual gateways.",
+    key: "payouts",
     Icon: Banknote,
     gradient: "linear-gradient(135deg, #F59E0B 0%, #F43F5E 100%)",
     shadow: "0 12px 28px -8px rgba(245,158,11,0.45)",
   },
   {
-    title: "Multi-Currency Support",
-    description:
-      "Hold, send, and exchange in 120+ currencies — all from one unified dashboard.",
+    key: "multiCurrency",
     Icon: Globe,
     gradient: "linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%)",
     shadow: "0 12px 28px -8px rgba(139,92,246,0.45)",
   },
   {
-    title: "Secure Vouchers & Exchange",
-    description:
-      "Issue and redeem vouchers safely, plus real-time exchange between currencies.",
+    key: "vouchers",
     Icon: Ticket,
     gradient: "linear-gradient(135deg, #22C55E 0%, #0ebe98 100%)",
     shadow: "0 12px 28px -8px rgba(34,197,94,0.45)",
   },
   {
-    title: "Developer API & Controls",
-    description:
-      "Powerful APIs for seamless integration plus robust admin role management.",
+    key: "developerApi",
     Icon: Code2,
     gradient: "linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)",
     shadow: "0 12px 28px -8px rgba(99,102,241,0.45)",
@@ -75,6 +64,8 @@ const cardReveal = {
 };
 
 export function AboutFeatures() {
+  const t = useTranslations("Frontend.about.features");
+
   return (
     <section className="relative overflow-hidden py-16 sm:py-20 lg:py-28 bg-linear-to-b from-white via-emerald-50/40 to-rose-50/30 dark:from-[#091829] dark:via-walletium-dark-mid dark:to-[#0A0F1E]">
       {/* Glow accents */}
@@ -105,14 +96,13 @@ export function AboutFeatures() {
           className="text-center max-w-2xl mx-auto mb-14 lg:mb-20"
         >
           <span className="inline-block text-xs sm:text-sm font-bold tracking-widest uppercase mb-3 sm:mb-4 text-primary-600 dark:text-primary-400">
-            What We Offer
+            {t("eyebrow")}
           </span>
           <h2 className="font-serif font-black leading-tight mb-4 sm:mb-5 text-2xl sm:text-3xl lg:text-4xl xl:text-5xl tracking-tight text-neutral-900 dark:text-white">
-            Everything you need, in one wallet
+            {t("heading")}
           </h2>
           <p className="text-sm sm:text-base lg:text-lg leading-relaxed text-neutral-600 dark:text-neutral-400">
-            From everyday transactions to enterprise integrations, Walletium
-            gives you the tools to manage money with confidence.
+            {t("description")}
           </p>
         </motion.div>
 
@@ -124,9 +114,9 @@ export function AboutFeatures() {
           viewport={{ once: true, margin: "-80px" }}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-7"
         >
-          {FEATURES.map(({ title, description, Icon, gradient, shadow }) => (
+          {FEATURES.map(({ key, Icon, gradient, shadow }) => (
             <motion.div
-              key={title}
+              key={key}
               variants={cardReveal}
               whileHover={{ y: -8 }}
               transition={{ duration: 0.3 }}
@@ -139,10 +129,10 @@ export function AboutFeatures() {
                 <Icon size={26} color="white" strokeWidth={2.2} />
               </div>
               <h3 className="font-serif font-bold text-xl mb-2.5 tracking-tight text-neutral-900 dark:text-white">
-                {title}
+                {t(`items.${key}.title`)}
               </h3>
               <p className="text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
-                {description}
+                {t(`items.${key}.description`)}
               </p>
             </motion.div>
           ))}

@@ -925,6 +925,145 @@
             "copyright": "Copyright ©2026. All Rights Reserved. — Designed with <icon></icon> by <brand>Walletium</brand>",
             "availability": "Available worldwide"
         },
+        "about": {
+            "hero": {
+                "badge": "About Walletium",
+                "headingPart1": "Your gateway to",
+                "headingHighlight": "smart & secure",
+                "headingPart2": "finance",
+                "description": "Walletium revolutionizes how individuals and businesses manage money — from seamless transactions and multi-currency support, to powerful APIs and bank-grade security.",
+                "ctaGetStarted": "Get Started",
+                "trustUsers": "Trusted by 50K+ users",
+                "trustSecurity": "Bank-grade security",
+                "floatingCards": {
+                    "instantTransfers": {
+                        "title": "Instant Transfers",
+                        "subtitle": "P2P payments"
+                    },
+                    "multiCurrency": {
+                        "title": "Multi-Currency",
+                        "subtitle": "120+ supported"
+                    },
+                    "bankGrade": {
+                        "title": "Bank-grade",
+                        "subtitle": "Security"
+                    },
+                    "realtime": {
+                        "title": "Real-time",
+                        "subtitle": "Analytics"
+                    }
+                }
+            },
+            "mission": {
+                "eyebrow": "Our Mission",
+                "headingPart1": "Empowering everyone to",
+                "headingHighlight": "take control",
+                "headingPart2": "of their finances",
+                "description": "We believe digital finance should be effortless, secure, and accessible to all. From individuals managing daily spending to businesses scaling globally, Walletium is the toolkit that powers your financial future.",
+                "stats": {
+                    "activeUsers": {
+                        "value": "50K+",
+                        "label": "Active Users",
+                        "desc": "Worldwide"
+                    },
+                    "transactions": {
+                        "value": "$2.5B+",
+                        "label": "Transactions",
+                        "desc": "Processed"
+                    },
+                    "countries": {
+                        "value": "120+",
+                        "label": "Countries",
+                        "desc": "Supported"
+                    },
+                    "uptime": {
+                        "value": "99.99%",
+                        "label": "Uptime",
+                        "desc": "Reliable"
+                    }
+                }
+            },
+            "features": {
+                "eyebrow": "What We Offer",
+                "heading": "Everything you need, in one wallet",
+                "description": "From everyday transactions to enterprise integrations, Walletium gives you the tools to manage money with confidence.",
+                "items": {
+                    "addMoney": {
+                        "title": "Add Money Seamlessly",
+                        "description": "Top up your wallet automatically or manually through multiple gateways and channels."
+                    },
+                    "p2p": {
+                        "title": "Peer-to-Peer Transfers",
+                        "description": "Send money to anyone, anywhere, in seconds — friends, family, or businesses."
+                    },
+                    "payouts": {
+                        "title": "Hassle-Free Payouts",
+                        "description": "Withdraw to bank accounts or cards through automated or manual gateways."
+                    },
+                    "multiCurrency": {
+                        "title": "Multi-Currency Support",
+                        "description": "Hold, send, and exchange in 120+ currencies — all from one unified dashboard."
+                    },
+                    "vouchers": {
+                        "title": "Secure Vouchers & Exchange",
+                        "description": "Issue and redeem vouchers safely, plus real-time exchange between currencies."
+                    },
+                    "developerApi": {
+                        "title": "Developer API & Controls",
+                        "description": "Powerful APIs for seamless integration plus robust admin role management."
+                    }
+                }
+            },
+            "solutions": {
+                "eyebrow": "Solutions",
+                "headingPart1": "Built for",
+                "headingHighlight1": "individuals",
+                "headingConnector": "and",
+                "headingHighlight2": "businesses",
+                "description": "Whatever your goal — sending money to a friend or scaling payments to thousands — Walletium adapts to you.",
+                "individuals": {
+                    "eyebrow": "Personal",
+                    "title": "For Individuals",
+                    "description": "Take charge of your everyday finances with effortless, secure tools designed for modern life.",
+                    "features": {
+                        "f1": "Instant peer-to-peer transfers worldwide",
+                        "f2": "Multi-currency wallet with live exchange rates",
+                        "f3": "Free virtual cards & secure voucher system",
+                        "f4": "Real-time spending insights and notifications"
+                    }
+                },
+                "businesses": {
+                    "eyebrow": "Business",
+                    "title": "For Businesses",
+                    "description": "Scale globally with enterprise-grade payments, payouts, and developer-first APIs.",
+                    "features": {
+                        "f1": "Bulk payouts and automated payment requests",
+                        "f2": "Developer-friendly REST APIs and webhooks",
+                        "f3": "Granular admin roles and permissions",
+                        "f4": "Compliance, KYC, and detailed audit logs"
+                    }
+                }
+            },
+            "developer": {
+                "badge": "Developer API",
+                "headingPart1": "Built for",
+                "headingHighlight": "developers",
+                "headingPart2": ", loved by teams",
+                "description": "Drop Walletium into any application with a few lines of code. REST APIs, official SDKs, generous rate limits, and detailed logs — everything you need to ship faster.",
+                "features": {
+                    "f1": "RESTful APIs with predictable resource URLs",
+                    "f2": "First-class SDKs for popular languages",
+                    "f3": "Webhook events for every action",
+                    "f4": "Sandbox environment for safe testing"
+                },
+                "ctaReadDocs": "Read the docs",
+                "terminal": {
+                    "comment": "// Send money with one API call",
+                    "statusCode": "200 OK",
+                    "statusText": "Transfer complete"
+                }
+            }
+        },
         "notFound": {
             "eyebrow": "404 Error",
             "titleLead": "Lost in",

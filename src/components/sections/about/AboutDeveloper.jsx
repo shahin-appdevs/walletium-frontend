@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { ArrowRight, Code2, Terminal, Zap } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 24 },
@@ -11,24 +12,21 @@ const fadeIn = {
   },
 };
 
-const CODE_LINES = [
-  { tone: "comment", text: "// Send money with one API call" },
-  { tone: "default", text: "const transfer = await walletium" },
-  { tone: "method", text: "  .payments.create({" },
-  { tone: "key", text: "    amount: 250.00," },
-  { tone: "key", text: '    currency: "USD",' },
-  { tone: "key", text: '    recipient: "acct_42x9",' },
-  { tone: "method", text: "  });" },
-];
-
-const FEATURES = [
-  "RESTful APIs with predictable resource URLs",
-  "First-class SDKs for popular languages",
-  "Webhook events for every action",
-  "Sandbox environment for safe testing",
-];
+const FEATURE_KEYS = ["f1", "f2", "f3", "f4"];
 
 export function AboutDeveloper() {
+  const t = useTranslations("Frontend.about.developer");
+
+  const CODE_LINES = [
+    { tone: "comment", text: t("terminal.comment") },
+    { tone: "default", text: "const transfer = await walletium" },
+    { tone: "method", text: "  .payments.create({" },
+    { tone: "key", text: "    amount: 250.00," },
+    { tone: "key", text: '    currency: "USD",' },
+    { tone: "key", text: '    recipient: "acct_42x9",' },
+    { tone: "method", text: "  });" },
+  ];
+
   return (
     <section className="relative overflow-hidden py-16 sm:py-20 lg:py-28 bg-linear-to-b from-slate-50 via-emerald-50/30 to-white dark:from-[#091829] dark:via-walletium-dark-mid dark:to-[#0A0F1E]">
       {/* Glow */}
@@ -139,10 +137,10 @@ export function AboutDeveloper() {
               </div>
               <div>
                 <p className="text-[10px] leading-none text-neutral-500 dark:text-neutral-400">
-                  200 OK
+                  {t("terminal.statusCode")}
                 </p>
                 <p className="text-xs font-bold text-neutral-900 dark:text-white">
-                  Transfer complete
+                  {t("terminal.statusText")}
                 </p>
               </div>
             </motion.div>
@@ -157,28 +155,26 @@ export function AboutDeveloper() {
             className="order-1 lg:order-2"
           >
             <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold tracking-[0.2em] uppercase mb-5 bg-primary-50 dark:bg-primary-500/15 text-primary-600 dark:text-primary-400 ring-1 ring-primary-200/60 dark:ring-primary-500/30">
-              <Code2 size={12} /> Developer API
+              <Code2 size={12} /> {t("badge")}
             </span>
             <h2 className="font-serif font-black leading-tight mb-4 sm:mb-5 text-3xl sm:text-4xl lg:text-5xl tracking-tight text-neutral-900 dark:text-white">
-              Built for{" "}
+              {t("headingPart1")}{" "}
               <span className="text-primary-600 dark:text-primary-400">
-                developers
+                {t("headingHighlight")}
               </span>
-              , loved by teams
+              {t("headingPart2")}
             </h2>
             <p className="text-base sm:text-lg leading-relaxed text-neutral-600 dark:text-neutral-400 mb-8 max-w-lg">
-              Drop Walletium into any application with a few lines of code.
-              REST APIs, official SDKs, generous rate limits, and detailed logs
-              — everything you need to ship faster.
+              {t("description")}
             </p>
 
             {/* Feature list */}
             <ul className="space-y-3 mb-8">
-              {FEATURES.map((f) => (
-                <li key={f} className="flex items-start gap-3">
+              {FEATURE_KEYS.map((fKey) => (
+                <li key={fKey} className="flex items-start gap-3">
                   <span className="mt-2 w-1.5 h-1.5 rounded-full bg-primary-500 dark:bg-primary-400 shrink-0" />
                   <span className="text-sm sm:text-base text-neutral-700 dark:text-neutral-300">
-                    {f}
+                    {t(`features.${fKey}`)}
                   </span>
                 </li>
               ))}
@@ -193,7 +189,12 @@ export function AboutDeveloper() {
                 background: "linear-gradient(135deg, #0ebe98 0%, #00E5FF 100%)",
               }}
             >
-              Read the docs <ArrowRight size={16} strokeWidth={2.5} />
+              {t("ctaReadDocs")}{" "}
+              <ArrowRight
+                size={16}
+                strokeWidth={2.5}
+                className="rtl:rotate-180"
+              />
             </motion.a>
           </motion.div>
         </div>

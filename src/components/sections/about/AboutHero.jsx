@@ -12,12 +12,12 @@ import {
   Wallet,
   Zap,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const FLOATING_CARDS = [
   {
+    key: "instantTransfers",
     Icon: Send,
-    title: "Instant Transfers",
-    subtitle: "P2P payments",
     gradient: "linear-gradient(135deg, #0ebe98 0%, #00E5FF 100%)",
     position: "top-2 -left-2 sm:top-4 sm:-left-6 lg:-left-4",
     animate: { y: [0, -14, 0], rotate: [0, -2, 0] },
@@ -25,9 +25,8 @@ const FLOATING_CARDS = [
     delay: 0,
   },
   {
+    key: "multiCurrency",
     Icon: Globe,
-    title: "Multi-Currency",
-    subtitle: "120+ supported",
     gradient: "linear-gradient(135deg, #3B82F6 0%, #06B6D4 100%)",
     position: "top-20 -right-2 sm:top-24 sm:-right-6 lg:-right-4",
     animate: { y: [0, -10, 0], rotate: [0, 3, 0] },
@@ -35,9 +34,8 @@ const FLOATING_CARDS = [
     delay: 0.5,
   },
   {
+    key: "bankGrade",
     Icon: ShieldCheck,
-    title: "Bank-grade",
-    subtitle: "Security",
     gradient: "linear-gradient(135deg, #22C55E 0%, #0ebe98 100%)",
     position: "bottom-16 -left-2 sm:-left-6 lg:-left-4",
     animate: { y: [0, -12, 0], rotate: [0, -3, 0] },
@@ -45,9 +43,8 @@ const FLOATING_CARDS = [
     delay: 0.8,
   },
   {
+    key: "realtime",
     Icon: TrendingUp,
-    title: "Real-time",
-    subtitle: "Analytics",
     gradient: "linear-gradient(135deg, #F59E0B 0%, #F43F5E 100%)",
     position: "bottom-2 -right-2 sm:-right-6 lg:-right-4",
     animate: { y: [0, -10, 0], rotate: [0, 2, 0] },
@@ -57,6 +54,8 @@ const FLOATING_CARDS = [
 ];
 
 export function AboutHero() {
+  const t = useTranslations("Frontend.about.hero");
+
   return (
     <section className="relative overflow-hidden pt-32 sm:pt-36 lg:pt-44 pb-16 sm:pb-20 lg:pb-28 bg-linear-to-b from-slate-50 via-emerald-50/40 to-white dark:from-walletium-dark dark:via-walletium-dark-mid dark:to-[#091829]">
       {/* Background glow */}
@@ -86,19 +85,17 @@ export function AboutHero() {
             transition={{ duration: 0.6 }}
           >
             <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold tracking-[0.2em] uppercase mb-5 bg-primary-50 dark:bg-primary-500/15 text-primary-600 dark:text-primary-400 ring-1 ring-primary-200/60 dark:ring-primary-500/30">
-              <Sparkles size={12} /> About Walletium
+              <Sparkles size={12} /> {t("badge")}
             </span>
             <h1 className=" font-black leading-[1.05] mb-5 text-4xl sm:text-5xl lg:text-6xl xl:text-[68px] tracking-tight text-neutral-900 dark:text-white">
-              Your gateway to{" "}
+              {t("headingPart1")}{" "}
               <span className="text-primary-600 dark:text-primary-400">
-                smart & secure
+                {t("headingHighlight")}
               </span>{" "}
-              finance
+              {t("headingPart2")}
             </h1>
             <p className="text-base sm:text-lg leading-relaxed text-neutral-600 dark:text-neutral-400 mb-8 max-w-xl">
-              Walletium revolutionizes how individuals and businesses manage
-              money — from seamless transactions and multi-currency support, to
-              powerful APIs and bank-grade security.
+              {t("description")}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8">
               <motion.a
@@ -111,7 +108,12 @@ export function AboutHero() {
                     "linear-gradient(135deg, #0ebe98 0%, #00E5FF 100%)",
                 }}
               >
-                Get Started <ArrowRight size={16} strokeWidth={2.5} />
+                {t("ctaGetStarted")}{" "}
+                <ArrowRight
+                  size={16}
+                  strokeWidth={2.5}
+                  className="rtl:rotate-180"
+                />
               </motion.a>
               
             </div>
@@ -121,14 +123,14 @@ export function AboutHero() {
               <div className="flex items-center gap-1.5">
                 <BadgeCheck size={16} className="text-primary-500" />
                 <span className="text-neutral-600 dark:text-neutral-400">
-                  Trusted by 50K+ users
+                  {t("trustUsers")}
                 </span>
               </div>
               <span className="hidden sm:block w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-700" />
               <div className="flex items-center gap-1.5">
                 <ShieldCheck size={16} className="text-primary-500" />
                 <span className="text-neutral-600 dark:text-neutral-400">
-                  Bank-grade security
+                  {t("trustSecurity")}
                 </span>
               </div>
             </div>
@@ -189,9 +191,8 @@ export function AboutHero() {
             {/* Floating cards */}
             {FLOATING_CARDS.map(
               ({
+                key,
                 Icon,
-                title,
-                subtitle,
                 gradient,
                 position,
                 animate,
@@ -199,7 +200,7 @@ export function AboutHero() {
                 delay,
               }) => (
                 <motion.div
-                  key={title}
+                  key={key}
                   animate={animate}
                   transition={{
                     duration,
@@ -217,10 +218,10 @@ export function AboutHero() {
                   </div>
                   <div>
                     <p className="text-[10px] leading-none text-neutral-500 dark:text-neutral-400 mb-1">
-                      {subtitle}
+                      {t(`floatingCards.${key}.subtitle`)}
                     </p>
                     <p className="text-xs sm:text-sm font-bold leading-tight text-neutral-900 dark:text-white whitespace-nowrap">
-                      {title}
+                      {t(`floatingCards.${key}.title`)}
                     </p>
                   </div>
                 </motion.div>

@@ -1,11 +1,12 @@
 "use client";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 const STATS = [
-  { label: "Active Users", value: "50K+", desc: "Worldwide" },
-  { label: "Transactions", value: "$2.5B+", desc: "Processed" },
-  { label: "Countries", value: "120+", desc: "Supported" },
-  { label: "Uptime", value: "99.99%", desc: "Reliable" },
+  { key: "activeUsers" },
+  { key: "transactions" },
+  { key: "countries" },
+  { key: "uptime" },
 ];
 
 const fadeIn = {
@@ -18,6 +19,8 @@ const fadeIn = {
 };
 
 export function AboutMission() {
+  const t = useTranslations("Frontend.about.mission");
+
   return (
     <section className="relative overflow-hidden py-16 sm:py-20 lg:py-28 bg-white dark:bg-walletium-dark">
       {/* Glow */}
@@ -40,20 +43,17 @@ export function AboutMission() {
           className="text-center max-w-3xl mx-auto mb-14 sm:mb-16"
         >
           <span className="inline-block text-xs sm:text-sm font-bold tracking-[0.2em] uppercase mb-3 sm:mb-4 text-primary-600 dark:text-primary-400">
-            Our Mission
+            {t("eyebrow")}
           </span>
           <h2 className="font-serif font-black leading-tight mb-4 sm:mb-5 text-3xl sm:text-4xl lg:text-5xl tracking-tight text-neutral-900 dark:text-white">
-            Empowering everyone to{" "}
+            {t("headingPart1")}{" "}
             <span className="text-primary-600 dark:text-primary-400">
-              take control
+              {t("headingHighlight")}
             </span>{" "}
-            of their finances
+            {t("headingPart2")}
           </h2>
           <p className="text-sm sm:text-base lg:text-lg leading-relaxed text-neutral-600 dark:text-neutral-400">
-            We believe digital finance should be effortless, secure, and
-            accessible to all. From individuals managing daily spending to
-            businesses scaling globally, Walletium is the toolkit that powers
-            your financial future.
+            {t("description")}
           </p>
         </motion.div>
 
@@ -61,7 +61,7 @@ export function AboutMission() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {STATS.map((stat, i) => (
             <motion.div
-              key={stat.label}
+              key={stat.key}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-50px" }}
@@ -76,13 +76,13 @@ export function AboutMission() {
                     "linear-gradient(135deg, #0ebe98 0%, #00E5FF 100%)",
                 }}
               >
-                {stat.value}
+                {t(`stats.${stat.key}.value`)}
               </p>
               <p className="text-sm font-semibold text-neutral-900 dark:text-white">
-                {stat.label}
+                {t(`stats.${stat.key}.label`)}
               </p>
               <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
-                {stat.desc}
+                {t(`stats.${stat.key}.desc`)}
               </p>
             </motion.div>
           ))}
