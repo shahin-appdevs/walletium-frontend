@@ -889,6 +889,27 @@
                 }
             }
         },
+        "navbar": {
+            "logoAlt": "Walletium",
+            "links": {
+                "home": "Home",
+                "developer": "Developer",
+                "aboutUs": "About Us",
+                "services": "Services",
+                "webJournal": "Web Journal",
+                "contact": "Contact"
+            },
+            "theme": {
+                "switchToLight": "Switch to light mode",
+                "switchToDark": "Switch to dark mode",
+                "darkMode": "Dark mode",
+                "lightMode": "Light mode"
+            },
+            "cta": {
+                "dashboard": "Dashboard",
+                "loginNow": "Login Now"
+            }
+        },
         "footer": {
             "brandDescription": "Walletium is the ultimate digital wallet solution, offering seamless money management with features like instant transactions and multi-currency support.",
             "resourcesHeading": "Resources",

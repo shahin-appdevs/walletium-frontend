@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -10,12 +11,12 @@ import { token } from "@/lib/token";
 import { routing } from "@/i18n/routing";
 
 const NAV_LINKS = [
-  { label: "Home", href: "/" },
-  { label: "Developer", href: "/developer" },
-  { label: "About Us", href: "/about" },
-  { label: "Services", href: "/services" },
-  { label: "Web Journal", href: "/journal" },
-  { label: "Contact", href: "/contact" },
+  { key: "home", href: "/" },
+  { key: "developer", href: "/developer" },
+  { key: "aboutUs", href: "/about" },
+  { key: "services", href: "/services" },
+  { key: "webJournal", href: "/journal" },
+  { key: "contact", href: "/contact" },
 ];
 
 // Mirror the list used by the dashboard <LanguageSwitcher /> so both surfaces
@@ -31,6 +32,7 @@ const LANGUAGES = [
 export function Navbar() {
   const { mode, toggleTheme } = useTheme();
   const isDark = mode === "dark";
+  const t = useTranslations("Frontend.navbar");
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
@@ -59,7 +61,7 @@ export function Navbar() {
     setIsAuthenticated(!!token.get());
   }, []);
   const ctaHref = isAuthenticated ? "/dashboard" : "/login";
-  const ctaLabel = isAuthenticated ? "Dashboard" : "Login Now";
+  const ctaLabel = isAuthenticated ? t("cta.dashboard") : t("cta.loginNow");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -105,7 +107,7 @@ export function Navbar() {
           <Link href="/" className="flex items-center flex-shrink-0">
             <Image
               src="/images/logo/web_logo.webp"
-              alt="Walletium"
+              alt={t("logoAlt")}
               width={180}
               height={40}
               priority
@@ -117,7 +119,7 @@ export function Navbar() {
           <nav className="hidden lg:flex items-center gap-1">
             {NAV_LINKS.map((link) => (
               <Link
-                key={link.label}
+                key={link.key}
                 href={link.href}
                 className={`relative px-4 py-2 text-sm font-medium transition-colors duration-200 group ${
                   isDark
@@ -125,7 +127,7 @@ export function Navbar() {
                     : "text-slate-600 hover:text-slate-900"
                 }`}
               >
-                {link.label}
+                {t(`links.${link.key}`)}
                 <span
                   className="absolute bottom-0.5 left-4 right-4 h-0.5 rounded-full origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
                   style={{
@@ -144,7 +146,9 @@ export function Navbar() {
               onClick={toggleTheme}
               className="relative flex items-center bg-white dark:bg-neutral-800 rounded-full p-1 border border-gray-200 dark:border-neutral-700 w-[72px] shrink-0 transition-colors duration-300"
               title={
-                mode === "dark" ? "Switch to light mode" : "Switch to dark mode"
+                mode === "dark"
+                  ? t("theme.switchToLight")
+                  : t("theme.switchToDark")
               }
             >
               <div
@@ -319,7 +323,7 @@ export function Navbar() {
             <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col gap-1">
               {NAV_LINKS.map((link, i) => (
                 <motion.div
-                  key={link.label}
+                  key={link.key}
                   initial={{ opacity: 0, x: -16 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.05, duration: 0.3 }}
@@ -333,7 +337,7 @@ export function Navbar() {
                         : "text-slate-600 hover:text-slate-900 hover:bg-slate-900/5"
                     }`}
                   >
-                    {link.label}
+                    {t(`links.${link.key}`)}
                   </Link>
                 </motion.div>
               ))}
@@ -350,7 +354,9 @@ export function Navbar() {
                       isDark ? "text-white/70" : "text-slate-600"
                     }`}
                   >
-                    {mode === "dark" ? "Dark mode" : "Light mode"}
+                    {mode === "dark"
+                      ? t("theme.darkMode")
+                      : t("theme.lightMode")}
                   </span>
                   <button
                     dir="ltr"
