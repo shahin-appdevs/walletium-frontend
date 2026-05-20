@@ -1,5 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 import {
   ArrowUpRight,
   Code2,
@@ -10,51 +11,39 @@ import {
   Wallet,
 } from "lucide-react";
 
-const SERVICES = [
+const SERVICES_BASE = [
   {
-    title: "Digital Wallet Platform",
-    description:
-      "A seamless wallet engine for fast and intuitive everyday transactions — built for individuals and teams.",
+    key: "wallet",
     Icon: Wallet,
     gradient: "linear-gradient(135deg, #0ebe98 0%, #00E5FF 100%)",
     shadow: "0 12px 28px -8px rgba(14,190,152,0.45)",
   },
   {
-    title: "Secure Payment Processing",
-    description:
-      "Reliable payment rails with end-to-end encryption, fraud detection, and 3DS protection out of the box.",
+    key: "payment",
     Icon: CreditCard,
     gradient: "linear-gradient(135deg, #F43F5E 0%, #F97316 100%)",
     shadow: "0 12px 28px -8px rgba(244,63,94,0.45)",
   },
   {
-    title: "Multi-Currency Support",
-    description:
-      "Send, receive, and hold balances in 120+ currencies with transparent FX and live exchange rates.",
+    key: "currency",
     Icon: Globe,
     gradient: "linear-gradient(135deg, #3B82F6 0%, #06B6D4 100%)",
     shadow: "0 12px 28px -8px rgba(59,130,246,0.45)",
   },
   {
-    title: "Developer-Friendly API",
-    description:
-      "Predictable REST endpoints, official SDKs, webhooks, and a sandbox — integrate in minutes, not weeks.",
+    key: "api",
     Icon: Code2,
     gradient: "linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)",
     shadow: "0 12px 28px -8px rgba(99,102,241,0.45)",
   },
   {
-    title: "Financial Consulting",
-    description:
-      "Expert advisory to optimize cash flow, payment strategy, and growth — backed by real fintech operators.",
+    key: "consulting",
     Icon: LineChart,
     gradient: "linear-gradient(135deg, #22C55E 0%, #0ebe98 100%)",
     shadow: "0 12px 28px -8px rgba(34,197,94,0.45)",
   },
   {
-    title: "Custom-Tailored Solutions",
-    description:
-      "From bespoke integrations to white-label products — we build the financial stack that fits your business.",
+    key: "solutions",
     Icon: Settings2,
     gradient: "linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%)",
     shadow: "0 12px 28px -8px rgba(139,92,246,0.45)",
@@ -76,6 +65,14 @@ const cardReveal = {
 };
 
 export function ServicesGrid() {
+  const t = useTranslations("Frontend.services.whatWeDo");
+
+  const SERVICES = SERVICES_BASE.map((service) => ({
+    ...service,
+    title: t(`services.${service.key}.title`),
+    description: t(`services.${service.key}.description`),
+  }));
+
   return (
     <section
       id="services-grid"
@@ -109,18 +106,17 @@ export function ServicesGrid() {
           className="text-center max-w-2xl mx-auto mb-14 lg:mb-20"
         >
           <span className="inline-block text-xs sm:text-sm font-bold tracking-widest uppercase mb-3 sm:mb-4 text-primary-600 dark:text-primary-400">
-            What We Do
+            {t("eyebrow")}
           </span>
           <h2 className="font-serif font-black leading-tight mb-4 sm:mb-5 text-2xl sm:text-3xl lg:text-4xl xl:text-5xl tracking-tight text-neutral-900 dark:text-white">
-            Empowering your{" "}
+            {t("heading.part1")}{" "}
             <span className="text-primary-600 dark:text-primary-400">
-              financial freedom
+              {t("heading.highlight")}
             </span>{" "}
-            and security
+            {t("heading.part2")}
           </h2>
           <p className="text-sm sm:text-base lg:text-lg leading-relaxed text-neutral-600 dark:text-neutral-400">
-            Six core services that cover the full money lifecycle — from
-            wallets and payments to APIs, FX, and expert guidance.
+            {t("description")}
           </p>
         </motion.div>
 
@@ -166,7 +162,7 @@ export function ServicesGrid() {
                   href="#"
                   className="inline-flex items-center gap-1.5 text-sm font-bold text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-all duration-300 group-hover:gap-2.5"
                 >
-                  Learn more
+                  {t("learnMore")}
                   <ArrowUpRight size={14} strokeWidth={2.5} />
                 </a>
               </div>

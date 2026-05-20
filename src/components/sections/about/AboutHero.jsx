@@ -4,15 +4,17 @@ import {
   ArrowRight,
   BadgeCheck,
   Globe,
-  Play,
+
   Send,
   ShieldCheck,
   Sparkles,
   TrendingUp,
-  Wallet,
+  
   Zap,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
+const image = "/icons/wallet.webp";
 
 const FLOATING_CARDS = [
   {
@@ -164,7 +166,14 @@ export function AboutHero() {
                 boxShadow: "0 30px 80px -10px rgba(14,190,152,0.5)",
               }}
             >
-              <Wallet size={56} color="white" strokeWidth={2} />
+              {/* <Wallet size={56} color="white" strokeWidth={2} /> */}
+              <Image
+                    src={image}
+                    alt=""
+                    width={100}
+                    height={100}
+                    className="-rotate-45"
+                  />
               {/* Spark badge */}
               <motion.div
                 animate={{ scale: [1, 1.15, 1] }}

@@ -1,36 +1,29 @@
 "use client";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 import { Clock, HeartHandshake, ShieldCheck, Sparkles } from "lucide-react";
 
-const PILLARS = [
+const PILLARS_BASE = [
   {
-    title: "Bank-grade Security",
-    description:
-      "End-to-end encryption, fraud detection, 2FA, and compliance with global standards keep every transaction safe.",
+    key: "security",
     Icon: ShieldCheck,
     gradient: "linear-gradient(135deg, #0ebe98 0%, #00E5FF 100%)",
     shadow: "0 14px 30px -10px rgba(14,190,152,0.45)",
   },
   {
-    title: "Always Available",
-    description:
-      "99.99% uptime backed by globally distributed infrastructure and 24/7 monitoring — your money never sleeps.",
+    key: "availability",
     Icon: Clock,
     gradient: "linear-gradient(135deg, #3B82F6 0%, #06B6D4 100%)",
     shadow: "0 14px 30px -10px rgba(59,130,246,0.45)",
   },
   {
-    title: "Built to Scale",
-    description:
-      "From startups to enterprises, our platform grows with you — supporting millions of transactions per day.",
+    key: "scale",
     Icon: Sparkles,
     gradient: "linear-gradient(135deg, #F59E0B 0%, #F43F5E 100%)",
     shadow: "0 14px 30px -10px rgba(245,158,11,0.45)",
   },
   {
-    title: "Real Human Support",
-    description:
-      "Fintech experts on demand — for technical questions, strategy advice, or just a friendly chat.",
+    key: "support",
     Icon: HeartHandshake,
     gradient: "linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)",
     shadow: "0 14px 30px -10px rgba(99,102,241,0.45)",
@@ -47,6 +40,14 @@ const cardReveal = {
 };
 
 export function ServicesWhyChoose() {
+  const t = useTranslations("Frontend.services.whyChoose");
+
+  const PILLARS = PILLARS_BASE.map((pillar) => ({
+    ...pillar,
+    title: t(`pillars.${pillar.key}.title`),
+    description: t(`pillars.${pillar.key}.description`),
+  }));
+
   return (
     <section className="relative overflow-hidden py-16 sm:py-20 lg:py-28 bg-linear-to-b from-white via-emerald-50/40 to-rose-50/30 dark:from-walletium-dark dark:via-walletium-dark-mid dark:to-[#091829]">
       {/* Glow */}
@@ -69,19 +70,18 @@ export function ServicesWhyChoose() {
           className="text-center max-w-2xl mx-auto mb-12 sm:mb-16"
         >
           <span className="inline-block text-xs sm:text-sm font-bold tracking-widest uppercase mb-3 sm:mb-4 text-primary-600 dark:text-primary-400">
-            Why Walletium
+             {t("eyebrow")}
           </span>
           <h2 className="font-serif font-black leading-tight mb-4 sm:mb-5 text-2xl sm:text-3xl lg:text-4xl xl:text-5xl tracking-tight text-neutral-900 dark:text-white">
-            The platform{" "}
+            {t("heading.part1")}{" "}
             <span className="text-primary-600 dark:text-primary-400">
-              built for trust
+              {t("heading.highlight")}
             </span>
           </h2>
           <p className="text-sm sm:text-base lg:text-lg leading-relaxed text-neutral-600 dark:text-neutral-400">
-            Every service is engineered around four non-negotiable pillars —
-            so your business can grow without worrying about the rails.
+            {t("description")}
           </p>
-        </motion.div>
+        </motion.div >
 
         {/* Pillars 2x2 */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">

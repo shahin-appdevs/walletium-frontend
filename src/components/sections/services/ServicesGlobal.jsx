@@ -1,25 +1,15 @@
 "use client";
 import { motion } from "framer-motion";
 import { Activity, Globe2, TrendingUp, Zap } from "lucide-react";
+import { useTranslations } from "next-intl";
 
-const CURRENCIES = [
-  { code: "USD", flag: "🇺🇸" },
-  { code: "EUR", flag: "🇪🇺" },
-  { code: "GBP", flag: "🇬🇧" },
-  { code: "JPY", flag: "🇯🇵" },
-  { code: "AUD", flag: "🇦🇺" },
-  { code: "CAD", flag: "🇨🇦" },
-  { code: "SGD", flag: "🇸🇬" },
-  { code: "INR", flag: "🇮🇳" },
-  { code: "AED", flag: "🇦🇪" },
-  { code: "BDT", flag: "🇧🇩" },
-];
+
 
 const STATS = [
-  { label: "Currencies", value: "120+", Icon: Globe2 },
-  { label: "Countries", value: "180+", Icon: TrendingUp },
-  { label: "Avg. settle", value: "<10s", Icon: Zap },
-  { label: "Uptime", value: "99.99%", Icon: Activity },
+  { key: "currencies", Icon: Globe2 },
+  { key: "countries", Icon: TrendingUp },
+  { key: "avgSettle", Icon: Zap },
+  { key: "uptime", Icon: Activity },
 ];
 
 const fadeIn = {
@@ -32,6 +22,8 @@ const fadeIn = {
 };
 
 export function ServicesGlobal() {
+  const t = useTranslations("Frontend.services.globalPayments");
+
   return (
     <section className="relative overflow-hidden py-16 sm:py-20 lg:py-28 bg-linear-to-b from-rose-50/30 via-white to-emerald-50/30 dark:from-[#091829] dark:via-walletium-dark-mid dark:to-[#0A0F1E]">
       {/* Glow */}
@@ -62,25 +54,24 @@ export function ServicesGlobal() {
             variants={fadeIn}
           >
             <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold tracking-[0.2em] uppercase mb-5 bg-primary-50 dark:bg-primary-500/15 text-primary-600 dark:text-primary-400 ring-1 ring-primary-200/60 dark:ring-primary-500/30">
-              <Globe2 size={12} /> Global Payments
+              <Globe2 size={12} /> {t("badge")}
             </span>
             <h2 className="font-serif font-black leading-tight mb-4 sm:mb-5 text-3xl sm:text-4xl lg:text-5xl tracking-tight text-neutral-900 dark:text-white">
-              Move money{" "}
+              {t("headingPart1")}{" "}
               <span className="text-primary-600 dark:text-primary-400">
-                across borders
+                {t("headingHighlight")}
               </span>{" "}
-              with zero friction
+              {t("headingPart2")}
             </h2>
             <p className="text-base sm:text-lg leading-relaxed text-neutral-600 dark:text-neutral-400 mb-8 max-w-lg">
-              Hold, send, and exchange in 120+ currencies with transparent FX
-              rates and no hidden fees. Walletium settles in seconds — not days.
+              {t("description")}
             </p>
 
             {/* Stats */}
             <div className="grid grid-cols-2 gap-4 sm:gap-5">
-              {STATS.map(({ label, value, Icon }) => (
+              {STATS.map(({ key, Icon }) => (
                 <div
-                  key={label}
+                  key={key}
                   className="flex items-center gap-3 p-4 rounded-2xl bg-white dark:bg-neutral-800/50 border border-neutral-200/80 dark:border-neutral-700/60 backdrop-blur-sm"
                 >
                   <div
@@ -94,10 +85,10 @@ export function ServicesGlobal() {
                   </div>
                   <div>
                     <p className="text-lg sm:text-xl font-black font-serif leading-none text-neutral-900 dark:text-white">
-                      {value}
+                      {t(`stats.${key}.value`)}
                     </p>
                     <p className="text-[11px] mt-1 leading-none text-neutral-500 dark:text-neutral-400">
-                      {label}
+                      {t(`stats.${key}.label`)}
                     </p>
                   </div>
                 </div>
@@ -137,38 +128,7 @@ export function ServicesGlobal() {
               <Globe2 size={56} color="white" strokeWidth={1.8} />
             </motion.div>
 
-            {/* Orbiting currency chips */}
-            {CURRENCIES.map((cur, i) => {
-              const angle = (i / CURRENCIES.length) * 360;
-              const radius = 180;
-              const duration = 14 + (i % 4);
-
-              return (
-                <motion.div
-                  key={cur.code}
-                  className="absolute"
-                  style={{
-                    transform: `rotate(${angle}deg) translateY(-${radius}px) rotate(-${angle}deg)`,
-                    top: "calc(50% - 18px)",
-                    left: "calc(50% - 36px)",
-                  }}
-                  animate={{ y: [0, -6, 0] }}
-                  transition={{
-                    duration,
-                    delay: i * 0.15,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                >
-                  <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white dark:bg-neutral-800/90 backdrop-blur-sm shadow-lg border border-neutral-100 dark:border-neutral-700/80">
-                    <span className="text-base leading-none">{cur.flag}</span>
-                    <span className="text-xs font-bold text-neutral-900 dark:text-white">
-                      {cur.code}
-                    </span>
-                  </div>
-                </motion.div>
-              );
-            })}
+           
           </motion.div>
         </div>
       </div>

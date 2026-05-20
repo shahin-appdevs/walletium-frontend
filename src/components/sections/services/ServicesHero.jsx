@@ -1,5 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -12,12 +13,10 @@ import {
   Wallet,
 } from "lucide-react";
 
-const PREVIEW_CARDS = [
+const PREVIEW_CARDS_BASE = [
   {
     Icon: Wallet,
-    eyebrow: "01 · Wallet",
-    title: "Digital Wallet",
-    detail: "Manage funds and balance",
+    key: "wallet",
     gradient: "linear-gradient(135deg, #0ebe98 0%, #00E5FF 100%)",
     shadow: "0 20px 50px -12px rgba(14,190,152,0.45)",
     position:
@@ -28,9 +27,7 @@ const PREVIEW_CARDS = [
   },
   {
     Icon: Globe,
-    eyebrow: "02 · Global",
-    title: "Multi-Currency",
-    detail: "120+ currencies supported",
+    key: "global",
     gradient: "linear-gradient(135deg, #3B82F6 0%, #06B6D4 100%)",
     shadow: "0 20px 50px -12px rgba(59,130,246,0.45)",
     position:
@@ -41,9 +38,7 @@ const PREVIEW_CARDS = [
   },
   {
     Icon: Code2,
-    eyebrow: "03 · API",
-    title: "Developer API",
-    detail: "Drop-in integrations",
+    key: "api",
     gradient: "linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)",
     shadow: "0 20px 50px -12px rgba(99,102,241,0.45)",
     position:
@@ -55,6 +50,15 @@ const PREVIEW_CARDS = [
 ];
 
 export function ServicesHero() {
+  const t = useTranslations("Frontend.services.hero");
+
+  const PREVIEW_CARDS = PREVIEW_CARDS_BASE.map((card) => ({
+    ...card,
+    eyebrow: t(`cards.${card.key}.eyebrow`),
+    title: t(`cards.${card.key}.title`),
+    detail: t(`cards.${card.key}.detail`),
+  }));
+
   return (
     <section className="relative overflow-hidden pt-32 sm:pt-36 lg:pt-44 pb-16 sm:pb-20 lg:pb-28 bg-linear-to-b from-slate-50 via-emerald-50/40 to-white dark:from-walletium-dark dark:via-walletium-dark-mid dark:to-[#091829]">
       {/* Background glow */}
@@ -84,19 +88,17 @@ export function ServicesHero() {
             transition={{ duration: 0.6 }}
           >
             <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold tracking-[0.2em] uppercase mb-5 bg-primary-50 dark:bg-primary-500/15 text-primary-600 dark:text-primary-400 ring-1 ring-primary-200/60 dark:ring-primary-500/30">
-              <Sparkles size={12} /> Services
+              <Sparkles size={12} /> {t("eyebrow")}
             </span>
             <h1 className="font-serif font-black leading-[1.05] mb-5 text-4xl sm:text-5xl lg:text-6xl xl:text-[68px] tracking-tight text-neutral-900 dark:text-white">
-              The complete{" "}
+              {t("heading.part1")}{" "}
               <span className="text-primary-600 dark:text-primary-400">
-                fintech toolkit
+                {t("heading.highlight")}
               </span>{" "}
-              for modern money
+              {t("heading.part2")}
             </h1>
             <p className="text-base sm:text-lg leading-relaxed text-neutral-600 dark:text-neutral-400 mb-8 max-w-xl">
-              From everyday wallet operations to enterprise-grade payments,
-              global multi-currency support, and developer APIs — Walletium
-              powers your full financial workflow with one trusted platform.
+              {t("description")}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8">
               <motion.a
@@ -118,7 +120,7 @@ export function ServicesHero() {
                 className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl border-2 border-neutral-200 dark:border-neutral-700 hover:border-primary-300 dark:hover:border-primary-500/50 bg-white/80 dark:bg-neutral-900/40 backdrop-blur-sm text-neutral-900 dark:text-white font-bold text-sm transition-colors"
               >
                 <Play size={14} strokeWidth={2.5} fill="currentColor" />
-                Talk to Sales
+                {t("buttons.talkToSales")}
               </motion.a>
             </div>
 
@@ -127,14 +129,14 @@ export function ServicesHero() {
               <div className="flex items-center gap-1.5">
                 <ShieldCheck size={16} className="text-primary-500" />
                 <span className="text-neutral-600 dark:text-neutral-400">
-                  PCI-DSS · ISO 27001
+                  {t("trust.security")}
                 </span>
               </div>
               <span className="hidden sm:block w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-700" />
               <div className="flex items-center gap-1.5">
                 <Layers size={16} className="text-primary-500" />
                 <span className="text-neutral-600 dark:text-neutral-400">
-                  10K+ businesses scaling on Walletium
+                  {t("trust.businesses")}
                 </span>
               </div>
             </div>

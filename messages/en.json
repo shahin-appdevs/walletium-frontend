@@ -1064,6 +1064,178 @@
                 }
             }
         },
+        "services": {
+            "hero": {
+                "eyebrow": "Services",
+                "heading": {
+                    "part1": "The complete",
+                    "highlight": "fintech toolkit",
+                    "part2": "for modern money"
+                },
+                "description": "From everyday wallet operations to enterprise-grade payments, global multi-currency support, and developer APIs — Walletium powers your full financial workflow with one trusted platform.",
+                "buttons": {
+                    "explore": "Explore Services",
+                    "talkToSales": "Talk to Sales"
+                },
+                "trust": {
+                    "security": "PCI-DSS · ISO 27001",
+                    "businesses": "10K+ businesses scaling on Walletium"
+                },
+                "cards": {
+                    "wallet": {
+                        "eyebrow": "01 · Wallet",
+                        "title": "Digital Wallet",
+                        "detail": "Manage funds and balance"
+                    },
+                    "global": {
+                        "eyebrow": "02 · Global",
+                        "title": "Multi-Currency",
+                        "detail": "120+ currencies supported"
+                    },
+                    "api": {
+                        "eyebrow": "03 · API",
+                        "title": "Developer API",
+                        "detail": "Drop-in integrations"
+                    }
+                }
+            }
+        },
+        "services": {
+            "hero": {
+                "eyebrow": "Services",
+                "heading": {
+                    "part1": "The complete",
+                    "highlight": "fintech toolkit",
+                    "part2": "for modern money"
+                },
+                "description": "From everyday wallet operations to enterprise-grade payments, global multi-currency support, and developer APIs — Walletium powers your full financial workflow with one trusted platform.",
+                "buttons": {
+                    "explore": "Explore Services",
+                    "talkToSales": "Talk to Sales"
+                },
+                "trust": {
+                    "security": "PCI-DSS · ISO 27001",
+                    "businesses": "10K+ businesses scaling on Walletium"
+                },
+                "cards": {
+                    "wallet": {
+                        "eyebrow": "01 · Wallet",
+                        "title": "Digital Wallet",
+                        "detail": "Manage funds and balance"
+                    },
+                    "global": {
+                        "eyebrow": "02 · Global",
+                        "title": "Multi-Currency",
+                        "detail": "120+ currencies supported"
+                    },
+                    "api": {
+                        "eyebrow": "03 · API",
+                        "title": "Developer API",
+                        "detail": "Drop-in integrations"
+                    }
+                }
+            },
+            "whatWeDo": {
+                "eyebrow": "What We Do",
+                "heading": {
+                    "part1": "Empowering your",
+                    "highlight": "financial freedom",
+                    "part2": "and security"
+                },
+                "description": "Six core services that cover the full money lifecycle — from wallets and payments to APIs, FX, and expert guidance.",
+                "learnMore": "Learn more",
+                "services": {
+                    "wallet": {
+                        "title": "Digital Wallet Platform",
+                        "description": "A seamless wallet engine for fast and intuitive everyday transactions — built for individuals and teams."
+                    },
+                    "payment": {
+                        "title": "Secure Payment Processing",
+                        "description": "Reliable payment rails with end-to-end encryption, fraud detection, and 3DS protection out of the box."
+                    },
+                    "currency": {
+                        "title": "Multi-Currency Support",
+                        "description": "Send, receive, and hold balances in 120+ currencies with transparent FX and live exchange rates."
+                    },
+                    "api": {
+                        "title": "Developer-Friendly API",
+                        "description": "Predictable REST endpoints, official SDKs, webhooks, and a sandbox — integrate in minutes, not weeks."
+                    },
+                    "consulting": {
+                        "title": "Financial Consulting",
+                        "description": "Expert advisory to optimize cash flow, payment strategy, and growth — backed by real fintech operators."
+                    },
+                    "solutions": {
+                        "title": "Custom-Tailored Solutions",
+                        "description": "From bespoke integrations to white-label products — we build the financial stack that fits your business."
+                    }
+                }
+            },
+            "whyChoose": {
+                "eyebrow": "Why Walletium",
+                "heading": {
+                    "part1": "The platform",
+                    "highlight": "built for trust"
+                },
+                "description": "Every service is engineered around four non-negotiable pillars — so your business can grow without worrying about the rails.",
+                "pillars": {
+                    "security": {
+                        "title": "Bank-grade Security",
+                        "description": "End-to-end encryption, fraud detection, 2FA, and compliance with global standards keep every transaction safe."
+                    },
+                    "availability": {
+                        "title": "Always Available",
+                        "description": "99.99% uptime backed by globally distributed infrastructure and 24/7 monitoring — your money never sleeps."
+                    },
+                    "scale": {
+                        "title": "Built to Scale",
+                        "description": "From startups to enterprises, our platform grows with you — supporting millions of transactions per day."
+                    },
+                    "support": {
+                        "title": "Real Human Support",
+                        "description": "Fintech experts on demand — for technical questions, strategy advice, or just a friendly chat."
+                    }
+                }
+            },
+            "globalPayments": {
+                "badge": "Global Payments",
+                "headingPart1": "Move money",
+                "headingHighlight": "across borders",
+                "headingPart2": "with zero friction",
+                "description": "Hold, send, and exchange in 120+ currencies with transparent FX rates and no hidden fees. Walletium settles in seconds — not days.",
+                "stats": {
+                    "currencies": {
+                        "label": "Currencies",
+                        "value": "120+"
+                    },
+                    "countries": {
+                        "label": "Countries",
+                        "value": "180+"
+                    },
+                    "avgSettle": {
+                        "label": "Avg. settle",
+                        "value": "<10s"
+                    },
+                    "uptime": {
+                        "label": "Uptime",
+                        "value": "99.99%"
+                    }
+                }
+            },
+            "cta": {
+                "badge": "Let's talk",
+                "headingPart1": "Ready to power your",
+                "headingHighlight": "financial future?",
+                "description": "Join 10,000+ businesses already scaling with Walletium. Get started in minutes — or schedule a call with our fintech experts to design a custom solution.",
+                "startTrial": "Start Free Trial",
+                "bookDemo": "Book a Demo",
+                "trustPoints": {
+                    "freeTrial": "Free 14-day trial",
+                    "noCard": "No credit card required",
+                    "cancelAnytime": "Cancel anytime"
+                }
+            }
+        },
         "notFound": {
             "eyebrow": "404 Error",
             "titleLead": "Lost in",
