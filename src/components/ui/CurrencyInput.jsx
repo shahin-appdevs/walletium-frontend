@@ -147,7 +147,7 @@ export function CurrencyInput({
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8, scale: 0.95 }}
               transition={{ duration: 0.15, ease: "easeOut" }}
-              className="absolute right-0 top-full mt-2 z-50 w-56 rounded-2xl overflow-hidden max-h-72 overflow-y-auto"
+              className="absolute end-0 top-full mt-2 z-50 w-56 rounded-2xl overflow-hidden max-h-72 overflow-y-auto"
               style={{
                 background: isDark
                   ? "rgba(8, 18, 38, 0.98)"
@@ -199,11 +199,11 @@ export function CurrencyInput({
                   >
                     <CurrencyFlag currency={currency} size="md" />
                     <div className="min-w-0">
-                      <div className="text-sm font-bold leading-tight">
+                      <div className="text-sm rtl:text-right font-bold leading-tight">
                         {currency.code}
                       </div>
                       {currency.name && (
-                        <div className="text-xs opacity-50 leading-tight mt-0.5 truncate">
+                        <div className="text-xs rtl:text-right opacity-50 leading-tight mt-0.5 truncate">
                           {currency.name}
                         </div>
                       )}

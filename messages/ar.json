@@ -725,5 +725,54 @@
                 "description": "استفد من فريق دعم العملاء المخصص لدينا، الجاهز لمساعدتك في كل خطوة."
             }
         }
+    },
+    "Frontend": {
+        "homepage": {
+            "hero": {
+                "trustBadge": "موثوق به من قبل أكثر من 50,000 مستخدم حول العالم",
+                "headlineBrand": "واليتيوم",
+                "headlineSuffix": "– حلك الأمثل للمحفظة الرقمية على الهاتف المحمول",
+                "subtext": "اختبر تحويلات أموال سلسة، وصرف عملات في الوقت الفعلي، ومدفوعات رقمية آمنة — كل ذلك في منصة محفظة قوية مصممة للعالم الحديث.",
+                "trustPoints": {
+                    "noHiddenFees": "بدون رسوم خفية",
+                    "instantTransfers": "تحويلات فورية",
+                    "bankGradeSecurity": "أمان بمستوى البنوك"
+                },
+                "ctaGetStarted": "ابدأ الآن",
+                "ctaDeveloperApi": "واجهة برمجة المطورين",
+                "stats": {
+                    "activeUsersValue": "+50 ألف",
+                    "activeUsersLabel": "المستخدمون النشطون",
+                    "uptimeValue": "99.9%",
+                    "uptimeLabel": "وقت التشغيل",
+                    "countriesValue": "+150",
+                    "countriesLabel": "الدول"
+                },
+                "exchangeCard": {
+                    "title": "صرف الأموال",
+                    "subtitle": "تحويلات سريعة وآمنة",
+                    "live": "مباشر",
+                    "exchangeRate": "سعر الصرف",
+                    "senderAmount": "مبلغ المرسل",
+                    "recipientsAmount": "مبلغ المستلم",
+                    "sendMoney": "إرسال الأموال",
+                    "securityNote": "تحويلات مشفرة بـ 256-بت وآمنة"
+                }
+            }
+        },
+        "notFound": {
+            "eyebrow": "خطأ 404",
+            "titleLead": "ضائع في",
+            "titleAccent": "الفضاء الإلكتروني",
+            "description": "الصفحة التي تبحث عنها غير موجودة أو تم نقلها أو غير متاحة مؤقتًا. دعنا نعيدك إلى المسار الصحيح.",
+            "ctaHome": "العودة إلى الرئيسية",
+            "ctaContact": "تواصل مع الدعم",
+            "quickLinksTitle": "أو جرب هذه الصفحات",
+            "links": {
+                "home": "الرئيسية",
+                "services": "الخدمات",
+                "faq": "الأسئلة الشائعة"
+            }
+        }
     }
 }

@@ -752,5 +752,54 @@
                 "description": "Benefit from our dedicated customer support team, ready to assist you every step of the way."
             }
         }
+    },
+    "Frontend": {
+        "homepage": {
+            "hero": {
+                "trustBadge": "Trusted by 50,000+ users worldwide",
+                "headlineBrand": "Walletium",
+                "headlineSuffix": "– Your Ultimate Digital Mobile Wallet Solution",
+                "subtext": "Experience seamless money transfers, real-time currency exchange, and secure digital payments — all in one powerful wallet platform built for the modern world.",
+                "trustPoints": {
+                    "noHiddenFees": "No hidden fees",
+                    "instantTransfers": "Instant transfers",
+                    "bankGradeSecurity": "Bank-grade security"
+                },
+                "ctaGetStarted": "Get Started",
+                "ctaDeveloperApi": "Developer API",
+                "stats": {
+                    "activeUsersValue": "50K+",
+                    "activeUsersLabel": "Active Users",
+                    "uptimeValue": "99.9%",
+                    "uptimeLabel": "Uptime",
+                    "countriesValue": "150+",
+                    "countriesLabel": "Countries"
+                },
+                "exchangeCard": {
+                    "title": "Money Exchange",
+                    "subtitle": "Fast & Secure Transfers",
+                    "live": "Live",
+                    "exchangeRate": "Exchange Rate",
+                    "senderAmount": "Sender Amount",
+                    "recipientsAmount": "Recipients Amount",
+                    "sendMoney": "Send Money",
+                    "securityNote": "256-bit encrypted & secure transfers"
+                }
+            }
+        },
+        "notFound": {
+            "eyebrow": "404 Error",
+            "titleLead": "Lost in",
+            "titleAccent": "Cyberspace",
+            "description": "The page you're looking for doesn't exist, has been moved, or is temporarily unavailable. Let's get you back on track.",
+            "ctaHome": "Back to Home",
+            "ctaContact": "Contact Support",
+            "quickLinksTitle": "Or try these pages",
+            "links": {
+                "home": "Home",
+                "services": "Services",
+                "faq": "FAQ"
+            }
+        }
     }
 }

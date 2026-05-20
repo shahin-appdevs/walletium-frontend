@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { ExchangeCard } from "@/components/ui/ExchangeCard";
 import { useTheme } from "@/contexts/ThemeContextProvider";
 
@@ -18,15 +19,22 @@ const fadeUp = {
   },
 };
 
-const TRUST_POINTS = [
-  "No hidden fees",
-  "Instant transfers",
-  "Bank-grade security",
-];
-
 export function HeroSection() {
   const { mode } = useTheme();
   const isDark = mode === "dark";
+  const t = useTranslations("Frontend.homepage.hero");
+
+  const trustPoints = [
+    t("trustPoints.noHiddenFees"),
+    t("trustPoints.instantTransfers"),
+    t("trustPoints.bankGradeSecurity"),
+  ];
+
+  const stats = [
+    { value: t("stats.activeUsersValue"), label: t("stats.activeUsersLabel") },
+    { value: t("stats.uptimeValue"), label: t("stats.uptimeLabel") },
+    { value: t("stats.countriesValue"), label: t("stats.countriesLabel") },
+  ];
 
   return (
     <section
@@ -144,7 +152,7 @@ export function HeroSection() {
                 }}
               >
                 <span className="text-[10px] sm:text-xs">✦</span>
-                Trusted by 50,000+ users worldwide
+                {t("trustBadge")}
               </span>
             </motion.div>
 
@@ -168,9 +176,9 @@ export function HeroSection() {
                   backgroundClip: "text",
                 }}
               >
-                Walletium
+                {t("headlineBrand")}
               </span>{" "}
-              – Your Ultimate Digital Mobile Wallet Solution
+              {t("headlineSuffix")}
             </motion.h1>
 
             {/* Subtext */}
@@ -182,9 +190,7 @@ export function HeroSection() {
                 fontSize: "clamp(0.95rem, 1.15vw, 1.08rem)",
               }}
             >
-              Experience seamless money transfers, real-time currency exchange,
-              and secure digital payments — all in one powerful wallet platform
-              built for the modern world.
+              {t("subtext")}
             </motion.p>
 
             {/* Trust checklist */}
@@ -192,7 +198,7 @@ export function HeroSection() {
               variants={fadeUp}
               className="flex flex-wrap justify-center lg:justify-start gap-x-4 sm:gap-x-6 gap-y-2"
             >
-              {TRUST_POINTS.map((point) => (
+              {trustPoints.map((point) => (
                 <li key={point} className="flex items-center gap-2">
                   <CheckCircle2
                     size={14}
@@ -233,7 +239,7 @@ export function HeroSection() {
                   boxShadow: "0 0 22px rgba(0,201,167,0.32)",
                 }}
               >
-                Get Started <ArrowRight size={16} />
+                {t("ctaGetStarted")} <ArrowRight size={16} className="rtl:rotate-180" />
               </motion.a>
 
               <motion.a
@@ -251,7 +257,7 @@ export function HeroSection() {
                 }`}
                 style={{ border: "1px solid rgba(0,201,167,0.4)" }}
               >
-                Developer API <ArrowRight size={16} />
+                {t("ctaDeveloperApi")} <ArrowRight size={16} className="rtl:rotate-180" />
               </motion.a>
             </motion.div>
 
@@ -265,11 +271,7 @@ export function HeroSection() {
                   : "1px solid rgba(15,23,42,0.08)",
               }}
             >
-              {[
-                { value: "50K+", label: "Active Users" },
-                { value: "99.9%", label: "Uptime" },
-                { value: "150+", label: "Countries" },
-              ].map((stat) => (
+              {stats.map((stat) => (
                 <div key={stat.label}>
                   <p
                     className="text-xl sm:text-2xl font-black"

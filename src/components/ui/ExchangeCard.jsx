@@ -1,6 +1,7 @@
 "use client";
 import { useMemo, useState } from "react";
 import { ArrowUpDown, Send, ShieldCheck, Zap } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { CurrencyInput } from "./CurrencyInput";
 import { ExchangeCardSkeleton } from "./ExchangeCardSkeleton";
 import { useTheme } from "@/contexts/ThemeContextProvider";
@@ -28,6 +29,7 @@ const toOption = (c, baseUrl) => ({
 export function ExchangeCard() {
   const { mode } = useTheme();
   const isDark = mode === "dark";
+  const t = useTranslations("Frontend.homepage.hero.exchangeCard");
   const [senderAmount, setSenderAmount] = useState("1");
   const [senderCode, setSenderCode] = useState("USD");
   const [receiverCode, setReceiverCode] = useState("USD");
@@ -98,13 +100,13 @@ export function ExchangeCard() {
               isDark ? "text-white" : "text-slate-900"
             }`}
           >
-            Money Exchange
+            {t("title")}
           </h3>
           <p
             className="text-xs"
             style={{ color: isDark ? "#94A3B8" : "#64748B" }}
           >
-            Fast &amp; Secure Transfers
+            {t("subtitle")}
           </p>
         </div>
         <div className="ml-auto flex items-center gap-1.5">
@@ -113,7 +115,7 @@ export function ExchangeCard() {
             style={{ background: "#00C9A7", boxShadow: "0 0 6px #00C9A7" }}
           />
           <span className="text-xs font-medium" style={{ color: "#00C9A7" }}>
-            Live
+            {t("live")}
           </span>
         </div>
       </div>
@@ -134,11 +136,12 @@ export function ExchangeCard() {
               className="text-xs font-semibold uppercase tracking-widest"
               style={{ color: "#00C9A7" }}
             >
-              Exchange Rate
+              {t("exchangeRate")}
             </p>
           </div>
           <p
-            className={`text-sm font-bold ${
+          dir="ltr"
+            className={`text-sm font-bold  ${
               isDark ? "text-white" : "text-slate-900"
             }`}
           >
@@ -165,7 +168,7 @@ export function ExchangeCard() {
             color: isDark ? "rgba(148,163,184,0.9)" : "rgba(71,85,105,0.95)",
           }}
         >
-          Sender Amount
+          {t("senderAmount")}
           <span style={{ color: "#00C9A7" }}>*</span>
         </label>
         <CurrencyInput
@@ -216,7 +219,7 @@ export function ExchangeCard() {
             color: isDark ? "rgba(148,163,184,0.9)" : "rgba(71,85,105,0.95)",
           }}
         >
-          Recipients Amount
+          {t("recipientsAmount")}
           <span style={{ color: "#00C9A7" }}>*</span>
         </label>
         <CurrencyInput
@@ -240,8 +243,12 @@ export function ExchangeCard() {
             boxShadow: "0 0 24px rgba(0,201,167,0.28)",
           }}
         >
-          Send Money
-          <Send size={18} strokeWidth={2.5} />
+          {t("sendMoney")}
+          <Send
+            size={18}
+            strokeWidth={2.5}
+            className="rtl:-scale-x-100"
+          />
         </button>
       </Link>
 
@@ -254,7 +261,7 @@ export function ExchangeCard() {
             color: isDark ? "rgba(148,163,184,0.55)" : "rgba(71,85,105,0.7)",
           }}
         >
-          256-bit encrypted &amp; secure transfers
+          {t("securityNote")}
         </p>
       </div>
     </div>
