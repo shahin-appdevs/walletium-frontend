@@ -128,8 +128,8 @@ export default function Login() {
 
   return (
     <GuestOnly>
-      <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
-        <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-6 space-y-3">
+      <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-slate-950 p-4">
+        <div className="w-full max-w-md bg-white dark:bg-slate-900 shadow-lg rounded-xl p-6 space-y-3">
           <div className="flex-center">
             <Image
               src="/images/logo/web_logo.webp"
@@ -143,12 +143,14 @@ export default function Login() {
             {t("title")}
           </Typography.Title>
 
-          <p className="text-center! text-sm!">{t("description")}</p>
+          <p className="text-center! text-sm! text-slate-600 dark:text-slate-300">
+            {t("description")}
+          </p>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* Email / Username */}
             <div>
-              <label className="block mb-1 font-medium">
+              <label className="block mb-1 font-medium text-slate-900 dark:text-white">
                 {t("emailLabel")}
               </label>
 
@@ -174,7 +176,7 @@ export default function Login() {
 
             {/* Password */}
             <div>
-              <label className="block mb-1 font-medium">
+              <label className="block mb-1 font-medium text-slate-900 dark:text-white">
                 {t("passwordLabel")}
               </label>
 
@@ -230,7 +232,7 @@ export default function Login() {
             </PrimaryButton>
           </form>
 
-          <p className="text-center text-gray-500 text-sm mt-4">
+          <p className="text-center text-gray-500 dark:text-slate-400 text-sm mt-4">
             {t("dontHaveAccount")}{" "}
             <Link href="/register" className="text-primary-500 hover:underline">
               {t("register")}

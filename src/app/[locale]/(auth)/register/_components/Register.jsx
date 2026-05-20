@@ -117,8 +117,8 @@ export default function Register() {
 
   return (
     <GuestOnly>
-      <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
-        <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-6 space-y-3">
+      <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-slate-950 p-4">
+        <div className="w-full max-w-md bg-white dark:bg-slate-900 shadow-lg rounded-xl p-6 space-y-3">
           <div className="flex-center">
             <Image
               src="/images/logo/web_logo.webp"
@@ -132,7 +132,7 @@ export default function Register() {
             {t("title")}
           </Typography.Title>
 
-          <p className="text-center! text-xs! md:text-sm!">
+          <p className="text-center! text-xs! md:text-sm! text-slate-600 dark:text-slate-300">
             {t("description")}
           </p>
 
@@ -140,7 +140,7 @@ export default function Register() {
             <div className="md:flex  gap-2 space-y-3 md:space-y-0">
               {/* First Name */}
               <div>
-                <label className="block mb-1 font-medium">
+                <label className="block mb-1 font-medium text-slate-900 dark:text-white">
                   {t("firstNameLabel")}
                 </label>
                 <Controller
@@ -164,7 +164,7 @@ export default function Register() {
 
               {/* Last Name */}
               <div>
-                <label className="block mb-1 font-medium">
+                <label className="block mb-1 font-medium text-slate-900 dark:text-white">
                   {t("lastNameLabel")}
                 </label>
                 <Controller
@@ -189,7 +189,7 @@ export default function Register() {
 
             {/* Email */}
             <div>
-              <label className="block mb-1 font-medium">
+              <label className="block mb-1 font-medium text-slate-900 dark:text-white">
                 {t("emailLabel")}
               </label>
               <Controller
@@ -211,7 +211,7 @@ export default function Register() {
 
             {/* Password */}
             <div>
-              <label className="block mb-1 font-medium">
+              <label className="block mb-1 font-medium text-slate-900 dark:text-white">
                 {t("passwordLabel")}
               </label>
               <Controller
@@ -236,7 +236,7 @@ export default function Register() {
             <div className="md:flex gap-2  space-y-3 md:space-y-0">
               {/* Country */}
               <div className="flex-1">
-                <label className="block mb-1 font-medium">
+                <label className="block mb-1 font-medium text-slate-900 dark:text-white">
                   {t("countryLabel")}
                 </label>
                 <Controller
@@ -270,7 +270,7 @@ export default function Register() {
 
               {/* Type */}
               <div className="flex-1">
-                <label className="block mb-1 font-medium">
+                <label className="block mb-1 font-medium text-slate-900 dark:text-white">
                   {t("typeLabel")}
                 </label>
                 <Controller
@@ -312,7 +312,7 @@ export default function Register() {
             </PrimaryButton>
           </form>
 
-          <p className="text-center text-gray-500 text-sm mt-4">
+          <p className="text-center text-gray-500 dark:text-slate-400 text-sm mt-4">
             {t("alreadyHaveAccount")}{" "}
             <Link href="/login" className="text-primary-500 hover:underline">
               {t("login")}

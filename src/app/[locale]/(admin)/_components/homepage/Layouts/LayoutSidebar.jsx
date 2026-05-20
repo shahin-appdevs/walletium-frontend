@@ -14,7 +14,7 @@ const LayoutSidebar = ({ collapsed }) => {
   const { mode, handleNavigateRoutes, items, activeKey } = useSidebar();
 
   return (
-    <div className="hidden sidebar lg:block lg:fixed lg:top-0 lg:left-0 lg:h-screen lg:z-30 transition-none!">
+    <div className="hidden sidebar lg:block lg:fixed lg:top-0 lg:start-0 lg:h-screen lg:z-30 transition-none!">
       {/* Desktop Sidebar — fixed on lg+ so it stays put while only the
           content column scrolls. AntD's outer Layout doesn't provide a
           scroll container that `sticky` can latch onto. */}
