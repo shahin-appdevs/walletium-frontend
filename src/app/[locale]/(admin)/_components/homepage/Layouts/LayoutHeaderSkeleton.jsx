@@ -2,7 +2,7 @@ import { Skeleton, Avatar } from "antd";
 
 export default function LayoutHeaderSkeleton() {
   return (
-    <header className="w-full bg-white  px-4 py-3 flex items-center justify-between">
+    <header className="w-full bg-white dark:bg-slate-900 px-4 py-3 flex items-center justify-between">
       {/* Left Section */}
       <div className="flex items-center gap-4">
         {/* Menu Icon */}

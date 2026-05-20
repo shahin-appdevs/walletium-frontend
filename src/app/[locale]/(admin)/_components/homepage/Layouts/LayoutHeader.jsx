@@ -33,11 +33,11 @@ const LayoutHeader = ({ collapsed, setCollapsed }) => {
   return (
     <>
       <Header
+        className="bg-white! dark:bg-slate-900!"
         style={{
           padding: "0 16px",
           display: "flex",
           alignItems: "center",
-          background: mode === "dark" ? "oklch(20.8% 0.042 265.755)" : "#fff",
           position: "sticky",
           top: "0",
           zIndex: "30",
