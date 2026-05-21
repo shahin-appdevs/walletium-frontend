@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Typography, Input, Button } from "antd";
 import { Controller, useForm } from "react-hook-form";
 import Image from "next/image";
@@ -12,7 +12,7 @@ import {
   useResendForgetPasswordOtpMutation,
   useVerifyForgetPasswordOtpMutation,
 } from "@/redux/api/authApi";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import showToast from "@/lib/toast";
 import { useRouter } from "next/navigation";
 import { useResendOtpTimer } from "@/hooks/useResendOtpTimer";
@@ -21,14 +21,8 @@ import {
   setOtpVerifiedForgetPasswordToken,
 } from "@/redux/features/authSlice";
 
-const schema = yup.object().shape({
-  otp: yup
-    .array()
-    .of(yup.string().matches(/^\d$/, "Must be a number").required("Required"))
-    .length(6, "OTP must be 6 digits"),
-});
-
 export default function OtpVerification() {
+  const t = useTranslations("Auth.otpVerification");
   const [pass, setPass] = useState([]);
   const { forgetPasswordToken } = useSelector((state) => state.auth);
   const [verifyForgetPasswordOtp, { isLoading }] =
@@ -39,6 +33,22 @@ export default function OtpVerification() {
   const [resendForgetPasswordOtp, { isLoading: resendOtpLoading }] =
     useResendForgetPasswordOtpMutation();
   const dispatch = useDispatch();
+
+  const schema = useMemo(
+    () =>
+      yup.object().shape({
+        otp: yup
+          .array()
+          .of(
+            yup
+              .string()
+              .matches(/^\d$/, t("must_be_number"))
+              .required(t("required"))
+          )
+          .length(6, t("otp_required")),
+      }),
+    [t]
+  );
 
   // form handler
   const {
@@ -122,31 +132,33 @@ export default function OtpVerification() {
         lang: locale,
       }).unwrap();
 
-      showToast.apiSuccess(result, "OTP sent successfully");
+      showToast.apiSuccess(result, t("resend_success"));
     } catch (error) {
-      showToast.apiError(error, "Failed to send OTP");
+      showToast.apiError(error, t("resend_failed"));
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
-      <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-6 space-y-3">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-slate-950 p-4">
+      <div className="w-full max-w-md bg-white dark:bg-slate-900 shadow-lg rounded-xl p-6 space-y-3">
         <div className="flex justify-center">
           <Image
             src="/images/logo/web_logo.webp"
             height={50}
             width={200}
-            alt="Walletium Logo"
+            alt={t("logoAlt")}
           />
         </div>
 
-        <Typography.Title level={3} className="text-center mb-6">
-          Enter OTP
+        <Typography.Title
+          level={3}
+          className="text-center mb-6 dark:text-white!"
+        >
+          {t("title")}
         </Typography.Title>
 
-        <p className="text-center text-sm mb-4">
-          We have sent a 6-digit verification code to your email. Please enter
-          it below.
+        <p className="text-center text-sm mb-4 text-slate-600 dark:text-slate-300">
+          {t("description")}
         </p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -179,20 +191,20 @@ export default function OtpVerification() {
           />
           {errors.otp && (
             <p className="text-red-500 text-sm mt-1 text-center">
-              {errors.otp.message || "Please enter all 6 digits"}
+              {errors.otp.message || t("six_digits_required")}
             </p>
           )}
 
           {resendOtpTimer > 0 ? (
-            <p className="text-center text-gray-500 text-sm mt-4">
-              You can resend the code after{" "}
+            <p className="text-center text-gray-500 dark:text-slate-400 text-sm mt-4">
+              {t("resend_timer_prefix")}{" "}
               <span className="text-red-500 font-medium text-base">
                 {resendOtpTimer}s
               </span>
             </p>
           ) : (
-            <p className="text-center text-gray-500 text-sm mt-4">
-              Didn’t receive the OTP?{" "}
+            <p className="text-center text-gray-500 dark:text-slate-400 text-sm mt-4">
+              {t("didnt_receive_otp")}{" "}
               <Button
                 onClick={handleResendOtp}
                 className="text-red-500! hover:underline font-medium!"
@@ -200,7 +212,7 @@ export default function OtpVerification() {
                 loading={resendOtpLoading}
                 type="link"
               >
-                Resend
+                {t("resend")}
               </Button>
             </p>
           )}
@@ -211,13 +223,13 @@ export default function OtpVerification() {
             className="w-full"
             loading={isLoading}
           >
-            Verify OTP
+            {t("verify_button")}
           </Button>
 
-          <p className="text-center text-gray-500 text-sm mt-4">
-            Already Have An Account?{" "}
+          <p className="text-center text-gray-500 dark:text-slate-400 text-sm mt-4">
+            {t("already_have_account")}{" "}
             <Link href="/login" className="text-primary-500 hover:underline">
-              Login Now
+              {t("login_now")}
             </Link>
           </p>
         </form>

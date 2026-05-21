@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { Form, Input } from "antd";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -7,29 +8,38 @@ import * as yup from "yup";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import FormItem from "@/components/ui/form/FormItem";
 import { useResetPasswordMutation } from "@/redux/api/authApi";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import showToast from "@/lib/toast";
 import { useDispatch, useSelector } from "react-redux";
 import { clearOtpVerifiedForgetPasswordToken } from "@/redux/features/authSlice";
 
-const schema = yup.object({
-  newPassword: yup
-    .string()
-    .required("New password is required")
-    .notOneOf([yup.ref("currentPassword")], "New password must be different"),
-  confirmPassword: yup
-    .string()
-    .required("Confirm password is required")
-    .oneOf([yup.ref("newPassword")], "Passwords do not match"),
-});
-
 const ResetPassword = ({}) => {
+  const t = useTranslations("Auth.resetPassword");
   const [resetPassword, { isLoading }] = useResetPasswordMutation();
   const { otpVerifiedForgetPasswordToken } = useSelector((state) => state.auth);
   const locale = useLocale();
   const router = useRouter();
   const dispatch = useDispatch();
+
+  const schema = useMemo(
+    () =>
+      yup.object({
+        newPassword: yup
+          .string()
+          .required(t("validation.newPasswordRequired"))
+          .notOneOf(
+            [yup.ref("currentPassword")],
+            t("validation.newPasswordMustDiffer")
+          ),
+        confirmPassword: yup
+          .string()
+          .required(t("validation.confirmPasswordRequired"))
+          .oneOf([yup.ref("newPassword")], t("validation.passwordsMustMatch")),
+      }),
+    [t]
+  );
+
   const {
     control,
     handleSubmit,
@@ -57,15 +67,21 @@ const ResetPassword = ({}) => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
-      <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-6 space-y-3">
-        <h3 className="text-lg font-semibold mb-6">Change Password</h3>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-slate-950 p-4">
+      <div className="w-full max-w-md bg-white dark:bg-slate-900 shadow-lg rounded-xl p-6 space-y-3">
+        <h3 className="text-lg font-semibold mb-6 text-slate-900 dark:text-white">
+          {t("title")}
+        </h3>
 
         <Form layout="vertical" onFinish={handleSubmit(onSubmit)}>
           {/* New Password */}
           <FormItem
             name={"newPassword"}
-            label="New Password"
+            label={
+              <span className="text-slate-900 dark:text-white">
+                {t("newPasswordLabel")}
+              </span>
+            }
             required={true}
             errors={errors}
           >
@@ -76,7 +92,7 @@ const ResetPassword = ({}) => {
                 <Input.Password
                   {...field}
                   size="large"
-                  placeholder="Enter New Password..."
+                  placeholder={t("newPasswordPlaceholder")}
                 />
               )}
             />
@@ -84,7 +100,11 @@ const ResetPassword = ({}) => {
 
           {/* Confirm Password */}
           <FormItem
-            label="Confirm Password"
+            label={
+              <span className="text-slate-900 dark:text-white">
+                {t("confirmPasswordLabel")}
+              </span>
+            }
             name={"confirmPassword"}
             required={true}
             errors={errors}
@@ -96,7 +116,7 @@ const ResetPassword = ({}) => {
                 <Input.Password
                   {...field}
                   size="large"
-                  placeholder="Enter Confirm Password..."
+                  placeholder={t("confirmPasswordPlaceholder")}
                 />
               )}
             />
@@ -107,7 +127,7 @@ const ResetPassword = ({}) => {
             className="w-full mt-4"
             loading={isLoading}
           >
-            Change
+            {t("submitButton")}
           </PrimaryButton>
         </Form>
       </div>

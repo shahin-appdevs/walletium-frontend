@@ -668,6 +668,20 @@
             "already_have_account": "Already have an account?",
             "login_now": "Login Now"
         },
+        "forgetPassword": {
+            "title": "Reset Your Forgotten Password?",
+            "description": "Take control of your account by resetting your password. Our password recovery page guides you through the necessary steps to securely reset your password.",
+            "emailLabel": "Email",
+            "emailPlaceholder": "Enter email",
+            "sendOtpButton": "Send OTP",
+            "dontHaveAccount": "Don’t have an account?",
+            "loginLink": "Login",
+            "logoAlt": "Walletium Logo",
+            "validation": {
+                "emailRequired": "Email is required"
+            },
+            "errorToast": "Something went wrong"
+        },
         "login": {
             "title": "Log in and Stay Connected",
             "description": "Our secure login process ensures the confidentiality of your information. Log in today and stay connected to your finances, anytime and anywhere.",
@@ -687,6 +701,37 @@
                 "passwordMin": "Password must be at least 6 characters"
             },
             "logoAlt": "Walletium Logo"
+        },
+        "resetPassword": {
+            "title": "Change Password",
+            "newPasswordLabel": "New Password",
+            "newPasswordPlaceholder": "Enter New Password...",
+            "confirmPasswordLabel": "Confirm Password",
+            "confirmPasswordPlaceholder": "Enter Confirm Password...",
+            "submitButton": "Change",
+            "validation": {
+                "newPasswordRequired": "New password is required",
+                "newPasswordMustDiffer": "New password must be different",
+                "confirmPasswordRequired": "Confirm password is required",
+                "passwordsMustMatch": "Passwords do not match"
+            }
+        },
+        "otpVerification": {
+            "logoAlt": "Walletium Logo",
+            "title": "Enter OTP",
+            "description": "We have sent a 6-digit verification code to your email. Please enter it below.",
+            "must_be_number": "Must be a number",
+            "required": "Required",
+            "otp_required": "OTP must be 6 digits",
+            "six_digits_required": "Please enter all 6 digits",
+            "resend_timer_prefix": "You can resend the code after",
+            "didnt_receive_otp": "Didn’t receive the OTP?",
+            "resend": "Resend",
+            "resend_success": "OTP sent successfully",
+            "resend_failed": "Failed to send OTP",
+            "verify_button": "Verify OTP",
+            "already_have_account": "Already Have An Account?",
+            "login_now": "Login Now"
         },
         "register": {
             "title": "Register for an Account Today",

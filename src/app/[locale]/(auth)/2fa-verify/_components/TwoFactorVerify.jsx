@@ -117,8 +117,8 @@ export default function TwoFactorVerify() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
-      <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-6 space-y-3">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-slate-950 p-4">
+      <div className="w-full max-w-md bg-white dark:bg-slate-900 shadow-lg rounded-xl p-6 space-y-3">
         <div className="flex justify-center">
           <Image
             src="/images/logo/web_logo.webp"
@@ -128,11 +128,16 @@ export default function TwoFactorVerify() {
           />
         </div>
 
-        <Typography.Title level={3} className="text-center mb-6">
+        <Typography.Title
+          level={3}
+          className="text-center mb-6 dark:text-white!"
+        >
           {t("title")}
         </Typography.Title>
 
-        <p className="text-center text-sm mb-4">{t("description")}</p>
+        <p className="text-center text-sm mb-4 text-slate-600 dark:text-slate-300">
+          {t("description")}
+        </p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <Controller
@@ -178,7 +183,7 @@ export default function TwoFactorVerify() {
             {t("verify_button")}
           </Button>
 
-          <p className="text-center text-gray-500 text-sm mt-4">
+          <p className="text-center text-gray-500 dark:text-slate-400 text-sm mt-4">
             {t("already_have_account")}{" "}
             <Link href="/login" className="text-primary-500 hover:underline">
               {t("login_now")}

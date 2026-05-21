@@ -641,6 +641,20 @@
             "already_have_account": "هل لديك حساب بالفعل؟",
             "login_now": "سجل الدخول الآن"
         },
+        "forgetPassword": {
+            "title": "إعادة تعيين كلمة المرور المنسية؟",
+            "description": "تحكّم في حسابك من خلال إعادة تعيين كلمة المرور. تساعدك صفحة استرداد كلمة المرور لدينا على اتباع الخطوات اللازمة لإعادة تعيين كلمة المرور بأمان.",
+            "emailLabel": "البريد الإلكتروني",
+            "emailPlaceholder": "أدخل البريد الإلكتروني",
+            "sendOtpButton": "إرسال رمز التحقق",
+            "dontHaveAccount": "ليس لديك حساب؟",
+            "loginLink": "تسجيل الدخول",
+            "logoAlt": "شعار واليتيوم",
+            "validation": {
+                "emailRequired": "البريد الإلكتروني مطلوب"
+            },
+            "errorToast": "حدث خطأ ما"
+        },
         "login": {
             "title": "سجل دخولك وابق على اتصال",
             "description": "تضمن عملية تسجيل الدخول الآمنة لدينا سرية معلوماتك. سجل دخولك اليوم وابق على اتصال بأموالك، في أي وقت وفي أي مكان.",
@@ -660,6 +674,37 @@
                 "passwordMin": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل"
             },
             "logoAlt": "شعار Walletium"
+        },
+        "resetPassword": {
+            "title": "تغيير كلمة المرور",
+            "newPasswordLabel": "كلمة المرور الجديدة",
+            "newPasswordPlaceholder": "أدخل كلمة المرور الجديدة...",
+            "confirmPasswordLabel": "تأكيد كلمة المرور",
+            "confirmPasswordPlaceholder": "أدخل تأكيد كلمة المرور...",
+            "submitButton": "تغيير",
+            "validation": {
+                "newPasswordRequired": "كلمة المرور الجديدة مطلوبة",
+                "newPasswordMustDiffer": "يجب أن تكون كلمة المرور الجديدة مختلفة",
+                "confirmPasswordRequired": "تأكيد كلمة المرور مطلوب",
+                "passwordsMustMatch": "كلمتا المرور غير متطابقتين"
+            }
+        },
+        "otpVerification": {
+            "logoAlt": "شعار Walletium",
+            "title": "أدخل رمز التحقق",
+            "description": "لقد أرسلنا رمز تحقق مكوّن من 6 أرقام إلى بريدك الإلكتروني. يرجى إدخاله أدناه.",
+            "must_be_number": "يجب أن يكون رقمًا",
+            "required": "مطلوب",
+            "otp_required": "يجب أن يتكون رمز التحقق من 6 أرقام",
+            "six_digits_required": "يرجى إدخال جميع الأرقام الستة",
+            "resend_timer_prefix": "يمكنك إعادة إرسال الرمز بعد",
+            "didnt_receive_otp": "لم تستلم رمز التحقق؟",
+            "resend": "إعادة الإرسال",
+            "resend_success": "تم إرسال رمز التحقق بنجاح",
+            "resend_failed": "فشل إرسال رمز التحقق",
+            "verify_button": "تحقق من الرمز",
+            "already_have_account": "هل لديك حساب بالفعل؟",
+            "login_now": "تسجيل الدخول"
         },
         "register": {
             "title": "سجل للحصول على حساب اليوم",
