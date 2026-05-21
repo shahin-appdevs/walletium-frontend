@@ -11,6 +11,12 @@ import {
 const ThemeContext = createContext({ mode: "light", toggleTheme: () => {} });
 
 const THEME_CHANGE_EVENT = "walletium-theme-change";
+const THEME_COOKIE = "theme";
+
+function writeCookie(value) {
+  // 1 year, root path, lax — readable by the server layout to avoid FOUC.
+  document.cookie = `${THEME_COOKIE}=${value}; path=/; max-age=31536000; samesite=lax`;
+}
 
 function getClientSnapshot() {
   const stored = localStorage.getItem("theme");
@@ -49,9 +55,16 @@ export function ThemeProvider({ children }) {
     }
   }, [mode]);
 
+  // Sync existing localStorage theme into the cookie on mount so the server
+  // layout can pick it up on the next request and SSR with the right class.
+  useEffect(() => {
+    writeCookie(getClientSnapshot());
+  }, []);
+
   const toggleTheme = useCallback(() => {
     const next = getClientSnapshot() === "dark" ? "light" : "dark";
     localStorage.setItem("theme", next);
+    writeCookie(next);
     window.dispatchEvent(new Event(THEME_CHANGE_EVENT));
   }, []);
 

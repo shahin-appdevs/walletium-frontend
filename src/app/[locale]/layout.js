@@ -1,5 +1,5 @@
 import { Inter } from "next/font/google";
-import Script from "next/script";
+import { cookies } from "next/headers";
 
 import "./styles/globals.css";
 
@@ -34,17 +34,20 @@ export default async function RootLayout({ children, params }) {
   // Define which languages are Right-to-Left
   const isRTL = locale === "ar";
 
+  // Read theme from cookie so we can apply the `dark` class during SSR —
+  // avoids FOUC without rendering a <script> through React (which trips a
+  // React 19 warning on client-side locale switches).
+  const cookieStore = await cookies();
+  const isDark = cookieStore.get("theme")?.value === "dark";
+
   return (
-    <html lang={locale} dir={isRTL ? "rtl" : "ltr"} suppressHydrationWarning data-scroll-behavior="smooth">
-      <head>
-        {/* Apply the dark class before React paints, preventing FOUC for
-            dark-mode users. Runs synchronously before hydration. Using
-            next/script with beforeInteractive so locale switches don't
-            re-render an inline <script> through React. */}
-        <Script id="theme-init" strategy="beforeInteractive">
-          {`try{if(localStorage.getItem('theme')==='dark')document.documentElement.classList.add('dark');}catch(e){}`}
-        </Script>
-      </head>
+    <html
+      lang={locale}
+      dir={isRTL ? "rtl" : "ltr"}
+      className={isDark ? "dark" : undefined}
+      suppressHydrationWarning
+      data-scroll-behavior="smooth"
+    >
       <body
         className={`${inter.variable} font-sans antialiased max-w-[1920px] mx-auto w-full shadow`}
       >
