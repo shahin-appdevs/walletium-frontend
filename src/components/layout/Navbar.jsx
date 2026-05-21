@@ -45,6 +45,16 @@ export function Navbar() {
   const currentLang =
     LANGUAGES.find((l) => l.code === currentLocale) || LANGUAGES[0];
 
+  // Strip the leading `/{locale}` so we can compare against NAV_LINKS hrefs
+  // (which are written without the locale prefix).
+  const pathWithoutLocale = pathname.replace(/^\/[^/]+/, "") || "/";
+  const isActive = (href) => {
+    if (href === "/") return pathWithoutLocale === "/";
+    return (
+      pathWithoutLocale === href || pathWithoutLocale.startsWith(href + "/")
+    );
+  };
+
   const handleLanguageChange = (code) => {
     setLangOpen(false);
     const pathSegments = pathname.split("/");
@@ -117,25 +127,37 @@ export function Navbar() {
 
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-1">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.key}
-                href={link.href}
-                className={`relative px-4 py-2 text-sm font-medium transition-colors duration-200 group ${
-                  isDark
-                    ? "text-white/75 hover:text-white"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                {t(`links.${link.key}`)}
-                <span
-                  className="absolute bottom-0.5 left-4 right-4 h-0.5 rounded-full origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
-                  style={{
-                    background: "linear-gradient(90deg, #00C9A7, #00E5FF)",
-                  }}
-                />
-              </Link>
-            ))}
+            {NAV_LINKS.map((link) => {
+              const active = isActive(link.href);
+              return (
+                <Link
+                  key={link.key}
+                  href={link.href}
+                  aria-current={active ? "page" : undefined}
+                  className={`relative px-4 py-2 text-sm font-medium transition-colors duration-200 group ${
+                    active
+                      ? isDark
+                        ? "text-white"
+                        : "text-slate-900"
+                      : isDark
+                        ? "text-white/75 hover:text-white"
+                        : "text-slate-600 hover:text-slate-900"
+                  }`}
+                >
+                  {t(`links.${link.key}`)}
+                  <span
+                    className={`absolute bottom-0.5 left-4 right-4 h-0.5 rounded-full origin-left transition-transform duration-300 ${
+                      active
+                        ? "scale-x-100"
+                        : "scale-x-0 group-hover:scale-x-100"
+                    }`}
+                    style={{
+                      background: "linear-gradient(90deg, #00C9A7, #00E5FF)",
+                    }}
+                  />
+                </Link>
+              );
+            })}
           </nav>
 
           {/* Right actions */}
@@ -321,26 +343,34 @@ export function Navbar() {
             }}
           >
             <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col gap-1">
-              {NAV_LINKS.map((link, i) => (
-                <motion.div
-                  key={link.key}
-                  initial={{ opacity: 0, x: -16 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.05, duration: 0.3 }}
-                >
-                  <Link
-                    href={link.href}
-                    onClick={() => setMobileOpen(false)}
-                    className={`block px-4 py-3 rounded-xl transition-colors text-sm font-medium ${
-                      isDark
-                        ? "text-white/80 hover:text-white hover:bg-white/5"
-                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-900/5"
-                    }`}
+              {NAV_LINKS.map((link, i) => {
+                const active = isActive(link.href);
+                return (
+                  <motion.div
+                    key={link.key}
+                    initial={{ opacity: 0, x: -16 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.05, duration: 0.3 }}
                   >
-                    {t(`links.${link.key}`)}
-                  </Link>
-                </motion.div>
-              ))}
+                    <Link
+                      href={link.href}
+                      onClick={() => setMobileOpen(false)}
+                      aria-current={active ? "page" : undefined}
+                      className={`block px-4 py-3 rounded-xl transition-colors text-sm font-medium ${
+                        active
+                          ? isDark
+                            ? "text-white bg-primary-500/15"
+                            : "text-primary-700 bg-primary-50"
+                          : isDark
+                            ? "text-white/80 hover:text-white hover:bg-white/5"
+                            : "text-slate-600 hover:text-slate-900 hover:bg-slate-900/5"
+                      }`}
+                    >
+                      {t(`links.${link.key}`)}
+                    </Link>
+                  </motion.div>
+                );
+              })}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
