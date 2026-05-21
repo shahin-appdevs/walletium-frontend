@@ -79,12 +79,17 @@ const LayoutHeader = ({ collapsed, setCollapsed }) => {
                 {/* Theme Switch */}
                 <button
                   dir="ltr"
-                  onClick={() => toggleTheme()}
-                  className="relative flex items-center bg-white rounded-full p-1  border border-gray-200 w-[72px]"
+                  onClick={toggleTheme}
+                  className="relative flex items-center bg-white dark:bg-neutral-800 rounded-full p-1 border border-gray-200 dark:border-neutral-700 w-[72px] shrink-0 transition-colors duration-300"
+                  title={
+                    mode === "dark"
+                      ? "Switch to light mode"
+                      : "Switch to dark mode"
+                  }
                 >
                   {/* Sliding Background */}
                   <div
-                    className={`absolute top-1 left-1 w-8 h-8 rounded-full bg-[#002d25] transition-all duration-300 ${
+                    className={`absolute top-1 left-1 w-8 h-8 rounded-full bg-[#002d25] dark:bg-primary-500 transition-all duration-300 ${
                       mode === "dark" ? "translate-x-0" : "translate-x-8"
                     }`}
                   />
@@ -93,10 +98,10 @@ const LayoutHeader = ({ collapsed, setCollapsed }) => {
                   <div className="w-8 h-8 flex items-center justify-center z-10">
                     <LucideIcon
                       name="Moon"
-                      size={20}
-                      className={
+                      size={16}
+                      className={`transition-colors duration-300 ${
                         mode === "dark" ? "text-white" : "text-[#002d25]"
-                      }
+                      }`}
                     />
                   </div>
 
@@ -104,10 +109,10 @@ const LayoutHeader = ({ collapsed, setCollapsed }) => {
                   <div className="w-8 h-8 flex items-center justify-center z-10">
                     <LucideIcon
                       name="Sun"
-                      size={20}
-                      className={
-                        mode === "light" ? "text-white" : "text-[#002d25]"
-                      }
+                      size={16}
+                      className={`transition-colors duration-300 ${
+                        mode === "light" ? "text-white" : "text-neutral-400"
+                      }`}
                     />
                   </div>
                 </button>

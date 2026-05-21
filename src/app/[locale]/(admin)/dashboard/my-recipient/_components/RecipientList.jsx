@@ -186,14 +186,14 @@ export default function RecipientList() {
   // ==================== Extra Header (UNCHANGED) ====================
   const TableExtra = (
     <div className="flex items-center gap-2 md:gap-0 ">
-      <div className="md:w-full hidden md:block">
+      {/* <div className="md:w-full hidden md:block">
         <Input
           placeholder={t("searchPlaceholder")}
           size="large"
           prefix={<SearchOutlined className="text-gray-400" />}
           className="w-48 rounded-lg"
         />
-      </div>
+      </div> */}
       <div className="md:hidden">
         <PrimaryButton
           icon={"Search"}

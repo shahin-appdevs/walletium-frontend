@@ -12,7 +12,7 @@ import { routing } from "@/i18n/routing";
 
 const NAV_LINKS = [
   { key: "home", href: "/" },
-  { key: "developer", href: "/developer" },
+  // { key: "developer", href: "/developer" },
   { key: "aboutUs", href: "/about" },
   { key: "services", href: "/services" },
   { key: "webJournal", href: "/journal" },

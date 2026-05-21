@@ -334,7 +334,7 @@ const AddMoney = () => {
               <div className="bg-neutral-50 dark:bg-slate-950 rounded-2xl p-6">
                 <form
                   onSubmit={handleSubmit(onSubmit)}
-                  className="md:space-y-6"
+                  className="space-y-4 md:space-y-6"
                 >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                     {/* Amount + Currency */}

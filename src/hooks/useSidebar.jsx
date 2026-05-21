@@ -121,15 +121,15 @@ const useSidebar = () => {
         </span>
       ),
       children: [
-        {
-          key: "/dashboard/transactions/all-transactions",
-          label: (
-            <span className="text-sm font-semibold">
-              {t("allTransactions")}
-            </span>
-          ),
-          icon: <LucideIcon name={"ListFilter"} size={14} />,
-        },
+        // {
+        //   key: "/dashboard/transactions/all-transactions",
+        //   label: (
+        //     <span className="text-sm font-semibold">
+        //       {t("allTransactions")}
+        //     </span>
+        //   ),
+        //   icon: <LucideIcon name={"ListFilter"} size={14} />,
+        // },
         {
           key: "/dashboard/transactions/add-money-log",
           label: (

@@ -27,8 +27,8 @@ const Stats = ({ t }) => {
         <StatsSkeleton />
       ) : (
         <div>
-          <div className="w-full flex flex-col md:flex-row items-center justify-between pb-4 lg:pb-0">
-            {/* Left Section */}
+          {/* <div className="w-full flex flex-col md:flex-row items-center justify-between pb-4 lg:pb-0">
+           
             <div className="flex items-center gap-4 mb-4">
               <div>
                 <p className="text-muted text-base! font-medium! ">
@@ -49,7 +49,7 @@ const Stats = ({ t }) => {
               </button>
             </div>
 
-            {/* Right Buttons */}
+          
             <div className="flex items-center gap-3">
               <button
                 onClick={() => router.push("/dashboard/add-money")}
@@ -69,7 +69,7 @@ const Stats = ({ t }) => {
                 {t("sendMoney")}
               </PrimaryButton>
             </div>
-          </div>
+          </div> */}
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {wallets?.map((item, index) => (

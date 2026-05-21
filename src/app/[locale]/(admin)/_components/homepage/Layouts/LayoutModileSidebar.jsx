@@ -54,7 +54,7 @@ const LayoutMobileSidebar = ({ isDrawerOpen, handleDrawerClose }) => {
           }}
         /> */}
           <Menu
-            onClick={handleNavigateRoutes}
+            onClick={(e)  => handleNavigateRoutes(e, handleDrawerClose())}
             openKeys={["2", "3", "5", "4"]}
             theme={mode}
             mode="inline"
