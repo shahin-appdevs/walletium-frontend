@@ -209,7 +209,7 @@ export function WhyChooseUsSection() {
                     <Icon size={22} strokeWidth={2.2} aria-hidden />
                   </div>
                   <div className="min-w-0">
-                    <h4 className="text-base font-semibold tracking-tight text-neutral-900 dark:text-white">
+                    <h4 className="text-base font-serif font-semibold tracking-tight text-neutral-900 dark:text-white">
                       {t(`features.${key}.title`)}
                     </h4>
                     <p className="mt-1.5 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">

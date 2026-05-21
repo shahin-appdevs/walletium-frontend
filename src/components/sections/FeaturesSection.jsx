@@ -146,7 +146,7 @@ export function FeaturesSection() {
               </div>
 
               {/* Title */}
-              <h3 className="font-serif font-bold text-xl mb-2.5 tracking-tight text-neutral-900 dark:text-white">
+              <h3 className="font-serif font-bold text-xl! mb-2.5 tracking-tight text-neutral-900 dark:text-white">
                 {t(`items.${key}.title`)}
               </h3>
 

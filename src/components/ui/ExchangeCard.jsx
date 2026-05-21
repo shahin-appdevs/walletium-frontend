@@ -160,76 +160,100 @@ export function ExchangeCard() {
         </div>
       </div>
 
-      {/* Sender Amount */}
-      <div className="mb-4">
-        <label
-          className="block text-sm font-semibold mb-2.5"
-          style={{
-            color: isDark ? "rgba(148,163,184,0.9)" : "rgba(71,85,105,0.95)",
-          }}
-        >
-          {t("senderAmount")}
-          <span style={{ color: "#00C9A7" }}>*</span>
-        </label>
-        <CurrencyInput
-          value={senderAmount}
-          onChange={setSenderAmount}
-          defaultCurrency="USD"
-          currencies={senderOptions}
-          selectedCode={senderCode}
-          onCurrencyChange={(c) => setSenderCode(c.code)}
-        />
-      </div>
-
-      {/* Swap divider */}
-      <div className="flex items-center gap-3 my-3">
+      {/* Amount cards with floating swap button between them */}
+      <div className="relative mb-6">
+        {/* Sender Amount card */}
         <div
-          className="flex-1 h-px"
+          className="rounded-2xl p-4 sm:p-5"
           style={{
             background: isDark
-              ? "rgba(255,255,255,0.06)"
-              : "rgba(15,23,42,0.08)",
-          }}
-        />
-        <button
-          type="button"
-          className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0"
-          style={{
-            background: "rgba(0,201,167,0.1)",
-            border: "1px solid rgba(0,201,167,0.25)",
+              ? "rgba(255,255,255,0.03)"
+              : "rgba(15,23,42,0.025)",
+            border: isDark
+              ? "1px solid rgba(255,255,255,0.06)"
+              : "1px solid rgba(15,23,42,0.06)",
           }}
         >
-          <ArrowUpDown size={15} style={{ color: "#00C9A7" }} />
-        </button>
+          <div className="flex items-center justify-between mb-2">
+            <span
+              className="text-[10px] font-bold tracking-[0.18em] uppercase"
+              style={{
+                color: isDark ? "#94A3B8" : "#64748B",
+              }}
+            >
+              {t("senderAmount")}
+            </span>
+          </div>
+          <div className="flex items-center gap-3">
+            <CurrencyInput
+              bare
+              autoFocus
+              value={senderAmount}
+              onChange={setSenderAmount}
+              defaultCurrency="USD"
+              currencies={senderOptions}
+              selectedCode={senderCode}
+              onCurrencyChange={(c) => setSenderCode(c.code)}
+            />
+          </div>
+        </div>
+
+        {/* Floating circular swap button */}
+        <div className="flex justify-center -my-3 relative z-10">
+          <button
+            type="button"
+            className="w-11 h-11 rounded-full flex items-center justify-center"
+            style={{
+              background: "linear-gradient(135deg, #00C9A7 0%, #00E5FF 100%)",
+              boxShadow:
+                "0 8px 22px rgba(0,201,167,0.45), 0 0 0 4px " +
+                (isDark ? "rgba(10,15,30,0.85)" : "rgba(255,255,255,0.9)"),
+            }}
+          >
+            <ArrowUpDown size={17} className="text-white" strokeWidth={2.5} />
+          </button>
+        </div>
+
+        {/* Receiver Amount card */}
         <div
-          className="flex-1 h-px"
+          className="rounded-2xl p-4 sm:p-5"
           style={{
             background: isDark
-              ? "rgba(255,255,255,0.06)"
-              : "rgba(15,23,42,0.08)",
-          }}
-        />
-      </div>
-
-      {/* Recipient Amount */}
-      <div className="mb-6">
-        <label
-          className="block text-sm font-semibold mb-2.5"
-          style={{
-            color: isDark ? "rgba(148,163,184,0.9)" : "rgba(71,85,105,0.95)",
+              ? "rgba(255,255,255,0.03)"
+              : "rgba(15,23,42,0.025)",
+            border: isDark
+              ? "1px solid rgba(255,255,255,0.06)"
+              : "1px solid rgba(15,23,42,0.06)",
           }}
         >
-          {t("recipientsAmount")}
-          <span style={{ color: "#00C9A7" }}>*</span>
-        </label>
-        <CurrencyInput
-          value={recipientAmount}
-          defaultCurrency="USD"
-          readOnly
-          currencies={receiverOptions}
-          selectedCode={receiverCode}
-          onCurrencyChange={(c) => setReceiverCode(c.code)}
-        />
+          <div className="flex items-center justify-between mb-2">
+            <span
+              className="text-[10px] font-bold tracking-[0.18em] uppercase"
+              style={{
+                color: isDark ? "#94A3B8" : "#64748B",
+              }}
+            >
+              {t("recipientsAmount")}
+            </span>
+            <span
+              className="text-[10px] font-bold tracking-[0.15em] uppercase"
+              style={{ color: "#00C9A7" }}
+            >
+              {t("exchangeRate")}
+            </span>
+          </div>
+          <div className="flex items-center gap-3">
+            <CurrencyInput
+              bare
+              value={recipientAmount}
+              defaultCurrency="USD"
+              readOnly
+              currencies={receiverOptions}
+              selectedCode={receiverCode}
+              onCurrencyChange={(c) => setReceiverCode(c.code)}
+            />
+          </div>
+        </div>
       </div>
 
       {/* Send Button */}

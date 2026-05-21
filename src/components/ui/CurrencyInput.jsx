@@ -26,6 +26,11 @@ const FALLBACK_CURRENCIES = [
  *                                                { code, name?, flag?, flagUrl? }.
  * @param {string}   [props.selectedCode]         Controls the selected currency.
  * @param {Function} [props.onCurrencyChange]     Fires with the picked currency item.
+ * @param {boolean}  [props.bare]                 Visual-only: strips the outer border /
+ *                                                background so the component can sit
+ *                                                inside a parent card (large-amount UI),
+ *                                                renders the amount big and the currency
+ *                                                picker as a pill.
  */
 export function CurrencyInput({
   value,
@@ -35,6 +40,8 @@ export function CurrencyInput({
   currencies,
   selectedCode,
   onCurrencyChange,
+  bare = false,
+  autoFocus = false,
 }) {
   const { mode } = useTheme();
   const isDark = mode === "dark";
@@ -81,31 +88,46 @@ export function CurrencyInput({
 
   return (
     <div
-      className="flex items-center rounded-xl relative transition-all duration-200 w-full min-w-0"
-      style={{
-        background: isDark ? "rgba(255,255,255,0.04)" : "rgba(15,23,42,0.03)",
-        border: defaultBorder,
-      }}
+      className={`flex items-center relative w-full min-w-0 ${
+        bare ? "" : "rounded-xl transition-all duration-200"
+      }`}
+      style={
+        bare
+          ? undefined
+          : {
+              background: isDark
+                ? "rgba(255,255,255,0.04)"
+                : "rgba(15,23,42,0.03)",
+              border: defaultBorder,
+            }
+      }
     >
       <input
         type="number"
         value={value}
         onChange={onChange ? (e) => onChange(e.target.value) : undefined}
         readOnly={readOnly}
+        autoFocus={autoFocus}
         placeholder="0.00"
-        className={`flex-1 min-w-0 w-full bg-transparent text-lg font-medium px-4 py-3.5 outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
+        className={`flex-1 min-w-0 w-full bg-transparent outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
+          bare
+            ? "text-2xl sm:text-3xl font-bold tracking-tight px-0 py-1"
+            : "text-lg font-medium px-4 py-3.5"
+        } ${
           isDark
             ? "text-white placeholder:text-white/20"
             : "text-slate-900 placeholder:text-slate-900/25"
         }`}
         style={{ caretColor: "#00C9A7" }}
         onFocus={(e) => {
+          if (bare) return;
           e.currentTarget.parentElement.style.border =
             "1px solid rgba(0,201,167,0.5)";
           e.currentTarget.parentElement.style.boxShadow =
             "0 0 0 3px rgba(0,201,167,0.1)";
         }}
         onBlur={(e) => {
+          if (bare) return;
           e.currentTarget.parentElement.style.border = defaultBorder;
           e.currentTarget.parentElement.style.boxShadow = "none";
         }}
@@ -115,16 +137,28 @@ export function CurrencyInput({
         <button
           type="button"
           onClick={() => setIsOpen((o) => !o)}
-          className={`flex items-center gap-2 px-4 py-3.5 transition-colors rounded-r-xl ${
-            isDark
-              ? "text-white hover:bg-white/5"
-              : "text-slate-900 hover:bg-slate-900/5"
+          className={`flex items-center gap-2 transition-colors ${
+            bare
+              ? `px-3 py-2 rounded-full ${
+                  isDark
+                    ? "bg-white/8 text-white hover:bg-white/15"
+                    : "bg-slate-900/5 text-slate-900 hover:bg-slate-900/10"
+                }`
+              : `px-4 py-3.5 rounded-r-xl ${
+                  isDark
+                    ? "text-white hover:bg-white/5"
+                    : "text-slate-900 hover:bg-slate-900/5"
+                }`
           }`}
-          style={{
-            borderLeft: isDark
-              ? "1px solid rgba(255,255,255,0.08)"
-              : "1px solid rgba(15,23,42,0.08)",
-          }}
+          style={
+            bare
+              ? undefined
+              : {
+                  borderLeft: isDark
+                    ? "1px solid rgba(255,255,255,0.08)"
+                    : "1px solid rgba(15,23,42,0.08)",
+                }
+          }
         >
           <CurrencyFlag currency={selected} size="sm" />
           <span className="text-sm font-bold min-w-8">{selected.code}</span>
@@ -147,7 +181,7 @@ export function CurrencyInput({
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8, scale: 0.95 }}
               transition={{ duration: 0.15, ease: "easeOut" }}
-              className="absolute end-0 top-full mt-2 z-50 w-56 rounded-2xl overflow-hidden max-h-72 overflow-y-auto"
+              className="absolute end-0 top-full mt-2 z-50 w-56 rounded-2xl max-h-72 overflow-y-auto thin-scrollbar"
               style={{
                 background: isDark
                   ? "rgba(8, 18, 38, 0.98)"
