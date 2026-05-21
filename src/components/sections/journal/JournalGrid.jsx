@@ -1,6 +1,7 @@
 "use client";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight, BookOpen, Calendar, Loader2, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -43,6 +44,7 @@ export function JournalGrid({
   initialPage,
   activeCategoryId = null,
 }) {
+  const t = useTranslations("Frontend.webJournal.grid");
   const [articles, setArticles] = useState(initialArticles);
   const [page, setPage] = useState(initialPage);
   const [hasMore, setHasMore] = useState(initialHasMore);
@@ -66,7 +68,7 @@ export function JournalGrid({
       setHasMore(journals?.next_page_url !== null);
       setPage(nextPage);
     } catch (err) {
-      setError("Couldn't load more articles. Please try again.");
+      setError(t("errorMessage"));
     } finally {
       setLoading(false);
     }
@@ -79,10 +81,10 @@ export function JournalGrid({
           <BookOpen size={24} />
         </div>
         <h3 className="font-serif font-bold text-xl mb-2 text-neutral-900 dark:text-white">
-          No articles yet
+          {t("emptyTitle")}
         </h3>
         <p className="text-sm text-neutral-600 dark:text-neutral-400">
-          Check back soon for new stories from the Walletium team.
+          {t("emptyDescription")}
         </p>
       </div>
     );
@@ -175,9 +177,14 @@ export function JournalGrid({
                     <Link
                       href={`/journal/${article.id}/${article.slug}`}
                       className="inline-flex items-center gap-1 text-xs font-bold text-primary-600 dark:text-primary-400 hover:gap-2 transition-all"
-                      aria-label={`Read ${article.title}`}
+                      aria-label={t("readAria", { title: article.title })}
                     >
-                      Read <ArrowUpRight size={13} strokeWidth={2.5} />
+                      {t("read")}{" "}
+                      <ArrowUpRight
+                        size={13}
+                        strokeWidth={2.5}
+                        className="rtl:-scale-x-100"
+                      />
                     </Link>
                   </div>
                 </div>
@@ -194,7 +201,7 @@ export function JournalGrid({
             onClick={loadMore}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white dark:bg-neutral-800/80 text-neutral-900 dark:text-white font-bold text-sm border border-neutral-200 dark:border-neutral-700 hover:border-primary-300 dark:hover:border-primary-500/50 hover:text-primary-600 dark:hover:text-primary-400 transition-all"
           >
-            Try again
+            {t("tryAgain")}
           </button>
         </div>
       )}
@@ -211,10 +218,10 @@ export function JournalGrid({
             {loading ? (
               <>
                 <Loader2 size={16} strokeWidth={2.5} className="animate-spin" />
-                Loading…
+                {t("loading")}
               </>
             ) : (
-              <>Load more articles</>
+              <>{t("loadMore")}</>
             )}
           </motion.button>
         </div>

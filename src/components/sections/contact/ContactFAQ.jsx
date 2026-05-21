@@ -1,32 +1,13 @@
 "use client";
 import { AnimatePresence, motion } from "framer-motion";
 import { HelpCircle, Plus } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
-const FAQS = [
-  {
-    q: "How do I get started with Walletium?",
-    a: "Create a free account in under two minutes, complete a quick KYC verification, and you can send, receive, and exchange money right away. No credit card required to start.",
-  },
-  {
-    q: "Is Walletium safe and secure?",
-    a: "Yes. Every transaction is protected by bank-grade encryption, 2FA, and round-the-clock fraud monitoring. We're PCI-DSS Level 1 and ISO 27001 certified.",
-  },
-  {
-    q: "What are the transaction fees?",
-    a: "Personal P2P transfers within the same currency are free. Cross-border and FX transfers use transparent mid-market rates with a small fee shown upfront — no hidden charges, ever.",
-  },
-  {
-    q: "How long do international transfers take?",
-    a: "Most international transfers settle in under 10 seconds for supported corridors, with the longest taking a single business day. You'll get real-time status updates throughout.",
-  },
-  {
-    q: "Do you support my country?",
-    a: "Walletium operates in 120+ countries with 180+ supported corridors. Check our coverage page or just sign up — we'll instantly show you what's available in your region.",
-  },
-];
+const FAQS = ["getStarted", "safe", "fees", "duration", "countries"];
 
 export function ContactFAQ() {
+  const t = useTranslations("Frontend.contact.faq");
   const [openIndex, setOpenIndex] = useState(0);
 
   return (
@@ -51,24 +32,23 @@ export function ContactFAQ() {
           className="text-center max-w-2xl mx-auto mb-12 sm:mb-14"
         >
           <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold tracking-[0.2em] uppercase mb-4 bg-primary-50 dark:bg-primary-500/15 text-primary-600 dark:text-primary-400 ring-1 ring-primary-200/60 dark:ring-primary-500/30">
-            <HelpCircle size={12} /> FAQ
+            <HelpCircle size={12} /> {t("badge")}
           </span>
           <h2 className="font-serif font-black leading-tight mb-4 text-2xl sm:text-3xl lg:text-4xl xl:text-5xl tracking-tight text-neutral-900 dark:text-white">
-            Frequently asked questions
+            {t("heading")}
           </h2>
           <p className="text-sm sm:text-base text-neutral-600 dark:text-neutral-400">
-            Quick answers to the questions we hear most. Still curious? The
-            form above is the fastest way to reach us.
+            {t("description")}
           </p>
         </motion.div>
 
         {/* Accordion */}
         <div className="space-y-3 sm:space-y-4">
-          {FAQS.map((item, i) => {
+          {FAQS.map((key, i) => {
             const isOpen = openIndex === i;
             return (
               <motion.div
-                key={item.q}
+                key={key}
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
@@ -86,7 +66,7 @@ export function ContactFAQ() {
                   aria-expanded={isOpen}
                 >
                   <span className="font-serif font-bold text-base sm:text-lg leading-snug text-neutral-900 dark:text-white">
-                    {item.q}
+                    {t(`items.${key}.q`)}
                   </span>
                   <motion.span
                     animate={{ rotate: isOpen ? 45 : 0 }}
@@ -120,7 +100,7 @@ export function ContactFAQ() {
                       className="overflow-hidden"
                     >
                       <div className="px-5 sm:px-6 pb-5 sm:pb-6 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
-                        {item.a}
+                        {t(`items.${key}.a`)}
                       </div>
                     </motion.div>
                   )}

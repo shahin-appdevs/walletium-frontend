@@ -1,8 +1,11 @@
 "use client";
 import { motion } from "framer-motion";
 import { BookOpen } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export function JournalHero() {
+  const t = useTranslations("Frontend.webJournal.hero");
+
   return (
     <section className="relative overflow-hidden pt-32 sm:pt-36 lg:pt-44 pb-10 sm:pb-12 lg:pb-14 bg-linear-to-b from-slate-50 via-emerald-50/40 to-white dark:from-walletium-dark dark:via-walletium-dark-mid dark:to-[#091829]">
       {/* Glow accents */}
@@ -30,19 +33,17 @@ export function JournalHero() {
           transition={{ duration: 0.6 }}
         >
           <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold tracking-[0.2em] uppercase mb-6 bg-primary-50 dark:bg-primary-500/15 text-primary-600 dark:text-primary-400 ring-1 ring-primary-200/60 dark:ring-primary-500/30">
-            <BookOpen size={12} /> Walletium Journal
+            <BookOpen size={12} /> {t("badge")}
           </span>
           <h1 className="font-serif font-black leading-[1.05] mb-6 text-4xl sm:text-5xl lg:text-6xl xl:text-[68px] tracking-tight text-neutral-900 dark:text-white">
-            Insights, finance trends &{" "}
+            {t("headingPart1")}{" "}
             <span className="text-primary-600 dark:text-primary-400">
-              digital wallet
+              {t("headingHighlight")}
             </span>{" "}
-            updates
+            {t("headingPart2")}
           </h1>
           <p className="text-base sm:text-lg lg:text-xl leading-relaxed text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
-            Stories, deep-dives, and product news from the Walletium team —
-            covering the future of digital finance, security, and developer
-            tools.
+            {t("description")}
           </p>
         </motion.div>
       </div>

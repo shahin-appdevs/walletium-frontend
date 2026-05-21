@@ -1,8 +1,11 @@
 "use client";
 import { motion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export function ContactHero() {
+  const t = useTranslations("Frontend.contact.hero");
+
   return (
     <section className="relative overflow-hidden pt-32 sm:pt-36 lg:pt-44 pb-10 sm:pb-14 lg:pb-16 bg-linear-to-b from-slate-50 via-emerald-50/40 to-white dark:from-walletium-dark dark:via-walletium-dark-mid dark:to-[#091829]">
       {/* Glow accents */}
@@ -30,17 +33,16 @@ export function ContactHero() {
           transition={{ duration: 0.6 }}
         >
           <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold tracking-[0.2em] uppercase mb-6 bg-primary-50 dark:bg-primary-500/15 text-primary-600 dark:text-primary-400 ring-1 ring-primary-200/60 dark:ring-primary-500/30">
-            <MessageCircle size={12} /> Contact Us
+            <MessageCircle size={12} /> {t("badge")}
           </span>
           <h1 className="font-serif font-black leading-[1.05] mb-6 text-4xl sm:text-5xl lg:text-6xl xl:text-[68px] tracking-tight text-neutral-900 dark:text-white">
-            Let&apos;s connect with{" "}
+            {t("headingPart1")}{" "}
             <span className="text-primary-600 dark:text-primary-400">
-              Walletium
+              {t("headingHighlight")}
             </span>
           </h1>
           <p className="text-base sm:text-lg lg:text-xl leading-relaxed text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
-            We&apos;re here to help you on your financial journey — from quick
-            answers to deep integrations, our team is one message away.
+            {t("description")}
           </p>
         </motion.div>
       </div>

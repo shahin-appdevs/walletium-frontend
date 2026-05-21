@@ -1236,6 +1236,138 @@
                 }
             }
         },
+        "contact": {
+            "hero": {
+                "badge": "Contact Us",
+                "headingPart1": "Let's connect with",
+                "headingHighlight": "Walletium",
+                "description": "We're here to help you on your financial journey — from quick answers to deep integrations, our team is one message away."
+            },
+            "info": {
+                "cards": {
+                    "location": {
+                        "label": "Our Location",
+                        "line1": "20-22 Wenlock Road",
+                        "line2": "London, England, N1 7GU"
+                    },
+                    "call": {
+                        "label": "Call Us",
+                        "line1": "+03601 885399",
+                        "sub": "Available during office hours"
+                    },
+                    "hours": {
+                        "label": "Office Hours",
+                        "line1": "Monday – Friday",
+                        "sub": "9:00am – 9:00pm GMT"
+                    },
+                    "email": {
+                        "label": "Email Us",
+                        "line1": "support@example.com",
+                        "line2": "example@gmail.com"
+                    }
+                }
+            },
+            "form": {
+                "eyebrow": "Send a Message",
+                "heading": "Feel free to get in touch with us",
+                "description": "Have a question, feedback, or partnership idea? Drop us a note — we read every message.",
+                "fields": {
+                    "nameLabel": "Name",
+                    "namePlaceholder": "Enter Name...",
+                    "emailLabel": "Email",
+                    "emailPlaceholder": "Enter Email...",
+                    "messageLabel": "Message",
+                    "messagePlaceholder": "Write Here..."
+                },
+                "sending": "Sending…",
+                "sendMessage": "Send Message",
+                "successTitle": "Message sent successfully",
+                "successDescription": "We'll get back to you within 24 hours. Thanks for reaching out!",
+                "recaptchaWarning": "Please verify the reCAPTCHA",
+                "failedToast": "Failed to send message. Please try again.",
+                "validation": {
+                    "nameRequired": "Name is required",
+                    "emailRequired": "Email is required",
+                    "emailInvalid": "Please enter a valid email address",
+                    "messageRequired": "Message is required",
+                    "messageMin": "Message must be at least 10 characters"
+                },
+                "sidePanel": {
+                    "eyebrow": "Why Reach Out",
+                    "heading": "We're here to help",
+                    "description": "Whether you have a quick question, need integration help, or want to explore a partnership — our team is ready.",
+                    "promises": {
+                        "response": {
+                            "title": "24-hour response",
+                            "desc": "Most inquiries are answered within one business day."
+                        },
+                        "secure": {
+                            "title": "Secure & confidential",
+                            "desc": "All messages are encrypted end-to-end."
+                        },
+                        "worldwide": {
+                            "title": "Available worldwide",
+                            "desc": "Support in 12+ languages across 120+ countries."
+                        }
+                    }
+                }
+            },
+            "faq": {
+                "badge": "FAQ",
+                "heading": "Frequently asked questions",
+                "description": "Quick answers to the questions we hear most. Still curious? The form above is the fastest way to reach us.",
+                "items": {
+                    "getStarted": {
+                        "q": "How do I get started with Walletium?",
+                        "a": "Create a free account in under two minutes, complete a quick KYC verification, and you can send, receive, and exchange money right away. No credit card required to start."
+                    },
+                    "safe": {
+                        "q": "Is Walletium safe and secure?",
+                        "a": "Yes. Every transaction is protected by bank-grade encryption, 2FA, and round-the-clock fraud monitoring. We're PCI-DSS Level 1 and ISO 27001 certified."
+                    },
+                    "fees": {
+                        "q": "What are the transaction fees?",
+                        "a": "Personal P2P transfers within the same currency are free. Cross-border and FX transfers use transparent mid-market rates with a small fee shown upfront — no hidden charges, ever."
+                    },
+                    "duration": {
+                        "q": "How long do international transfers take?",
+                        "a": "Most international transfers settle in under 10 seconds for supported corridors, with the longest taking a single business day. You'll get real-time status updates throughout."
+                    },
+                    "countries": {
+                        "q": "Do you support my country?",
+                        "a": "Walletium operates in 120+ countries with 180+ supported corridors. Check our coverage page or just sign up — we'll instantly show you what's available in your region."
+                    }
+                }
+            }
+        },
+        "webJournal": {
+            "hero": {
+                "badge": "Walletium Journal",
+                "headingPart1": "Insights, finance trends &",
+                "headingHighlight": "digital wallet",
+                "headingPart2": "updates",
+                "description": "Stories, deep-dives, and product news from the Walletium team — covering the future of digital finance, security, and developer tools."
+            },
+            "grid": {
+                "emptyTitle": "No articles yet",
+                "emptyDescription": "Check back soon for new stories from the Walletium team.",
+                "errorMessage": "Couldn't load more articles. Please try again.",
+                "tryAgain": "Try again",
+                "loading": "Loading…",
+                "loadMore": "Load more articles",
+                "read": "Read",
+                "readAria": "Read {title}"
+            },
+            "sidebar": {
+                "categoriesTitle": "Categories",
+                "recentPostsTitle": "Recent Posts"
+            },
+            "article": {
+                "breadcrumbAria": "Breadcrumb",
+                "breadcrumbHome": "Home",
+                "breadcrumbJournal": "Journal"
+            }
+        },
         "notFound": {
             "eyebrow": "404 Error",
             "titleLead": "Lost in",

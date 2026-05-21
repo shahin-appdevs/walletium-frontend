@@ -1,9 +1,11 @@
 import { formatDate, getCategoryGradient } from "@/utils/journal";
 import { ChevronRight, FolderOpen, History } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 
 function CategoriesWidget({ categories = [] }) {
+  const t = useTranslations("Frontend.webJournal.sidebar");
   if (!categories?.length) return null;
 
   return (
@@ -13,7 +15,7 @@ function CategoriesWidget({ categories = [] }) {
           <FolderOpen size={16} strokeWidth={2.2} />
         </div>
         <h2 className="font-serif font-bold text-base text-neutral-900 dark:text-white">
-          Categories
+          {t("categoriesTitle")}
         </h2>
       </div>
       <ul className="divide-y divide-neutral-100 dark:divide-neutral-700/60">
@@ -48,6 +50,7 @@ function CategoriesWidget({ categories = [] }) {
 }
 
 function RecentPostsWidget({ posts = [] }) {
+  const t = useTranslations("Frontend.webJournal.sidebar");
   if (!posts?.length) return null;
 
   return (
@@ -57,7 +60,7 @@ function RecentPostsWidget({ posts = [] }) {
           <History size={16} strokeWidth={2.2} />
         </div>
         <h2 className="font-serif font-bold text-base text-neutral-900 dark:text-white">
-          Recent Posts
+          {t("recentPostsTitle")}
         </h2>
       </div>
       <ul className="p-3 sm:p-4 space-y-2">

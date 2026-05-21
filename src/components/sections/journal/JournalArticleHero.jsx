@@ -4,10 +4,12 @@ import {
   getCategoryGradient,
 } from "@/utils/journal";
 import { Calendar, ChevronRight, Clock, Home } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 
 export function JournalArticleHero({ article }) {
+  const t = useTranslations("Frontend.webJournal.article");
   if (!article) return null;
 
   const gradient = getCategoryGradient(article.category);
@@ -37,23 +39,23 @@ export function JournalArticleHero({ article }) {
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumbs */}
         <nav
-          aria-label="Breadcrumb"
+          aria-label={t("breadcrumbAria")}
           className="flex items-center gap-1.5 text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 mb-6 sm:mb-8"
         >
           <Link
             href="/"
             className="inline-flex items-center gap-1 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
           >
-            <Home size={13} /> Home
+            <Home size={13} /> {t("breadcrumbHome")}
           </Link>
-          <ChevronRight size={13} className="opacity-60" />
+          <ChevronRight size={13} className="opacity-60 rtl:rotate-180" />
           <Link
             href="/journal"
             className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
           >
-            Journal
+            {t("breadcrumbJournal")}
           </Link>
-          <ChevronRight size={13} className="opacity-60" />
+          <ChevronRight size={13} className="opacity-60 rtl:rotate-180" />
           <span className="truncate text-neutral-700 dark:text-neutral-300">
             {article.title}
           </span>

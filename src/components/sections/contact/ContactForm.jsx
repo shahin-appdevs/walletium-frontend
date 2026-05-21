@@ -17,47 +17,41 @@ import {
   Sparkles,
   User,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useMemo, useRef, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 const PROMISES = [
-  {
-    Icon: Clock,
-    title: "24-hour response",
-    desc: "Most inquiries are answered within one business day.",
-  },
-  {
-    Icon: ShieldCheck,
-    title: "Secure & confidential",
-    desc: "All messages are encrypted end-to-end.",
-  },
-  {
-    Icon: Globe2,
-    title: "Available worldwide",
-    desc: "Support in 12+ languages across 120+ countries.",
-  },
+  { key: "response", Icon: Clock },
+  { key: "secure", Icon: ShieldCheck },
+  { key: "worldwide", Icon: Globe2 },
 ];
 
-const schema = yup.object({
-  name: yup.string().trim().required("Name is required"),
-  email: yup
-    .string()
-    .trim()
-    .required("Email is required")
-    .email("Please enter a valid email address"),
-  message: yup
-    .string()
-    .trim()
-    .required("Message is required")
-    .min(10, "Message must be at least 10 characters"),
-});
-
 export function ContactForm() {
+  const t = useTranslations("Frontend.contact.form");
   const { settings } = useBasicSettings();
   const recaptchaKey = settings?.google_recaptcha_site_key;
   const recaptchaStatus = settings?.google_recaptcha_status;
+
+  const schema = useMemo(
+    () =>
+      yup.object({
+        name: yup.string().trim().required(t("validation.nameRequired")),
+        email: yup
+          .string()
+          .trim()
+          .required(t("validation.emailRequired"))
+          .email(t("validation.emailInvalid")),
+        message: yup
+          .string()
+          .trim()
+          .required(t("validation.messageRequired"))
+          .min(10, t("validation.messageMin")),
+      }),
+    [t],
+  );
 
   const [submitted, setSubmitted] = useState(false);
   const [recaptcha, setRecaptcha] = useState(null);
@@ -77,7 +71,7 @@ export function ContactForm() {
 
   const onSubmit = async (data) => {
     if (recaptchaStatus && recaptchaKey && !recaptcha) {
-      showToast.warning("Please verify the reCAPTCHA");
+      showToast.warning(t("recaptchaWarning"));
       return;
     }
 
@@ -110,7 +104,7 @@ export function ContactForm() {
       } else if (errMessages?.message) {
         showToast.error(errMessages.message);
       } else {
-        showToast.error("Failed to send message. Please try again.");
+        showToast.error(t("failedToast"));
       }
 
       setRecaptcha(null);
@@ -157,14 +151,13 @@ export function ContactForm() {
             />
             <div className="relative p-6 sm:p-8 lg:p-10 rounded-3xl bg-white/90 dark:bg-neutral-900/60 backdrop-blur-xl border border-neutral-200/80 dark:border-neutral-700/60 shadow-[0_30px_80px_-20px_rgba(15,23,42,0.12)] dark:shadow-[0_30px_80px_-20px_rgba(0,0,0,0.5)]">
               <span className="inline-block text-[10px] font-bold tracking-[0.2em] uppercase text-primary-600 dark:text-primary-400 mb-3">
-                Send a Message
+                {t("eyebrow")}
               </span>
               <h2 className="font-serif font-black leading-tight mb-2 text-2xl sm:text-3xl lg:text-4xl tracking-tight text-neutral-900 dark:text-white">
-                Feel free to get in touch with us
+                {t("heading")}
               </h2>
               <p className="text-sm sm:text-base text-neutral-600 dark:text-neutral-400 mb-8 max-w-md">
-                Have a question, feedback, or partnership idea? Drop us a note —
-                we read every message.
+                {t("description")}
               </p>
 
               <AnimatePresence mode="wait">
@@ -188,11 +181,10 @@ export function ContactForm() {
                     </div>
                     <div>
                       <p className="text-sm font-bold text-primary-700 dark:text-primary-300 mb-1">
-                        Message sent successfully
+                        {t("successTitle")}
                       </p>
                       <p className="text-xs text-primary-600/80 dark:text-primary-400/80">
-                        We&apos;ll get back to you within 24 hours. Thanks for
-                        reaching out!
+                        {t("successDescription")}
                       </p>
                     </div>
                   </motion.div>
@@ -214,20 +206,21 @@ export function ContactForm() {
                           htmlFor="name"
                           className="block text-xs font-bold tracking-wider uppercase mb-2 text-neutral-700 dark:text-neutral-300"
                         >
-                          Name <span className="text-primary-500">*</span>
+                          {t("fields.nameLabel")}{" "}
+                          <span className="text-primary-500">*</span>
                         </label>
                         <div className="relative">
                           <User
                             size={16}
-                            className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400 dark:text-neutral-500 pointer-events-none"
+                            className="absolute start-4 top-1/2 -translate-y-1/2 text-neutral-400 dark:text-neutral-500 pointer-events-none"
                           />
                           <input
                             id="name"
                             type="text"
-                            placeholder="Enter Name..."
+                            placeholder={t("fields.namePlaceholder")}
                             aria-invalid={!!errors.name}
                             {...register("name")}
-                            className="w-full pl-10 pr-4 py-3 rounded-xl bg-white dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-primary-400 dark:focus:border-primary-500 focus:shadow-lg focus:shadow-primary-500/10 focus:outline-none transition-all"
+                            className="w-full ps-10 pe-4 py-3 rounded-xl bg-white dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-primary-400 dark:focus:border-primary-500 focus:shadow-lg focus:shadow-primary-500/10 focus:outline-none transition-all"
                           />
                         </div>
                         {errors.name && (
@@ -243,20 +236,21 @@ export function ContactForm() {
                           htmlFor="email"
                           className="block text-xs font-bold tracking-wider uppercase mb-2 text-neutral-700 dark:text-neutral-300"
                         >
-                          Email <span className="text-primary-500">*</span>
+                          {t("fields.emailLabel")}{" "}
+                          <span className="text-primary-500">*</span>
                         </label>
                         <div className="relative">
                           <AtSign
                             size={16}
-                            className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400 dark:text-neutral-500 pointer-events-none"
+                            className="absolute start-4 top-1/2 -translate-y-1/2 text-neutral-400 dark:text-neutral-500 pointer-events-none"
                           />
                           <input
                             id="email"
                             type="email"
-                            placeholder="Enter Email..."
+                            placeholder={t("fields.emailPlaceholder")}
                             aria-invalid={!!errors.email}
                             {...register("email")}
-                            className="w-full pl-10 pr-4 py-3 rounded-xl bg-white dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-primary-400 dark:focus:border-primary-500 focus:shadow-lg focus:shadow-primary-500/10 focus:outline-none transition-all"
+                            className="w-full ps-10 pe-4 py-3 rounded-xl bg-white dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-primary-400 dark:focus:border-primary-500 focus:shadow-lg focus:shadow-primary-500/10 focus:outline-none transition-all"
                           />
                         </div>
                         {errors.email && (
@@ -273,20 +267,21 @@ export function ContactForm() {
                         htmlFor="message"
                         className="block text-xs font-bold tracking-wider uppercase mb-2 text-neutral-700 dark:text-neutral-300"
                       >
-                        Message <span className="text-primary-500">*</span>
+                        {t("fields.messageLabel")}{" "}
+                        <span className="text-primary-500">*</span>
                       </label>
                       <div className="relative">
                         <MessageSquare
                           size={16}
-                          className="absolute left-4 top-4 text-neutral-400 dark:text-neutral-500 pointer-events-none"
+                          className="absolute start-4 top-4 text-neutral-400 dark:text-neutral-500 pointer-events-none"
                         />
                         <textarea
                           id="message"
                           rows={6}
-                          placeholder="Write Here..."
+                          placeholder={t("fields.messagePlaceholder")}
                           aria-invalid={!!errors.message}
                           {...register("message")}
-                          className="w-full pl-10 pr-4 py-3 rounded-xl bg-white dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-primary-400 dark:focus:border-primary-500 focus:shadow-lg focus:shadow-primary-500/10 focus:outline-none transition-all resize-none"
+                          className="w-full ps-10 pe-4 py-3 rounded-xl bg-white dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-primary-400 dark:focus:border-primary-500 focus:shadow-lg focus:shadow-primary-500/10 focus:outline-none transition-all resize-none"
                         />
                       </div>
                       {errors.message && (
@@ -322,8 +317,12 @@ export function ContactForm() {
                           "linear-gradient(135deg, #0ebe98 0%, #00E5FF 100%)",
                       }}
                     >
-                      {isLoading ? "Sending…" : "Send Message"}
-                      <Send size={16} strokeWidth={2.5} />
+                      {isLoading ? t("sending") : t("sendMessage")}
+                      <Send
+                        size={16}
+                        strokeWidth={2.5}
+                        className="rtl:-scale-x-100"
+                      />
                     </motion.button>
                   </motion.form>
                 )}
@@ -360,19 +359,18 @@ export function ContactForm() {
 
               <div className="relative">
                 <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase mb-5 bg-white/10 text-primary-300 border border-primary-400/30 backdrop-blur-sm">
-                  <Sparkles size={11} /> Why Reach Out
+                  <Sparkles size={11} /> {t("sidePanel.eyebrow")}
                 </span>
                 <h3 className="font-serif font-black text-xl sm:text-2xl mb-3 tracking-tight">
-                  We&apos;re here to help
+                  {t("sidePanel.heading")}
                 </h3>
                 <p className="text-sm text-neutral-300 leading-relaxed mb-7">
-                  Whether you have a quick question, need integration help, or
-                  want to explore a partnership — our team is ready.
+                  {t("sidePanel.description")}
                 </p>
 
                 <ul className="space-y-5">
-                  {PROMISES.map(({ Icon, title, desc }) => (
-                    <li key={title} className="flex items-start gap-3.5">
+                  {PROMISES.map(({ key, Icon }) => (
+                    <li key={key} className="flex items-start gap-3.5">
                       <div
                         className="shrink-0 w-10 h-10 rounded-xl flex items-center justify-center"
                         style={{
@@ -388,9 +386,11 @@ export function ContactForm() {
                         />
                       </div>
                       <div>
-                        <p className="text-sm font-bold mb-0.5">{title}</p>
+                        <p className="text-sm font-bold mb-0.5">
+                          {t(`sidePanel.promises.${key}.title`)}
+                        </p>
                         <p className="text-xs text-neutral-400 leading-relaxed">
-                          {desc}
+                          {t(`sidePanel.promises.${key}.desc`)}
                         </p>
                       </div>
                     </li>

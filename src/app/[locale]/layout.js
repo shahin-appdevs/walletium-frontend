@@ -1,4 +1,5 @@
 import { Inter } from "next/font/google";
+import Script from "next/script";
 
 import "./styles/globals.css";
 
@@ -34,15 +35,15 @@ export default async function RootLayout({ children, params }) {
   const isRTL = locale === "ar";
 
   return (
-    <html lang={locale} dir={isRTL ? "rtl" : "ltr"} suppressHydrationWarning>
+    <html lang={locale} dir={isRTL ? "rtl" : "ltr"} suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         {/* Apply the dark class before React paints, preventing FOUC for
-            dark-mode users. Runs synchronously before hydration. */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `try{if(localStorage.getItem('theme')==='dark')document.documentElement.classList.add('dark');}catch(e){}`,
-          }}
-        />
+            dark-mode users. Runs synchronously before hydration. Using
+            next/script with beforeInteractive so locale switches don't
+            re-render an inline <script> through React. */}
+        <Script id="theme-init" strategy="beforeInteractive">
+          {`try{if(localStorage.getItem('theme')==='dark')document.documentElement.classList.add('dark');}catch(e){}`}
+        </Script>
       </head>
       <body
         className={`${inter.variable} font-sans antialiased max-w-[1920px] mx-auto w-full shadow`}
