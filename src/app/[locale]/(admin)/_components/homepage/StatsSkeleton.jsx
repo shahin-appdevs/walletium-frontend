@@ -21,23 +21,29 @@ const StatsSkeleton = () => {
         </div>
       </div>
 
-      {/* Currency Cards Skeleton */}
+      {/* Currency Cards Skeleton — mirrors StatsCard layout */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         {Array.from({ length: 5 }).map((_, i) => (
           <div
             key={i}
-            className="bg-white dark:bg-slate-900 rounded-2xl shadow-xs p-4 flex flex-col gap-3 animate-pulse"
+            className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm p-5 flex flex-col gap-5 animate-pulse"
           >
-            {/* Icon Section */}
-            <div className="flex items-center justify-between">
-              <div className="w-12 h-12 rounded-xl bg-gray-300 dark:bg-slate-700" />
-              <div className="w-7 h-7 rounded-full bg-gray-300 dark:bg-slate-700" />
+            {/* Top: flag + name/code + menu */}
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-11 h-11 rounded-full bg-gray-300 dark:bg-slate-700 shrink-0" />
+                <div className="min-w-0 space-y-1.5">
+                  <div className="h-4 w-32 bg-gray-300 dark:bg-slate-700 rounded" />
+                  <div className="h-3 w-10 bg-gray-200 dark:bg-slate-700 rounded" />
+                </div>
+              </div>
+              <div className="w-5 h-5 bg-gray-200 dark:bg-slate-700 rounded shrink-0" />
             </div>
 
-            {/* Text Section */}
-            <div>
-              <div className="h-4 w-24 bg-gray-200 dark:bg-slate-700 rounded mb-2" />
-              <div className="h-6 w-32 bg-gray-300 dark:bg-slate-600 rounded" />
+            {/* Balance */}
+            <div className="space-y-2">
+              <div className="h-3 w-24 bg-gray-200 dark:bg-slate-700 rounded" />
+              <div className="h-7 w-32 bg-gray-300 dark:bg-slate-600 rounded" />
             </div>
           </div>
         ))}

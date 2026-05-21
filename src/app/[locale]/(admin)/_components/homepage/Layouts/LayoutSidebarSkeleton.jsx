@@ -6,8 +6,10 @@ export default function LayoutSidebarSkeleton() {
   const { mode } = useSidebar();
   return (
     <>
-      <div className="hidden sidebar lg:block ">
-        {/* Desktop Sidebar */}
+      <div className="hidden sidebar lg:block lg:fixed lg:top-0 lg:start-0 lg:h-screen lg:z-30 transition-none!">
+        {/* Desktop Sidebar — match LayoutSidebar's `fixed` positioning so the
+            content column's `ms-(--sidebar-offset)` isn't double-counted
+            against a sticky skeleton (which would take flow space too). */}
         <Sider
           collapsible
           width={252}
@@ -16,8 +18,7 @@ export default function LayoutSidebarSkeleton() {
           breakpoint="lg"
           theme={mode}
           collapsedWidth="0"
-          // style={{ background: background }}
-          className="sticky! top-0! h-screen! overflow-y-auto overflow-x-hidden!  sidebar-main"
+          className="h-screen! overflow-y-auto overflow-x-hidden! sidebar-main"
         >
           <div className="p-2 lg:px-4  lg:py-8 space-y-4!">
             {/* Logo */}

@@ -1,19 +1,19 @@
 "use client";
 
-import LucideIcon from "@/components/LucideIcon";
+// import LucideIcon from "@/components/LucideIcon";
 import CurrencyCard from "./StatsCard";
-import useToggleShow from "@/hooks/useToggleShow";
-import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
+// import useToggleShow from "@/hooks/useToggleShow";
+// import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import StatsSkeleton from "./StatsSkeleton";
 import { useEffect, useState } from "react";
 import { useDashboardContext } from "@/contexts/DashboardProvider";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 const Stats = ({ t }) => {
-  const { toggleShow, setToggleShow } = useToggleShow();
+  // const { toggleShow, setToggleShow } = useToggleShow();
   const [showSidebar, setShowSidebar] = useState(true);
   const { wallets } = useDashboardContext();
-  const router = useRouter();
+  // const router = useRouter();
 
   // show sidebar skeleton condition
   useEffect(() => {
@@ -71,7 +71,7 @@ const Stats = ({ t }) => {
             </div>
           </div> */}
           {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
             {wallets?.map((item, index) => (
               <CurrencyCard key={index} item={item} />
             ))}

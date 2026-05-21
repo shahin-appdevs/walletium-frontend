@@ -16,6 +16,7 @@
         },
         "home": {
             "totalWalletBalance": "إجمالي رصيد المحفظة",
+            "availableBalance": "الرصيد المتاح",
             "addMoney": "إضافة أموال",
             "sendMoney": "إرسال أموال",
             "overviewTitle": "نظرة عامة على المعاملات",

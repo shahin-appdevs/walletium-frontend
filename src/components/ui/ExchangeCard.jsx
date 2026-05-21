@@ -78,9 +78,6 @@ export function ExchangeCard() {
           : "rgba(255,255,255,0.85)",
         backdropFilter: "blur(24px)",
         WebkitBackdropFilter: "blur(24px)",
-        border: isDark
-          ? "1px solid rgba(255,255,255,0.08)"
-          : "1px solid rgba(15,23,42,0.08)",
         boxShadow: isDark
           ? "0 0 60px rgba(0,180,160,0.12), 0 30px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06)"
           : "0 0 60px rgba(0,180,160,0.10), 0 30px 60px rgba(15,23,42,0.10), inset 0 1px 0 rgba(255,255,255,0.6)",
@@ -126,7 +123,6 @@ export function ExchangeCard() {
         style={{
           background:
             "linear-gradient(135deg, rgba(0,201,167,0.1), rgba(0,229,255,0.05))",
-          border: "1px solid rgba(0,201,167,0.18)",
         }}
       >
         <div>
@@ -153,7 +149,6 @@ export function ExchangeCard() {
           className="w-10 h-10 rounded-xl flex items-center justify-center"
           style={{
             background: "rgba(0,201,167,0.12)",
-            border: "1px solid rgba(0,201,167,0.25)",
           }}
         >
           <ArrowUpDown size={15} style={{ color: "#00C9A7" }} />
@@ -169,9 +164,6 @@ export function ExchangeCard() {
             background: isDark
               ? "rgba(255,255,255,0.03)"
               : "rgba(15,23,42,0.025)",
-            border: isDark
-              ? "1px solid rgba(255,255,255,0.06)"
-              : "1px solid rgba(15,23,42,0.06)",
           }}
         >
           <div className="flex items-center justify-between mb-2">
@@ -221,9 +213,6 @@ export function ExchangeCard() {
             background: isDark
               ? "rgba(255,255,255,0.03)"
               : "rgba(15,23,42,0.025)",
-            border: isDark
-              ? "1px solid rgba(255,255,255,0.06)"
-              : "1px solid rgba(15,23,42,0.06)",
           }}
         >
           <div className="flex items-center justify-between mb-2">
@@ -261,7 +250,7 @@ export function ExchangeCard() {
       <Link href={`/dashboard/send-money`}>
         <button
           type="button"
-          className="w-full py-4 rounded-xl text-white font-bold text-base tracking-wide flex items-center justify-center gap-2"
+          className="w-full py-4 rounded-full text-white font-bold text-base tracking-wide flex items-center justify-center gap-2"
           style={{
             background: "linear-gradient(135deg, #00C9A7 0%, #00E5FF 100%)",
             boxShadow: "0 0 24px rgba(0,201,167,0.28)",

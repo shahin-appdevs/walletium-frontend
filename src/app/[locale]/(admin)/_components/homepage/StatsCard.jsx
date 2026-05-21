@@ -1,54 +1,66 @@
 import { getImageUrl } from "@/utils/getImageUrl";
-import { ArrowUpRight } from "lucide-react";
+import { MoreVertical } from "lucide-react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
-// Reusable Currency Card Component
 function CurrencyCard({ item }) {
+  const t = useTranslations("Dashboard.home");
   const { flag, image_path, currency_code, currency_symbol, balance, name } =
     item;
 
   const profileImageUrl = getImageUrl(`${image_path}/${flag}`);
 
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xs p-4 flex flex-col gap-3 overflow-hidden">
-      {/* Icon Section */}
-      <div className="flex items-start justify-between">
-        <div
-          className={`w-12 h-12 rounded-xl flex items-center justify-center bg-primary-50 dark:bg-primary-500/10  `}
-          // style={{ boxShadow: `2px 2px 10px ` }}
-        >
-          <Image
-            src={profileImageUrl}
-            height={50}
-            width={50}
-            alt={name}
-            className="w-6"
-          />
-          {/* <span className="font-bold text-lg">{icon}</span> */}
+    <div className="bg-white dark:bg-slate-900 rounded-2xl  p-5 flex flex-col gap-5 overflow-hidden">
+      {/* Top row: flag + name/code + menu */}
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="dark:bg-neutral-200 rounded-full p-2 bg-gray-100 shrink-0">
+            <div className="w-10 h-10 rounded-full  overflow-hidden shrink-0">
+            <Image
+              src={profileImageUrl}
+              alt={name}
+              height={44}
+              width={44}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          </div>
+          <div className="min-w-0">
+            <p className="font-medium! text-neutral-900 dark:text-white text-sm sm:text-base truncate">
+              {name}
+            </p>
+            <p className="text-xs! font-medium! text-neutral-500 dark:text-neutral-400 uppercase tracking-wide mt-0.5">
+              {currency_code}
+            </p>
+          </div>
         </div>
-        <div
-          className={`w-7 h-7 rounded-full flex items-center justify-center `}
+        <button
+          type="button"
+          aria-label="More options"
+          className="text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-200 transition-colors shrink-0 -mt-0.5"
         >
-          <ArrowUpRight className="w-4 h-4 text-neutral-400 dark:text-neutral-200" />
-        </div>
+          <MoreVertical className="w-5 h-5" />
+        </button>
       </div>
 
-      {/* Text Section */}
+      {/* Balance */}
       <div>
-        <p className="text-gray-500 text-xs! truncate">
-          {name} ({currency_code})
+        <p className="text-sm! font-normal! text-neutral-800 dark:text-neutral-400 mb-1">
+          {t("availableBalance")}
         </p>
         <h4
           dir="ltr"
-          className="text-xl! text-neutral-800 dark:text-neutral-300 font-semibold rtl:text-right"
+          className="text-2xl!  font-bold text-neutral-900 dark:text-white rtl:text-right"
         >
-          <span className="text-neutral-700 dark:text-neutral-200">
-            {currency_symbol}
-          </span>{" "}
+          <span className="font-semibold! text-2xl!  text-neutral-700 dark:text-neutral-300">
+            {currency_symbol}{" "}
+          </span>
           {Number(balance || 0).toFixed(2)}
         </h4>
       </div>
     </div>
   );
 }
+
 export default CurrencyCard;

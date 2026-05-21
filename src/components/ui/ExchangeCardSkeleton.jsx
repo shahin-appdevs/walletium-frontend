@@ -65,9 +65,6 @@ export function ExchangeCardSkeleton() {
           : "rgba(255,255,255,0.85)",
         backdropFilter: "blur(24px)",
         WebkitBackdropFilter: "blur(24px)",
-        border: isDark
-          ? "1px solid rgba(255,255,255,0.08)"
-          : "1px solid rgba(15,23,42,0.08)",
         boxShadow: isDark
           ? "0 0 60px rgba(0,180,160,0.12), 0 30px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06)"
           : "0 0 60px rgba(0,180,160,0.10), 0 30px 60px rgba(15,23,42,0.10), inset 0 1px 0 rgba(255,255,255,0.6)",
@@ -107,7 +104,6 @@ export function ExchangeCardSkeleton() {
           height: "72px",
           background:
             "linear-gradient(135deg, rgba(0,201,167,0.1), rgba(0,229,255,0.05))",
-          border: "1px solid rgba(0,201,167,0.18)",
         }}
       >
         <div className="flex flex-col gap-1.5">
@@ -155,7 +151,7 @@ export function ExchangeCardSkeleton() {
       {/* Send button (brand gradient at ~60% opacity) */}
       <div
         aria-hidden="true"
-        className="w-full rounded-xl"
+        className="w-full rounded-full"
         style={{
           height: "56px",
           background:
