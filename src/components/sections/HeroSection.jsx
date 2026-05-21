@@ -37,14 +37,7 @@ export function HeroSection() {
   ];
 
   return (
-    <section
-      className="relative min-h-screen flex items-center overflow-hidden"
-      style={{
-        background: isDark
-          ? "linear-gradient(140deg, #0A0F1E 0%, #0D2137 60%, #091829 100%)"
-          : "linear-gradient(140deg, #F8FAFC 0%, #E2E8F0 60%, #F1F5F9 100%)",
-      }}
-    >
+    <section className="relative min-h-screen flex items-center overflow-hidden bg-linear-to-br from-slate-50 via-emerald-50/70 to-slate-100 dark:from-walletium-dark dark:via-walletium-dark-mid dark:to-[#091829]">
       {/* Subtle grid overlay */}
       <div
         className={`absolute inset-0 pointer-events-none ${
